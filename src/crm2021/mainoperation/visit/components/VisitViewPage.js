@@ -108,6 +108,7 @@ class VisitViewPage extends Component {
   renderVisitTable(messages) {
     const { visit } = this.props;
     const parentReco = Object.assign({}, visit.parentReco);
+    console.log('render visit table: ', this.props.visit);
     return (
       <Card fluid>
         <Card.Content>
@@ -165,9 +166,7 @@ class VisitViewPage extends Component {
                   <Header as="h4">{messages['Table.PhoneNumber']}</Header>
                 </Table.Cell>
                 <Table.Cell>
-                  {visit.client && visit.client.phones
-                    ? this.renderPhones(visit.client.phones)
-                    : ''}
+                  {visit.phones ? this.renderPhones(visit.phones) : ''}
                 </Table.Cell>
               </Table.Row>
 

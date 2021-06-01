@@ -108,7 +108,7 @@ class DemoCurrentPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.crmDemo.items,
+    items: state.crmDemo2021.items,
     loader: state.loader,
   };
 }

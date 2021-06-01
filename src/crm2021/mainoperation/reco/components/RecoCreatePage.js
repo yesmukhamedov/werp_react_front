@@ -238,7 +238,7 @@ class RecoCreatePage extends Component {
               ...this.state,
               saveBtnDisabled: false,
             });
-            window.location.pathname = '/crm/reco/current';
+            window.location.pathname = '/crm2021/reco/current';
           })
           .catch(function(error) {
             let stateErrors = {};
@@ -288,7 +288,7 @@ class RecoCreatePage extends Component {
 
   renderHeaderForm(messages) {
     const { errors } = this.state;
-    console.log(this.state);
+    console.log('reco create state: ', this.state);
     return (
       <Form>
         <Form.Group widths="equal">
@@ -394,7 +394,7 @@ const mapStateToProps = state => {
   return {
     dealers: state.crmDemo.dealers,
     phoneErrors: state.crmReco2021.phoneErrors,
-    loadingPhones: state.crmReco.loadingPhones,
+    loadingPhones: state.crmReco2021.loadingPhones,
     recoErrors: state.crmReco2021.recoErrors,
     categories: state.crmReco2021.recoCategories,
   };

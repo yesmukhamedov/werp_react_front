@@ -325,7 +325,7 @@ function renderByDate(props) {
           />
 
           <span style={{ float: 'right' }}>
-            {renderRecoCategoryBtn(item.categoryId, item.categoryName)}
+            {renderRecoCategoryBtn(item.category, item.categoryName)}
           </span>
         </Card.Meta>
         <Card.Description
@@ -432,7 +432,7 @@ function renderMovedReco(props) {
             )}
           </span>
           <span style={{ float: 'right' }}>
-            {renderRecoCategoryBtn(item.categoryId, item.categoryName)}
+            {renderRecoCategoryBtn(item.category, item.categoryName)}
           </span>
         </Card.Meta>
         <Card.Description style={{ marginTop: '45px' }}>

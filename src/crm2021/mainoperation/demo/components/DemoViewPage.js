@@ -80,7 +80,7 @@ class DemoViewPage extends Component {
 
   renderActions(messages) {
     const { demo } = this.props;
-    const notDemoDone = demo.resultId === 0 || demo.resultId === 7;
+    const notDemoDone = demo.result === 'UNKNOWN' || demo.result === 7;
     return (
       <div>
         <Link className="ui icon button" to="/crm2021/demo/current">
