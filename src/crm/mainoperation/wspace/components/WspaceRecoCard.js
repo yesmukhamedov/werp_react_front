@@ -354,7 +354,6 @@ function renderByReco(props) {
   if (!parentReco) {
     parentReco = {};
   }
-  console.log(item);
   return (
     <Card>
       <Card.Content>

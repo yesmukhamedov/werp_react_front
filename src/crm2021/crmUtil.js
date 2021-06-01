@@ -53,17 +53,17 @@ export const RECO_CATEGORIES = [
   {
     key: 1,
     text: 'Золото',
-    value: 1,
+    value: 'GOLD',
   },
   {
     key: 2,
     text: 'Серебро',
-    value: 2,
+    value: 'SILVER',
   },
   {
     key: 3,
     text: 'Бронза',
-    value: 3,
+    value: 'BRONZE',
   },
 ];
 
@@ -118,10 +118,10 @@ export const RECO_CALLER_OPTIONS = [
 ];
 
 export const RECO_CATEGORY_COLORS = {
-  1: 'orange',
-  2: 'olive',
-  3: 'brown',
-  4: 'grey',
+  GOLD: 'orange',
+  SILVER: 'olive',
+  BRONZE: 'brown',
+  null: 'grey',
 };
 
 export const getCallerOptionsByLanguage = language => {

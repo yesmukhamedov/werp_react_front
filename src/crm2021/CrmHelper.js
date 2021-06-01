@@ -7,16 +7,16 @@ import { RECO_CATEGORIES, RECO_CATEGORY_COLORS } from './crmUtil';
 const DEMO_RESULT_UNKNOWN = 0;
 
 // Демо пройден
-const DEMO_RESULT_DONE = 1;
+const DEMO_RESULT_DONE = 'DONE';
 
 // демо перенесен
-const DEMO_RESULT_MOVED = 2;
+const DEMO_RESULT_MOVED = 'MOVED';
 
 // демо отменена
-const DEMO_RESULT_CANCELLED = 3;
+const DEMO_RESULT_CANCELLED = 'CANCELLED';
 
 // Продан
-const DEMO_RESULT_SOLD = 4;
+const DEMO_RESULT_SOLD = 'SOLD';
 
 // Мини договор
 const DEMO_RESULT_MINI_CONTRACT = 5;
@@ -25,7 +25,7 @@ const DEMO_RESULT_MINI_CONTRACT = 5;
 const DEMO_RESULT_SOLD_CANCELLED = 6;
 
 // Архивированный
-const DEMO_RESULT_ARCHIVED = 7;
+const DEMO_RESULT_ARCHIVED = 'OLD';
 
 /** ************************ */
 export const RECO_STATUS_NEW = 0;

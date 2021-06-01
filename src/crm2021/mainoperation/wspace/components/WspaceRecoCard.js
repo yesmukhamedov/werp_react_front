@@ -352,7 +352,6 @@ function renderByDate(props) {
 function renderByReco(props) {
   const { item, messages } = props;
   let { parentReco } = item;
-  console.log('renderByReco: ', item);
   if (!parentReco) {
     parentReco = {};
   }

@@ -117,6 +117,7 @@ class WspaceMainPage extends Component {
     }
 
     let out = items;
+
     if (filters.clientName) {
       out = _.filter(items, function(o) {
         return _.startsWith(
@@ -162,15 +163,7 @@ class WspaceMainPage extends Component {
     if (filters.categoryId) {
       if (this.state.currentMenu === MENU_BY_RECO) {
         out = _.filter(items, function(o) {
-          if (!o.parentReco) {
-            return false;
-          }
-
-          return o.parentReco.categoryId === filters.categoryId;
-        });
-      } else {
-        out = _.filter(items, function(o) {
-          return o.categoryId === filters.categoryId;
+          return o.category === filters.categoryId;
         });
       }
     }
@@ -182,7 +175,6 @@ class WspaceMainPage extends Component {
         });
       }
     }
-
     return out;
   };
 
@@ -328,7 +320,7 @@ class WspaceMainPage extends Component {
 }
 
 function mapStateToProps(state) {
-  let filters = state.crmWspaceReducer.filters;
+  let filters = state.crmWspaceReducer2021.filters;
   return {
     dealers: state.crmDemo2021.dealers,
     demoResults: state.crmDemo2021.demoResults,
