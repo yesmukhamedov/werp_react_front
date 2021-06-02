@@ -108,7 +108,6 @@ const Smsrcus = props => {
   const [turnOnReactFetchBlack, setTurnOnReactFetchBlack] = useState(false);
 
   const [param, setParam] = useState({ ...emptyParam });
-  console.log('PARAM', param);
   const [bukrs, setBukrs] = useState(null);
   //Параметры черного списка
   const [blackListParam, setBlackListParam] = useState({
@@ -944,6 +943,11 @@ const Smsrcus = props => {
                     contractStatusId: value.length > 0 ? value.join() : null,
                   })
                 }
+                value={
+                  param.contractStatusId
+                    ? param.contractStatusId.split(',').map(Number)
+                    : []
+                }
                 className="alignBottom"
                 multiple
               />
@@ -958,6 +962,11 @@ const Smsrcus = props => {
                     ...param,
                     lastStateId: value.length > 0 ? value.join() : null,
                   })
+                }
+                value={
+                  param.lastStateId
+                    ? param.lastStateId.split(',').map(Number)
+                    : []
                 }
                 className="alignBottom"
                 multiple
