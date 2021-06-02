@@ -1129,7 +1129,7 @@ const AsyncSmdis = Loadable({
 });
 
 const AsyncHrSlc = Loadable({
-  loader: () => import('../hr/report/hrSlc'),
+  loader: () => import('../hr/report/hrslc'),
   loading: () => <LoadingPage />,
 });
 const AsyncSrtbb = Loadable({
