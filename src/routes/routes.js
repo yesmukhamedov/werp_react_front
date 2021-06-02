@@ -1049,6 +1049,12 @@ const AsyncTaxiExpence = Loadable({
   loader: () => import('../crm/taxiExpence'),
   loading: () => <LoadingPage />,
 });
+
+const AsyncFocur = Loadable({
+  loader: () => import('../finance/other/focur'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1194,6 +1200,7 @@ const getComponent = {
   NewReco: AsyncNewReco,
   Reception: AsyncReception,
   TaxiExpence: AsyncTaxiExpence,
+  Focur: AsyncFocur,
 };
 
 const generateRoutes = transactionRoutes => {

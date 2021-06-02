@@ -636,7 +636,6 @@
   "blartTypeZD": "Перевод денег на фирму",
   "reward": "Вознаграждение",
   "incorrectCredentials": "Неверные учетные данные",
-
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",
   "transNameFrcoln": "FRCOLN: Статистика взносщиков",
@@ -672,7 +671,6 @@
   "transNameMmceg": "MMCEG: Договор - редактирование товаров",
   "transNameMrcsch": "MRCSCH: Архив операций по изменению фин.статусов",
   "transNameFoea": "FOEA: Одобрить расходы",
-
   "asset_mant": "Управление основными средствами",
   "add_assets": "Добавление основных средств",
   "midify_assets": "Изменения основных средств",
@@ -805,7 +803,6 @@
   "customer_key": "ИИН клиента",
   "telephone": "Телефон",
   "choose_columns": "Выбрать столбцов",
-
   "change_master": "Поменять мастера",
   "List_of_employees": "Список сотрудников и их планы",
   "Table.NameOfEmployee": "ФИО сотрудника",
@@ -913,5 +910,8 @@
   "CRM_Reception": "CRM ресепшн",
   "taxiExpence": "Сумма проезда",
   "moneyStatuses": "Статусы денег",
-  "marketingTaxiExpence": "Создание активов на такси"
+  "marketingTaxiExpence": "Создание активов на такси",
+  "exchangeRates": "Курсы валют",
+  "currency_rates_for_today": "Курсы валют на сегодня",
+  "add_new_rate": "Добавить новый курс"
 }
