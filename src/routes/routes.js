@@ -1144,6 +1144,10 @@ const AsyncExample = Loadable({
   loader: () => import('../crm2021/example'),
   loading: () => <LoadingPage />,
 });
+const AsyncCrmReference = Loadable({
+  loader: () => import('../crm2021/reference'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1301,6 +1305,7 @@ const getComponent = {
   Srqpwgs: AsyncSrqpwgs,
   Example: AsyncExample,
   CrmWspace2021: AsyncCrmWspacePage2021,
+  CrmReference: AsyncCrmReference,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1395,6 +1400,11 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smvs/serviceNumber=:id"
         exact={true}
         component={AsyncSmvs}
+      />
+      <Route
+        path="/crm2021/reference"
+        exact={true}
+        component={AsyncCrmReference}
       />
 
       {/* dynamically generated URLs  */}
