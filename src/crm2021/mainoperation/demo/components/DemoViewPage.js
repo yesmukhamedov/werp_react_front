@@ -50,7 +50,6 @@ class DemoViewPage extends Component {
 
   componentWillMount() {
     const id = parseInt(this.props.match.params.id, 10);
-    console.log('demo view props: ', this.props);
     this.props.fetchDemo(id);
     this.props.fetchDemoChildDemos(id);
     this.props.fetchDemoChildRecos(id);

@@ -1,7 +1,7 @@
-export const DEMO_RESULT_DONE = 1;
-export const DEMO_RESULT_MOVED = 2;
-export const DEMO_RESULT_CANCELLED = 3;
-export const DEMO_RESULT_SOLD = 4;
+export const DEMO_RESULT_DONE = 'DONE';
+export const DEMO_RESULT_MOVED = 'MOVED';
+export const DEMO_RESULT_CANCELLED = 'CANCELLED';
+export const DEMO_RESULT_SOLD = 'SOLD';
 
 export const DEMO_RESULT_OPTIONS = [
   {
@@ -217,9 +217,9 @@ export function demoResultOptions(results) {
   }
 
   const out = Object.keys(results).map(k => ({
-    key: parseInt(k, 10),
+    // key: k,
     text: results[k],
-    value: parseInt(k, 10),
+    value: k,
   }));
 
   return out;

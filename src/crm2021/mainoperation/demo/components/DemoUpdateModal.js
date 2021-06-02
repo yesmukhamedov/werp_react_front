@@ -21,6 +21,7 @@ import {
   demoResultOptions,
 } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
+import { stringToMoment } from '../../../../utils/helpers';
 
 require('moment/locale/ru');
 
@@ -57,9 +58,9 @@ class DemoUpdateModal extends Component {
 
   renderReasonRow(messages) {
     let resultId = this.state.localDemo.resultId;
-    if (resultId) {
-      resultId = parseInt(resultId, 10);
-    }
+    // if (resultId) {
+    //   resultId = parseInt(resultId, 10);
+    // }
     if (
       resultId === DEMO_RESULT_CANCELLED ||
       resultId === DEMO_RESULT_DONE ||
@@ -84,7 +85,7 @@ class DemoUpdateModal extends Component {
   }
 
   renderSaleDateRow() {
-    const resultId = parseInt(this.state.localDemo.resultId, 10);
+    const resultId = this.state.localDemo.resultId;
     const { messages, locale } = this.props.intl;
     if (resultId === DEMO_RESULT_SOLD) {
       return (
@@ -114,7 +115,7 @@ class DemoUpdateModal extends Component {
   }
 
   renderCallDateRow() {
-    const resultId = parseInt(this.state.localDemo.resultId, 10);
+    const resultId = this.state.localDemo.resultId;
     const { messages, locale } = this.props.intl;
     if (resultId === DEMO_RESULT_MOVED || resultId === DEMO_RESULT_CANCELLED) {
       return (
@@ -170,7 +171,7 @@ class DemoUpdateModal extends Component {
               showTimeSelect
               dropdownMode="select"
               dateFormat="DD.MM.YYYY HH:mm"
-              selected={moment(localDemo.dateTime)}
+              selected={stringToMoment(localDemo.dateTime, 'DD.MM.YYYY HH:mm')}
               onChange={v => this.handleChange('dateTime', v)}
             />
           </Form.Field>
@@ -253,12 +254,13 @@ class DemoUpdateModal extends Component {
 
   handleChange(fieldName, o) {
     const localDemo = Object.assign({}, this.state.localDemo);
+
     switch (fieldName) {
       case 'dateTime':
       case 'saleDate':
       case 'recallDate':
         if (o) {
-          localDemo[fieldName] = o.valueOf();
+          localDemo[fieldName] = o;
         } else {
           localDemo[fieldName] = null;
         }
@@ -400,12 +402,12 @@ class DemoUpdateModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    dealers: state.crmDemo.dealers,
+    dealers: state.crmDemo2021.dealers,
     loader: state.loader,
-    demoResults: state.crmDemo.demoResults,
-    reasons: state.crmDemo.reasons,
-    demo: state.crmDemo.demo,
-    openDemoUpdateModal: state.crmDemo.openDemoUpdateModal,
+    demoResults: state.crmDemo2021.demoResults,
+    reasons: state.crmDemo2021.reasons,
+    demo: state.crmDemo2021.demo,
+    openDemoUpdateModal: state.crmDemo2021.openDemoUpdateModal,
   };
 }
 

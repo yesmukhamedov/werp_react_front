@@ -107,7 +107,7 @@ class Phone extends Component {
 
     this.props.fetchPhoneNumberHistory(this.props.phoneId);
 
-    doGet(`crm/reco/recommender-by-phone-id/${this.props.phoneId}`)
+    doGet(`crm2/reco/recommender-by-phone-id/${this.props.phoneId}`)
       .then(res => {
         this.setState({
           ...this.state,
@@ -355,6 +355,7 @@ class Phone extends Component {
   renderCallFormNew() {
     const { messages, locale } = this.props.intl;
     //const call = Object.assign({}, this.state.call);
+    console.log('CALL: ', this.state.call.phoneNumber);
     const { callStatus } = this.props;
     return (
       <Form>
@@ -554,6 +555,7 @@ class Phone extends Component {
   saveCall() {
     this.validateForm();
     let isValid = true;
+    console.log('call save data: ', JSON.stringify(this.state.call));
     for (const k in this.state.errors) {
       if (this.state.errors[k]) {
         isValid = false;
@@ -562,7 +564,7 @@ class Phone extends Component {
     }
 
     if (!isValid) {
-      console.log(this.state.errors);
+      // console.log(this.state.errors);
       return;
     }
 
@@ -768,9 +770,9 @@ class Phone extends Component {
 
 function mapStateToProps(state) {
   return {
-    historyItems: state.crmReco.phoneNumberHistory,
-    callResultOptions: state.crmReco.callResultOptions,
-    reasons: state.crmDemo.reasons,
+    historyItems: state.crmReco2021.phoneNumberHistory,
+    callResultOptions: state.crmReco2021.callResultOptions,
+    reasons: state.crmDemo2021.reasons,
     calling: state.callReducer.calling,
     createdCallData: state.callReducer.createdCallData,
     callStatus: state.callReducer.callStatus,

@@ -66,9 +66,7 @@ export default function DemoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Crm.DemoDateTime']}</Header>
               </Table.Cell>
-              <Table.Cell>
-                {moment(demo.dateTime).format('DD.MM.YYYY H:mm')}
-              </Table.Cell>
+              <Table.Cell>{demo.dateTime}</Table.Cell>
             </Table.Row>
 
             <Table.Row>

@@ -57,6 +57,7 @@ class DemoUpdateModal extends Component {
 
   renderReasonRow(messages) {
     let resultId = this.state.localDemo.resultId;
+    console.log(123, resultId);
     if (resultId) {
       resultId = parseInt(resultId, 10);
     }
@@ -146,6 +147,7 @@ class DemoUpdateModal extends Component {
   renderUpdateForm(messages) {
     const { localDemo } = this.state;
     const { locale } = this.props.intl;
+    console.log('RESULTID: ', this.state.localDemo.resultId);
     return (
       <Form>
         <Form.Group widths="equal">
@@ -253,6 +255,7 @@ class DemoUpdateModal extends Component {
 
   handleChange(fieldName, o) {
     const localDemo = Object.assign({}, this.state.localDemo);
+    console.log('resonID: ', localDemo.reasonId);
     switch (fieldName) {
       case 'dateTime':
       case 'saleDate':
@@ -409,14 +412,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGroupDealers,
-    fetchDemoResults,
-    fetchReasons,
-    updateDemo,
-    toggleDemoUpdateModal,
-    getLocationOptionsByLanguage,
-  },
-)(injectIntl(DemoUpdateModal));
+export default connect(mapStateToProps, {
+  fetchGroupDealers,
+  fetchDemoResults,
+  fetchReasons,
+  updateDemo,
+  toggleDemoUpdateModal,
+  getLocationOptionsByLanguage,
+})(injectIntl(DemoUpdateModal));
