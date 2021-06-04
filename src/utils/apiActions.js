@@ -1,5 +1,5 @@
 import axiosInstance from './apiClient';
-import { ROOT_URL, SERVICE_URL, CRM_URL } from './constants';
+import { ROOT_URL, SERVICE_URL, CRM_URL, CRM_CALL_CENTER } from './constants';
 
 const defineBackendUrl = uri => {
   let arr = uri.split('/');
@@ -11,6 +11,8 @@ const defineBackendUrl = uri => {
         return ROOT_URL;
       case 'CRM2':
         return CRM_URL;
+      case 'CALL_CENTER_2021':
+        return CRM_CALL_CENTER;
       default:
         return ROOT_URL;
     }

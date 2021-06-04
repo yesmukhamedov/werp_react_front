@@ -1,6 +1,7 @@
 import React from 'react';
 
-const TabReasonsContact = () => {
-  return <div>TabReasonsContact</div>;
+const TabReasonsContact = props => {
+  const { crudData } = props;
+  return <div></div>;
 };
 export default TabReasonsContact;

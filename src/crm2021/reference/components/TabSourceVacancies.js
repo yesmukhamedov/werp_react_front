@@ -1,6 +1,7 @@
 import React from 'react';
 
-const TabSourceVacancies = () => {
-  return <div>TabSourceVacancies</div>;
+const TabSourceVacancies = props => {
+  const { crudData } = props;
+  return <div></div>;
 };
 export default TabSourceVacancies;
