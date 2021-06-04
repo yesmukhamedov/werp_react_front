@@ -93,7 +93,7 @@ class CallModal extends Component {
   }
 
   handlePhoneClick() {
-    doGet(`crm/call/number-history/${this.props.id}`)
+    doGet(`crm2/call/number-history/${this.props.id}`)
       .then(res => {
         this.setState({
           ...this.state,
@@ -550,7 +550,7 @@ class CallModal extends Component {
   }
 
   handlePhoneClick() {
-    doGet(`crm/call/number-history/${this.props.id}`)
+    doGet(`crm2/call/number-history/${this.props.id}`)
       .then(res => {
         this.setState({
           ...this.state,

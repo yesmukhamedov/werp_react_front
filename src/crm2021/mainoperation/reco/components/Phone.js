@@ -113,6 +113,7 @@ class Phone extends Component {
           ...this.state,
           recommender: res.data,
         });
+        console.log('handle phone click: ', this.state);
       })
       .catch(e => {
         console.log(e);
@@ -161,7 +162,7 @@ class Phone extends Component {
   }
 
   renderDemoForm(messages, locale) {
-    const callResultId = parseInt(this.state.call.callResultId, 10);
+    const callResultId = this.state.call.callResultId;
     if (!this.state.call.callResultId || callResultId !== CALL_RESULT_DEMO) {
       return null;
     }
@@ -355,7 +356,6 @@ class Phone extends Component {
   renderCallFormNew() {
     const { messages, locale } = this.props.intl;
     //const call = Object.assign({}, this.state.call);
-    console.log('CALL: ', this.state.call.phoneNumber);
     const { callStatus } = this.props;
     return (
       <Form>
@@ -445,14 +445,15 @@ class Phone extends Component {
 
   renderCallFormOld() {
     const { messages, locale } = this.props.intl;
-    // const call = Object.assign({}, this.state.call);
+    const call = Object.assign({}, this.state.call);
     return (
       <Form>
         <Form.Group widths="equal">
           <Form.Input
             fluid
             label={messages['Form.PhoneNumber']}
-            placeholder={this.state.call.phoneNumber}
+            value={this.props.phoneNumber}
+            placeholder={this.props.phoneNumber}
             readOnly
           />
           <Form.Field required error={this.state.errors.callDate}>
@@ -555,7 +556,7 @@ class Phone extends Component {
   saveCall() {
     this.validateForm();
     let isValid = true;
-    console.log('call save data: ', JSON.stringify(this.state.call));
+
     for (const k in this.state.errors) {
       if (this.state.errors[k]) {
         isValid = false;
@@ -564,12 +565,12 @@ class Phone extends Component {
     }
 
     if (!isValid) {
-      // console.log(this.state.errors);
+      console.log(this.state.errors);
       return;
     }
-
+    console.log('phoniID: ', this.props.phoneId, 'Model: ', this.state);
     this.props
-      .saveCall(this.props.phoneId, this.state.call)
+      .saveCall(this.props.phoneId, this.state)
       .then(({ data }) => {
         if (this.props.recoId) {
           this.props.fetchSingleReco(this.props.recoId);
@@ -661,7 +662,7 @@ class Phone extends Component {
         break;
 
       case 'callReasonId':
-        call[fieldName] = parseInt(o.value, 10);
+        call[fieldName] = o.value;
         break;
 
       case 'priceDistrictId':
@@ -669,7 +670,7 @@ class Phone extends Component {
         break;
 
       case 'callResultId':
-        call[fieldName] = parseInt(o.value, 10);
+        call[fieldName] = o.value;
         if (call[fieldName] > 0) {
           errors[fieldName] = false;
         }
@@ -698,13 +699,11 @@ class Phone extends Component {
       const reasonOptions = [];
       if (this.props.reasons) {
         for (const k in this.props.reasons) {
-          if (this.props.reasons[k].typeId === 1) {
-            reasonOptions.push({
-              key: this.props.reasons[k].id,
-              text: this.props.reasons[k].name,
-              value: this.props.reasons[k].id,
-            });
-          }
+          reasonOptions.push({
+            key: this.props.reasons[k].id,
+            text: this.props.reasons[k].name,
+            value: this.props.reasons[k].id,
+          });
         }
       }
 
