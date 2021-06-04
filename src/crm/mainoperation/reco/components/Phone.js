@@ -565,6 +565,7 @@ class Phone extends Component {
       console.log(this.state.errors);
       return;
     }
+    console.log('phoniID: ', this.props.phoneId, 'Model: ', this.state);
 
     this.props
       .saveCall(this.props.phoneId, this.state.call)

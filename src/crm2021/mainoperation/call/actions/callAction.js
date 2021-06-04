@@ -50,8 +50,9 @@ export const registerCall = model => {
 };
 
 export const saveCall = (phoneId, model) => {
+  console.log('save call model: ', model);
   if (model.id == null && !model.id) {
-    return dispatch => doPost('crm/call/' + phoneId, model);
+    return dispatch => doPost('crm2/call/' + phoneId, model);
   }
 
   return dispatch => doPut('crm/call/update-register', model);

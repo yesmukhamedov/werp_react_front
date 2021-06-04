@@ -30,11 +30,11 @@ export const DEMO_RESULT_OPTIONS = [
 ];
 
 // CALL RESULTS
-export const CALL_RESULT_DEMO = 1;
-export const CALL_RESULT_REFUSE = 2;
-export const CALL_RESULT_RECALL = 3;
-export const CALL_RESULT_NOT_AVAILABLE = 4;
-export const CALL_RESULT_NO_ANSWER = 5;
+export const CALL_RESULT_DEMO = 'POSITIVE';
+export const CALL_RESULT_REFUSE = 'REJECT';
+export const CALL_RESULT_RECALL = 'RECALL';
+export const CALL_RESULT_NOT_AVAILABLE = 'NOT_AVAILABLE';
+export const CALL_RESULT_NO_ANSWER = 'NO_ANSWER';
 
 export const LOCATION_OPTIONS = [
   {
