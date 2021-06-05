@@ -147,59 +147,59 @@ export const getLocationOptionsByLanguage = language => {
   if (language === 'en') {
     return [
       {
-        key: 1,
+        key: 'IN_CITY',
         text: 'City',
-        value: 1,
+        value: 'IN_CITY',
       },
       {
-        key: 2,
+        key: 'IN_COUNTRYSIDE',
         text: 'Countryside',
-        value: 2,
+        value: 'IN_COUNTRYSIDE',
       },
     ];
   } else if (language === 'tr') {
     return [
       {
-        key: 1,
+        key: 'IN_CITY',
         text: 'City',
-        value: 1,
+        value: 'IN_CITY',
       },
       {
-        key: 2,
+        key: 'IN_COUNTRYSIDE',
         text: 'Countryside',
-        value: 2,
+        value: 'IN_COUNTRYSIDE',
       },
     ];
   }
 
   return [
     {
-      key: 1,
+      key: 'IN_CITY',
       text: 'Город',
-      value: 1,
+      value: 'IN_CITY',
     },
     {
-      key: 2,
+      key: 'IN_COUNTRYSIDE',
       text: 'ЗАгород',
-      value: 2,
+      value: 'IN_COUNTRYSIDE',
     },
   ];
 };
 
 export function getReasonsByResultId(resultId, reasons) {
   let reasonTypeId = 0;
-  resultId = parseInt(resultId, 10);
+  console.log('RESULT ID: ', reasons);
   if (resultId === DEMO_RESULT_DONE) {
-    reasonTypeId = 2;
+    reasonTypeId = 'DEMO_REFUSE';
   } else if (resultId === DEMO_RESULT_CANCELLED) {
-    reasonTypeId = 3;
+    reasonTypeId = 'DEMO_CANCEL';
   } else if (resultId === DEMO_RESULT_MOVED) {
-    reasonTypeId = 4;
+    reasonTypeId = 'DEMO_MOVE';
   }
 
   const out = [];
   for (const k in reasons) {
-    if (reasons[k].typeId === reasonTypeId) {
+    if (reasons[k].type === reasonTypeId) {
       out.push({
         key: reasons[k].id,
         text: reasons[k].name,

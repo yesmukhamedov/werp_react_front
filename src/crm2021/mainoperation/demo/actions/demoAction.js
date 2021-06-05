@@ -27,8 +27,9 @@ export const CRM_DEMO_CREATE_MODAL_TOGGLE = 'CRM_DEMO_CREATE_MODAL_TOGGLE';
 
 export const updateDemo = demo => {
   return dispatch => {
-    doPut(`crm2/demo/${demo.id}`, { ...demo })
+    doPut(`crm2/demo`, { ...demo })
       .then(({}) => {
+        console.log(demo);
         dispatch({
           type: CRM_DEMO_UPDATE,
           item: demo,

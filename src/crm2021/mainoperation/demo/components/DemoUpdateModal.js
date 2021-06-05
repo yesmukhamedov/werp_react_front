@@ -38,7 +38,7 @@ class DemoUpdateModal extends Component {
         dateTime: false,
         clientName: false,
         address: false,
-        locationId: false,
+        location: false,
       },
     };
 
@@ -66,6 +66,7 @@ class DemoUpdateModal extends Component {
       resultId === DEMO_RESULT_DONE ||
       resultId === DEMO_RESULT_MOVED
     ) {
+      console.log('render reason row: ');
       return (
         <Form.Select
           error={this.state.errors.reasonId}
@@ -206,14 +207,14 @@ class DemoUpdateModal extends Component {
             value={localDemo.address}
           />
           <Form.Select
-            error={this.state.errors.locationId}
-            value={localDemo.locationId}
+            error={this.state.errors.location}
+            value={localDemo.location}
             required
             fluid
             selection
             label={messages['Crm.Location']}
             options={getLocationOptionsByLanguage(locale)}
-            onChange={(e, v) => this.handleChange('locationId', v)}
+            onChange={(e, v) => this.handleChange('location', v)}
           />
         </Form.Group>
         <Form.Group widths="equal">
@@ -283,11 +284,12 @@ class DemoUpdateModal extends Component {
         localDemo.dealerName = this.getOptionTextValue(o);
         break;
 
-      case 'locationId':
+      case 'location':
       case 'clientName':
       case 'address':
       case 'note':
         localDemo[fieldName] = o.value;
+        console.log('handle change location: ', localDemo[fieldName]);
         break;
 
       default: {
@@ -365,7 +367,26 @@ class DemoUpdateModal extends Component {
       return;
     }
 
-    this.props.updateDemo(this.state.localDemo);
+    this.props.updateDemo({
+      address: this.state.localDemo.address,
+      appointedBy: this.state.localDemo.appointedBy,
+      callDate: '2021-06-04T11:01:32.218Z',
+      clientName: this.state.localDemo.clientName,
+      context: this.state.localDemo.context,
+      contextId: this.state.localDemo.contextId,
+      dateTime: '2021-06-04T11:01:32.218Z',
+      dealerId: this.state.localDemo.dealerId,
+      id: this.state.localDemo.id,
+      location: this.state.localDemo.location,
+      note: this.state.localDemo.note,
+      parentId: 0,
+      reasonId: this.state.localDemo.reasonId,
+      recallDate: '2021-06-04T11:01:32.218Z',
+      recoId: this.state.localDemo.recoId,
+      result: this.state.localDemo.result,
+      saleDate: '2021-06-04',
+      visitId: 0,
+    });
   }
 
   close() {
