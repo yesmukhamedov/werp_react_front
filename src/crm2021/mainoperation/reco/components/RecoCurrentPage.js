@@ -81,7 +81,7 @@ class RecoCurrentPage extends Component {
             key={p.id}
             phoneNumber={p.phoneNumber}
             phoneId={p.id}
-            context="reco"
+            context="RECO"
             contextId={recoId}
             onCallSaved={this.onCallSaved}
             clientName={clientName}

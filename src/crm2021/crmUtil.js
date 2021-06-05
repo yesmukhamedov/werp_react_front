@@ -30,6 +30,7 @@ export const DEMO_RESULT_OPTIONS = [
 ];
 
 // CALL RESULTS
+export const CALL_RESULT_UNKNOWN = 'UNKNOWN';
 export const CALL_RESULT_DEMO = 'POSITIVE';
 export const CALL_RESULT_REFUSE = 'REJECT';
 export const CALL_RESULT_RECALL = 'RECALL';
@@ -152,9 +153,9 @@ export const getLocationOptionsByLanguage = language => {
         value: 'IN_CITY',
       },
       {
-        key: 'IN_COUNTRYSIDE',
+        key: 'OUT_CITY',
         text: 'Countryside',
-        value: 'IN_COUNTRYSIDE',
+        value: 'OUT_CITY',
       },
     ];
   } else if (language === 'tr') {
@@ -165,9 +166,9 @@ export const getLocationOptionsByLanguage = language => {
         value: 'IN_CITY',
       },
       {
-        key: 'IN_COUNTRYSIDE',
+        key: 'OUT_CITY',
         text: 'Countryside',
-        value: 'IN_COUNTRYSIDE',
+        value: 'OUT_CITY',
       },
     ];
   }
@@ -179,9 +180,9 @@ export const getLocationOptionsByLanguage = language => {
       value: 'IN_CITY',
     },
     {
-      key: 'IN_COUNTRYSIDE',
+      key: 'OUT_CITY',
       text: 'ЗАгород',
-      value: 'IN_COUNTRYSIDE',
+      value: 'OUT_CITY',
     },
   ];
 };

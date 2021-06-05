@@ -1,45 +1,46 @@
 import React, { Component } from 'react';
 import {
-  Label,
+  Button,
+  Divider,
+  Form,
+  Header,
   Icon,
+  Input,
+  Label,
   Modal,
   Tab,
   Table,
-  Button,
-  Form,
-  Input,
   TextArea,
-  Divider,
-  Header,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ROOT_URL } from '../../../../utils/constants';
 import moment from 'moment';
 import {
-  getLocationOptionsByLanguage,
   CALL_RESULT_DEMO,
-  CALL_RESULT_REFUSE,
   CALL_RESULT_RECALL,
+  CALL_RESULT_REFUSE,
+  CALL_RESULT_UNKNOWN,
+  getLocationOptionsByLanguage,
 } from '../../../crmUtil';
 import { connect } from 'react-redux';
 import {
-  fetchPhoneNumberHistory,
   fetchCallResults,
+  fetchPhoneNumberHistory,
   fetchSingleReco,
 } from '../actions/recoAction';
 import {
+  callInfo,
   createCall,
-  setCallingFlag,
   registerCall,
   saveCall,
-  callInfo,
+  setCallingFlag,
   setCallStatus,
 } from '../../call/actions/callAction';
 import { injectIntl } from 'react-intl';
 import {
-  CALL_STATUS_DURING_CALL,
   CALL_STATUS_CALLING,
+  CALL_STATUS_DURING_CALL,
   CALL_STATUS_FINISHED,
   CALL_STATUS_NOTHING,
 } from '../../call/callConstant';
@@ -60,6 +61,7 @@ class Phone extends Component {
       call: {
         callDate: moment(),
       },
+      demo: {},
       callContinue: false,
       duration: {
         h: 0,
@@ -67,14 +69,16 @@ class Phone extends Component {
         s: 0,
       },
       errors: {
-        callResultId: false,
+        callResult: false,
         callReasonId: false,
         callDate: false,
         callRecallDate: false,
-        demoClientName: false,
-        demoDate: false,
-        demoAddress: false,
-        demoLocationId: false,
+      },
+      demoErrors: {
+        clientName: false,
+        dateTime: false,
+        address: false,
+        location: false,
       },
     };
     this.handlePhoneClick = this.handlePhoneClick.bind(this);
@@ -99,6 +103,7 @@ class Phone extends Component {
   }
 
   handlePhoneClick() {
+    console.log('Test');
     this.setState({
       ...this.state,
       buttonLoading: true,
@@ -114,6 +119,19 @@ class Phone extends Component {
           recommender: res.data,
         });
         console.log('handle phone click: ', this.state);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+    doGet(`crm2/call/blank/${this.props.phoneId}`)
+      .then(res => {
+        res.data.call.callDate = moment();
+        this.setState({
+          ...this.state,
+          call: res.data.call,
+          demo: res.data.demo,
+        });
       })
       .catch(e => {
         console.log(e);
@@ -162,23 +180,26 @@ class Phone extends Component {
   }
 
   renderDemoForm(messages, locale) {
-    const callResultId = this.state.call.callResultId;
-    if (!this.state.call.callResultId || callResultId !== CALL_RESULT_DEMO) {
+    const callResult = this.state.call.callResult;
+    if (!this.state.call.callResult || callResult !== CALL_RESULT_DEMO) {
       return null;
     }
+    const { demo } = this.state;
+    const { demoErrors } = this.state;
+
     return (
       <div>
         <Form.Group widths="equal">
           <Form.Field
-            error={this.state.errors.demoClientName}
-            onChange={(e, o) => this.handleChange('demoClientName', o)}
-            value={this.state.call.demoClientName || ''}
+            error={demoErrors.clientName}
+            onChange={(e, o) => this.handleDemoForm('clientName', o)}
+            value={demo.clientName || ''}
             control={Input}
             required
             label={messages.fioClient}
             placeholder={messages.fioClient}
           />
-          <Form.Field error={this.state.errors.demoDate} required>
+          <Form.Field error={demoErrors.dateTime} required>
             <label>{messages['Crm.DemoDateTime']}</label>
             <DatePicker
               autoComplete="off"
@@ -190,46 +211,36 @@ class Phone extends Component {
               showTimeSelect
               dropdownMode="select"
               dateFormat="DD.MM.YYYY HH:mm"
-              selected={this.state.call.demoDate}
-              onChange={v => this.handleChange('demoDate', v)}
+              selected={demo.dateTime || null}
+              onChange={v => this.handleDemoForm('dateTime', v)}
             />
           </Form.Field>
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Field
-            error={this.state.errors.demoAddress}
+            error={demoErrors.address}
             required
             control={TextArea}
-            onChange={(e, o) => this.handleChange('demoAddress', o)}
+            onChange={(e, o) => this.handleDemoForm('address', o)}
             label={messages['Table.Address']}
             placeholder={messages['Table.Address']}
           />
           <Form.Select
-            error={this.state.errors.demoLocationId}
+            error={demoErrors.location}
             required
             fluid
             selection
             label={messages['Crm.Location']}
             options={getLocationOptionsByLanguage(locale)}
-            onChange={(e, v) => this.handleChange('demoLocationId', v)}
+            onChange={(e, v) => this.handleDemoForm('location', v)}
           />
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Field
             control={TextArea}
-            onChange={(e, o) => this.handleChange('demoNote', o)}
+            onChange={(e, o) => this.handleDemoForm('note', o)}
             label={messages['Crm.NoteForDemo']}
             placeholder={messages['Crm.NoteForDemo']}
-          />
-
-          <Form.Select
-            error={this.state.errors.priceDistrictId}
-            required
-            fluid
-            selection
-            label={'Район'}
-            options={this.props.demoPriceOptions}
-            onChange={(e, v) => this.handleChange('priceDistrictId', v)}
           />
         </Form.Group>
       </div>
@@ -387,14 +398,14 @@ class Phone extends Component {
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Select
-            error={this.state.errors.callResultId}
+            error={this.state.errors.callResult}
             required
-            name="resultId"
+            name="callResult"
             fluid
             selection
             label={messages['Crm.ResultOfCall']}
             options={this.props.callResultOptions}
-            onChange={(e, v) => this.handleChange('callResultId', v)}
+            onChange={(e, v) => this.handleChange('callResult', v)}
           />
 
           {this.renderCallResultDependentField()}
@@ -475,14 +486,14 @@ class Phone extends Component {
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Select
-            error={this.state.errors.callResultId}
+            error={this.state.errors.callResult}
             required
             name="resultId"
             fluid
             selection
             label={messages['Crm.ResultOfCall']}
             options={this.props.callResultOptions}
-            onChange={(e, v) => this.handleChange('callResultId', v)}
+            onChange={(e, v) => this.handleChange('callResult', v)}
           />
 
           {this.renderCallResultDependentField()}
@@ -508,10 +519,16 @@ class Phone extends Component {
   }
 
   validateForm() {
-    const { call, errors } = this.state;
+    const { call, errors, demoErrors, demo } = this.state;
     for (const k in errors) {
       if (errors.hasOwnProperty(k)) {
         errors[k] = false;
+      }
+    }
+
+    for (const k in demoErrors) {
+      if (demoErrors.hasOwnProperty(k)) {
+        demoErrors[k] = false;
       }
     }
 
@@ -519,37 +536,38 @@ class Phone extends Component {
       errors.callDate = true;
     }
 
-    if (!call.callResultId || call.callResultId === 0) {
-      errors.callResultId = true;
-    } else if (call.callResultId === CALL_RESULT_REFUSE) {
+    if (!call.callResult || call.callResult === CALL_RESULT_UNKNOWN) {
+      errors.callResult = true;
+    } else if (call.callResult === CALL_RESULT_REFUSE) {
       if (!call.callReasonId || call.callReasonId === 0) {
         errors.callReasonId = true;
       }
-    } else if (call.callResultId === CALL_RESULT_RECALL) {
+    } else if (call.callResult === CALL_RESULT_RECALL) {
       if (!call.callRecallDate || call.callRecallDate.length === 0) {
         errors.callRecallDate = true;
       }
-    } else if (call.callResultId === CALL_RESULT_DEMO) {
-      if (!call.demoAddress || call.demoAddress.length === 0) {
-        errors.demoAddress = true;
+    } else if (call.callResult === CALL_RESULT_DEMO) {
+      if (!demo.address || demo.address.length === 0) {
+        demoErrors.address = true;
       }
 
-      if (!call.demoLocationId || call.demoLocationId === 0) {
-        errors.demoLocationId = true;
+      if (!demo.location || demo.location.length === 0) {
+        demoErrors.location = true;
       }
 
-      if (!call.demoClientName || call.demoClientName.length === 0) {
-        errors.demoClientName = true;
+      if (!demo.clientName || demo.clientName.length === 0) {
+        demoErrors.clientName = true;
       }
 
-      if (!call.demoDate || call.demoDate.length === 0) {
-        errors.demoDate = true;
+      if (!demo.dateTime) {
+        demoErrors.dateTime = true;
       }
     }
 
     this.setState({
       ...this.state,
       errors,
+      demoErrors,
     });
   }
 
@@ -563,14 +581,23 @@ class Phone extends Component {
         break;
       }
     }
+    for (const k in this.state.demoErrors) {
+      if (this.state.demoErrors[k]) {
+        isValid = false;
+        break;
+      }
+    }
 
     if (!isValid) {
-      console.log(this.state.errors);
       return;
     }
-    console.log('phoniID: ', this.props.phoneId, 'Model: ', this.state);
+
+    const model = {
+      ...this.state.call,
+      demoForm: this.state.demo,
+    };
     this.props
-      .saveCall(this.props.phoneId, this.state)
+      .saveCall(this.props.phoneId, model)
       .then(({ data }) => {
         if (this.props.recoId) {
           this.props.fetchSingleReco(this.props.recoId);
@@ -643,21 +670,42 @@ class Phone extends Component {
     );
   }
 
+  handleDemoForm(fieldName, o) {
+    let demo = Object.assign({}, this.state.demo);
+    let errors = Object.assign({}, this.state.demoErrors);
+
+    switch (fieldName) {
+      case 'dateTime':
+        demo[fieldName] = o;
+        break;
+      case 'location':
+      case 'clientName':
+      case 'address':
+      case 'note':
+        demo[fieldName] = o.value;
+        break;
+
+      default:
+        break;
+    }
+
+    this.setState({
+      ...this.state,
+      demoErrors: errors,
+      demo: demo,
+    });
+  }
+
   handleChange(fieldName, o) {
     let { call, showDemoForm, errors } = this.state;
 
     switch (fieldName) {
       case 'callDate':
       case 'callRecallDate':
-      case 'demoDate':
         call[fieldName] = o;
         break;
-      case 'demoLocationId':
-      case 'demoClientName':
-      case 'demoAddress':
 
       case 'callNote':
-      case 'demoNote':
         call[fieldName] = o.value;
         break;
 
@@ -665,13 +713,9 @@ class Phone extends Component {
         call[fieldName] = o.value;
         break;
 
-      case 'priceDistrictId':
+      case 'callResult':
         call[fieldName] = o.value;
-        break;
-
-      case 'callResultId':
-        call[fieldName] = o.value;
-        if (call[fieldName] > 0) {
+        if (!call[fieldName]) {
           errors[fieldName] = false;
         }
         if (call[fieldName] === CALL_RESULT_DEMO) {
@@ -695,7 +739,7 @@ class Phone extends Component {
 
   renderCallResultDependentField() {
     const { messages, locale } = this.props.intl;
-    if (this.state.call.callResultId === CALL_RESULT_REFUSE) {
+    if (this.state.call.callResult === CALL_RESULT_REFUSE) {
       const reasonOptions = [];
       if (this.props.reasons) {
         for (const k in this.props.reasons) {
@@ -718,7 +762,7 @@ class Phone extends Component {
           onChange={(e, v) => this.handleChange('callReasonId', v)}
         />
       );
-    } else if (this.state.call.callResultId === CALL_RESULT_RECALL) {
+    } else if (this.state.call.callResult === CALL_RESULT_RECALL) {
       // Perzvonit'
       return (
         <Form.Field error={this.state.errors.callRecallDate} required>
