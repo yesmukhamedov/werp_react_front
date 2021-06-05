@@ -10,16 +10,33 @@ import TabPresets from './components/TabPresets';
 import TabVacancies from './components/TabVacancies';
 import { injectIntl } from 'react-intl';
 import './crmreference.css';
+import {
+  createSubjectAppeal,
+  fetchSubjectAppeal,
+  updateSubjectAppeal,
+} from './crmreferenceAction';
 
 const CrmReference = props => {
-  const {} = props;
+  const { subjectAppealList = [] } = props;
+  const [activeTab, setActiveTab] = useState(0);
+  const initialCrudData = {
+    headerText: '',
+    data: [],
+  };
+  const [crudData, setCrudData] = useState(initialCrudData);
 
   const panes = [
     {
       menuItem: 'Тема обращения',
       render: () => (
         <Tab.Pane>
-          <TabSubjectAppeal />
+          <TabSubjectAppeal
+            data={subjectAppealList}
+            crudData={crudData}
+            get={props.fetchSubjectAppeal}
+            create={props.createSubjectAppeal}
+            update={props.updateSubjectAppeal}
+          />
         </Tab.Pane>
       ),
     },
@@ -27,7 +44,7 @@ const CrmReference = props => {
       menuItem: 'Источник обращений',
       render: () => (
         <Tab.Pane>
-          <TabSourceRequests />
+          <TabSourceRequests crudData={crudData} />
         </Tab.Pane>
       ),
     },
@@ -35,7 +52,7 @@ const CrmReference = props => {
       menuItem: 'Источник вакансий',
       render: () => (
         <Tab.Pane>
-          <TabSourceVacancies />
+          <TabSourceVacancies crudData={crudData} />
         </Tab.Pane>
       ),
     },
@@ -43,7 +60,7 @@ const CrmReference = props => {
       menuItem: 'Категория обращений',
       render: () => (
         <Tab.Pane>
-          <TabCategoryHits />
+          <TabCategoryHits crudData={crudData} />
         </Tab.Pane>
       ),
     },
@@ -51,7 +68,7 @@ const CrmReference = props => {
       menuItem: 'Причины обращения',
       render: () => (
         <Tab.Pane>
-          <TabReasonsContact />
+          <TabReasonsContact crudData={crudData} />
         </Tab.Pane>
       ),
     },
@@ -59,7 +76,7 @@ const CrmReference = props => {
       menuItem: 'Подарки',
       render: () => (
         <Tab.Pane>
-          <TabPresets />
+          <TabPresets crudData={crudData} />
         </Tab.Pane>
       ),
     },
@@ -67,27 +84,34 @@ const CrmReference = props => {
       menuItem: 'Вакансии',
       render: () => (
         <Tab.Pane>
-          <TabVacancies />
+          <TabVacancies crudData={crudData} />
         </Tab.Pane>
       ),
     },
   ];
-  const [activeTab, setActiveTab] = useState(0);
+
   useEffect(() => {
     if (activeTab === 0) {
-      console.log('activeTab', activeTab);
+      props.fetchSubjectAppeal();
+      setCrudData({ ...crudData, headerText: 'Тема обращения' });
     } else if (activeTab === 1) {
       console.log('activeTab', activeTab);
+      setCrudData({ ...crudData, headerText: 'Источник обращений' });
     } else if (activeTab === 2) {
       console.log('activeTab', activeTab);
+      setCrudData({ ...crudData, headerText: 'Источник вакансий' });
     } else if (activeTab === 3) {
       console.log('activeTab', activeTab);
+      setCrudData({ ...crudData, headerText: 'Категория обращений' });
     } else if (activeTab === 4) {
       console.log('activeTab', activeTab);
+      setCrudData({ ...crudData, headerText: 'Причины обращения' });
     } else if (activeTab === 5) {
       console.log('activeTab', activeTab);
+      setCrudData({ ...crudData, headerText: 'Подарки' });
     } else if (activeTab === 6) {
       console.log('activeTab', activeTab);
+      setCrudData({ ...crudData, headerText: 'Вакансии' });
     }
   }, [activeTab]);
 
@@ -117,7 +141,12 @@ const CrmReference = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
+    subjectAppealList: state.crmreferenceReducer.subjectAppealList,
   };
 }
 
-export default connect(mapStateToProps, {})(injectIntl(CrmReference));
+export default connect(mapStateToProps, {
+  fetchSubjectAppeal,
+  createSubjectAppeal,
+  updateSubjectAppeal,
+})(injectIntl(CrmReference));

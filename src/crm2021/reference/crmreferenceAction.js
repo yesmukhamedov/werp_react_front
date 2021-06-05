@@ -1,84 +1,80 @@
-import { doGet, doPost } from '../../utils/apiActions';
+import { doGet, doPost, doPut } from '../../utils/apiActions';
 import {
   handleError,
   notify,
 } from '../../general/notification/notification_action';
 import { modifyLoader } from '../../general/loader/loader_action';
+import { errorTableText } from '../../utils/helpers';
+import {
+  EDIT_SMECAM,
+  FETCH_SMECAM,
+} from '../../service/mainoperation/smecam/smecamAction';
+import { APPR_REJ, notSuccessed, successed } from '../../aes/aesAction';
 
-export const ACTION_TYPE = 'ACTION_TYPE';
+export const FETCH_SUBJECT_APPEAL = 'FETCH_SUBJECT_APPEAL';
+export const CREATE_SUBJECT_APPEAL = 'CREATE_SUBJECT_APPEAL';
+export const UPDATE_SUBJECT_APPEAL = 'UPDATE_SUBJECT_APPEAL';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
-export function fetchDynObjHr(url, params) {
+//--CRUD тема обращения
+//GET
+export function fetchSubjectAppeal(param) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(url, { ...params })
+    doGet(`call_center_2021/ref/theme`)
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
-          type: ACTION_TYPE,
-          data,
+          type: FETCH_SUBJECT_APPEAL,
+          payload: data,
         });
+        dispatch(modifyLoader(false));
       })
       .catch(error => {
-        handleError(error, dispatch);
         dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 }
 
-export function saveHrc01(url, body, params, setIsLoading, clearCustomer) {
+//POST
+export function createSubjectAppeal(param, getCallback) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(url, body, { ...params })
+    doPost('call_center_2021/ref/theme', { ...param })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        setIsLoading(false);
-        clearCustomer();
         dispatch({
-          type: ACTION_TYPE,
-          data,
+          type: CREATE_SUBJECT_APPEAL,
+          payload: data,
         });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`104${language}`],
-            errorTable[`101${language}`],
-          ),
-        );
+        getCallback();
       })
-      .catch(error => {
-        handleError(error, dispatch);
+      .catch(e => {
         dispatch(modifyLoader(false));
-        setIsLoading(false);
+        handleError(e, dispatch);
       });
   };
 }
 
-export function saveHrc02(url, body, params, setIsLoading) {
+//PUT
+export function updateSubjectAppeal(body, getCallback) {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(url, body, { ...params })
+    dispatch(modifyLoader(false));
+    doPut('call_center_2021/ref/theme', { ...body })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        setIsLoading(false);
         dispatch({
-          type: UPDATE_CUSTOMER,
-          data,
+          type: UPDATE_SUBJECT_APPEAL,
+          payload: [],
         });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`104${language}`],
-            errorTable[`101${language}`],
-          ),
-        );
+        getCallback();
       })
-      .catch(error => {
-        handleError(error, dispatch);
-        dispatch(modifyLoader(false));
-        setIsLoading(false);
+      .catch(e => {
+        handleError(e, dispatch);
       });
   };
 }
+
+//--CRUD источник обращений

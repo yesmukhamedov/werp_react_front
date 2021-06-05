@@ -17,6 +17,7 @@ export const ROOT_URL = isLocalIpAddress()
 export const AUTH_URL = process.env.REACT_APP_ROOT_URL_AUTH;
 export const SERVICE_URL = process.env.REACT_APP_ROOT_URL_SERVICE;
 export const CRM_URL = process.env.REACT_APP_ROOT_URL_CRM;
+export const CRM_CALL_CENTER = process.env.REACT_APP_ROOT_URL_CRM_CALL_CENTER;
 
 /**
  * Back-end URL of the legacy (old) system
