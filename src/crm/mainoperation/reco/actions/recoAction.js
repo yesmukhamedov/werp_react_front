@@ -251,6 +251,7 @@ export function createRecoListNew(o) {
 export function blankReco(context, contextId) {
   return dispatch =>
     doGet(`crm/reco/create?context=${context}&contextId=${contextId}`);
+  console.log(context, contextId);
 }
 
 export function createRecoList(o, callBackOnError) {

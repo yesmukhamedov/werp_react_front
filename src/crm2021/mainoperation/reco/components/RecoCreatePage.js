@@ -63,7 +63,7 @@ class RecoCreatePage extends Component {
   componentDidMount() {
     this.props.fetchGroupDealers();
     this.props.fetchRecoCategories();
-
+    console.log('reco create page: ', this.props);
     let context = this.props.match.params.context;
     let contextId = this.props.match.params.contextId;
     let reco = Object.assign({}, this.state.reco);
@@ -280,15 +280,15 @@ class RecoCreatePage extends Component {
   }
 
   isArchive = () => {
+    console.log('isArchive: ', this.state);
     return (
-      this.state.reco.contextId === 0 ||
+      this.state.reco.contextId === null ||
       this.state.reco.context === DEFAULT_CONTEXT
     );
   };
 
   renderHeaderForm(messages) {
     const { errors } = this.state;
-    console.log('reco create state: ', this.state);
     return (
       <Form>
         <Form.Group widths="equal">
@@ -392,7 +392,7 @@ class RecoCreatePage extends Component {
 
 const mapStateToProps = state => {
   return {
-    dealers: state.crmDemo.dealers,
+    dealers: state.crmDemo2021.dealers,
     phoneErrors: state.crmReco2021.phoneErrors,
     loadingPhones: state.crmReco2021.loadingPhones,
     recoErrors: state.crmReco2021.recoErrors,

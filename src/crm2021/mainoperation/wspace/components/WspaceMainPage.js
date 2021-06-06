@@ -106,7 +106,7 @@ class WspaceMainPage extends Component {
         this.props.archiveReco(recoId);
       }
     } else if (itemName === 'view') {
-      let win = window.open('/crm/reco/view/' + recoId, '_blank');
+      let win = window.open('/crm2021/reco/view/' + recoId, '_blank');
       win.focus();
     }
   };
@@ -130,11 +130,11 @@ class WspaceMainPage extends Component {
     if (filters.docDate) {
       if (this.state.currentMenu === MENU_BY_RECO) {
         out = _.filter(items, function(o) {
-          return _.startsWith(o.dateTimeStr, filters.docDate);
+          return _.startsWith(o.dateTime, filters.docDate);
         });
       } else if (this.state.currentMenu === MENU_BY_DATE) {
         out = _.filter(items, function(o) {
-          return _.startsWith(o.callDateStr, filters.docDate);
+          return _.startsWith(o.callDateTime, filters.docDate);
         });
       }
     }
@@ -162,6 +162,7 @@ class WspaceMainPage extends Component {
 
     if (filters.categoryId) {
       if (this.state.currentMenu === MENU_BY_RECO) {
+      } else if (this.state.currentMenu === MENU_BY_DATE) {
         out = _.filter(items, function(o) {
           return o.category === filters.categoryId;
         });
@@ -171,7 +172,7 @@ class WspaceMainPage extends Component {
     if (filters.resultId != undefined && filters.resultId != null) {
       if (this.state.currentMenu === MENU_BY_RECO) {
         out = _.filter(items, function(o) {
-          return o.resultId === filters.resultId;
+          return o.result === filters.resultId;
         });
       }
     }

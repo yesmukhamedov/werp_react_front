@@ -309,7 +309,7 @@ export function setCurrentPhone(phone) {
 }
 
 export function handleFilter(name, key, value) {
-  console.log('name: ', name, 'key: ', key, 'value: ', value);
+  console.log('name: ', name, 'key: ', key, 'value: ', JSON.stringify(value));
   return {
     key,
     type: WSP_HANDLE_FILTER,

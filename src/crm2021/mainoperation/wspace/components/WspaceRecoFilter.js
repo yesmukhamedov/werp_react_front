@@ -23,7 +23,7 @@ export default function WspaceRecoFilter(props) {
     tempDemoResults.push({
       key: parseInt(k, 10),
       text: demoResults[k],
-      value: parseInt(k, 10),
+      value: k,
     });
   }
   const resultOptions = [
@@ -33,7 +33,7 @@ export default function WspaceRecoFilter(props) {
       value: null,
     },
   ].concat(tempDemoResults);
-
+  console.log('FILTERS', props.filters.docDate);
   return (
     <Segment padded>
       <Form>
