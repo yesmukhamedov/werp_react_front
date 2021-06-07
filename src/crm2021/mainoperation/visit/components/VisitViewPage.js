@@ -244,7 +244,7 @@ class VisitViewPage extends Component {
               {
                 <ChildRecosTable
                   messages={messages}
-                  items={visit.recos || []}
+                  items={this.props.childRecos || []}
                 />
               }
               {
@@ -263,6 +263,7 @@ class VisitViewPage extends Component {
 function mapStateToProps(state) {
   return {
     visit: state.crmVisit2021.visit,
+    childRecos: state.crmVisit2021.childRecos,
   };
 }
 

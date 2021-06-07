@@ -25,24 +25,24 @@ class DemoCreateModal extends Component {
         parentId: props.parentId,
         recoId: props.recoId,
         visitId: props.visitId,
-        callId: 0,
-        clientName: '',
-        contractNumber: 0,
+        callId: null,
+        clientName: null,
+        contractNumber: null,
         dateTime: null,
         dealerId: props.dealerId,
-        locationId: 0,
-        resultId: 0,
-        reasonId: 0,
+        location: null,
+        result: 'UNKNOWN',
+        reasonId: null,
         saleDate: null,
       },
       errors: {
         dealerId: false,
-        resultId: false,
+        result: false,
         reasonId: false,
         dateTime: false,
         clientName: false,
         address: false,
-        locationId: false,
+        location: false,
       },
     };
 
@@ -56,14 +56,11 @@ class DemoCreateModal extends Component {
   componentWillMount() {}
 
   renderReasonRow(messages) {
-    let resultId = this.state.demo.resultId;
-    if (resultId) {
-      resultId = parseInt(resultId, 10);
-    }
+    let result = this.state.demo.result;
     if (
-      resultId === DEMO_RESULT_CANCELLED ||
-      resultId === DEMO_RESULT_DONE ||
-      resultId === DEMO_RESULT_MOVED
+      result === DEMO_RESULT_CANCELLED ||
+      result === DEMO_RESULT_DONE ||
+      result === DEMO_RESULT_MOVED
     ) {
       return (
         <Form.Select
@@ -73,7 +70,7 @@ class DemoCreateModal extends Component {
           fluid
           selection
           label={messages['Crm.Reason']}
-          options={getReasonsByResultId(resultId, this.props.reasons)}
+          options={getReasonsByResultId(result, this.props.reasons)}
           onChange={(e, v) => this.handleChange('reasonId', v)}
         />
       );
@@ -118,14 +115,14 @@ class DemoCreateModal extends Component {
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Select
-            error={this.state.errors.resultId}
-            value={this.state.demo.resultId}
+            error={this.state.errors.result}
+            value={this.state.demo.result}
             required
             fluid
             selection
             label={messages['Form.Result']}
             options={this.resultsOptions()}
-            onChange={(e, v) => this.handleChange('resultId', v)}
+            onChange={(e, v) => this.handleChange('result', v)}
           />
           {this.renderReasonRow(messages)}
         </Form.Group>
@@ -140,14 +137,14 @@ class DemoCreateModal extends Component {
             value={this.state.demo.address}
           />
           <Form.Select
-            error={this.state.errors.locationId}
-            value={this.state.demo.locationId}
+            error={this.state.errors.location}
+            value={this.state.demo.location}
             required
             fluid
             selection
             label={messages['Crm.Location']}
             options={getLocationOptionsByLanguage(locale)}
-            onChange={(e, v) => this.handleChange('locationId', v)}
+            onChange={(e, v) => this.handleChange('location', v)}
           />
         </Form.Group>
         <Form.Group widths="equal">
@@ -180,22 +177,22 @@ class DemoCreateModal extends Component {
     switch (fieldName) {
       case 'dateTime':
         if (o) {
-          demo[fieldName] = o.valueOf();
+          demo[fieldName] = o;
         } else {
           demo[fieldName] = null;
         }
 
         break;
-      case 'locationId':
+      case 'location':
       case 'clientName':
       case 'address':
-      case 'resultId':
+      case 'result':
       case 'reasonId':
       case 'dealerId':
       case 'note':
         demo[fieldName] = o.value;
-        if (fieldName === 'resultId') {
-          demo.reasonId = 0;
+        if (fieldName === 'result') {
+          demo.reasonId = null;
         }
         break;
       default: {
@@ -217,16 +214,16 @@ class DemoCreateModal extends Component {
     }
 
     if (
-      demo.resultId === DEMO_RESULT_MOVED ||
-      demo.resultId === DEMO_RESULT_CANCELLED ||
-      demo.resultId === DEMO_RESULT_DONE
+      demo.result === DEMO_RESULT_MOVED ||
+      demo.result === DEMO_RESULT_CANCELLED ||
+      demo.result === DEMO_RESULT_DONE
     ) {
-      if (demo.reasonId === 0) {
+      if (!demo.reasonId) {
         errors.reasonId = true;
       }
     }
 
-    if (!demo.dealerId || demo.dealerId === 0) {
+    if (!demo.dealerId) {
       errors.dealerId = true;
     }
 
@@ -240,6 +237,10 @@ class DemoCreateModal extends Component {
 
     if (!demo.address || demo.address.length === 0) {
       errors.address = true;
+    }
+
+    if (!demo.location) {
+      errors.location = true;
     }
 
     this.setState({
@@ -274,7 +275,7 @@ class DemoCreateModal extends Component {
     if (!isValid) {
       return;
     }
-    doPost(`crm/demo`, { ...this.state.demo })
+    doPost(`crm2/demo`, { ...this.state.demo })
       .then(response => {
         this.close();
       })

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Card, Header } from 'semantic-ui-react';
+import { Card, Header, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
@@ -52,7 +52,7 @@ export default function DemoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Table.PhoneNumber']}</Header>
               </Table.Cell>
-              <Table.Cell>{call.phoneNumber}</Table.Cell>
+              <Table.Cell>{demo.phoneNumber}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
@@ -149,24 +149,25 @@ export default function DemoViewTable(props) {
 }
 
 function getSourceLink(demo, messages) {
-  const call = Object.assign({}, demo.call);
-  if (demo.context === 'visit') {
+  if (demo.visitId) {
     return (
       <Link className="button" to={`/crm/visit/view/${demo.visitId}`}>
-        {messages['Crm.Visit']} № {call.contextId}
+        {messages['Crm.Visit']} № {demo.visitId}
       </Link>
     );
-  } else if (call.context === 'reco') {
+  } else if (demo.recoId) {
     return (
-      <Link className="button" to={`/crm/reco/view/${call.contextId}`}>
-        {messages['Crm.Recommendation']} № {call.contextId}
+      <Link className="button" to={`/crm/reco/view/${demo.recoId}`}>
+        {messages['Crm.Recommendation']} № {demo.recoId}
       </Link>
     );
-  } else if (call.context === 'demo') {
+  } else if (demo.parentId) {
     return (
-      <Link to={`/crm/demo/view/${call.contextId}`}>
-        {messages['Crm.Demo']} № {call.contextId}
+      <Link to={`/crm/demo/view/${demo.parentId}`}>
+        {messages['Crm.Demo']} № {demo.parentId}
       </Link>
     );
   }
+
+  return '';
 }

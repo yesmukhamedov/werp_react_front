@@ -66,9 +66,23 @@ class RecoCreatePage extends Component {
     console.log('reco create page: ', this.props);
     let context = this.props.match.params.context;
     let contextId = this.props.match.params.contextId;
-    let reco = Object.assign({}, this.state.reco);
-    reco['context'] = context || null;
-    reco['contextId'] = contextId || null;
+    if (context) {
+      context = context.toUpperCase();
+    }
+
+    if (context && contextId) {
+      this.props
+        .blankReco(context, contextId)
+        .then(res => {
+          this.setState({
+            ...this.state,
+            reco: res.data,
+          });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 
   handleItemChange(fieldName, index, value) {
