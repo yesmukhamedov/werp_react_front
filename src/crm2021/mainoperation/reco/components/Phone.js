@@ -103,7 +103,6 @@ class Phone extends Component {
   }
 
   handlePhoneClick() {
-    console.log('Test');
     this.setState({
       ...this.state,
       buttonLoading: true,
@@ -118,7 +117,6 @@ class Phone extends Component {
           ...this.state,
           recommender: res.data,
         });
-        console.log('handle phone click: ', this.state);
       })
       .catch(e => {
         console.log(e);
@@ -644,9 +642,9 @@ class Phone extends Component {
           {this.props.historyItems.map((item, idx) => (
             <Table.Row key={item.id}>
               <Table.Cell>{idx + 1}</Table.Cell>
-              <Table.Cell>{item.bukrsName}</Table.Cell>
+              <Table.Cell>{item.companyName}</Table.Cell>
               <Table.Cell>{item.branchName}</Table.Cell>
-              <Table.Cell>{item.dateTimeStr}</Table.Cell>
+              <Table.Cell>{item.dateTime}</Table.Cell>
               <Table.Cell>{item.callerName}</Table.Cell>
               <Table.Cell>{item.note}</Table.Cell>
               <Table.Cell>{item.resultName}</Table.Cell>

@@ -249,7 +249,6 @@ class WspaceMainPage extends Component {
     if ('visit' === context) {
       this.props.setCurrentRecommender(recommender);
       this.props.fetchVisitRecos(recommender.id);
-      console.log(recommender);
     } else {
       this.props.setCurrentRecommender(recommender);
       this.props.fetchDemoRecos(recommender.id);

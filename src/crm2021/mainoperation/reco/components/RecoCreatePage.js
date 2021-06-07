@@ -63,7 +63,6 @@ class RecoCreatePage extends Component {
   componentDidMount() {
     this.props.fetchGroupDealers();
     this.props.fetchRecoCategories();
-    console.log('reco create page: ', this.props);
     let context = this.props.match.params.context;
     let contextId = this.props.match.params.contextId;
     let reco = Object.assign({}, this.state.reco);
@@ -280,7 +279,6 @@ class RecoCreatePage extends Component {
   }
 
   isArchive = () => {
-    console.log('isArchive: ', this.state);
     return (
       this.state.reco.contextId === null ||
       this.state.reco.context === DEFAULT_CONTEXT

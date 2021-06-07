@@ -33,7 +33,6 @@ export default function WspaceRecoFilter(props) {
       value: null,
     },
   ].concat(tempDemoResults);
-  console.log('FILTERS', props.filters.docDate);
   return (
     <Segment padded>
       <Form>
