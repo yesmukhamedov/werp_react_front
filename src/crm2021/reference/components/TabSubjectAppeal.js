@@ -138,7 +138,7 @@ const TabSubjectAppeal = props => {
       <Table celled size="small">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>ID</Table.HeaderCell>
+            <Table.HeaderCell width={1}>ID</Table.HeaderCell>
             <Table.HeaderCell>Наименование</Table.HeaderCell>
             <Table.HeaderCell>English</Table.HeaderCell>
             <Table.HeaderCell>Türk</Table.HeaderCell>
@@ -148,9 +148,7 @@ const TabSubjectAppeal = props => {
         <Table.Body>
           {dataList.map((item, index) => (
             <Table.Row key={index}>
-              <Table.Cell width={1}>
-                <Input value={item.id} readOnly />
-              </Table.Cell>
+              <Table.Cell width={1}>{item.id}</Table.Cell>
               <Table.Cell width={3}>
                 <Input
                   readOnly={item.editStatus === false}

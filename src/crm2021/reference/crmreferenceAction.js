@@ -14,6 +14,26 @@ import { APPR_REJ, notSuccessed, successed } from '../../aes/aesAction';
 export const FETCH_SUBJECT_APPEAL = 'FETCH_SUBJECT_APPEAL';
 export const CREATE_SUBJECT_APPEAL = 'CREATE_SUBJECT_APPEAL';
 export const UPDATE_SUBJECT_APPEAL = 'UPDATE_SUBJECT_APPEAL';
+//
+export const FETCH_SOURCE_REQUESTS = 'FETCH_SOURCE_REQUESTS';
+export const CREATE_SOURCE_REQUESTS = 'CREATE_SOURCE_REQUESTS';
+export const UPDATE_SOURCE_REQUESTS = 'UPDATE_SOURCE_REQUESTS';
+//
+export const FETCH_SOURCE_VACANCIES = 'FETCH_SOURCE_VACANCIES';
+export const CREATE_SOURCE_VACANCIES = 'CREATE_SOURCE_VACANCIES';
+export const UPDATE_SOURCE_VACANCIES = 'UPDATE_SOURCE_VACANCIES';
+//
+export const FETCH_REASON_CONTRACT = 'FETCH_REASON_CONTRACT';
+export const CREATE_REASON_CONTRACT = 'CREATE_REASON_CONTRACT';
+export const UPDATE_REASON_CONTRACT = 'UPDATE_REASON_CONTRACT';
+//
+export const FETCH_PRESENT = 'FETCH_PRESENT';
+export const CREATE_PRESENT = 'CREATE_PRESENT';
+export const UPDATE_PRESENT = 'UPDATE_PRESENT';
+//
+export const FETCH_CATEGORY = 'FETCH_CATEGORY';
+export const CREATE_CATEGORY = 'CREATE_CATEGORY';
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -78,3 +98,293 @@ export function updateSubjectAppeal(body, getCallback) {
 }
 
 //--CRUD источник обращений
+
+//GET
+export function fetchSourceRequests(param) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`call_center_2021/ref/source`)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_SOURCE_REQUESTS,
+          payload: data,
+        });
+        dispatch(modifyLoader(false));
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//POST
+export function createSourceRequests(param, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost('call_center_2021/ref/source', { ...param })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CREATE_SOURCE_REQUESTS,
+          payload: data,
+        });
+        getCallback();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
+//PUT
+export function updateSourceRequests(body, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    doPut('call_center_2021/ref/source', { ...body })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: UPDATE_SOURCE_REQUESTS,
+          payload: [],
+        });
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+//--CRUD источник вакансий
+//GET
+export function fetchSourceVacancies(param) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`call_center_2021/ref/vacancy`)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_SOURCE_VACANCIES,
+          payload: data,
+        });
+        dispatch(modifyLoader(false));
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//POST
+export function createSourceVacancies(param, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost('call_center_2021/ref/vacancy', { ...param })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CREATE_SOURCE_VACANCIES,
+          payload: data,
+        });
+        getCallback();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
+//PUT
+export function updateSourceVacancies(body, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    doPut('call_center_2021/ref/vacancy', { ...body })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: UPDATE_SOURCE_VACANCIES,
+          payload: [],
+        });
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+} //--CRUD причина контракта
+//GET
+export function fetchReasonContract(param) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`call_center_2021/ref/reason`)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_REASON_CONTRACT,
+          payload: data,
+        });
+        dispatch(modifyLoader(false));
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//POST
+export function createReasonContract(param, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost('call_center_2021/ref/reason', { ...param })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CREATE_REASON_CONTRACT,
+          payload: data,
+        });
+        getCallback();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
+//PUT
+export function updateReasonContract(body, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    doPut('call_center_2021/ref/reason', { ...body })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: UPDATE_REASON_CONTRACT,
+          payload: [],
+        });
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+//--CRUD подарки
+//GET
+export function fetchPresent(param) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`call_center_2021/ref/present`)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_PRESENT,
+          payload: data,
+        });
+        dispatch(modifyLoader(false));
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//POST
+export function createPresent(param, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost('call_center_2021/ref/present', { ...param })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CREATE_PRESENT,
+          payload: data,
+        });
+        getCallback();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
+//PUT
+export function updatePresent(body, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    doPut('call_center_2021/ref/present', { ...body })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: UPDATE_PRESENT,
+          payload: [],
+        });
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+
+//--CRUD категорий
+//GET
+export function fetchCategory(param) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`call_center_2021/ref/category`)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_CATEGORY,
+          payload: data,
+        });
+        dispatch(modifyLoader(false));
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//POST
+export function createCategory(param, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost('call_center_2021/ref/category', { ...param })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CREATE_CATEGORY,
+          payload: data,
+        });
+        getCallback();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
+//PUT
+export function updateCategory(body, getCallback) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    doPut('call_center_2021/ref/category', { ...body })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: UPDATE_CATEGORY,
+          payload: [],
+        });
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}

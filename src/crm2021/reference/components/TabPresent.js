@@ -1,9 +1,16 @@
+// import React from 'react';
+//
+// const TabPresent = props => {
+//   const { crudData } = props;
+//   return <div></div>;
+// };
+// export default TabPresent;
 import React, { useEffect, useState } from 'react';
 import ModalCreate from './ModalCreate';
 import { Button, Divider, Input, Table } from 'semantic-ui-react';
 
 //
-const TabSourceRequests = props => {
+const TabPresent = props => {
   const { crudData, create, update, get, data = [] } = props;
   const { headerText } = crudData;
   const initialTempData = {
@@ -137,7 +144,7 @@ const TabSourceRequests = props => {
       <Table celled size="small">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>ID</Table.HeaderCell>
+            <Table.HeaderCell width={1}>ID</Table.HeaderCell>
             <Table.HeaderCell>Наименование</Table.HeaderCell>
             <Table.HeaderCell>English</Table.HeaderCell>
             <Table.HeaderCell>Türk</Table.HeaderCell>
@@ -147,9 +154,7 @@ const TabSourceRequests = props => {
         <Table.Body>
           {dataList.map((item, index) => (
             <Table.Row key={index}>
-              <Table.Cell width={1}>
-                <Table.Cell width={1}>{item.id}</Table.Cell>
-              </Table.Cell>
+              <Table.Cell width={1}>{item.id}</Table.Cell>
               <Table.Cell width={3}>
                 <Input
                   readOnly={item.editStatus === false}
@@ -179,11 +184,7 @@ const TabSourceRequests = props => {
               </Table.Cell>
               <Table.Cell width={2}>
                 {item.editStatus === true ? (
-                  <Button
-                    size="mini"
-                    color="blue"
-                    onClick={() => saveEditRow(item.id)}
-                  >
+                  <Button color="blue" onClick={() => saveEditRow(item.id)}>
                     Сохранить
                   </Button>
                 ) : (
@@ -199,4 +200,4 @@ const TabSourceRequests = props => {
     </div>
   );
 };
-export default TabSourceRequests;
+export default TabPresent;

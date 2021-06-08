@@ -4,26 +4,59 @@ import { Segment, Tab, Container } from 'semantic-ui-react';
 import TabSubjectAppeal from './components/TabSubjectAppeal';
 import TabSourceRequests from './components/TabSourceRequests';
 import TabSourceVacancies from './components/TabSourceVacancies';
-import TabCategoryHits from './components/TabCategoryHits';
+import TabCategoryHits from './components/TabCategory';
 import TabReasonsContact from './components/TabReasonsContact';
-import TabPresets from './components/TabPresets';
+import TabPresets from './components/TabPresent';
 import TabVacancies from './components/TabVacancies';
 import { injectIntl } from 'react-intl';
 import './crmreference.css';
 import {
+  // Тема обращения
   createSubjectAppeal,
   fetchSubjectAppeal,
   updateSubjectAppeal,
+  //Источники
+  createSourceRequests,
+  fetchSourceRequests,
+  updateSourceRequests,
+  //
+  createSourceVacancies,
+  fetchSourceVacancies,
+  updateSourceVacancies,
+  //
+  createReasonContract,
+  fetchReasonContract,
+  updateReasonContract,
+  //
+  createPresent,
+  fetchPresent,
+  updatePresent,
+  //Категории
+  createCategory,
+  fetchCategory,
+  updateCategory,
 } from './crmreferenceAction';
+import TabPresent from './components/TabPresent';
+import TabCategory from './components/TabCategory';
 
 const CrmReference = props => {
-  const { subjectAppealList = [] } = props;
+  const {
+    subjectAppealList = [],
+    sourceRequestsList = [],
+    sourceVacanciesList = [],
+    reasonContractList = [],
+    presentList = [],
+    categoryList = [],
+  } = props;
   const [activeTab, setActiveTab] = useState(0);
   const initialCrudData = {
     headerText: '',
     data: [],
   };
   const [crudData, setCrudData] = useState(initialCrudData);
+  const sortData = arr => {
+    return arr.sort((a, b) => (a.id > b.id ? 1 : -1));
+  };
 
   const panes = [
     {
@@ -31,7 +64,7 @@ const CrmReference = props => {
       render: () => (
         <Tab.Pane>
           <TabSubjectAppeal
-            data={subjectAppealList}
+            data={sortData(subjectAppealList)}
             crudData={crudData}
             get={props.fetchSubjectAppeal}
             create={props.createSubjectAppeal}
@@ -41,10 +74,16 @@ const CrmReference = props => {
       ),
     },
     {
-      menuItem: 'Источник обращений',
+      menuItem: 'Источники',
       render: () => (
         <Tab.Pane>
-          <TabSourceRequests crudData={crudData} />
+          <TabSourceRequests
+            data={sortData(sourceRequestsList)}
+            crudData={crudData}
+            get={props.fetchSourceRequests}
+            create={props.createSourceRequests}
+            update={props.updateSourceRequests}
+          />
         </Tab.Pane>
       ),
     },
@@ -52,7 +91,13 @@ const CrmReference = props => {
       menuItem: 'Источник вакансий',
       render: () => (
         <Tab.Pane>
-          <TabSourceVacancies crudData={crudData} />
+          <TabSourceVacancies
+            data={sortData(sourceVacanciesList)}
+            crudData={crudData}
+            get={props.fetchSourceVacancies}
+            create={props.createSourceVacancies}
+            update={props.updateSourceVacancies}
+          />
         </Tab.Pane>
       ),
     },
@@ -60,7 +105,13 @@ const CrmReference = props => {
       menuItem: 'Категория обращений',
       render: () => (
         <Tab.Pane>
-          <TabCategoryHits crudData={crudData} />
+          <TabCategory
+            data={sortData(categoryList)}
+            crudData={crudData}
+            get={props.fetchCategory}
+            create={props.createCategory}
+            update={props.updateCategory}
+          />
         </Tab.Pane>
       ),
     },
@@ -68,7 +119,13 @@ const CrmReference = props => {
       menuItem: 'Причины обращения',
       render: () => (
         <Tab.Pane>
-          <TabReasonsContact crudData={crudData} />
+          <TabReasonsContact
+            data={sortData(reasonContractList)}
+            crudData={crudData}
+            get={props.fetchReasonContract}
+            create={props.createReasonContract}
+            update={props.updateReasonContract}
+          />
         </Tab.Pane>
       ),
     },
@@ -76,7 +133,13 @@ const CrmReference = props => {
       menuItem: 'Подарки',
       render: () => (
         <Tab.Pane>
-          <TabPresets crudData={crudData} />
+          <TabPresent
+            data={sortData(presentList)}
+            crudData={crudData}
+            get={props.fetchPresent}
+            create={props.createPresent}
+            update={props.updatePresent}
+          />
         </Tab.Pane>
       ),
     },
@@ -95,19 +158,19 @@ const CrmReference = props => {
       props.fetchSubjectAppeal();
       setCrudData({ ...crudData, headerText: 'Тема обращения' });
     } else if (activeTab === 1) {
-      console.log('activeTab', activeTab);
-      setCrudData({ ...crudData, headerText: 'Источник обращений' });
+      props.fetchSourceRequests();
+      setCrudData({ ...crudData, headerText: 'Источники' });
     } else if (activeTab === 2) {
-      console.log('activeTab', activeTab);
+      props.fetchSourceVacancies();
       setCrudData({ ...crudData, headerText: 'Источник вакансий' });
     } else if (activeTab === 3) {
-      console.log('activeTab', activeTab);
+      props.fetchCategory();
       setCrudData({ ...crudData, headerText: 'Категория обращений' });
     } else if (activeTab === 4) {
-      console.log('activeTab', activeTab);
+      props.fetchReasonContract();
       setCrudData({ ...crudData, headerText: 'Причины обращения' });
     } else if (activeTab === 5) {
-      console.log('activeTab', activeTab);
+      props.fetchPresent();
       setCrudData({ ...crudData, headerText: 'Подарки' });
     } else if (activeTab === 6) {
       console.log('activeTab', activeTab);
@@ -142,11 +205,37 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     subjectAppealList: state.crmreferenceReducer.subjectAppealList,
+    sourceRequestsList: state.crmreferenceReducer.sourceRequestsList,
+    sourceVacanciesList: state.crmreferenceReducer.sourceVacanciesList,
+    reasonContractList: state.crmreferenceReducer.reasonContractList,
+    presentList: state.crmreferenceReducer.presentList,
+    categoryList: state.crmreferenceReducer.categoryList,
   };
 }
 
 export default connect(mapStateToProps, {
+  //Тема обращения
   fetchSubjectAppeal,
   createSubjectAppeal,
   updateSubjectAppeal,
+  //Источник обращения
+  createSourceRequests,
+  fetchSourceRequests,
+  updateSourceRequests,
+  //Источник обращения
+  createSourceVacancies,
+  fetchSourceVacancies,
+  updateSourceVacancies,
+  //Источник обращения
+  createReasonContract,
+  fetchReasonContract,
+  updateReasonContract,
+  //Подарки
+  createPresent,
+  fetchPresent,
+  updatePresent,
+  //Категории
+  createCategory,
+  fetchCategory,
+  updateCategory,
 })(injectIntl(CrmReference));

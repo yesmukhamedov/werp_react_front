@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Header, Icon, Table, Input } from 'semantic-ui-react';
 
-const ModalCreate = props => {
+const ModalSourceCreate = props => {
   const {
     open,
     closeCrudModal,
@@ -9,6 +9,7 @@ const ModalCreate = props => {
     saveCrudModal,
     createFormData,
     tempData = {},
+    sourceType,
   } = props;
 
   const { headerText, data = [] } = crudData;
@@ -62,4 +63,4 @@ const ModalCreate = props => {
   );
 };
 
-export default ModalCreate;
+export default ModalSourceCreate;
