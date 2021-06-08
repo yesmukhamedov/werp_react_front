@@ -115,11 +115,7 @@ export default function DemoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Crm.DateOfSale']}</Header>
               </Table.Cell>
-              <Table.Cell>
-                {demo.saleDate
-                  ? moment(demo.saleDate).format('DD.MM.YYYY')
-                  : ''}
-              </Table.Cell>
+              <Table.Cell>{demo.saleDate}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
@@ -137,9 +133,7 @@ export default function DemoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Table.createdAt']}</Header>
               </Table.Cell>
-              <Table.Cell>
-                {moment(demo.createdAt).format('DD.MM.YYYY H:mm')}
-              </Table.Cell>
+              <Table.Cell>{demo.createdAt}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

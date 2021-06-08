@@ -58,19 +58,19 @@ class DemoViewPage extends Component {
   getSourceLink(demo) {
     if (demo.visitId > 0) {
       return (
-        <Link className="button" to={`/crm/visit/view/${demo.visitId}`}>
+        <Link className="button" to={`/crm2021/visit/view/${demo.visitId}`}>
           Визит № {demo.visitId}
         </Link>
       );
     } else if (demo.recoId > 0) {
       return (
-        <Link className="button" to={`/crm/reco/view/${demo.recoId}`}>
+        <Link className="button" to={`/crm2021/reco/view/${demo.recoId}`}>
           Рекомендация № {demo.recoId}
         </Link>
       );
     } else if (demo.parentId > 0) {
       return (
-        <Link className="button" to={`/crm/demo/view/${demo.recoId}`}>
+        <Link className="button" to={`/crm2021/demo/view/${demo.recoId}`}>
           Демо № {demo.parentId}
         </Link>
       );

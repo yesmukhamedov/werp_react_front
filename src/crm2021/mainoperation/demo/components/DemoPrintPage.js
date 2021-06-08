@@ -34,6 +34,7 @@ class DemoPrintPage extends Component {
     const parentReco = Object.assign({}, demo.parentReco);
     const phones = Object.assign([], parentReco.phones);
     let recomName = '';
+    console.log('parent reco: ', demo);
     if (recommender.id) {
       recomName = recommender.clientName;
     } else {
@@ -60,9 +61,7 @@ class DemoPrintPage extends Component {
                 {messages['Crm.DemoDateTime']}
               </Header>
             </Table.Cell>
-            <Table.Cell>
-              {moment(demo.dateTime).format('DD.MM.YYYY H:mm')}
-            </Table.Cell>
+            <Table.Cell>{demo.dateTime}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
@@ -98,7 +97,7 @@ class DemoPrintPage extends Component {
                 {messages['Form.Reco.Relative']}
               </Header>
             </Table.Cell>
-            <Table.Cell>{parentReco.relative}</Table.Cell>
+            <Table.Cell>{recommender.relative}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
@@ -107,7 +106,7 @@ class DemoPrintPage extends Component {
                 {messages['Table.ClientFullName']}
               </Header>
             </Table.Cell>
-            <Table.Cell>{demo.clientName}</Table.Cell>
+            <Table.Cell>{recommender.clientName}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
