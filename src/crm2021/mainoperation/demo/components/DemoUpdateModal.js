@@ -33,7 +33,7 @@ class DemoUpdateModal extends Component {
       localDemo: {},
       errors: {
         dealerId: false,
-        resultId: false,
+        result: false,
         reasonId: false,
         dateTime: false,
         clientName: false,
@@ -57,14 +57,14 @@ class DemoUpdateModal extends Component {
   }
 
   renderReasonRow(messages) {
-    let resultId = this.state.localDemo.resultId;
+    let result = this.state.localDemo.result;
     // if (resultId) {
     //   resultId = parseInt(resultId, 10);
     // }
     if (
-      resultId === DEMO_RESULT_CANCELLED ||
-      resultId === DEMO_RESULT_DONE ||
-      resultId === DEMO_RESULT_MOVED
+      result === DEMO_RESULT_CANCELLED ||
+      result === DEMO_RESULT_DONE ||
+      result === DEMO_RESULT_MOVED
     ) {
       console.log('render reason row: ');
       return (
@@ -76,7 +76,7 @@ class DemoUpdateModal extends Component {
           fluid
           selection
           label={messages['Crm.Reason']}
-          options={getReasonsByResultId(resultId, this.props.reasons)}
+          options={getReasonsByResultId(result, this.props.reasons)}
           onChange={(e, v) => this.handleChange('reasonId', v)}
         />
       );
@@ -86,9 +86,9 @@ class DemoUpdateModal extends Component {
   }
 
   renderSaleDateRow() {
-    const resultId = this.state.localDemo.resultId;
+    const result = this.state.localDemo.result;
     const { messages, locale } = this.props.intl;
-    if (resultId === DEMO_RESULT_SOLD) {
+    if (result === DEMO_RESULT_SOLD) {
       return (
         <Form.Field error={this.state.errors.saleDate} required>
           <label>{messages['Crm.DateOfSale']}</label>
@@ -116,9 +116,9 @@ class DemoUpdateModal extends Component {
   }
 
   renderCallDateRow() {
-    const resultId = this.state.localDemo.resultId;
+    const result = this.state.localDemo.result;
     const { messages, locale } = this.props.intl;
-    if (resultId === DEMO_RESULT_MOVED || resultId === DEMO_RESULT_CANCELLED) {
+    if (result === DEMO_RESULT_MOVED || result === DEMO_RESULT_CANCELLED) {
       return (
         <Form.Field>
           <label>{messages['Crm.RecallDateTime']}</label>
@@ -179,14 +179,14 @@ class DemoUpdateModal extends Component {
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Select
-            error={this.state.errors.resultId}
-            value={localDemo.resultId}
+            error={this.state.errors.result}
+            value={localDemo.result}
             required
             fluid
             selection
             label={messages['Table.Result']}
             options={demoResultOptions(this.props.demoResults)}
-            onChange={(e, v) => this.handleChange('resultId', v)}
+            onChange={(e, v) => this.handleChange('result', v)}
           />
           {this.renderReasonRow(messages)}
           {this.renderSaleDateRow()}
@@ -272,11 +272,11 @@ class DemoUpdateModal extends Component {
         localDemo.reasonName = this.getOptionTextValue(o);
         break;
 
-      case 'resultId':
+      case 'result':
         localDemo[fieldName] = o.value;
         localDemo.resultName = this.getOptionTextValue(o);
         localDemo.reasonName = '';
-        localDemo.reasonId = 0;
+        localDemo.reasonId = null;
         break;
 
       case 'dealerId':
@@ -309,18 +309,18 @@ class DemoUpdateModal extends Component {
         errors[k] = false;
       }
     }
-    const resId = parseInt(localDemo.resultId, 10);
+    const result = localDemo.result;
     const reasonId = parseInt(localDemo.reasonId, 10);
 
     if (
-      resId === DEMO_RESULT_MOVED ||
-      resId === DEMO_RESULT_CANCELLED ||
-      resId === DEMO_RESULT_DONE
+      result === DEMO_RESULT_MOVED ||
+      result === DEMO_RESULT_CANCELLED ||
+      result === DEMO_RESULT_DONE
     ) {
-      if (reasonId === 0) {
+      if (!reasonId || reasonId === 0) {
         errors.reasonId = true;
       }
-    } else if (resId === DEMO_RESULT_SOLD) {
+    } else if (result === DEMO_RESULT_SOLD) {
       if (!localDemo.saleDate || localDemo.saleDate.length === 0) {
         errors.saleDate = true;
       }

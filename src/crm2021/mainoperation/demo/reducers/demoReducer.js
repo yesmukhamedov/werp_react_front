@@ -71,7 +71,7 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, childDemos: action.payload };
 
     case CRM_DEMO_FETCH_CHILD_RECOS:
-      return { ...state, childDemos: action.payload };
+      return { ...state, childRecos: action.payload };
 
     default:
       return state;

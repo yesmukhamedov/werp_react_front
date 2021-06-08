@@ -1,7 +1,6 @@
 import React from 'react';
 import { Table, Card, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 
 /**
  * Компонент для рендеринга дочерние демо
@@ -39,11 +38,7 @@ const ChildDemosTable = props => {
                 <Table.Cell>{idx + 1}</Table.Cell>
                 <Table.Cell>{item.branchName}</Table.Cell>
                 <Table.Cell>{item.clientName}</Table.Cell>
-                <Table.Cell>
-                  {item.dateTime
-                    ? moment(item.dateTime).format('DD.MM.YYYY HH:mm')
-                    : ''}
-                </Table.Cell>
+                <Table.Cell>{item.dateTime}</Table.Cell>
                 <Table.Cell>{item.appointer}</Table.Cell>
                 <Table.Cell>{item.resultName}</Table.Cell>
                 <Table.Cell>

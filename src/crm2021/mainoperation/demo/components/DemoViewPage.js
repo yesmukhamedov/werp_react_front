@@ -203,8 +203,8 @@ class DemoViewPage extends Component {
         <DemoUpdateModal />
         <DemoCreateModal
           parentId={this.props.demo.id}
-          visitId={0}
-          recoId={0}
+          visitId={null}
+          recoId={null}
           dealerId={this.props.demo.dealerId}
           onClose={this.onCloseCreateModal}
         />
@@ -225,7 +225,7 @@ class DemoViewPage extends Component {
               {
                 <ChildDemosTable
                   messages={messages}
-                  items={demo.childDemos || []}
+                  items={this.props.childDemos || []}
                 />
               }
             </Grid.Column>
@@ -254,6 +254,7 @@ function mapStateToProps(state) {
     demo: state.crmDemo2021.demo,
     recommender: state.crmDemo2021.recommender,
     childRecos: state.crmDemo2021.childRecos,
+    childDemos: state.crmDemo2021.childDemos,
   };
 }
 

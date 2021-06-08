@@ -298,7 +298,7 @@ export const createRecoListNew = o => {
 
 export const blankReco = (context, contextId) => {
   return dispatch =>
-    doGet(`crm2/reco/create?context=${context}&contextId=${contextId}`);
+    doGet(`crm2/reco/blank?context=${context}&contextId=${contextId}`);
 };
 
 // export const saveReco  =(body)=>{
