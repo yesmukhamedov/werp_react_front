@@ -55,7 +55,6 @@ class DemoArchivePage extends Component {
 
   loadItems(page) {
     let { searchModel } = this.state;
-    console.log('demo archive page props: ', this.props);
     let temp = [];
     temp.push('page=' + page);
     temp.push('perPage=' + this.props.meta.size);
@@ -76,6 +75,7 @@ class DemoArchivePage extends Component {
       }
     }
     let q = temp.join('&');
+    console.log('params: ', q);
     this.props.fetchDemoArchive(q);
   }
 
@@ -122,6 +122,7 @@ class DemoArchivePage extends Component {
 
   renderSearchForm(messages) {
     const { companyOptions } = this.props;
+
     return (
       <Form>
         <Form.Group widths="equal">

@@ -119,10 +119,11 @@ export const fetchDemoArchive = q => {
     doGet(`crm2/demo/archive?${q}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
+        console.log('action demos archive params: ', `crm2/demo/archive?${q}`);
         dispatch({
           type: CRM_DEMO_FETCH_ARCHIVE,
           items: data.content,
-          meta: data.meta,
+          meta: data,
         });
       })
       .catch(e => {
@@ -136,11 +137,12 @@ export const fetchSoldDemos = params => {
     dispatch(modifyLoader(true));
     doGet('crm2/demo/archive', params)
       .then(({ data }) => {
+        console.log('action sold demos: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_FETCH_ARCHIVE,
           items: data.items,
-          meta: data.meta,
+          meta: data,
         });
       })
       .catch(e => {
