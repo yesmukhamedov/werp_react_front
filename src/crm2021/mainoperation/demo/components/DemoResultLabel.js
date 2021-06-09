@@ -1,63 +1,50 @@
 import React from 'react';
 import { Label } from 'semantic-ui-react';
+import {
+  DEMO_RESULT_ARCHIVED,
+  DEMO_RESULT_CANCELLED,
+  DEMO_RESULT_DONE,
+  DEMO_RESULT_MINI_CONTRACT,
+  DEMO_RESULT_MOVED,
+  DEMO_RESULT_SOLD,
+  DEMO_RESULT_SOLD_CANCELLED,
+  DEMO_RESULT_UNKNOWN,
+} from '../../../crmUtil';
 
 /**
  * Результаты демо
  */
 
-// Результат неизвестно
-const RESULT_UNKNOWN = 0;
-
-// Демо пройден
-const RESULT_DONE = 1;
-
-// демо перенесен
-const RESULT_MOVED = 2;
-
-// демо отменена
-const RESULT_CANCELLED = 3;
-
-// Продан
-const RESULT_SOLD = 4;
-
-// Мини договор
-const RESULT_MINI_CONTRACT = 5;
-
-// Продан, но потом отменен
-const RESULT_SOLD_CANCELLED = 6;
-// Старые, архивированные
-const RESULT_ARCHIVED = 7;
-
 export default function DemoResultLabel(props) {
-  const { resultName, resultId } = props;
+  const { resultName, result } = props;
   let color = '';
-  switch (resultId) {
-    case RESULT_UNKNOWN:
+  switch (result) {
+    case DEMO_RESULT_UNKNOWN:
       color = 'grey';
       break;
 
-    case RESULT_DONE:
+    case DEMO_RESULT_DONE:
       color = 'blue';
       break;
 
-    case RESULT_MOVED:
+    case DEMO_RESULT_MOVED:
       color = 'orange';
       break;
 
-    case RESULT_CANCELLED:
-    case RESULT_SOLD_CANCELLED:
+    case DEMO_RESULT_CANCELLED:
+    case DEMO_RESULT_SOLD_CANCELLED:
       color = 'yellow';
       break;
 
-    case RESULT_SOLD:
+    case DEMO_RESULT_SOLD:
       color = 'green';
       break;
 
-    case RESULT_MINI_CONTRACT:
+    case DEMO_RESULT_MINI_CONTRACT:
       color = 'teal';
       break;
 
-    case RESULT_ARCHIVED:
+    case DEMO_RESULT_ARCHIVED:
       color = 'black';
       break;
 

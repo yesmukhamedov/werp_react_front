@@ -1,7 +1,11 @@
+export const DEMO_RESULT_UNKNOWN = 'UNKNOWN';
 export const DEMO_RESULT_DONE = 'DONE';
 export const DEMO_RESULT_MOVED = 'MOVED';
 export const DEMO_RESULT_CANCELLED = 'CANCELLED';
+export const DEMO_RESULT_SOLD_CANCELLED = 'SOLD_CANCELLED';
 export const DEMO_RESULT_SOLD = 'SOLD';
+export const DEMO_RESULT_MINI_CONTRACT = 'MINI_CONTRACT';
+export const DEMO_RESULT_ARCHIVED = 'OLD';
 
 export const DEMO_RESULT_OPTIONS = [
   {

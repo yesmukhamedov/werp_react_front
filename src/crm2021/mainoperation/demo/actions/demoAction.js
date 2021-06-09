@@ -113,17 +113,15 @@ export const fetchDemoCurrentData = () => {
   };
 };
 
-export const fetchDemoArchive = q => {
+export const fetchDemoArchive = params => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`crm2/demo/archive?${q}`)
+    doGet(`crm2/demo/archive`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        console.log('action demos archive params: ', `crm2/demo/archive?${q}`);
         dispatch({
           type: CRM_DEMO_FETCH_ARCHIVE,
-          items: data.content,
-          meta: data,
+          payload: data,
         });
       })
       .catch(e => {

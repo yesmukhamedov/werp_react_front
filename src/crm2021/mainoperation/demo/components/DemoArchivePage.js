@@ -23,6 +23,8 @@ import { demoResultOptions } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
 //import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
 
+const PER_PAGE = 20;
+
 class DemoArchivePage extends Component {
   constructor(props) {
     super(props);
@@ -32,62 +34,50 @@ class DemoArchivePage extends Component {
       callRefuseOptions: [],
       results: [],
       searchModel: {
-        id: 0,
-        clientName: '',
-        dealerId: 0,
-        appointedBy: 0,
-        resultId: '',
+        id: null,
+        clientName: null,
+        dealerId: null,
+        appointedBy: null,
+        result: null,
         dateFrom: null,
         dateTo: null,
         saleDateFr: null,
         saleDateTo: null,
-        address: '',
+        address: null,
       },
       loading: false,
     };
 
     this.renderTable = this.renderTable.bind(this);
     this.onPaginationItemClick = this.onPaginationItemClick.bind(this);
-    this.loadItems = this.loadItems.bind(this);
+    this.loadDemoPage = this.loadDemoPage.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
   }
 
-  loadItems(page) {
+  loadDemoPage(page) {
     let { searchModel } = this.state;
-    let temp = [];
-    temp.push('page=' + page);
-    temp.push('perPage=' + this.props.meta.size);
-    for (let key in searchModel) {
-      if (searchModel.hasOwnProperty(key)) {
-        if (
-          key === 'dateFrom' ||
-          key === 'dateTo' ||
-          key === 'saleDateFr' ||
-          key === 'saleDateTo'
-        ) {
-          if (searchModel[key]) {
-            temp.push(key + '=' + searchModel[key]);
-          }
-        } else {
-          temp.push(key + '=' + encodeURIComponent(searchModel[key]));
-        }
-      }
+    let brParam = {};
+    if (searchModel.branchIds && searchModel.branchIds.length > 0) {
+      brParam = { branchIds: searchModel.branchIds.join(',') };
     }
-    let q = temp.join('&');
-    console.log('params: ', q);
-    this.props.fetchDemoArchive(q);
+    const params = Object.assign({}, searchModel, brParam, {
+      page: page,
+      perPage: PER_PAGE,
+    });
+    console.log('params: ', searchModel);
+    this.props.fetchDemoArchive(params);
   }
 
-  componentWillMount() {
-    this.loadItems(0);
+  componentDidMount() {
+    this.loadDemoPage(0);
 
     this.props.fetchDemoResults();
     this.props.fetchGroupDealers();
   }
 
   onPaginationItemClick(page) {
-    this.loadItems(page);
+    this.loadDemoPage(page);
   }
 
   handleChange(fieldName, o) {
@@ -158,7 +148,7 @@ class DemoArchivePage extends Component {
             label={messages['Form.Result']}
             options={demoResultOptions(this.props.demoResults)}
             placeholder={messages['Form.Result']}
-            onChange={(e, v) => this.handleChange('resultId', v)}
+            onChange={(e, v) => this.handleChange('result', v)}
           />
 
           <Form.Input
@@ -250,7 +240,7 @@ class DemoArchivePage extends Component {
           />
           <Form.Field>
             <label>&nbsp;</label>
-            <Form.Button onClick={() => this.loadItems(0)}>
+            <Form.Button onClick={() => this.loadDemoPage(0)}>
               {messages['Form.Form']}
             </Form.Button>
           </Form.Field>
@@ -259,15 +249,15 @@ class DemoArchivePage extends Component {
     );
   }
 
-  renderTableBody(messages) {
-    if (this.props.items === undefined || this.props.items.length === 0) {
+  renderTableBody(items, messages) {
+    if (items.length === 0) {
       return (
         <Table.Row>
           <Table.Cell colSpan={8}>Нет данных</Table.Cell>
         </Table.Row>
       );
     }
-    return this.props.items.map((item, idx) => {
+    return items.map((item, idx) => {
       return (
         <Table.Row key={idx}>
           <Table.Cell>{item.id}</Table.Cell>
@@ -277,7 +267,7 @@ class DemoArchivePage extends Component {
           <Table.Cell>{item.appointer}</Table.Cell>
           <Table.Cell>
             <DemoResultLabel
-              resultId={item.resultId}
+              result={item.result}
               resultName={item.resultName}
             />
           </Table.Cell>
@@ -300,6 +290,8 @@ class DemoArchivePage extends Component {
     if (this.props.loader.active) {
       return <Loader active={true} />;
     }
+
+    const { demoPage } = this.props;
     return (
       <Table celled>
         <Table.Header>
@@ -318,18 +310,20 @@ class DemoArchivePage extends Component {
             <Table.HeaderCell />
           </Table.Row>
         </Table.Header>
-        <Table.Body>{this.renderTableBody(messages)}</Table.Body>
+        <Table.Body>
+          {this.renderTableBody(demoPage['content'] || [], messages)}
+        </Table.Body>
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan="2">
-              {messages['overallSum']}: {this.props.totalElements}
+              {messages['overallSum']}: {demoPage['totalElements'] || 0}
             </Table.HeaderCell>
             <Table.HeaderCell colSpan="6">
               <LazyPagination
                 onItemClick={this.onPaginationItemClick}
-                totalRows={this.props.totalElements}
-                currentPage={this.props.number}
-                perPage={this.props.size}
+                totalRows={demoPage['totalElements'] || 0}
+                currentPage={demoPage['number'] || 0}
+                perPage={demoPage['size'] || 0}
               />
             </Table.HeaderCell>
           </Table.Row>
@@ -364,9 +358,8 @@ class DemoArchivePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.crmDemo2021.items,
+    demoPage: state.crmDemo2021.demoPage,
     loader: state.loader,
-    meta: state.crmDemo2021.meta,
     dealers: state.crmDemo2021.dealers,
     demoResults: state.crmDemo2021.demoResults,
     companyOptions: state.userInfo.companyOptions,

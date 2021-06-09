@@ -30,6 +30,7 @@ const INITIAL_STATE = {
     number: 0,
     size: 1,
   },
+  demoPage: {},
   dealers: [],
   openDemoUpdateModal: false,
   openDemoCreateModal: false,
@@ -41,7 +42,7 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, items: action.items };
 
     case CRM_DEMO_FETCH_ARCHIVE:
-      return { ...state, items: action.items, meta: action.meta };
+      return { ...state, demoPage: action.payload };
 
     case CRM_DEMO_FETCH_RESULTS:
       return { ...state, demoResults: action.items };
