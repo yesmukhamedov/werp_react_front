@@ -217,7 +217,7 @@ export const checkPhoneNumber = (staffId, phoneNumber) => {
       type: CRM_RECO_CHECKING_PHONE_NUMBER,
       payload: phoneNumber,
     });
-    doGet(`crm2/phone/check-phone/${staffId}/${phoneNumber}`)
+    doGet(`crm2/reco/check-phone/${staffId}/${phoneNumber}`)
       .then(({ data }) => {
         console.log('check phone number: ', data);
         dispatch(modifyLoader(false));

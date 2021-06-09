@@ -66,7 +66,7 @@ export default function DemoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Crm.DemoDateTime']}</Header>
               </Table.Cell>
-              <Table.Cell>{demo.dateTime}</Table.Cell>
+              <Table.Cell>{demo.dateTimeView}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
@@ -115,7 +115,7 @@ export default function DemoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Crm.DateOfSale']}</Header>
               </Table.Cell>
-              <Table.Cell>{demo.saleDate}</Table.Cell>
+              <Table.Cell>{demo.saleDateView}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
@@ -145,19 +145,19 @@ export default function DemoViewTable(props) {
 function getSourceLink(demo, messages) {
   if (demo.visitId) {
     return (
-      <Link className="button" to={`/crm/visit/view/${demo.visitId}`}>
+      <Link className="button" to={`/crm2021/visit/view/${demo.visitId}`}>
         {messages['Crm.Visit']} № {demo.visitId}
       </Link>
     );
   } else if (demo.recoId) {
     return (
-      <Link className="button" to={`/crm/reco/view/${demo.recoId}`}>
+      <Link className="button" to={`/crm2021/reco/view/${demo.recoId}`}>
         {messages['Crm.Recommendation']} № {demo.recoId}
       </Link>
     );
   } else if (demo.parentId) {
     return (
-      <Link to={`/crm/demo/view/${demo.parentId}`}>
+      <Link to={`/crm2021/demo/view/${demo.parentId}`}>
         {messages['Crm.Demo']} № {demo.parentId}
       </Link>
     );
