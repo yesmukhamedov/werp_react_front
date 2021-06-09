@@ -100,10 +100,10 @@ class DemoUpdateModal extends Component {
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"
-            dateFormat="DD.MM.YYYY"
+            dateFormat="YYYY-MM-DD"
             selected={
               this.state.localDemo.saleDate
-                ? moment(this.state.localDemo.saleDate)
+                ? moment(this.state.localDemo.saleDate).format('YYYY-MM-DD')
                 : null
             }
             onChange={v => this.handleChange('saleDate', v)}
@@ -130,10 +130,10 @@ class DemoUpdateModal extends Component {
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"
-            dateFormat="DD.MM.YYYY"
+            dateFormat="DD.MM.YYYY HH:mm"
             selected={
               this.state.localDemo.recallDate
-                ? moment(this.state.localDemo.recallDate)
+                ? this.state.localDemo.recallDate
                 : null
             }
             onChange={v => this.handleChange('recallDate', v)}
@@ -171,8 +171,11 @@ class DemoUpdateModal extends Component {
               showYearDropdown
               showTimeSelect
               dropdownMode="select"
-              dateFormat="DD.MM.YYYY HH:mm"
-              selected={stringToMoment(localDemo.dateTime, 'DD.MM.YYYY HH:mm')}
+              dateFormat="YYYY-MM-DD hh:mm:ss"
+              selected={stringToMoment(
+                localDemo.dateTime,
+                'YYYY-MM-DD hh:mm:ss',
+              )}
               onChange={v => this.handleChange('dateTime', v)}
             />
           </Form.Field>
@@ -261,6 +264,7 @@ class DemoUpdateModal extends Component {
       case 'saleDate':
       case 'recallDate':
         if (o) {
+          console.log('o', o);
           localDemo[fieldName] = o;
         } else {
           localDemo[fieldName] = null;
@@ -370,21 +374,21 @@ class DemoUpdateModal extends Component {
     this.props.updateDemo({
       address: this.state.localDemo.address,
       appointedBy: this.state.localDemo.appointedBy,
-      callDate: '2021-06-04T11:01:32.218Z',
+      callDate: this.state.localDemo.callDate,
       clientName: this.state.localDemo.clientName,
       context: this.state.localDemo.context,
       contextId: this.state.localDemo.contextId,
-      dateTime: '2021-06-04T11:01:32.218Z',
+      dateTime: this.state.localDemo.dateTime,
       dealerId: this.state.localDemo.dealerId,
       id: this.state.localDemo.id,
       location: this.state.localDemo.location,
       note: this.state.localDemo.note,
       parentId: 0,
       reasonId: this.state.localDemo.reasonId,
-      recallDate: '2021-06-04T11:01:32.218Z',
+      recallDate: this.state.localDemo.recallDate,
       recoId: this.state.localDemo.recoId,
       result: this.state.localDemo.result,
-      saleDate: '2021-06-04',
+      saleDate: '2021-06-07',
       visitId: 0,
     });
   }

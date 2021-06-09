@@ -262,7 +262,7 @@ class Phone extends Component {
             <Table.Cell>
               <Header as="h4">{messages['Form.Reco.Relative']}</Header>
             </Table.Cell>
-            <Table.Cell>{recommender.relationName}</Table.Cell>
+            <Table.Cell>{recommender.relative}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
