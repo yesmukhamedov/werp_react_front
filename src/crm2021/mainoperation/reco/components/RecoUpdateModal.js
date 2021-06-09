@@ -92,7 +92,7 @@ class RecoUpdateModal extends Component {
         <Form.Group widths="equal">
           <Form.Select
             error={this.state.errors.categoryId}
-            value={this.state.localReco.categoryId}
+            value={this.state.localReco.category}
             required
             fluid
             selection
