@@ -1,0 +1,8 @@
+.text-wrap {
+  white-space: normal;
+}
+.space-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

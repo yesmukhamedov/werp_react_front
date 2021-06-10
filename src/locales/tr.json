@@ -917,5 +917,6 @@
   "marketingTaxiExpence": "Taxi asset creation",
   "exchangeRates": "Exchange rates",
   "currency_rates_for_today": "Currency rates for today",
-  "add_new_rate": "Add new rate"
+  "add_new_rate": "Add new rate",
+  "payment_method": "Payment method"
 }

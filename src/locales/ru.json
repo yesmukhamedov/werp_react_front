@@ -913,5 +913,6 @@
   "marketingTaxiExpence": "Создание активов на такси",
   "exchangeRates": "Курсы валют",
   "currency_rates_for_today": "Курсы валют на сегодня",
-  "add_new_rate": "Добавить новый курс"
+  "add_new_rate": "Добавить новый курс",
+  "payment_method": "Способ оплаты"
 }

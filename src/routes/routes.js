@@ -1054,6 +1054,10 @@ const AsyncFocur = Loadable({
   loader: () => import('../finance/other/focur'),
   loading: () => <LoadingPage />,
 });
+const AsyncFoac = Loadable({
+  loader: () => import('../finance/other/foac'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1201,6 +1205,7 @@ const getComponent = {
   Reception: AsyncReception,
   TaxiExpence: AsyncTaxiExpence,
   Focur: AsyncFocur,
+  Foac: AsyncFoac,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1313,6 +1318,7 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncTaxiExpence}
       />
+      <Route path="/finance/foac" exact={true} component={AsyncFoac} />
 
       {transactionRoutes.map(route => {
         return (
