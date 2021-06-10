@@ -25,6 +25,7 @@ import {
   fetchGroupDealers,
   fetchDemoResults,
   fetchReasons,
+  fetchDemoChildDemos,
 } from '../../demo/actions/demoAction';
 import ChildDemosTable from '../../demo/components/ChildDemosTable';
 import ChildRecosTable from '../../reco/components/ChildRecosTable';
@@ -50,8 +51,9 @@ class VisitViewPage extends Component {
   componentWillMount() {
     const id = parseInt(this.props.match.params.id, 10);
     this.props.fetchSingleVisit(id);
+    this.props.fetchDemoChildDemos(id);
     this.props.fetchVisitChildRecos(id);
-    // Для создания демо
+    // Для создания демоnp
     this.props.fetchGroupDealers();
     // this.props.fetchDemoResults()
     // this.props.fetchReasons()
@@ -108,7 +110,6 @@ class VisitViewPage extends Component {
   renderVisitTable(messages) {
     const { visit } = this.props;
     const parentReco = Object.assign({}, visit.parentReco);
-    console.log('render visit table: ', this.props.visit);
     return (
       <Card fluid>
         <Card.Content>
@@ -208,6 +209,7 @@ class VisitViewPage extends Component {
 
   render() {
     const { visit } = this.props;
+    console.log('visit props: ', this.props);
     const { messages } = this.props.intl;
     return (
       <Container
@@ -250,7 +252,7 @@ class VisitViewPage extends Component {
               {
                 <ChildDemosTable
                   messages={messages}
-                  items={visit.childDemos || []}
+                  items={this.props.childDemos || []}
                 />
               }
             </Grid.Column>
@@ -264,12 +266,14 @@ function mapStateToProps(state) {
   return {
     visit: state.crmVisit2021.visit,
     childRecos: state.crmVisit2021.childRecos,
+    childDemos: state.crmDemo2021.childDemos,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSingleVisit,
   fetchVisitChildRecos,
+  fetchDemoChildDemos,
   toggleDemoCreateModal,
   fetchGroupDealers,
   fetchDemoResults,
