@@ -279,7 +279,6 @@ function renderNewReco(item, messages) {
 
 function renderByDate(props) {
   const { item, messages } = props;
-  console.log('PROPS: ', props);
   let { calls } = item;
   if (!calls) {
     calls = [];

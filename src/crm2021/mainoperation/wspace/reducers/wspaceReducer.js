@@ -230,7 +230,6 @@ export default function(state = INITIAL_STATE, action) {
       }
 
       filters[key][name] = value;
-      console.log('filter reducer: ', filters);
 
       return { ...state, filters };
 

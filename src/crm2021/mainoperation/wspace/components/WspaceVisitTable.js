@@ -29,7 +29,7 @@ export default function WspaceVisitTable(props) {
           <Table.Row key={item.id}>
             <Table.Cell>{item.clientName}</Table.Cell>
             <Table.Cell>{item.address}</Table.Cell>
-            <Table.Cell>{formatDMYMS(item.docDate)}</Table.Cell>
+            <Table.Cell>{item.docDate}</Table.Cell>
             <Table.Cell>{item.visitorName}</Table.Cell>
             <Table.Cell>{item.note}</Table.Cell>
             <Table.Cell>

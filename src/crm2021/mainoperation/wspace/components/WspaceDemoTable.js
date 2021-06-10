@@ -6,6 +6,7 @@ import { renderRecoCategoryBtn } from '../../../CrmHelper';
 
 export default function WspaceDemoTable(props) {
   const { items, messages } = props;
+
   if (!items) {
     return <h3>Нет данных!</h3>;
   }
