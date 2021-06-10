@@ -160,11 +160,13 @@ class WspaceMainPage extends Component {
       }
     }
 
-    if (filters.categoryId) {
-      if (this.state.currentMenu === MENU_BY_RECO) {
-      } else if (this.state.currentMenu === MENU_BY_DATE) {
+    if (filters.category) {
+      if (
+        this.state.currentMenu === MENU_BY_RECO ||
+        this.state.currentMenu == MENU_BY_DATE
+      ) {
         out = _.filter(items, function(o) {
-          return o.category === filters.categoryId;
+          return o.category === filters.category;
         });
       }
     }

@@ -48,7 +48,7 @@ export default function WspaceRecoFilter(props) {
           <Form.Select
             width={3}
             options={cats}
-            onChange={(e, d) => props.handleFilter('categoryId', menu, d.value)}
+            onChange={(e, d) => props.handleFilter('category', menu, d.value)}
             placeholder={messages['Form.Category']}
           />
 
