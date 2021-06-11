@@ -1401,11 +1401,6 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSmvs}
       />
-      <Route
-        path="/crm2021/reference"
-        exact={true}
-        component={AsyncCrmReference}
-      />
 
       {/* dynamically generated URLs  */}
 
