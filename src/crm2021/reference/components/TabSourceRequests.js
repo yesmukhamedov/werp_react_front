@@ -10,6 +10,7 @@ const TabSourceRequests = props => {
     name: '',
     nameEn: '',
     nameTr: '',
+    type: 'APPLICATION',
   };
   const [tempData, setTempData] = useState(initialTempData);
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,7 +20,7 @@ const TabSourceRequests = props => {
     if (data.length > 0) {
       setDataList(
         data.map(el => {
-          return { ...el, editStatus: false };
+          return { ...el, editStatus: false, type: 'APPLICATION' };
         }),
       );
     }
@@ -85,7 +86,7 @@ const TabSourceRequests = props => {
 
   const saveCrudModal = () => {
     create(tempData, () => {
-      get();
+      get({ type: 'APPLICATION' });
       setModalOpen(false);
     });
   };
@@ -111,10 +112,11 @@ const TabSourceRequests = props => {
           name: el.name,
           nameEn: el.nameEn,
           nameTr: el.nameTr,
+          type: el.type,
         };
       });
     update(filterData[0], () => {
-      get();
+      get({ type: 'APPLICATION' });
     });
   };
   return (
@@ -147,9 +149,7 @@ const TabSourceRequests = props => {
         <Table.Body>
           {dataList.map((item, index) => (
             <Table.Row key={index}>
-              <Table.Cell width={1}>
-                <Table.Cell width={1}>{item.id}</Table.Cell>
-              </Table.Cell>
+              <Table.Cell width={1}>{item.id}</Table.Cell>
               <Table.Cell width={3}>
                 <Input
                   readOnly={item.editStatus === false}

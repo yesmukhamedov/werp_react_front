@@ -22,6 +22,10 @@ import {
   FETCH_CATEGORY,
   CREATE_CATEGORY,
   UPDATE_CATEGORY,
+  //
+  FETCH_VACANCY,
+  CREATE_VACANCY,
+  UPDATE_VACANCY,
 } from './crmreferenceAction';
 
 const INITIAL_STATE = {
@@ -125,6 +129,22 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         categoryPut: { ...action.data },
+      };
+    //
+    case FETCH_VACANCY:
+      return {
+        ...state,
+        vacancyList: [...action.payload],
+      };
+    case CREATE_VACANCY:
+      return {
+        ...state,
+        vacancyPost: { ...action.payload },
+      };
+    case UPDATE_VACANCY:
+      return {
+        ...state,
+        vacancyPut: { ...action.data },
       };
     default:
       return state;

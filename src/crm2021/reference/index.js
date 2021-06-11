@@ -16,13 +16,9 @@ import {
   fetchSubjectAppeal,
   updateSubjectAppeal,
   //Источники
-  createSourceRequests,
-  fetchSourceRequests,
-  updateSourceRequests,
-  //
-  createSourceVacancies,
-  fetchSourceVacancies,
-  updateSourceVacancies,
+  createSource,
+  fetchSource,
+  updateSource,
   //
   createReasonContract,
   fetchReasonContract,
@@ -35,6 +31,10 @@ import {
   createCategory,
   fetchCategory,
   updateCategory,
+  //Категории
+  createVacancy,
+  fetchVacancy,
+  updateVacancy,
 } from './crmreferenceAction';
 import TabPresent from './components/TabPresent';
 import TabCategory from './components/TabCategory';
@@ -47,6 +47,7 @@ const CrmReference = props => {
     reasonContractList = [],
     presentList = [],
     categoryList = [],
+    vacancyList = [],
   } = props;
   const [activeTab, setActiveTab] = useState(0);
   const initialCrudData = {
@@ -74,15 +75,15 @@ const CrmReference = props => {
       ),
     },
     {
-      menuItem: 'Источники',
+      menuItem: 'Источник обращений',
       render: () => (
         <Tab.Pane>
           <TabSourceRequests
             data={sortData(sourceRequestsList)}
             crudData={crudData}
-            get={props.fetchSourceRequests}
-            create={props.createSourceRequests}
-            update={props.updateSourceRequests}
+            get={props.fetchSource}
+            create={props.createSource}
+            update={props.updateSource}
           />
         </Tab.Pane>
       ),
@@ -94,9 +95,9 @@ const CrmReference = props => {
           <TabSourceVacancies
             data={sortData(sourceVacanciesList)}
             crudData={crudData}
-            get={props.fetchSourceVacancies}
-            create={props.createSourceVacancies}
-            update={props.updateSourceVacancies}
+            get={props.fetchSource}
+            create={props.createSource}
+            update={props.updateSource}
           />
         </Tab.Pane>
       ),
@@ -147,7 +148,13 @@ const CrmReference = props => {
       menuItem: 'Вакансии',
       render: () => (
         <Tab.Pane>
-          <TabVacancies crudData={crudData} />
+          <TabVacancies
+            data={sortData(vacancyList)}
+            crudData={crudData}
+            get={props.fetchVacancy}
+            create={props.createVacancy}
+            update={props.updateVacancy}
+          />
         </Tab.Pane>
       ),
     },
@@ -158,10 +165,10 @@ const CrmReference = props => {
       props.fetchSubjectAppeal();
       setCrudData({ ...crudData, headerText: 'Тема обращения' });
     } else if (activeTab === 1) {
-      props.fetchSourceRequests();
+      props.fetchSource({ type: 'APPLICATION' });
       setCrudData({ ...crudData, headerText: 'Источники' });
     } else if (activeTab === 2) {
-      props.fetchSourceVacancies();
+      props.fetchSource({ type: 'VACANCY' });
       setCrudData({ ...crudData, headerText: 'Источник вакансий' });
     } else if (activeTab === 3) {
       props.fetchCategory();
@@ -173,7 +180,7 @@ const CrmReference = props => {
       props.fetchPresent();
       setCrudData({ ...crudData, headerText: 'Подарки' });
     } else if (activeTab === 6) {
-      console.log('activeTab', activeTab);
+      props.fetchVacancy();
       setCrudData({ ...crudData, headerText: 'Вакансии' });
     }
   }, [activeTab]);
@@ -210,6 +217,7 @@ function mapStateToProps(state) {
     reasonContractList: state.crmreferenceReducer.reasonContractList,
     presentList: state.crmreferenceReducer.presentList,
     categoryList: state.crmreferenceReducer.categoryList,
+    vacancyList: state.crmreferenceReducer.vacancyList,
   };
 }
 
@@ -218,14 +226,11 @@ export default connect(mapStateToProps, {
   fetchSubjectAppeal,
   createSubjectAppeal,
   updateSubjectAppeal,
-  //Источник обращения
-  createSourceRequests,
-  fetchSourceRequests,
-  updateSourceRequests,
-  //Источник обращения
-  createSourceVacancies,
-  fetchSourceVacancies,
-  updateSourceVacancies,
+  //Источники
+  createSource,
+  fetchSource,
+  updateSource,
+
   //Источник обращения
   createReasonContract,
   fetchReasonContract,
@@ -238,4 +243,8 @@ export default connect(mapStateToProps, {
   createCategory,
   fetchCategory,
   updateCategory,
+  //Категории
+  createVacancy,
+  fetchVacancy,
+  updateVacancy,
 })(injectIntl(CrmReference));

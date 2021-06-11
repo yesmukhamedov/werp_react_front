@@ -34,6 +34,10 @@ export const UPDATE_PRESENT = 'UPDATE_PRESENT';
 export const FETCH_CATEGORY = 'FETCH_CATEGORY';
 export const CREATE_CATEGORY = 'CREATE_CATEGORY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
+//
+export const FETCH_VACANCY = 'FETCH_VACANCY';
+export const CREATE_VACANCY = 'CREATE_VACANCY';
+export const UPDATE_VACANCY = 'UPDATE_VACANCY';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -100,15 +104,26 @@ export function updateSubjectAppeal(body, getCallback) {
 //--CRUD источник обращений
 
 //GET
-export function fetchSourceRequests(param) {
+export function fetchSource(type, param) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`call_center_2021/ref/source`)
+    doGet(`call_center_2021/ref/source?`, type)
       .then(({ data }) => {
-        dispatch({
-          type: FETCH_SOURCE_REQUESTS,
-          payload: data,
-        });
+        switch (type.type) {
+          case 'APPLICATION':
+            dispatch({
+              type: FETCH_SOURCE_REQUESTS,
+              payload: data,
+            });
+            break;
+          case 'VACANCY':
+            dispatch({
+              type: FETCH_SOURCE_VACANCIES,
+              payload: data,
+            });
+            break;
+        }
+
         dispatch(modifyLoader(false));
       })
       .catch(error => {
@@ -119,7 +134,7 @@ export function fetchSourceRequests(param) {
 }
 
 //POST
-export function createSourceRequests(param, getCallback) {
+export function createSource(param, getCallback) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost('call_center_2021/ref/source', { ...param })
@@ -139,7 +154,7 @@ export function createSourceRequests(param, getCallback) {
 }
 
 //PUT
-export function updateSourceRequests(body, getCallback) {
+export function updateSource(body, getCallback) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
     doPut('call_center_2021/ref/source', { ...body })
@@ -158,13 +173,13 @@ export function updateSourceRequests(body, getCallback) {
 }
 //--CRUD источник вакансий
 //GET
-export function fetchSourceVacancies(param) {
+export function fetchVacancy(param) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`call_center_2021/ref/vacancy`)
       .then(({ data }) => {
         dispatch({
-          type: FETCH_SOURCE_VACANCIES,
+          type: FETCH_VACANCY,
           payload: data,
         });
         dispatch(modifyLoader(false));
@@ -177,14 +192,14 @@ export function fetchSourceVacancies(param) {
 }
 
 //POST
-export function createSourceVacancies(param, getCallback) {
+export function createVacancy(param, getCallback) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost('call_center_2021/ref/vacancy', { ...param })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: CREATE_SOURCE_VACANCIES,
+          type: CREATE_VACANCY,
           payload: data,
         });
         getCallback();
@@ -197,14 +212,14 @@ export function createSourceVacancies(param, getCallback) {
 }
 
 //PUT
-export function updateSourceVacancies(body, getCallback) {
+export function updateVacancy(body, getCallback) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
     doPut('call_center_2021/ref/vacancy', { ...body })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: UPDATE_SOURCE_VACANCIES,
+          type: UPDATE_VACANCY,
           payload: [],
         });
         getCallback();

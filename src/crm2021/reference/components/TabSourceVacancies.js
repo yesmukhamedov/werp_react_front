@@ -1,10 +1,3 @@
-// import React from 'react';
-//
-// const TabSourceVacancies = props => {
-//   const { crudData } = props;
-//   return <div></div>;
-// };
-// export default TabSourceVacancies;
 import React, { useEffect, useState } from 'react';
 
 import ModalCreate from './ModalCreate';
@@ -18,6 +11,7 @@ const TabSourceVacancies = props => {
     name: '',
     nameEn: '',
     nameTr: '',
+    type: 'VACANCY',
   };
   const [tempData, setTempData] = useState(initialTempData);
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,7 +21,7 @@ const TabSourceVacancies = props => {
     if (data.length > 0) {
       setDataList(
         data.map(el => {
-          return { ...el, editStatus: false };
+          return { ...el, editStatus: false, type: 'VACANCY' };
         }),
       );
     }
@@ -93,7 +87,7 @@ const TabSourceVacancies = props => {
 
   const saveCrudModal = () => {
     create(tempData, () => {
-      get();
+      get({ type: 'VACANCY' });
       setModalOpen(false);
     });
   };
@@ -119,10 +113,11 @@ const TabSourceVacancies = props => {
           name: el.name,
           nameEn: el.nameEn,
           nameTr: el.nameTr,
+          type: el.type,
         };
       });
     update(filterData[0], () => {
-      get();
+      get({ type: 'VACANCY' });
     });
   };
   return (
