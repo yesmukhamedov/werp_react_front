@@ -52,7 +52,7 @@ class RecoArchivePage extends Component {
     const { queryParams } = this.state;
     const params = {};
     for (const k in queryParams) {
-      if (k === 'branchIds' || k === 'statusIds') {
+      if (k === 'branchIds' || k === 'statuses') {
         if (
           typeof queryParams[k] !== 'undefined' &&
           queryParams[k].length > 0
@@ -119,6 +119,7 @@ class RecoArchivePage extends Component {
   handleDropdownChange(e, o) {
     const { name, value } = o;
     const queryParams = Object.assign({}, this.state.queryParams);
+    console.log('queryParams: ', this.props);
     switch (name) {
       case 'bukrs':
         queryParams[name] = value;
@@ -217,7 +218,7 @@ class RecoArchivePage extends Component {
             onChange={this.handleDropdownChange}
           />
           <Form.Select
-            name="statusIds"
+            name="statuses"
             multiple
             search
             label={messages['Form.Status']}
@@ -369,9 +370,9 @@ function mapStateToProps(state) {
   return {
     items: state.crmReco2021.items,
     meta: state.crmReco2021.meta,
-    statuses: state.crmReco.statuses,
+    statuses: state.crmReco2021.statuses,
     loader: state.loader,
-    dealers: state.crmDemo.dealers,
+    dealers: state.crmDemo2021.dealers,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
   };
