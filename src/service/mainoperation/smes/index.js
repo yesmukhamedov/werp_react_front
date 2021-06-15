@@ -157,7 +157,8 @@ const Smes = props => {
       item.serviceTypeId == 5 ||
       item.serviceTypeId == 6 ||
       item.serviceTypeId == 7 ||
-      item.serviceTypeId == 8,
+      item.serviceTypeId == 8 ||
+      item.serviceTypeId == 9,
   );
 
   //СПИСОК ПРОДАЖА ЗАПЧАСТЕЙ

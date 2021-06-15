@@ -149,7 +149,8 @@ const TabSmcsWithRequest = props => {
         item.id == '5' ||
         item.id == '6' ||
         item.id == '7' ||
-        item.id == '8',
+        item.id == '8' ||
+        item.id == '9',
     )
     .map(item => {
       return {

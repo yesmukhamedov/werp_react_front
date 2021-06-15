@@ -22,11 +22,12 @@ const Services = props => {
       Header: 'Наименование услуг',
       accessor: 'serviceTypeId',
       width: 500,
-      Cell: ({ original }) => <Input value={original.serviceTypeName} fluid />,
+      Cell: ({ original }) => <div>{original.serviceTypeName}</div>,
     },
     {
       Header: 'Сумма',
       accessor: 'sum',
+      Cell: ({ original }) => <div>{moneyFormat(original.sum)}</div>,
     },
     {
       Header: 'Валюта',
