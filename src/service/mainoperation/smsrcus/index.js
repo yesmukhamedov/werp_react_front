@@ -526,7 +526,7 @@ const Smsrcus = props => {
   return (
     <Container fluid className="containerMargin">
       <Segment className="justifySegment">
-        <h3>Поиск клиентов {blackList == true ? '(Черный список)' : ''}</h3>
+        <h3>Поиск клиентов {blackList === true ? '(Черный список)' : ''}</h3>
 
         <Checkbox
           checked={blackList}
@@ -549,6 +549,7 @@ const Smsrcus = props => {
       </Modal>
 
       {blackList == true ? (
+        //Черный список
         <Segment>
           <Form>
             <Form.Group widths="equal">
@@ -887,8 +888,6 @@ const Smsrcus = props => {
                   }
                 />
               </Form.Field>
-            </Form.Group>
-            <Form.Group widths="equal">
               <Form.Field>
                 <label>ФИО клиента</label>
                 <Input
@@ -900,6 +899,8 @@ const Smsrcus = props => {
                   }
                 />
               </Form.Field>
+            </Form.Group>
+            <Form.Group widths="equal">
               <Form.Field>
                 <label>ИИН клиента</label>
                 <Input
