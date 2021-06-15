@@ -232,11 +232,11 @@ class RecoArchivePage extends Component {
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Field>
-            <label>{messages['Form.SaleDateFrom']}</label>
+            <label>{messages['Form.DateFrom']}</label>
             <DatePicker
               autoComplete="off"
               label=""
-              placeholderText={messages['Form.SaleDateFrom']}
+              placeholderText={messages['Form.DateFrom']}
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
@@ -250,11 +250,11 @@ class RecoArchivePage extends Component {
             />
           </Form.Field>
           <Form.Field>
-            <label>{messages['Form.SaleDateTo']}</label>
+            <label>{messages['Form.DateTo']}</label>
             <DatePicker
               autoComplete="off"
               label=""
-              placeholderText={messages['Form.SaleDateTo']}
+              placeholderText={messages['Form.DateTo']}
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
@@ -338,6 +338,7 @@ class RecoArchivePage extends Component {
 
   render() {
     const { messages } = this.props.intl;
+    console.log('intl: ', this.props);
     return (
       <Container
         fluid
