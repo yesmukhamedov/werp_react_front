@@ -103,7 +103,7 @@ class DemoUpdateModal extends Component {
             dateFormat="YYYY-MM-DD"
             selected={
               this.state.localDemo.saleDate
-                ? moment(this.state.localDemo.saleDate).format('YYYY-MM-DD')
+                ? this.state.localDemo.saleDate
                 : null
             }
             onChange={v => this.handleChange('saleDate', v)}
@@ -388,7 +388,7 @@ class DemoUpdateModal extends Component {
       recallDate: this.state.localDemo.recallDate,
       recoId: this.state.localDemo.recoId,
       result: this.state.localDemo.result,
-      saleDate: '2021-06-07',
+      saleDate: this.state.localDemo.saleDate,
       visitId: 0,
     });
   }

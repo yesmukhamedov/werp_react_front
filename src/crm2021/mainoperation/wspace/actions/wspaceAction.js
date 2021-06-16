@@ -268,10 +268,10 @@ export function fetchCurrentVisits(staffId) {
   };
 }
 
-export function saveCall(callForm) {
+export function saveCall(phoneId, model) {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_SAVED_CALL, true));
-    doPost(`crm/wspace/save-call`, { ...callForm })
+    doPost(`crm2/call/${phoneId}`, { ...model })
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_SAVED_CALL, false));
         dispatch({
