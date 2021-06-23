@@ -269,6 +269,7 @@ export function fetchCurrentVisits(staffId) {
 }
 
 export function saveCall(phoneId, model) {
+  console.log('savecall: ', model);
   return function(dispatch) {
     dispatch(modifyLoader(WSP_SAVED_CALL, true));
     doPost(`crm2/call/${phoneId}`, { ...model })

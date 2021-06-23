@@ -244,7 +244,7 @@ class RecoCurrentPage extends Component {
       return row.callDate;
       // const now = moment();
       {
-        /*const docDate = moment(row.callDate);*/
+        const docDate = row.callDate;
       }
       {
         /*if (now.isAfter(docDate)) {*/

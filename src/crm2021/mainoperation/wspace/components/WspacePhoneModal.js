@@ -115,7 +115,7 @@ class WspacePhoneModal extends Component {
                 <Table.Cell>{idx + 1}</Table.Cell>
                 <Table.Cell>{item.bukrsName}</Table.Cell>
                 <Table.Cell>{item.branchName}</Table.Cell>
-                <Table.Cell>{item.dateTimeStr}</Table.Cell>
+                <Table.Cell>{item.dateTime}</Table.Cell>
                 <Table.Cell>{item.callerName}</Table.Cell>
                 <Table.Cell>{item.note}</Table.Cell>
                 <Table.Cell>
@@ -132,15 +132,15 @@ class WspacePhoneModal extends Component {
   renderCallResultDependentField = messages => {
     const { callForm } = this.state;
     const { locale } = this.props.intl;
-    if (callForm.resultId === CALL_RESULT_REFUSE) {
+    if (callForm.callResult === CALL_RESULT_REFUSE) {
       let reasonOptions = [];
       if (this.props.reasons) {
         for (let k in this.props.reasons) {
-          if (this.props.reasons[k]['typeId'] === 1) {
+          if (this.props.reasons[k]['id'] === 1) {
             reasonOptions.push({
-              key: this.props.reasons[k]['id'],
+              key: this.props.reasons[k]['type'],
               text: this.props.reasons[k]['name'],
-              value: this.props.reasons[k]['id'],
+              value: this.props.reasons[k]['type'],
             });
           }
         }
@@ -157,9 +157,9 @@ class WspacePhoneModal extends Component {
         />
       );
     } else if (
-      callForm.resultId === CALL_RESULT_RECALL ||
-      callForm.resultId === CALL_RESULT_NOT_AVAILABLE ||
-      callForm.resultId === CALL_RESULT_NO_ANSWER
+      callForm.callResult === CALL_RESULT_RECALL ||
+      callForm.callResult === CALL_RESULT_NOT_AVAILABLE ||
+      callForm.callResult === CALL_RESULT_NO_ANSWER
     ) {
       // Perzvonit'
       return (
@@ -175,7 +175,7 @@ class WspacePhoneModal extends Component {
             showTimeSelect
             dropdownMode="select"
             dateFormat="DD.MM.YYYY HH:mm"
-            selected={callForm.recallDateTime}
+            selected={callForm.callRecallDate}
             onChange={v => this.handleChange('callRecallDateTime', v)}
           />
         </Form.Field>
@@ -188,7 +188,7 @@ class WspacePhoneModal extends Component {
   renderDemoForm = () => {
     let callForm = Object.assign({}, this.state.callForm);
     const { messages, locale } = this.props.intl;
-    if (!callForm.resultId || callForm.resultId !== CALL_RESULT_DEMO) {
+    if (!callForm.callResult || callForm.callResult !== CALL_RESULT_DEMO) {
       return null;
     }
 
@@ -334,7 +334,8 @@ class WspacePhoneModal extends Component {
     callForm['phoneNumber'] = currentPhone.phoneNumber;
     callForm['context'] = 'reco';
     callForm['contextId'] = reco.id;
-    this.props.saveCall(callForm);
+    this.props.saveCall(reco.id, callForm);
+    console.log('phone modal props: ', callForm);
   };
 
   onOpen() {
@@ -445,15 +446,15 @@ class WspacePhoneModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    opened: state.crmWspaceReducer.phoneModalOpened,
-    historyItems: state.crmWspaceReducer.phoneNumberHistory,
-    reco: state.crmWspaceReducer.phoneNumberReco,
-    currentPhone: state.crmWspaceReducer.currentPhone,
-    recommender: state.crmWspaceReducer.currentRecommender,
-    callResultOptions: state.crmReco.callResultOptions,
-    reasons: state.crmDemo.reasons,
-    dealers: state.crmDemo.dealers,
-    callForm: state.crmWspaceReducer.callForm,
+    opened: state.crmWspaceReducer2021.phoneModalOpened,
+    historyItems: state.crmWspaceReducer2021.phoneNumberHistory,
+    reco: state.crmWspaceReducer2021.phoneNumberReco,
+    currentPhone: state.crmWspaceReducer2021.currentPhone,
+    recommender: state.crmWspaceReducer2021.currentRecommender,
+    callResultOptions: state.crmReco2021.callResultOptions,
+    reasons: state.crmDemo2021.reasons,
+    dealers: state.crmDemo2021.dealers,
+    callForm: state.crmWspaceReducer2021.callForm,
   };
 }
 
