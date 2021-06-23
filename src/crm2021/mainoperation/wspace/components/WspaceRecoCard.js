@@ -64,12 +64,12 @@ function renderRecosInModal(props) {
       <Card.Content>
         <Card.Header>{item.clientName}</Card.Header>
         <Card.Meta>
-          {item.callDate ? (
+          {item.callDateTime ? (
             <Popup
               style={{ float: 'left' }}
               trigger={
                 <Label color="blue" size="small">
-                  {formatDMYMS(item.callDate)}
+                  {item.callDateTime}
                 </Label>
               }
               content={messages['Crm.RecallDateTime']}
@@ -80,7 +80,7 @@ function renderRecosInModal(props) {
           )}
 
           <span style={{ float: 'right' }}>
-            {renderRecoCategoryBtn(item.categoryId, item.categoryName)}
+            {renderRecoCategoryBtn(item.category, item.categoryName)}
           </span>
         </Card.Meta>
         <Card.Description>
@@ -166,7 +166,7 @@ function renderPhonedReco(item, recoCardMenuHandle, messages) {
           </span>
 
           <span style={{ float: 'right' }}>
-            {renderRecoCategoryBtn(item.categoryId, item.categoryName)}
+            {renderRecoCategoryBtn(item.category, item.categoryName)}
           </span>
         </Card.Meta>
       </Card.Content>

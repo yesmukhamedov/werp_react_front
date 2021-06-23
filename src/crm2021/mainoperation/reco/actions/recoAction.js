@@ -219,7 +219,6 @@ export const checkPhoneNumber = (staffId, phoneNumber) => {
     });
     doGet(`crm2/reco/check-phone/${staffId}/${phoneNumber}`)
       .then(({ data }) => {
-        console.log('check phone number: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_RECO_CHECKED_PHONE_NUMBER,
@@ -284,7 +283,7 @@ export const deleteReco = recoId => {
   return dispatch => {
     doDelete(`crm2/reco/${recoId}`)
       .then(response => {
-        browserHistory.push('');
+        browserHistory.push('/crm2021/reco/current');
       })
       .catch(e => {
         handleError(e, dispatch);

@@ -52,7 +52,7 @@ class RecoArchivePage extends Component {
     const { queryParams } = this.state;
     const params = {};
     for (const k in queryParams) {
-      if (k === 'branchIds' || k === 'statusIds') {
+      if (k === 'branchIds' || k === 'statuses') {
         if (
           typeof queryParams[k] !== 'undefined' &&
           queryParams[k].length > 0
@@ -119,6 +119,7 @@ class RecoArchivePage extends Component {
   handleDropdownChange(e, o) {
     const { name, value } = o;
     const queryParams = Object.assign({}, this.state.queryParams);
+    console.log('queryParams: ', this.props);
     switch (name) {
       case 'bukrs':
         queryParams[name] = value;
@@ -217,7 +218,7 @@ class RecoArchivePage extends Component {
             onChange={this.handleDropdownChange}
           />
           <Form.Select
-            name="statusIds"
+            name="statuses"
             multiple
             search
             label={messages['Form.Status']}
@@ -231,11 +232,11 @@ class RecoArchivePage extends Component {
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Field>
-            <label>{messages['Form.SaleDateFrom']}</label>
+            <label>{messages['Form.DateFrom']}</label>
             <DatePicker
               autoComplete="off"
               label=""
-              placeholderText={messages['Form.SaleDateFrom']}
+              placeholderText={messages['Form.DateFrom']}
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
@@ -249,11 +250,11 @@ class RecoArchivePage extends Component {
             />
           </Form.Field>
           <Form.Field>
-            <label>{messages['Form.SaleDateTo']}</label>
+            <label>{messages['Form.DateTo']}</label>
             <DatePicker
               autoComplete="off"
               label=""
-              placeholderText={messages['Form.SaleDateTo']}
+              placeholderText={messages['Form.DateTo']}
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
@@ -337,6 +338,7 @@ class RecoArchivePage extends Component {
 
   render() {
     const { messages } = this.props.intl;
+    console.log('intl: ', this.props);
     return (
       <Container
         fluid
@@ -369,9 +371,9 @@ function mapStateToProps(state) {
   return {
     items: state.crmReco2021.items,
     meta: state.crmReco2021.meta,
-    statuses: state.crmReco.statuses,
+    statuses: state.crmReco2021.statuses,
     loader: state.loader,
-    dealers: state.crmDemo.dealers,
+    dealers: state.crmDemo2021.dealers,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
   };

@@ -29,7 +29,6 @@ export default function RecoCard(props) {
     errors,
     categories,
   } = props;
-  console.log(errors);
   const patternLength = phonePattern.replace(/[^0-9]+/g, '').length;
   const errorKey = `items[${index}].`;
   const phoneHasError = name => {
@@ -48,9 +47,10 @@ export default function RecoCard(props) {
     if (!phoneErrors[item[name]]) {
       return false;
     }
-
     return phoneErrors[item[name]] > 0;
   };
+
+  console.log('recoCard phone errors', errors[errorKey + 'phoneNumber1']);
 
   const isPhoneLoading = name => {
     if (!item[name]) {
