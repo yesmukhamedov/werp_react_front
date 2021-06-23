@@ -91,14 +91,14 @@ class RecoUpdateModal extends Component {
 
         <Form.Group widths="equal">
           <Form.Select
-            error={this.state.errors.categoryId}
+            error={this.state.errors.category}
             value={this.state.localReco.category}
             required
             fluid
             selection
             label={messages['Form.Category']}
-            options={getRecoCategoriesOptionsByLanguage(locale)}
-            onChange={(e, v) => this.handleChange('categoryId', v)}
+            options={RECO_CATEGORIES}
+            onChange={(e, v) => this.handleChange('category', v)}
           />
           <Form.Select
             error={this.state.errors.callerIsDealer}
@@ -138,7 +138,6 @@ class RecoUpdateModal extends Component {
   handleChange(fieldName, o) {
     const localReco = Object.assign({}, this.state.localReco);
     const errors = Object.assign({}, this.state.errors);
-    // console.log(o);
     switch (fieldName) {
       case 'clientName':
       case 'district':
@@ -152,7 +151,7 @@ class RecoUpdateModal extends Component {
         localReco[fieldName] = o.value;
         break;
 
-      case 'categoryId':
+      case 'category':
       case 'callerIsDealer':
       case 'responsibleId':
         localReco[fieldName] = o.value;
@@ -213,6 +212,7 @@ class RecoUpdateModal extends Component {
   }
 
   render() {
+    console.log('localreco: ', this.state);
     const { messages, locale } = this.props.intl;
     return (
       <Modal size="small" open={this.props.updateModalOpened}>
@@ -240,9 +240,9 @@ class RecoUpdateModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    reco: state.crmReco.reco,
-    updateModalOpened: state.crmReco.updateModalOpened,
-    dealers: state.crmDemo.dealers,
+    reco: state.crmReco2021.reco,
+    updateModalOpened: state.crmReco2021.updateModalOpened,
+    dealers: state.crmDemo2021.dealers,
   };
 }
 

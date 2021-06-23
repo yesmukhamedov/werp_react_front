@@ -78,17 +78,17 @@ export const getRecoCategoriesOptionsByLanguage = language => {
       {
         key: 1,
         text: 'Gold',
-        value: 1,
+        value: 'GOLD',
       },
       {
         key: 2,
         text: 'Silver',
-        value: 2,
+        value: 'SILVER',
       },
       {
         key: 3,
         text: 'Bronze',
-        value: 3,
+        value: 'BRONZE',
       },
     ];
   }

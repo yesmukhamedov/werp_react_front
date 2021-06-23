@@ -42,11 +42,7 @@ const ChildCallsTable = props => {
               <Table.Row key={idx}>
                 <Table.Cell>{idx + 1}</Table.Cell>
                 <Table.Cell>{item.branchName}</Table.Cell>
-                <Table.Cell>
-                  {item.dateTime
-                    ? moment(item.dateTime).format('DD.MM.YYYY HH:mm')
-                    : ''}
-                </Table.Cell>
+                <Table.Cell>{item.dateTime ? item.dateTime : ''}</Table.Cell>
                 <Table.Cell>{item.callerName}</Table.Cell>
                 <Table.Cell>{item.phoneNumber}</Table.Cell>
                 <Table.Cell>

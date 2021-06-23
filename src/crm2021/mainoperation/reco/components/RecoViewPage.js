@@ -179,7 +179,7 @@ class RecoViewPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    reco: state.crmReco.reco,
+    reco: state.crmReco2021.reco,
     loader: state.loader,
     callDetails: state.crmReco2021.callDetails,
     demoDetails: state.crmReco2021.demoDetails,

@@ -156,6 +156,7 @@ class RecoUpdateModal extends Component {
       case 'callerIsDealer':
       case 'responsibleId':
         localReco[fieldName] = o.value;
+        console.log(localReco);
         if (o.required) {
           if (fieldName === 'callerIsDealer') {
             if (o.value !== 0 && o.value !== 1) {
@@ -246,12 +247,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchSingleReco,
-    toggleRecoUpdateModal,
-    updateReco,
-    fetchGroupDealers,
-  },
-)(injectIntl(RecoUpdateModal));
+export default connect(mapStateToProps, {
+  fetchSingleReco,
+  toggleRecoUpdateModal,
+  updateReco,
+  fetchGroupDealers,
+})(injectIntl(RecoUpdateModal));

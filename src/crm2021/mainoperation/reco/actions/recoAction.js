@@ -74,7 +74,7 @@ export const fetchPhoneNumberHistory = phoneId => {
 export const updateReco = reco => {
   return dispatch => {
     doPut(`crm2/reco/`, { ...reco })
-      .then(({ data }) => {
+      .then(() => {
         dispatch({
           type: CRM_RECO_UPDATE,
           payload: reco,
