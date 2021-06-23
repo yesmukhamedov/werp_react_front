@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ModalCreate from './ModalCreate';
-import { Button, Divider, Input, Table } from 'semantic-ui-react';
+import { Button, Divider, Input, Popup, Table } from 'semantic-ui-react';
 
 //
 const TabCategory = props => {
-  const { crudData, create, update, get, data = [] } = props;
+  const { crudData, create, update, get, deleteCategory, data = [] } = props;
   const { headerText } = crudData;
   const initialTempData = {
     name: '',
@@ -22,6 +22,8 @@ const TabCategory = props => {
           return { ...el, editStatus: false };
         }),
       );
+    } else {
+      setDataList([]);
     }
   }, [data]);
 
@@ -117,6 +119,7 @@ const TabCategory = props => {
       get();
     });
   };
+
   return (
     <div>
       <ModalCreate
@@ -177,14 +180,41 @@ const TabCategory = props => {
               </Table.Cell>
               <Table.Cell width={2}>
                 {item.editStatus === true ? (
-                  <Button color="blue" onClick={() => saveEditRow(item.id)}>
-                    Сохранить
-                  </Button>
+                  <Popup
+                    content="Сохранить"
+                    trigger={
+                      <Button
+                        circular
+                        color="blue"
+                        onClick={() => saveEditRow(item.id)}
+                        icon="save"
+                      />
+                    }
+                  />
                 ) : (
-                  <Button color="yellow" onClick={() => editRow(item)}>
-                    Редактировать
-                  </Button>
+                  <Popup
+                    content="Редактировать"
+                    trigger={
+                      <Button
+                        circular
+                        color="yellow"
+                        onClick={() => editRow(item)}
+                        icon="pencil"
+                      />
+                    }
+                  />
                 )}
+                <Popup
+                  content="Удалить"
+                  trigger={
+                    <Button
+                      circular
+                      color="red"
+                      onClick={() => deleteCategory(item.id, () => get())}
+                      icon="delete"
+                    />
+                  }
+                />
               </Table.Cell>
             </Table.Row>
           ))}

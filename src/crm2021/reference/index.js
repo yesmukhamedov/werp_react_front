@@ -15,26 +15,32 @@ import {
   createSubjectAppeal,
   fetchSubjectAppeal,
   updateSubjectAppeal,
+  deleteSubjectAppeal,
   //Источники
   createSource,
   fetchSource,
   updateSource,
+  deleteSourceRequest,
   //
   createReasonContract,
   fetchReasonContract,
   updateReasonContract,
+  deleteReasonContract,
   //
   createPresent,
   fetchPresent,
   updatePresent,
+  deletePresent,
   //Категории
   createCategory,
   fetchCategory,
   updateCategory,
-  //Категории
+  deleteCategory,
+  //Вакансии
   createVacancy,
   fetchVacancy,
   updateVacancy,
+  deleteVacancy,
 } from './crmreferenceAction';
 import TabPresent from './components/TabPresent';
 import TabCategory from './components/TabCategory';
@@ -70,6 +76,7 @@ const CrmReference = props => {
             get={props.fetchSubjectAppeal}
             create={props.createSubjectAppeal}
             update={props.updateSubjectAppeal}
+            deleteSubjectAppeal={props.deleteSubjectAppeal}
           />
         </Tab.Pane>
       ),
@@ -84,6 +91,7 @@ const CrmReference = props => {
             get={props.fetchSource}
             create={props.createSource}
             update={props.updateSource}
+            deleteSourceRequest={props.deleteSourceRequest}
           />
         </Tab.Pane>
       ),
@@ -98,6 +106,7 @@ const CrmReference = props => {
             get={props.fetchSource}
             create={props.createSource}
             update={props.updateSource}
+            deleteVacancy={props.deleteSourceRequest}
           />
         </Tab.Pane>
       ),
@@ -112,6 +121,7 @@ const CrmReference = props => {
             get={props.fetchCategory}
             create={props.createCategory}
             update={props.updateCategory}
+            deleteCategory={props.deleteCategory}
           />
         </Tab.Pane>
       ),
@@ -126,6 +136,9 @@ const CrmReference = props => {
             get={props.fetchReasonContract}
             create={props.createReasonContract}
             update={props.updateReasonContract}
+            deleteReasonContract={props.deleteReasonContract}
+            optionsData={categoryList}
+            getCategory={props.fetchCategory}
           />
         </Tab.Pane>
       ),
@@ -140,6 +153,7 @@ const CrmReference = props => {
             get={props.fetchPresent}
             create={props.createPresent}
             update={props.updatePresent}
+            deletePresent={props.deletePresent}
           />
         </Tab.Pane>
       ),
@@ -154,6 +168,7 @@ const CrmReference = props => {
             get={props.fetchVacancy}
             create={props.createVacancy}
             update={props.updateVacancy}
+            deleteVacancy={props.deleteVacancy}
           />
         </Tab.Pane>
       ),
@@ -226,25 +241,32 @@ export default connect(mapStateToProps, {
   fetchSubjectAppeal,
   createSubjectAppeal,
   updateSubjectAppeal,
+  deleteSubjectAppeal,
+
   //Источники
   createSource,
   fetchSource,
   updateSource,
+  deleteSourceRequest,
 
   //Источник обращения
   createReasonContract,
   fetchReasonContract,
   updateReasonContract,
+  deleteReasonContract,
   //Подарки
   createPresent,
   fetchPresent,
   updatePresent,
+  deletePresent,
   //Категории
   createCategory,
   fetchCategory,
   updateCategory,
+  deleteCategory,
   //Категории
   createVacancy,
   fetchVacancy,
   updateVacancy,
+  deleteVacancy,
 })(injectIntl(CrmReference));

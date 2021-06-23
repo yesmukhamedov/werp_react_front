@@ -1,4 +1,4 @@
-import { doGet, doPost, doPut } from '../../utils/apiActions';
+import { doGet, doPost, doPut, doDelete } from '../../utils/apiActions';
 import {
   handleError,
   notify,
@@ -10,6 +10,7 @@ import {
   FETCH_SMECAM,
 } from '../../service/mainoperation/smecam/smecamAction';
 import { APPR_REJ, notSuccessed, successed } from '../../aes/aesAction';
+import browserHistory from '../../utils/history';
 
 export const FETCH_SUBJECT_APPEAL = 'FETCH_SUBJECT_APPEAL';
 export const CREATE_SUBJECT_APPEAL = 'CREATE_SUBJECT_APPEAL';
@@ -101,6 +102,18 @@ export function updateSubjectAppeal(body, getCallback) {
   };
 }
 
+export function deleteSubjectAppeal(id, getCallback) {
+  return function(dispatch) {
+    doDelete(`call_center_2021/ref/theme/${id}`)
+      .then(response => {
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+
 //--CRUD источник обращений
 
 //GET
@@ -171,6 +184,17 @@ export function updateSource(body, getCallback) {
       });
   };
 }
+export function deleteSourceRequest(id, getCallback) {
+  return function(dispatch) {
+    doDelete(`call_center_2021/ref/source/${id}`)
+      .then(response => {
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
 //--CRUD источник вакансий
 //GET
 export function fetchVacancy(param) {
@@ -228,7 +252,19 @@ export function updateVacancy(body, getCallback) {
         handleError(e, dispatch);
       });
   };
-} //--CRUD причина контракта
+}
+export function deleteVacancy(id, getCallback) {
+  return function(dispatch) {
+    doDelete(`call_center_2021/ref/vacancy/${id}`)
+      .then(response => {
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+//--CRUD причина контракта
 //GET
 export function fetchReasonContract(param) {
   return function(dispatch) {
@@ -279,6 +315,17 @@ export function updateReasonContract(body, getCallback) {
           type: UPDATE_REASON_CONTRACT,
           payload: [],
         });
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+export function deleteReasonContract(id, getCallback) {
+  return function(dispatch) {
+    doDelete(`call_center_2021/ref/reason/${id}`)
+      .then(response => {
         getCallback();
       })
       .catch(e => {
@@ -344,6 +391,17 @@ export function updatePresent(body, getCallback) {
       });
   };
 }
+export function deletePresent(id, getCallback) {
+  return function(dispatch) {
+    doDelete(`call_center_2021/ref/present/${id}`)
+      .then(response => {
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
 
 //--CRUD категорий
 //GET
@@ -396,6 +454,17 @@ export function updateCategory(body, getCallback) {
           type: UPDATE_CATEGORY,
           payload: [],
         });
+        getCallback();
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+export function deleteCategory(id, getCallback) {
+  return function(dispatch) {
+    doDelete(`call_center_2021/ref/category/${id}`)
+      .then(response => {
         getCallback();
       })
       .catch(e => {
