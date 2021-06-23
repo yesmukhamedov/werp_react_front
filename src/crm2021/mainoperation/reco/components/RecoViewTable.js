@@ -133,7 +133,7 @@ export default function RecoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Crm.AddInfo']}</Header>
               </Table.Cell>
-              <Table.Cell>{''}</Table.Cell>
+              <Table.Cell>{'МОЖЕТ УБРАТЬ ЭТУ СТРОЧКУ, А РАШИД?'}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
