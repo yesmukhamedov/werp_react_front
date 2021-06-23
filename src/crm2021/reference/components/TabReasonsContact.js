@@ -1,19 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import ModalCreate from './ModalCreate';
-import { Button, Divider, Input, Table } from 'semantic-ui-react';
+import {
+  Button,
+  Divider,
+  Input,
+  Table,
+  Popup,
+  Dropdown,
+} from 'semantic-ui-react';
 
 //
 const TabReasonsContact = props => {
-  const { crudData, create, update, get, data = [] } = props;
+  const {
+    crudData,
+    create,
+    update,
+    get,
+    data = [],
+    deleteReasonContract,
+    optionsData = [],
+    getCategory,
+  } = props;
   const { headerText } = crudData;
   const initialTempData = {
     name: '',
     nameEn: '',
     nameTr: '',
+    category: null,
   };
   const [tempData, setTempData] = useState(initialTempData);
   const [modalOpen, setModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
+
+  console.log('dataList', dataList);
 
   useEffect(() => {
     if (data.length > 0) {
@@ -22,6 +41,8 @@ const TabReasonsContact = props => {
           return { ...el, editStatus: false };
         }),
       );
+    } else {
+      setDataList([]);
     }
   }, [data]);
 
@@ -35,6 +56,10 @@ const TabReasonsContact = props => {
         break;
       case 'nameTr':
         setTempData({ ...tempData, nameTr: value });
+        break;
+      case 'category':
+        console.log(fieldName, value);
+        setTempData({ ...tempData, category: value });
         break;
     }
   };
@@ -80,6 +105,19 @@ const TabReasonsContact = props => {
         );
 
         break;
+      case 'category':
+        setDataList(
+          dataList.map(el =>
+            el.id === id
+              ? {
+                  ...el,
+                  category: value,
+                }
+              : el,
+          ),
+        );
+
+        break;
     }
   };
 
@@ -111,12 +149,20 @@ const TabReasonsContact = props => {
           name: el.name,
           nameEn: el.nameEn,
           nameTr: el.nameTr,
+          category: el.category,
         };
       });
     update(filterData[0], () => {
       get();
     });
   };
+  const options = optionsData.map((item, index) => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
   return (
     <div>
       <ModalCreate
@@ -125,6 +171,9 @@ const TabReasonsContact = props => {
         crudData={crudData}
         saveCrudModal={saveCrudModal}
         createFormData={createFormData}
+        trans="ReasonsContact"
+        options={options}
+        getCategory={getCategory}
       />
       <div className="tab-header">
         <h5>{headerText}</h5>
@@ -141,6 +190,7 @@ const TabReasonsContact = props => {
             <Table.HeaderCell>Наименование</Table.HeaderCell>
             <Table.HeaderCell>English</Table.HeaderCell>
             <Table.HeaderCell>Türk</Table.HeaderCell>
+            <Table.HeaderCell>Категория</Table.HeaderCell>
             <Table.HeaderCell>Редактирование</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -175,16 +225,63 @@ const TabReasonsContact = props => {
                   }
                 />
               </Table.Cell>
+              <Table.Cell width={3}>
+                {item.editStatus === false ? (
+                  <Input
+                    readOnly={item.editStatus === false}
+                    value={item.category}
+                    onChange={(e, { value }) =>
+                      updateFormData('nameTr', value, item.id)
+                    }
+                  />
+                ) : (
+                  <Dropdown
+                    selection
+                    options={options}
+                    onChange={(e, { value }) =>
+                      updateFormData('category', value, item.id)
+                    }
+                  />
+                )}
+              </Table.Cell>
+
               <Table.Cell width={2}>
                 {item.editStatus === true ? (
-                  <Button color="blue" onClick={() => saveEditRow(item.id)}>
-                    Сохранить
-                  </Button>
+                  <Popup
+                    content="Сохранить"
+                    trigger={
+                      <Button
+                        circular
+                        color="blue"
+                        onClick={() => saveEditRow(item.id)}
+                        icon="save"
+                      />
+                    }
+                  />
                 ) : (
-                  <Button color="yellow" onClick={() => editRow(item)}>
-                    Редактировать
-                  </Button>
+                  <Popup
+                    content="Редактировать"
+                    trigger={
+                      <Button
+                        circular
+                        color="yellow"
+                        onClick={() => editRow(item)}
+                        icon="pencil"
+                      />
+                    }
+                  />
                 )}
+                <Popup
+                  content="Удалить"
+                  trigger={
+                    <Button
+                      circular
+                      color="red"
+                      onClick={() => deleteReasonContract(item.id, () => get())}
+                      icon="delete"
+                    />
+                  }
+                />
               </Table.Cell>
             </Table.Row>
           ))}

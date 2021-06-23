@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import ModalCreate from './ModalCreate';
-import { Button, Divider, Input, Table } from 'semantic-ui-react';
+import { Button, Divider, Input, Popup, Table } from 'semantic-ui-react';
+import { deleteVacancy } from '../crmreferenceAction';
 
 //
 const TabSourceVacancies = props => {
-  const { crudData, create, update, get, data = [] } = props;
+  const { crudData, create, update, get, data = [], deleteVacancy } = props;
   const { headerText } = crudData;
   const initialTempData = {
     name: '',
@@ -24,6 +25,8 @@ const TabSourceVacancies = props => {
           return { ...el, editStatus: false, type: 'VACANCY' };
         }),
       );
+    } else {
+      setDataList([]);
     }
   }, [data]);
 
@@ -180,14 +183,43 @@ const TabSourceVacancies = props => {
               </Table.Cell>
               <Table.Cell width={2}>
                 {item.editStatus === true ? (
-                  <Button color="blue" onClick={() => saveEditRow(item.id)}>
-                    Сохранить
-                  </Button>
+                  <Popup
+                    content="Сохранить"
+                    trigger={
+                      <Button
+                        circular
+                        color="blue"
+                        onClick={() => saveEditRow(item.id)}
+                        icon="save"
+                      />
+                    }
+                  />
                 ) : (
-                  <Button color="yellow" onClick={() => editRow(item)}>
-                    Редактировать
-                  </Button>
+                  <Popup
+                    content="Редактировать"
+                    trigger={
+                      <Button
+                        circular
+                        color="yellow"
+                        onClick={() => editRow(item)}
+                        icon="pencil"
+                      />
+                    }
+                  />
                 )}
+                <Popup
+                  content="Удалить"
+                  trigger={
+                    <Button
+                      circular
+                      color="red"
+                      onClick={() =>
+                        deleteVacancy(item.id, () => get({ type: 'VACANCY' }))
+                      }
+                      icon="delete"
+                    />
+                  }
+                />
               </Table.Cell>
             </Table.Row>
           ))}
