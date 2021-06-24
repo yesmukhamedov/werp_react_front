@@ -32,8 +32,6 @@ const TabReasonsContact = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
 
-  console.log('dataList', dataList);
-
   useEffect(() => {
     if (data.length > 0) {
       setDataList(
