@@ -85,7 +85,6 @@ class VisitArchivePage extends Component {
                 if (filter.value === 0) {
                   return true;
                 }
-                console.log('d[filter.id]: ', typeof d[filter.id]);
                 return filter.value == d[filter.id];
               },
               Filter: ({ filter, onChange }) => (

@@ -65,7 +65,6 @@ class DemoArchivePage extends Component {
       page: page,
       perPage: PER_PAGE,
     });
-    console.log('params: ', searchModel);
     this.props.fetchDemoArchive(params);
   }
 

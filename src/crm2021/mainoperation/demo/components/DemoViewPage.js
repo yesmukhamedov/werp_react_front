@@ -182,7 +182,6 @@ class DemoViewPage extends Component {
   render() {
     const { demo } = this.props;
     const { messages } = this.props.intl;
-    // console.log('demo view props: ',this.props)
     return (
       <Container
         fluid

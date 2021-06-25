@@ -66,7 +66,6 @@ class DemoUpdateModal extends Component {
       result === DEMO_RESULT_DONE ||
       result === DEMO_RESULT_MOVED
     ) {
-      console.log('render reason row: ');
       return (
         <Form.Select
           error={this.state.errors.reasonId}
@@ -264,7 +263,6 @@ class DemoUpdateModal extends Component {
       case 'saleDate':
       case 'recallDate':
         if (o) {
-          console.log('o', o);
           localDemo[fieldName] = o;
         } else {
           localDemo[fieldName] = null;
@@ -293,7 +291,6 @@ class DemoUpdateModal extends Component {
       case 'address':
       case 'note':
         localDemo[fieldName] = o.value;
-        console.log('handle change location: ', localDemo[fieldName]);
         break;
 
       default: {

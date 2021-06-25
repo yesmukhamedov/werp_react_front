@@ -46,7 +46,6 @@ export const fetchDemo = id => {
     dispatch(modifyLoader(true));
     doGet(`crm2/demo/${id}`)
       .then(({ data }) => {
-        console.log('fetchdemo: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_FETCH_SINGLE,

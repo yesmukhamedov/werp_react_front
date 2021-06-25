@@ -34,7 +34,6 @@ class DemoPrintPage extends Component {
     const parentReco = Object.assign({}, demo.parentReco);
     const phones = Object.assign([], parentReco.phones);
     let recomName = '';
-    console.log('parent reco: ', demo);
     if (recommender.id) {
       recomName = recommender.clientName;
     } else {
