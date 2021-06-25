@@ -62,6 +62,17 @@ const Table = props => {
       },
     },
     {
+      Header: () => <div className="text-wrap">Дата и время</div>,
+      accessor: 'collectDateTime',
+      Cell: row => {
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            {row.value}
+          </div>
+        );
+      },
+    },
+    {
       Header: 'Фин. агент',
       accessor: 'collectorFIO',
       Cell: row => {
@@ -118,6 +129,18 @@ const Table = props => {
           </div>
         );
       },
+    },
+    {
+      Header: messages['waers'],
+      accessor: 'collectMoneyWears',
+      Cell: row => {
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            {row.value}
+          </div>
+        );
+      },
+      width: 70,
     },
     {
       Header: 'Банк',
