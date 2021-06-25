@@ -1,15 +1,11 @@
 import React from 'react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../utils/helpers';
-import { Button, Dropdown } from 'semantic-ui-react';
+import { Button, Popup } from 'semantic-ui-react';
 
 const Table = props => {
-  const { messages, data = [] } = props;
-  const options = [
-    { key: 'edit', icon: 'edit', text: 'Edit Post', value: 'edit' },
-    { key: 'delete', icon: 'delete', text: 'Remove Post', value: 'delete' },
-    { key: 'hide', icon: 'hide', text: 'Hide Post', value: 'hide' },
-  ];
+  const { messages, data = [], approve, reject } = props;
+
   const columns = [
     {
       Header: 'ID',
@@ -19,7 +15,20 @@ const Table = props => {
           {row.value}
         </div>
       ),
-      width: 100,
+      width: 50,
+    },
+    {
+      Header: () => (
+        <div className="text-wrap">{messages['L__CONTRACT_NUMBER']}</div>
+      ),
+      accessor: 'contractNumber',
+      Cell: row => {
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            {row.value}
+          </div>
+        );
+      },
     },
     {
       Header: messages['L__COMPANY'],
@@ -86,7 +95,9 @@ const Table = props => {
       },
     },
     {
-      Header: messages['payment_method'],
+      Header: () => (
+        <div className="text-wrap">{messages['payment_method']}</div>
+      ),
       accessor: 'paymentMethodName',
       Cell: row => {
         return (
@@ -96,35 +107,14 @@ const Table = props => {
         );
       },
     },
-    {
-      Header: messages['payment_method'],
-      accessor: 'paymentMethodName',
-      Cell: row => {
-        return (
-          <div className="text-wrap" style={{ textAlign: 'center' }}>
-            {row.value}
-          </div>
-        );
-      },
-    },
-    {
-      Header: messages['L__CONTRACT_NUMBER'],
-      accessor: 'contractNumber',
-      Cell: row => {
-        return (
-          <div className="text-wrap" style={{ textAlign: 'center' }}>
-            {row.value}
-          </div>
-        );
-      },
-    },
+
     {
       Header: messages['TBL_H__AMOUNT'],
       accessor: 'collectMoney',
       Cell: row => {
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
-            {row.value}
+            {moneyFormat(row.value)}
           </div>
         );
       },
@@ -142,19 +132,43 @@ const Table = props => {
     },
     {
       Header: 'Действие',
-      Cell: original => {
-        console.log('original', original);
+      Cell: ({ original }) => {
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
-            <Button.Group color="teal">
-              <Button>Принять</Button>
-              <Dropdown
-                className="button icon"
-                floating
-                options={options}
-                trigger={<></>}
-              />
-            </Button.Group>
+            {original.statusId === 3 ? (
+              <div style={{ backgroundColor: '#D9FFAD' }}>
+                {original.statusName}
+              </div>
+            ) : original.statusId === 4 ? (
+              <div style={{ backgroundColor: 'rgb(236 116 116)' }}>
+                {original.statusName}
+              </div>
+            ) : (
+              <div>
+                <Popup
+                  content="Принять"
+                  trigger={
+                    <Button
+                      color="green"
+                      circular
+                      icon="check"
+                      onClick={() => approve(original.id)}
+                    />
+                  }
+                />
+                <Popup
+                  content="Отклонить"
+                  trigger={
+                    <Button
+                      color="red"
+                      circular
+                      icon="x"
+                      onClick={() => reject(original)}
+                    />
+                  }
+                />
+              </div>
+            )}
           </div>
         );
       },
@@ -162,7 +176,13 @@ const Table = props => {
   ];
   return (
     <div>
-      <ReactTableWrapper data={data} columns={columns} />
+      <ReactTableWrapper
+        data={data}
+        columns={columns}
+        defaultPageSize={20}
+        pageSize={20}
+        showPagination={true}
+      />
     </div>
   );
 };

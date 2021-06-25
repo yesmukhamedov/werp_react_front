@@ -29,7 +29,7 @@ export const fetchCollectMonies = param => {
   };
 };
 
-export const postApproveCollectMoney = collect_money_id => {
+export const postApproveCollectMoney = (collect_money_id, getCallback) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(`finance/mainoperation/approve/${collect_money_id}`)
@@ -39,6 +39,7 @@ export const postApproveCollectMoney = collect_money_id => {
           type: POST_APPROVE_COLLECT_MONEY,
           data,
         });
+        getCallback();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -63,16 +64,17 @@ export const postCreateCollectMoney = param => {
       });
   };
 };
-export const postRejectCollectMoney = param => {
+export const postRejectCollectMoney = (collect_money_id, getCallback) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`finance/mainoperation/create`, param)
+    doPost(`finance/mainoperation/reject/${collect_money_id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: POST_REJECT_COLLECT_MONEY,
           data,
         });
+        getCallback();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
