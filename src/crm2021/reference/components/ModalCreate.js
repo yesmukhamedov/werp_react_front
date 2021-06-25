@@ -26,12 +26,9 @@ const ModalCreate = props => {
 
   useEffect(() => {
     if (trans === 'ReasonsContact') {
-      console.log('ReasonsContact');
       getCategory();
     }
   }, [trans]);
-
-  console.log('tempData', tempData);
 
   return (
     <Modal closeIcon open={open} onClose={closeCrudModal}>
