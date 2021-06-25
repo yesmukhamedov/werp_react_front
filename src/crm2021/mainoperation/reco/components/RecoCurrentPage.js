@@ -147,14 +147,8 @@ class RecoCurrentPage extends Component {
               id: 'callDateDiv',
               accessor: row => this.renderDocDate(row),
               filterMethod: (filter, row) => {
-                if (
-                  row[filter.id] &&
-                  typeof row[filter.id] === 'object' &&
-                  row[filter.id].props
-                ) {
-                  if (row[filter.id].props.children) {
-                    return row[filter.id].props.children.includes(filter.value);
-                  }
+                if (row[filter.id] && typeof row[filter.id] === 'string') {
+                  return row[filter.id].includes(filter.value);
                 }
 
                 return false;
@@ -181,7 +175,9 @@ class RecoCurrentPage extends Component {
                 if (filter.value === '0') {
                   return true;
                 }
-                return String(row[filter.id]) === filter.value;
+                return (
+                  row[filter.id].toLowerCase() === filter.value.toLowerCase()
+                );
               },
               Filter: ({ filter, onChange }) => (
                 <select
