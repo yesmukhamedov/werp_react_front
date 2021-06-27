@@ -1,5 +1,6 @@
 import browserHistory from '../../utils/history';
 import { clearUserAuth } from '../../actions/auth';
+import { address } from 'faker';
 
 export const NOTIFY = 'NOTIFY';
 
@@ -29,13 +30,20 @@ export function handleError(error, dispatch) {
         ),
       );
     } else if (error.response.status && error.response.status === 400) {
-      dispatch(
-        notify(
-          'error',
-          error.response.data.message,
-          errorTable[`132${language}`],
-        ),
-      );
+      if (error.response.data.messages) {
+        let message = error.response.data.messages;
+        dispatch(
+          notify('error', message.address, errorTable[`132${language}`]),
+        );
+      } else {
+        dispatch(
+          notify(
+            'error',
+            error.response.data.message,
+            errorTable[`132${language}`],
+          ),
+        );
+      }
     } else if (error.response.status && error.response.status === 401) {
       dispatch(clearUserAuth());
     } else

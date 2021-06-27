@@ -46,8 +46,8 @@ class VisitCreateModal extends Component {
           {hidePhoneInput ? (
             ''
           ) : (
-            <Form.Field>
-              <label>{messages['Form.PhoneNumber']}</label>
+            <Form.Field required>
+              <label required>{messages['Form.PhoneNumber']}</label>
               <Input
                 label={{ basic: true, content: phoneMeta.phoneCode }}
                 placeholder={phoneMeta.phonePattern}
@@ -97,6 +97,7 @@ class VisitCreateModal extends Component {
         <Form.Group widths="equal">
           <Form.Field
             control={TextArea}
+            required
             onChange={(e, o) => this.handleChange('address', o)}
             label={messages['Form.Address']}
             placeholder={messages['Form.Address']}
@@ -105,6 +106,7 @@ class VisitCreateModal extends Component {
 
           <Form.Field
             control={TextArea}
+            required
             onChange={(e, o) => this.handleChange('note', o)}
             label={messages['Table.Note']}
             placeholder={messages['Table.Note']}
@@ -214,8 +216,6 @@ class VisitCreateModal extends Component {
       phones[0] = { phoneNumber: phoneNumber };
     }
     client.phoneNumber = phoneNumber;
-    localVisit.client = client;
-
     if (this.state.isUpdate) {
       this.props.updateVisit(client, 'view');
     } else {

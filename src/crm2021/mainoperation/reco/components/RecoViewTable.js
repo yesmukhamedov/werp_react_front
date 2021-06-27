@@ -44,7 +44,7 @@ export default function RecoViewTable(props) {
               <Table.Cell>
                 <Header as="h4">{messages['Table.Date']}</Header>
               </Table.Cell>
-              <Table.Cell>{formatDMY(reco.docDate)}</Table.Cell>
+              <Table.Cell>{reco.docDate}</Table.Cell>
             </Table.Row>
 
             <Table.Row>

@@ -72,7 +72,6 @@ export function deleteVisit(id) {
 
 export function createVisit(o) {
   return function(dispatch) {
-    console.log(o);
     dispatch(modifyLoader(true));
     doPost(`crm2/visit`, o)
       .then(({ data }) => {
@@ -95,6 +94,7 @@ export function createVisit(o) {
           dispatch(modalToggle(false));
           browserHistory.push(`/crm2021/reco/view/${e.response.data.recoId}`);
         } else {
+          dispatch(modalToggle(true));
           handleError(e, dispatch);
         }
       });

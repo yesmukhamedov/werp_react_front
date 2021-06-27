@@ -10,6 +10,7 @@ import moment from 'moment';
 export default function ChildVisitsTable(props) {
   // Visits List
   const { items, messages } = props;
+  console.log('childvisit table', props);
   return (
     <Card fluid>
       <Card.Content>
