@@ -35,11 +35,7 @@ export default function ChildVisitsTable(props) {
                 <Table.Cell>{idx + 1}</Table.Cell>
                 <Table.Cell>{item.branchName}</Table.Cell>
                 <Table.Cell>{item.visitorName}</Table.Cell>
-                <Table.Cell>
-                  {item.docDate
-                    ? moment(item.docDate).format('DD.MM.YYYY')
-                    : ''}
-                </Table.Cell>
+                <Table.Cell>{item.docDate ? item.docDate : ''}</Table.Cell>
                 <Table.Cell>{item.note}</Table.Cell>
                 <Table.Cell>
                   <Link

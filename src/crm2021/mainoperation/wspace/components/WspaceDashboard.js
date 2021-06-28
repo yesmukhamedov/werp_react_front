@@ -127,7 +127,7 @@ function mapStateToProps(state) {
   return {
     dealers: state.crmDemo.dealers,
     todayCallsByResult: state.crmWspaceReducer.todayCallsByResult,
-    todayDemos: state.crmWspaceReducer.todayDemos,
+    todayDemos: state.crmWspaceReducer2021.todayDemos,
     dashboardCallMenus: state.crmWspaceReducer.dashboardCallMenus,
     kpiData: state.crmWspaceReducer.kpiData,
     loaders: state.crmWspaceReducer.loaders,

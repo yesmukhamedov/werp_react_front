@@ -158,7 +158,7 @@ export function fetchTodayCalls() {
 export function fetchTodayDemos() {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_FETCH_TODAY_DEMOS, true));
-    doGet(`crm/wspace/today-demos`)
+    doGet(`crm2/wspace/today-demos`)
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_FETCH_TODAY_DEMOS, false));
         dispatch({
