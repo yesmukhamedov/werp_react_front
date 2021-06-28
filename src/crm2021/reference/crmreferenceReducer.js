@@ -26,6 +26,7 @@ import {
   FETCH_VACANCY,
   CREATE_VACANCY,
   UPDATE_VACANCY,
+  FETCH_TASK_CATEGORIES,
 } from './crmreferenceAction';
 
 const INITIAL_STATE = {
@@ -35,6 +36,11 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     //
+    case FETCH_TASK_CATEGORIES:
+      return {
+        ...state,
+        taskCategories: [...action.payload],
+      };
     case FETCH_SUBJECT_APPEAL:
       return {
         ...state,

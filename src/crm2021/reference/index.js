@@ -41,6 +41,8 @@ import {
   fetchVacancy,
   updateVacancy,
   deleteVacancy,
+  //
+  fetchTaskCategories,
 } from './crmreferenceAction';
 import TabPresent from './components/TabPresent';
 import TabCategory from './components/TabCategory';
@@ -54,6 +56,7 @@ const CrmReference = props => {
     presentList = [],
     categoryList = [],
     vacancyList = [],
+    taskCategories = [],
   } = props;
   const [activeTab, setActiveTab] = useState(0);
   const initialCrudData = {
@@ -233,6 +236,7 @@ function mapStateToProps(state) {
     presentList: state.crmreferenceReducer.presentList,
     categoryList: state.crmreferenceReducer.categoryList,
     vacancyList: state.crmreferenceReducer.vacancyList,
+    taskCategories: state.crmreferenceReducer.taskCategories,
   };
 }
 
@@ -269,4 +273,6 @@ export default connect(mapStateToProps, {
   fetchVacancy,
   updateVacancy,
   deleteVacancy,
+  //
+  fetchTaskCategories,
 })(injectIntl(CrmReference));

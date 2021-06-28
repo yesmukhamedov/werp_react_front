@@ -39,9 +39,26 @@ export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const FETCH_VACANCY = 'FETCH_VACANCY';
 export const CREATE_VACANCY = 'CREATE_VACANCY';
 export const UPDATE_VACANCY = 'UPDATE_VACANCY';
+//
+export const FETCH_TASK_CATEGORIES = 'FETCH_TASK_CATEGORIES';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
+
+export function fetchTaskCategories(param) {
+  return function(dispatch) {
+    doGet(`call_center_2021/task/categories`)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_TASK_CATEGORIES,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
 
 //--CRUD тема обращения
 //GET
