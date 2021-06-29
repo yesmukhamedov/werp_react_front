@@ -21,6 +21,8 @@ import {
   CALL_RESULT_RECALL,
   CALL_RESULT_REFUSE,
   CALL_RESULT_UNKNOWN,
+  CALL_RESULT_NOT_AVAILABLE,
+  CALL_RESULT_NO_ANSWER,
   getLocationOptionsByLanguage,
 } from '../../../crmUtil';
 import { connect } from 'react-redux';
@@ -760,7 +762,11 @@ class Phone extends Component {
           onChange={(e, v) => this.handleChange('callReasonId', v)}
         />
       );
-    } else if (this.state.call.callResult === CALL_RESULT_RECALL) {
+    } else if (
+      this.state.call.callResult === CALL_RESULT_RECALL ||
+      this.state.call.callResult === CALL_RESULT_NO_ANSWER ||
+      this.state.call.callResult === CALL_RESULT_NOT_AVAILABLE
+    ) {
       // Perzvonit'
       return (
         <Form.Field error={this.state.errors.callRecallDate} required>
