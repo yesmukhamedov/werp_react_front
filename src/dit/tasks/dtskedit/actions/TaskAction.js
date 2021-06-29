@@ -87,11 +87,12 @@ export function fetchTaskById(taskId) {
         console.log('ERROR in task search by id', error);
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', response.data.message, 'Ошибка')),
-          );
         }
+        // else {
+        //   Promise.resolve({ error }).then(response =>
+        //     dispatch(notify('error', response.data.message, 'Ошибка')),
+        //   );
+        // }
       });
   };
 }
