@@ -106,6 +106,7 @@ export function fetchDemoRecos(demoId) {
     dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
     doGet(`crm2/wspace/demo-recommends/${demoId}`)
       .then(({ data }) => {
+        console.log('fetchdemorecos: ', data);
         dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
         dispatch({
           type: WSP_FETCH_DEMO_RECOS,

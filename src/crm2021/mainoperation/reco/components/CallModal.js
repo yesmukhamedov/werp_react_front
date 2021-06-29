@@ -328,7 +328,7 @@ class CallModal extends Component {
     if (!isValid) {
       return;
     }
-    doPost(`crm/call/${this.props.phoneId}`, { ...this.state.call })
+    doPost(`crm2/call/${this.props.phoneId}`, { ...this.state.call })
       .then(response => {
         this.close();
       })

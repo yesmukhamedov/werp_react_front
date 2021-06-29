@@ -63,7 +63,7 @@ class WspacePhoneModal extends Component {
       default:
         break;
     }
-
+    console.log('before substring: ', callForm);
     if (name.substring(0, 4) === 'demo') {
       let demoForm = Object.assign({}, callForm.demo);
       let demoName = _.camelCase(name.substring(4));
@@ -79,7 +79,7 @@ class WspacePhoneModal extends Component {
     if (name === 'callResultId' && value !== CALL_RESULT_DEMO) {
       callForm['demo'] = undefined;
     }
-
+    console.log('after substring: ', callForm);
     this.setState({
       ...this.state,
       callForm: callForm,
@@ -329,13 +329,13 @@ class WspacePhoneModal extends Component {
 
   saveCall = () => {
     let callForm = Object.assign({}, this.state.callForm);
+    console.log('phone modal props: ', callForm);
     const { currentPhone, reco } = this.props;
     //callForm['phone'] = currentPhone
     callForm['phoneNumber'] = currentPhone.phoneNumber;
     callForm['context'] = 'reco';
     callForm['contextId'] = reco.id;
     this.props.saveCall(reco.id, callForm);
-    console.log('phone modal props: ', callForm);
   };
 
   onOpen() {
@@ -377,6 +377,7 @@ class WspacePhoneModal extends Component {
       },
       { menuItem: messages['Crm.AddingCall'], render: this.renderCallForm },
     ];
+    // console.log('wspace phone modal: ',this.props)
     return (
       <Modal
         size={'fullscreen'}

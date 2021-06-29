@@ -30,7 +30,7 @@ class WspacePhone extends Component {
 
 function mapStateToProps(state) {
   return {
-    loaders: state.crmWspaceReducer.loaders,
+    loaders: state.crmWspaceReducer2021.loaders,
   };
 }
 
