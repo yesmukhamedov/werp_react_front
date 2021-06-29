@@ -44,6 +44,8 @@ class VisitArchivePage extends Component {
   }
 
   renderTable(messages) {
+    let { dealers } = this.props;
+    let trimmed = dealers.slice(1);
     return (
       <div>
         <ReactTable
@@ -82,7 +84,11 @@ class VisitArchivePage extends Component {
               minWidth: 150,
               Cell: row => row.original.visitorName,
               filterMethod: (filter, d) => {
-                if (filter.value === 0) {
+                console.log('dealers: ', this.props.dealers);
+                // if (filter.value === 0) {
+                //   return true;
+                // }
+                if (filter.value == 'Все') {
                   return true;
                 }
                 return filter.value == d[filter.id];
@@ -91,9 +97,10 @@ class VisitArchivePage extends Component {
                 <select
                   onChange={event => onChange(event.target.value)}
                   style={{ width: '100%' }}
-                  value={filter ? filter.value : 'Все'}
+                  // value={123}
                 >
-                  {this.props.dealers.map(d => (
+                  <option>{'Все'}</option>
+                  {trimmed.map(d => (
                     <option key={d.key} value={d.key}>
                       {d.text}
                     </option>
