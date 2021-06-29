@@ -9,6 +9,7 @@ import {
   DEMO_RESULT_CANCELLED,
   DEMO_RESULT_DONE,
   DEMO_RESULT_MOVED,
+  DEMO_RESULT_SOLD,
   getReasonsByResultId,
   //LOCATION_OPTIONS,
   getLocationOptionsByLanguage,
@@ -54,6 +55,32 @@ class DemoCreateModal extends Component {
   }
 
   componentWillMount() {}
+
+  renderSaleDateRow(messages, locale) {
+    let result = this.state.demo.result;
+    let saleDateLabel = messages['Crm.DateOfSale'];
+    if (result === DEMO_RESULT_SOLD) {
+      return (
+        <Form.Field required>
+          <label>{saleDateLabel}</label>
+          <DatePicker
+            label=""
+            autoComplete="off"
+            placeholderText={messages['Crm.DateOfSale']}
+            showMonthDropdown
+            showYearDropdown
+            showTimeSelect
+            dropdownMode="select"
+            dateFormat="DD.MM.YYYY HH:mm"
+            selected={
+              this.state.demo.saleDate ? moment(this.state.demo.saleDate) : null
+            }
+            onChange={v => this.handleChange('saleDate', v)}
+          />
+        </Form.Field>
+      );
+    }
+  }
 
   renderReasonRow(messages) {
     let result = this.state.demo.result;
@@ -126,6 +153,7 @@ class DemoCreateModal extends Component {
           />
           {this.renderReasonRow(messages)}
         </Form.Group>
+        <Form.Group>{this.renderSaleDateRow(messages, locale)}</Form.Group>
         <Form.Group widths="equal">
           <Form.Field
             error={this.state.errors.address}
@@ -176,6 +204,14 @@ class DemoCreateModal extends Component {
 
     switch (fieldName) {
       case 'dateTime':
+        if (o) {
+          demo[fieldName] = o;
+        } else {
+          demo[fieldName] = null;
+        }
+
+        break;
+      case 'saleDate':
         if (o) {
           demo[fieldName] = o;
         } else {
@@ -327,10 +363,10 @@ class DemoCreateModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    dealers: state.crmDemo.dealers,
+    dealers: state.crmDemo2021.dealers,
     loader: state.loader,
-    demoResults: state.crmDemo.demoResults,
-    reasons: state.crmDemo.reasons,
+    demoResults: state.crmDemo2021.demoResults,
+    reasons: state.crmDemo2021.reasons,
     openDemoCreateModal: state.crmDemo.openDemoCreateModal,
   };
 }

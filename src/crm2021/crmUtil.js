@@ -193,7 +193,6 @@ export const getLocationOptionsByLanguage = language => {
 
 export function getReasonsByResultId(resultId, reasons) {
   let reasonTypeId = 0;
-  console.log('RESULT ID: ', reasons);
   if (resultId === DEMO_RESULT_DONE) {
     reasonTypeId = 'DEMO_REFUSE';
   } else if (resultId === DEMO_RESULT_CANCELLED) {
