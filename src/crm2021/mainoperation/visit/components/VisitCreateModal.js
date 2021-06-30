@@ -13,6 +13,13 @@ import {
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
+const errorBlockCss = {
+  display: 'flex',
+  color: 'red',
+  fontSize: '11px',
+  flexDirection: 'column',
+};
+
 class VisitCreateModal extends Component {
   constructor(props) {
     super(props);
@@ -37,6 +44,7 @@ class VisitCreateModal extends Component {
     const client = Object.assign({}, localVisit.client);
     const { phoneMeta } = this.props;
     const { locale } = this.props.intl;
+    let { errors } = this.props;
     const hidePhoneInput =
       this.state.isUpdate ||
       (client && client.id && typeof client.id !== 'undefined');
@@ -54,17 +62,28 @@ class VisitCreateModal extends Component {
                 onChange={(e, v) => this.handleChange('phoneNumber', v)}
                 value={this.state.phoneNumberDisplay || ''}
               />
+              {errors.phoneNumber ? (
+                <div style={errorBlockCss}>{errors.phoneNumber}</div>
+              ) : (
+                ''
+              )}
             </Form.Field>
           )}
 
-          <Form.Field
-            value={localVisit.clientName || ''}
-            onChange={(e, v) => this.handleChange('clientName', v)}
-            control={Input}
-            required
-            label={messages['Form.ClientFullName']}
-            placeholder={messages['Form.ClientFullName']}
-          />
+          <Form.Field required>
+            <label required>{messages['Form.ClientFullName']}</label>
+            <Input
+              value={localVisit.clientName || ''}
+              onChange={(e, v) => this.handleChange('clientName', v)}
+              control={Input}
+              placeholder={messages['Form.ClientFullName']}
+            />
+            {errors.clientName ? (
+              <div style={errorBlockCss}>{errors.clientName}</div>
+            ) : (
+              ''
+            )}
+          </Form.Field>
         </Form.Group>
 
         <Form.Group widths="equal">
@@ -81,6 +100,11 @@ class VisitCreateModal extends Component {
               selected={localVisit.docDate ? moment(localVisit.docDate) : null}
               onChange={v => this.handleChange('docDate', v)}
             />
+            {errors.docDate ? (
+              <div style={errorBlockCss}>{errors.docDate}</div>
+            ) : (
+              ''
+            )}
           </Form.Field>
 
           <Form.Select
@@ -95,15 +119,20 @@ class VisitCreateModal extends Component {
         </Form.Group>
 
         <Form.Group widths="equal">
-          <Form.Field
-            control={TextArea}
-            required
-            onChange={(e, o) => this.handleChange('address', o)}
-            label={messages['Form.Address']}
-            placeholder={messages['Form.Address']}
-            value={localVisit.address || ''}
-          />
-
+          <Form.Field>
+            <label required>{messages['Form.Address']}</label>
+            <Input
+              control={TextArea}
+              onChange={(e, o) => this.handleChange('address', o)}
+              placeholder={messages['Form.Address']}
+              value={localVisit.address || ''}
+            />
+            {errors.address ? (
+              <div style={errorBlockCss}>{errors.address}</div>
+            ) : (
+              ''
+            )}
+          </Form.Field>
           <Form.Field
             control={TextArea}
             required
@@ -262,6 +291,7 @@ function mapStateToProps(state) {
     visit: state.crmVisit2021.visit,
     dealers: state.crmDemo2021.dealers,
     phoneMeta: state.crmReco2021.phoneMeta,
+    errors: state.crmVisit2021.errors,
   };
 }
 

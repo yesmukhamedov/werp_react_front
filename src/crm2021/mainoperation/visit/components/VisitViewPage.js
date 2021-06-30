@@ -209,7 +209,6 @@ class VisitViewPage extends Component {
 
   render() {
     const { visit } = this.props;
-    console.log('visit props: ', this.props);
     const { messages } = this.props.intl;
     return (
       <Container
@@ -249,12 +248,12 @@ class VisitViewPage extends Component {
                   items={this.props.childRecos || []}
                 />
               }
-              {
+              {/* {
                 <ChildDemosTable
                   messages={messages}
                   items={this.props.childDemos || []}
                 />
-              }
+              } */}
             </Grid.Column>
           </Grid.Row>
         </Grid>

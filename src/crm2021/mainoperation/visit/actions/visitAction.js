@@ -18,6 +18,7 @@ export const CRM_VISIT_MODAL_TOGGLE = 'CRM_VISIT_MODAL_TOGGLE';
 export const CRM_VISIT_SET_FOR_UPDATE = 'CRM_VISIT_SET_FOR_UPDATE';
 export const CRM_VISIT_SET_FOR_CREATE = 'CRM_VISIT_SET_FOR_CREATE';
 export const CRM_VISIT_FETCH_CHILD_RECOS = 'CRM_VISIT_FETCH_CHILD_RECOS';
+export const CRM_VISIT_ERRORS = 'CRM_VISIT_ERRORS';
 
 export function fetchArchive() {
   return function(dispatch) {
@@ -80,7 +81,7 @@ export function createVisit(o) {
           type: CRM_VISIT_CREATE,
           payload: data,
         });
-        // dispatch(fetchArchive())
+        browserHistory.push('/crm2021/visit/archive');
       })
       .catch(e => {
         dispatch(modifyLoader(false));
@@ -95,7 +96,11 @@ export function createVisit(o) {
           browserHistory.push(`/crm2021/reco/view/${e.response.data.recoId}`);
         } else {
           dispatch(modalToggle(true));
-          handleError(e, dispatch);
+          dispatch({
+            type: CRM_VISIT_ERRORS,
+            payload: e.response.data.messages,
+          });
+          // handleError(e, dispatch);
         }
       });
   };

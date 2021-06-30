@@ -50,7 +50,7 @@ export default function RecoCard(props) {
     return phoneErrors[item[name]] > 0;
   };
 
-  console.log('recoCard phone errors', errors[errorKey + 'phoneNumber1']);
+  console.log('recoCard phone errors', errors);
 
   const isPhoneLoading = name => {
     if (!item[name]) {

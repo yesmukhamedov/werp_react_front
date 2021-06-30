@@ -9,6 +9,7 @@ import {
   CRM_VISIT_CREATE,
   CRM_VISIT_MODAL_CLEAR,
   CRM_VISIT_FETCH_CHILD_RECOS,
+  CRM_VISIT_ERRORS,
 } from '../actions/visitAction';
 
 const INITIAL_STATE = {
@@ -31,6 +32,7 @@ const INITIAL_STATE = {
   phoneNumberHistory: [],
   modalOpened: false,
   childRecos: [],
+  errors: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -48,13 +50,16 @@ export default function(state = INITIAL_STATE, action) {
       };
 
     case CRM_VISIT_CREATE:
-      return { ...state, modalOpened: false };
+      return { ...state, modalOpened: false, errors: {} };
 
     case CRM_VISIT_FETCH_ARCHIVE:
       return { ...state, visits: action.payload, modalOpened: false };
 
     case CRM_VISIT_MODAL_TOGGLE:
       return { ...state, modalOpened: action.payload };
+
+    case CRM_VISIT_ERRORS:
+      return { ...state, errors: action.payload };
 
     case CRM_VISIT_SET_FOR_UPDATE:
       return { ...state, visit: action.payload };
