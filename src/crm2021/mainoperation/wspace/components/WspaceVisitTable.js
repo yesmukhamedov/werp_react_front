@@ -36,7 +36,7 @@ export default function WspaceVisitTable(props) {
               <Link
                 target="_blank"
                 className="ui icon button mini"
-                to={`/crm/visit/view/${item.id}`}
+                to={`/crm2021/visit/view/${item.id}`}
               >
                 {messages['Table.View']}
               </Link>
