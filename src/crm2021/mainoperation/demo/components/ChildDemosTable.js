@@ -44,6 +44,7 @@ const ChildDemosTable = props => {
                 <Table.Cell>
                   <Link
                     className="ui icon button"
+                    target="_blank"
                     to={`/crm2021/demo/view/${item.id}`}
                   >
                     <Icon name="eye" />

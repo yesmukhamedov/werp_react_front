@@ -314,6 +314,7 @@ class DemoCreateModal extends Component {
     doPost(`crm2/demo`, { ...this.state.demo })
       .then(response => {
         this.close();
+        this.refresh();
       })
       .catch(error => {
         console.log(error);
@@ -322,6 +323,10 @@ class DemoCreateModal extends Component {
 
   close() {
     this.props.toggleDemoCreateModal(false);
+  }
+
+  refresh() {
+    this.props.refresh();
   }
 
   resultsOptions() {

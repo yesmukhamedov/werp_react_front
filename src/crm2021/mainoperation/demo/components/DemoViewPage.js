@@ -38,6 +38,7 @@ class DemoViewPage extends Component {
       createModalOpened: false,
       showDeleteModal: false,
       showPrintPage: false,
+      pageRefresh: 0,
     };
 
     this.renderActions = this.renderActions.bind(this);
@@ -46,6 +47,7 @@ class DemoViewPage extends Component {
     this.onCloseCreateModal = this.onCloseCreateModal.bind(this);
     this.onBeforePrint = this.onBeforePrint.bind(this);
     this.onAfterPrint = this.onAfterPrint.bind(this);
+    this.refreshPage = this.refreshPage.bind(this);
   }
 
   componentWillMount() {
@@ -179,6 +181,13 @@ class DemoViewPage extends Component {
     });
   }
 
+  refreshPage() {
+    const id = parseInt(this.props.match.params.id, 10);
+    this.props.fetchDemo(id);
+    this.props.fetchDemoChildDemos(id);
+    this.props.fetchDemoChildRecos(id);
+  }
+
   render() {
     const { demo } = this.props;
     const { messages } = this.props.intl;
@@ -206,6 +215,7 @@ class DemoViewPage extends Component {
           recoId={null}
           dealerId={this.props.demo.dealerId}
           onClose={this.onCloseCreateModal}
+          refresh={this.refreshPage}
         />
         <Divider />
         <Grid>
