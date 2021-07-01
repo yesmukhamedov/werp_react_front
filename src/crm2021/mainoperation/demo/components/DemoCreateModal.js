@@ -311,6 +311,7 @@ class DemoCreateModal extends Component {
     if (!isValid) {
       return;
     }
+    console.log('demo create state: ', this.state.demo);
     doPost(`crm2/demo`, { ...this.state.demo })
       .then(response => {
         this.close();

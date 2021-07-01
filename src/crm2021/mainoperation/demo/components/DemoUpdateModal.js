@@ -58,7 +58,6 @@ class DemoUpdateModal extends Component {
 
   renderReasonRow(messages) {
     let result = this.state.localDemo.result;
-    console.log('demoupdatemodal: ', this.state);
     // if (resultId) {
     //   resultId = parseInt(resultId, 10);
     // }

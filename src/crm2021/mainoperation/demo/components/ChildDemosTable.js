@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 const ChildDemosTable = props => {
   // Список демо
   const { items, messages } = props;
+  console.log('ITEMS: ', items);
   return (
     <Card fluid>
       <Card.Content>
