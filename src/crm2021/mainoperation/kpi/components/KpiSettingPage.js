@@ -144,6 +144,7 @@ class KpiSettingPage extends Component {
 
   renderDataTable() {
     const { items } = this.props;
+    console.log('Items:  ', items);
     return (
       <div>
         <ReactTable
@@ -227,6 +228,7 @@ class KpiSettingPage extends Component {
 
   renderSearchForm() {
     let { companyOptions } = this.props;
+    console.log('kpisetting: ', this.props);
     return (
       <Form>
         <Form.Group widths="equal">

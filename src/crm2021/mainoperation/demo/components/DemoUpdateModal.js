@@ -58,6 +58,7 @@ class DemoUpdateModal extends Component {
 
   renderReasonRow(messages) {
     let result = this.state.localDemo.result;
+    console.log('demoupdatemodal: ', this.state);
     // if (resultId) {
     //   resultId = parseInt(resultId, 10);
     // }
@@ -99,12 +100,7 @@ class DemoUpdateModal extends Component {
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"
-            dateFormat="YYYY-MM-DD"
-            selected={
-              this.state.localDemo.saleDate
-                ? this.state.localDemo.saleDate
-                : null
-            }
+            selected={stringToMoment(this.state.localDemo.saleDate)}
             onChange={v => this.handleChange('saleDate', v)}
           />
         </Form.Field>

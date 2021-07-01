@@ -265,6 +265,7 @@ class KpiFormModal extends Component {
 
   saveItem() {
     let { localItem } = this.state;
+    console.log('localitem: ', localItem);
     if (
       localItem.id &&
       typeof localItem.id !== 'undefined' &&

@@ -26,7 +26,7 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CRM_KPI_FETCH_ITEMS:
-      return { ...state, items: action.items, meta: action.meta };
+      return { ...state, items: action.payload };
 
     case CRM_KPI_FORM_MODAL_TOGGLE:
       return { ...state, openKpiFormModal: action.payload };

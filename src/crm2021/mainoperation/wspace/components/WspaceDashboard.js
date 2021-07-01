@@ -125,12 +125,12 @@ class WspaceDashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    dealers: state.crmDemo.dealers,
-    todayCallsByResult: state.crmWspaceReducer.todayCallsByResult,
+    dealers: state.crmDemo2021.dealers,
+    todayCallsByResult: state.crmWspaceReducer2021.todayCallsByResult,
     todayDemos: state.crmWspaceReducer2021.todayDemos,
-    dashboardCallMenus: state.crmWspaceReducer.dashboardCallMenus,
-    kpiData: state.crmWspaceReducer.kpiData,
-    loaders: state.crmWspaceReducer.loaders,
+    dashboardCallMenus: state.crmWspaceReducer2021.dashboardCallMenus,
+    kpiData: state.crmWspaceReducer2021.kpiData,
+    loaders: state.crmWspaceReducer2021.loaders,
   };
 }
 
