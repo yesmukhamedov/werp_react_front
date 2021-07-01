@@ -165,11 +165,8 @@ class DemoUpdateModal extends Component {
               showYearDropdown
               showTimeSelect
               dropdownMode="select"
-              dateFormat="YYYY-MM-DD hh:mm:ss"
-              selected={stringToMoment(
-                localDemo.dateTime,
-                'YYYY-MM-DD hh:mm:ss',
-              )}
+              dateFormat="DD-MM-YYYY HH:mm"
+              selected={stringToMoment(localDemo.dateTime)}
               onChange={v => this.handleChange('dateTime', v)}
             />
           </Form.Field>
@@ -370,7 +367,9 @@ class DemoUpdateModal extends Component {
       clientName: this.state.localDemo.clientName,
       context: this.state.localDemo.context,
       contextId: this.state.localDemo.contextId,
-      dateTime: this.state.localDemo.dateTime,
+      dateTime: moment(this.state.localDemo.dateTime).format(
+        'YYYY-MM-DDTHH:mm:ss.sssz',
+      ),
       dealerId: this.state.localDemo.dealerId,
       id: this.state.localDemo.id,
       location: this.state.localDemo.location,

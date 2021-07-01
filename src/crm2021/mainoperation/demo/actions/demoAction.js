@@ -29,7 +29,7 @@ export const updateDemo = demo => {
   return dispatch => {
     doPut(`crm2/demo`, { ...demo })
       .then(({}) => {
-        console.log(demo);
+        console.log('Demo: ', demo);
         dispatch({
           type: CRM_DEMO_UPDATE,
           item: demo,
