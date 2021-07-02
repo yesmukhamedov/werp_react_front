@@ -48,7 +48,7 @@ function renderCallsTable(items, messages) {
         <Link
           target="_blank"
           className="ui icon button mini"
-          to={`/crm/reco/view/${row.contextId}`}
+          to={`/crm2021/reco/view/${row.contextId}`}
         >
           {messages['Table.ViewReco']}
         </Link>

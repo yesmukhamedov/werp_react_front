@@ -33,6 +33,7 @@ class DemoCreateModal extends Component {
         dealerId: props.dealerId,
         location: null,
         result: 'UNKNOWN',
+        recallDate: null,
         reasonId: null,
         saleDate: null,
       },
@@ -80,6 +81,34 @@ class DemoCreateModal extends Component {
         </Form.Field>
       );
     }
+  }
+
+  renderCallDateRow() {
+    const result = this.state.demo.result;
+    const { messages, locale } = this.props.intl;
+    if (result === DEMO_RESULT_MOVED || result === DEMO_RESULT_CANCELLED) {
+      return (
+        <Form.Field>
+          <label>{messages['Crm.RecallDateTime']}</label>
+          <DatePicker
+            autoComplete="off"
+            locale={locale}
+            label=""
+            placeholderText={messages['Crm.RecallDateTime']}
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            dateFormat="DD.MM.YYYY HH:mm"
+            selected={
+              this.state.demo.recallDate ? this.state.demo.recallDate : null
+            }
+            onChange={v => this.handleChange('recallDate', v)}
+          />
+        </Form.Field>
+      );
+    }
+
+    return null;
   }
 
   renderReasonRow(messages) {
@@ -152,6 +181,7 @@ class DemoCreateModal extends Component {
             onChange={(e, v) => this.handleChange('result', v)}
           />
           {this.renderReasonRow(messages)}
+          {this.renderCallDateRow(messages)}
         </Form.Group>
         <Form.Group>{this.renderSaleDateRow(messages, locale)}</Form.Group>
         <Form.Group widths="equal">
@@ -212,6 +242,14 @@ class DemoCreateModal extends Component {
 
         break;
       case 'saleDate':
+        if (o) {
+          demo[fieldName] = o;
+        } else {
+          demo[fieldName] = null;
+        }
+
+        break;
+      case 'recallDate':
         if (o) {
           demo[fieldName] = o;
         } else {
