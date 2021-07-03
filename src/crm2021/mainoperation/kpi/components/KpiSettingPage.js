@@ -144,7 +144,7 @@ class KpiSettingPage extends Component {
 
   renderDataTable() {
     const { items } = this.props;
-    console.log('Items:  ', items);
+
     return (
       <div>
         <ReactTable
