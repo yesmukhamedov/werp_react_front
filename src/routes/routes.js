@@ -19,21 +19,21 @@ const AsyncSettings = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncKpiReportPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/report/kpi/components/KpiReportPage' /* webpackChunkName: "KpiReportPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncKpiReportPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/report/kpi/components/KpiReportPage' /* webpackChunkName: "KpiReportPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncKpiRatingReportPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "KpiRatingReportPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncKpiRatingReportPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "KpiRatingReportPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
 const AsyncPrcltgs = Loadable({
   loader: () =>
@@ -163,93 +163,93 @@ const AsyncMessageGroupUserPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncRecoCurrentPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncRecoCurrentPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncRecoArchivePage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/reco/components/RecoArchivePage' /* webpackChunkName: "RecoArchivePage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncRecoArchivePage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/reco/components/RecoArchivePage' /* webpackChunkName: "RecoArchivePage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncDemoCurrentPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncDemoCurrentPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncDemoArchivePage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/demo/components/DemoArchivePage' /* webpackChunkName: "DemoArchivePage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncDemoArchivePage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/demo/components/DemoArchivePage' /* webpackChunkName: "DemoArchivePage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncDemoSoldDemosPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/demo/components/DemoSoldDemosPage' /* webpackChunkName: "DemoSoldDemosPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncDemoSoldDemosPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/demo/components/DemoSoldDemosPage' /* webpackChunkName: "DemoSoldDemosPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncVisitArchivePage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/visit/components/VisitArchivePage' /* webpackChunkName: "VisitArchivePage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncVisitArchivePage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/visit/components/VisitArchivePage' /* webpackChunkName: "VisitArchivePage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncRecoViewPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/reco/components/RecoViewPage' /* webpackChunkName: "RecoViewPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncRecoViewPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/reco/components/RecoViewPage' /* webpackChunkName: "RecoViewPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncRecoCreatePage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/reco/components/RecoCreatePage' /* webpackChunkName: "RecoCreatePage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncRecoCreatePage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/reco/components/RecoCreatePage' /* webpackChunkName: "RecoCreatePage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncDemoViewPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncDemoViewPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncVisitViewPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/visit/components/VisitViewPage' /* webpackChunkName: "VisitViewPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncVisitViewPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/visit/components/VisitViewPage' /* webpackChunkName: "VisitViewPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncKpiSettingPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/kpi/components/KpiSettingPage' /* webpackChunkName: "KpiSettingPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncKpiSettingPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/kpi/components/KpiSettingPage' /* webpackChunkName: "KpiSettingPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
@@ -311,13 +311,13 @@ const AsyncPyramidTreePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncCrmWspacePage = Loadable({
-  loader: () =>
-    import(
-      '../crm/mainoperation/wspace/components/WspaceMainPage' /* webpackChunkName: "WspaceMainPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncCrmWspacePage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/mainoperation/wspace/components/WspaceMainPage' /* webpackChunkName: "WspaceMainPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
 const AsyncHrTimesheetPage = Loadable({
   loader: () =>
@@ -327,13 +327,13 @@ const AsyncHrTimesheetPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncCrmReportPage = Loadable({
-  loader: () =>
-    import(
-      '../crm/report/general/components/CrmReportPage' /* webpackChunkName: "CrmReportPage" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncCrmReportPage = Loadable({
+//   loader: () =>
+//     import(
+//       '../crm/report/general/components/CrmReportPage' /* webpackChunkName: "CrmReportPage" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
 const AsyncHrReportPage = Loadable({
   loader: () =>
@@ -1033,22 +1033,22 @@ const AsyncSrqpwgs = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncNewReco = Loadable({
-  loader: () => import('../crm/mainoperation/reco/new_reco'),
-  loading: () => <LoadingPage />,
-});
-const AsyncReception = Loadable({
-  loader: () => import('../crm/reception'),
-  loading: () => <LoadingPage />,
-});
+// const AsyncNewReco = Loadable({
+//   loader: () => import('../crm/mainoperation/reco/new_reco'),
+//   loading: () => <LoadingPage />,
+// });
+// const AsyncReception = Loadable({
+//   loader: () => import('../crm/reception'),
+//   loading: () => <LoadingPage />,
+// });
 const AsyncDitUserListNew = Loadable({
   loader: () => import('../dit/dituserlistnew'),
   loading: () => <LoadingPage />,
 });
-const AsyncTaxiExpence = Loadable({
-  loader: () => import('../crm/taxiExpence'),
-  loading: () => <LoadingPage />,
-});
+// const AsyncTaxiExpence = Loadable({
+//   loader: () => import('../crm/taxiExpence'),
+//   loading: () => <LoadingPage />,
+// });
 
 const AsyncFocur = Loadable({
   loader: () => import('../finance/other/focur'),
@@ -1106,25 +1106,25 @@ const getComponent = {
   SpList: AsyncSpListPage,
   LogRepAccStaff: AsyncAccountabilityStaffListPage,
   LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
-  CrmRepKpi: AsyncKpiReportPage,
-  CrmRepKpiRtg: AsyncKpiRatingReportPage,
+  // CrmRepKpi: AsyncKpiReportPage,
+  // CrmRepKpiRtg: AsyncKpiRatingReportPage,
   Prcltgs: AsyncPrcltgs,
-  CrmRecoCurrent: AsyncRecoCurrentPage,
-  CrmRecoArchive: AsyncRecoArchivePage,
-  CrmRecoCreate: AsyncRecoCreatePage,
-  CrmDemoCurrent: AsyncDemoCurrentPage,
-  CrmDemoArchive: AsyncDemoArchivePage,
-  CrmVisitArchive: AsyncVisitArchivePage,
-  CrmRecoView: AsyncRecoViewPage,
-  CrmDemoView: AsyncDemoViewPage,
-  CrmVisitView: AsyncVisitViewPage,
-  CrmKpiSetting: AsyncKpiSettingPage,
+  // CrmRecoCurrent: AsyncRecoCurrentPage,
+  // CrmRecoArchive: AsyncRecoArchivePage,
+  // CrmRecoCreate: AsyncRecoCreatePage,
+  // CrmDemoCurrent: AsyncDemoCurrentPage,
+  // CrmDemoArchive: AsyncDemoArchivePage,
+  // CrmVisitArchive: AsyncVisitArchivePage,
+  // CrmRecoView: AsyncRecoViewPage,
+  // CrmDemoView: AsyncDemoViewPage,
+  // CrmVisitView: AsyncVisitViewPage,
+  // CrmKpiSetting: AsyncKpiSettingPage,
   OutCallTaskPage: AsyncOutCallTaskPage,
   HrStaffList: AsyncStaffListPage,
   HrStaffUpdate: AsyncStaffUpdatePage,
   HrStaffView: AsyncStaffViewPage,
   HrTimesheetPage: AsyncHrTimesheetPage,
-  CrmReportPage: AsyncCrmReportPage,
+  // CrmReportPage: AsyncCrmReportPage,
   HrReportPage: AsyncHrReportPage,
   Ccaslt: AsyncContractListPage,
   Ccasao: AsyncSOContractListPage,
@@ -1159,7 +1159,7 @@ const getComponent = {
   Lplist: AsyncLPList,
   Dmsclist: AsyncDmscList,
   DmscLstExcel: AsyncDmscListExcel,
-  CrmSoldDemos: AsyncDemoSoldDemosPage,
+  // CrmSoldDemos: AsyncDemoSoldDemosPage,
   LogInvoiceForm: AsyncLogInvoicesForm,
   LogInvoiceList: AsyncLogInvoicesList,
   Dphbk: AsyncInterPhones,
@@ -1221,10 +1221,10 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
       <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
       {/*<Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />*/}
-      <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
+      {/* <Route path="/crm/wspace" component={AsyncCrmWspacePage} /> */}
       {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
-      <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
+      {/* <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} /> */}
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
@@ -1311,13 +1311,13 @@ const generateRoutes = transactionRoutes => {
 
       {/* dynamically generated URLs  */}
 
-      <Route path="/crm/reception" exact={true} component={AsyncReception} />
+      {/* <Route path="/crm/reception" exact={true} component={AsyncReception} />
       <Route path="/crm/new_reco" component={AsyncNewReco} />
       <Route
         path="/crm/taxiExpence"
         exact={true}
-        component={AsyncTaxiExpence}
-      />
+        component={AsyncTaxiExpence} 
+      />*/}
       <Route path="/finance/foac" exact={true} component={AsyncFoac} />
 
       {transactionRoutes.map(route => {
