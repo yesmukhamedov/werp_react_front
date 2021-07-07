@@ -1201,9 +1201,9 @@ const getComponent = {
   Hrslc: AsyncHrslc,
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
-  NewReco: AsyncNewReco,
-  Reception: AsyncReception,
-  TaxiExpence: AsyncTaxiExpence,
+  // NewReco: AsyncNewReco,
+  // Reception: AsyncReception,
+  // TaxiExpence: AsyncTaxiExpence,
   Focur: AsyncFocur,
   Foac: AsyncFoac,
 };
