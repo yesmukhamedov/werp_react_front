@@ -920,5 +920,13 @@
   "exchangeRates": "Exchange rates",
   "currency_rates_for_today": "Currency rates for today",
   "add_new_rate": "Add new rate",
-  "payment_method": "Payment method"
+  "payment_method": "Payment method",
+  "general_financial_report": "General financial report",
+  "report_by_branches": "Report by branches",
+  "report_by_categories": "Report by categories",
+  "service_center": "Service center",
+  "plan_by_program": "Plan by program",
+  "total_arrival_for_the_current_month": "Total arrival for the current month",
+  "salary_of_master": "Salary of master",
+  "salary_of_operator": "Salary of operator"
 }

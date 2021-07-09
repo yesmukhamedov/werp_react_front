@@ -914,5 +914,13 @@
   "exchangeRates": "Курсы валют",
   "currency_rates_for_today": "Курсы валют на сегодня",
   "add_new_rate": "Добавить новый курс",
-  "payment_method": "Способ оплаты"
+  "payment_method": "Способ оплаты",
+  "general_financial_report": "Общий финансовый отчет",
+  "report_by_branches": "Отчет по филиалам",
+  "report_by_categories": "Отчет по категории",
+  "service_center": "Сервис центр",
+  "plan_by_program": "План по программе",
+  "total_arrival_for_the_current_month": "Всего приход за текущий месяц",
+  "salary_of_master": "Оклад мастера",
+  "salary_of_operator": "Оклад оператора"
 }

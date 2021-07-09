@@ -70,6 +70,7 @@ import hrslcReducer from '../hr/report/hrslc/hrslcReducer';
 import srtbbReducer from '../service/report/srtbb/srtbbReducer';
 import srqpwgsReducer from '../service/report/srqpwgs/srqpwgsReducer';
 import foacReducer from '../finance/other/foac/foacReducer';
+import srgfr from '../service/report/srgfr/srgfrReducer';
 
 const appReducer = combineReducers({
   form,
@@ -142,6 +143,7 @@ const appReducer = combineReducers({
   srtbbReducer: srtbbReducer,
   srqpwgsReducer: srqpwgsReducer,
   foacReducer: foacReducer,
+  srgfrReducer: srgfr,
 });
 
 const rootReducer = (state, action) => {

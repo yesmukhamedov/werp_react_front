@@ -1058,6 +1058,11 @@ const AsyncFoac = Loadable({
   loader: () => import('../finance/other/foac'),
   loading: () => <LoadingPage />,
 });
+const AsyncSrgfr = Loadable({
+  loader: () =>
+    import('../service/report/srgfr') /* webpackChunkName: "srgfr" */,
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1206,6 +1211,7 @@ const getComponent = {
   TaxiExpence: AsyncTaxiExpence,
   Focur: AsyncFocur,
   Foac: AsyncFoac,
+  Srgfr: AsyncSrgfr,
 };
 
 const generateRoutes = transactionRoutes => {
