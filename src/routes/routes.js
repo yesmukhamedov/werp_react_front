@@ -34,6 +34,29 @@ const AsyncSettings = Loadable({
 //     ),
 //   loading: () => <LoadingPage />,
 // });
+const AsyncKpiReportPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/report/kpi/components/KpiReportPage' /* webpackChunkName: "KpiReportPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncKpiRatingReportPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "KpiRatingReportPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncKpiRatingReportPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "KpiRatingReportPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 const AsyncPrcltgs = Loadable({
   loader: () =>
@@ -178,6 +201,35 @@ const AsyncMessageGroupUserPage = Loadable({
 //     ),
 //   loading: () => <LoadingPage />,
 // });
+const AsyncRecoCurrentPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncRecoCurrentPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncRecoArchivePage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/reco/components/RecoArchivePage' /* webpackChunkName: "RecoArchivePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncRecoArchivePage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoArchivePage' /* webpackChunkName: "RecoArchivePage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 // const AsyncDemoCurrentPage = Loadable({
 //   loader: () =>
@@ -226,6 +278,91 @@ const AsyncMessageGroupUserPage = Loadable({
 //     ),
 //   loading: () => <LoadingPage />,
 // });
+const AsyncDemoCurrentPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDemoArchivePage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/demo/components/DemoArchivePage' /* webpackChunkName: "DemoArchivePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDemoArchivePage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/demo/components/DemoArchivePage' /* webpackChunkName: "DemoArchivePage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDemoSoldDemosPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/demo/components/DemoSoldDemosPage' /* webpackChunkName: "DemoSoldDemosPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDemoSoldDemosPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/demo/components/DemoSoldDemosPage' /* webpackChunkName: "DemoSoldDemosPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncVisitArchivePage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/visit/components/VisitArchivePage' /* webpackChunkName: "VisitArchivePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncVisitArchivePage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/visit/components/VisitArchivePage' /* webpackChunkName: "VisitArchivePage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncRecoViewPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/reco/components/RecoViewPage' /* webpackChunkName: "RecoViewPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncRecoViewPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoViewPage' /* webpackChunkName: "RecoViewPage 2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncRecoCreatePage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/reco/components/RecoCreatePage' /* webpackChunkName: "RecoCreatePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncRecoCreatePage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoCreatePage' /* webpackChunkName: "RecoCreatePage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 // const AsyncDemoViewPage = Loadable({
 //   loader: () =>
@@ -250,6 +387,53 @@ const AsyncMessageGroupUserPage = Loadable({
 //     ),
 //   loading: () => <LoadingPage />,
 // });
+const AsyncDemoViewPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncVisitViewPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/visit/components/VisitViewPage' /* webpackChunkName: "VisitViewPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncVisitViewPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/visit/components/VisitViewPage' /* webpackChunkName: "VisitViewPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncCrmWspacePage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/wspace/components/WspaceMainPage' /* webpackChunkName: "WspaceMainPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncKpiSettingPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/kpi/components/KpiSettingPage' /* webpackChunkName: "KpiSettingPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncKpiSettingPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/kpi/components/KpiSettingPage' /* webpackChunkName: "KpiSettingPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
@@ -1020,7 +1204,7 @@ const AsyncSmdis = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncHrslc = Loadable({
+const AsyncHrSlc = Loadable({
   loader: () => import('../hr/report/hrslc'),
   loading: () => <LoadingPage />,
 });
@@ -1030,6 +1214,14 @@ const AsyncSrtbb = Loadable({
 });
 const AsyncSrqpwgs = Loadable({
   loader: () => import('../service/report/srqpwgs'),
+  loading: () => <LoadingPage />,
+});
+const AsyncExample = Loadable({
+  loader: () => import('../crm2021/example'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCrmReference = Loadable({
+  loader: () => import('../crm2021/reference'),
   loading: () => <LoadingPage />,
 });
 
@@ -1124,6 +1316,31 @@ const getComponent = {
   // CrmDemoView: AsyncDemoViewPage,
   // CrmVisitView: AsyncVisitViewPage,
   // CrmKpiSetting: AsyncKpiSettingPage,
+  CrmRepKpi: AsyncKpiReportPage,
+  CrmRepKpi2021: AsyncKpiReportPage2021,
+  CrmRepKpiRtg: AsyncKpiRatingReportPage,
+  CrmRepKpiRtg2021: AsyncKpiRatingReportPage2021,
+  Prcltgs: AsyncPrcltgs,
+  CrmRecoCurrent: AsyncRecoCurrentPage,
+  CrmRecoCurrent2021: AsyncRecoCurrentPage2021,
+  CrmRecoArchive: AsyncRecoArchivePage,
+  CrmRecoArchive2021: AsyncRecoArchivePage2021,
+  CrmRecoCreate: AsyncRecoCreatePage,
+  CrmRecoCreate2021: AsyncRecoCreatePage2021,
+  CrmDemoCurrent: AsyncDemoCurrentPage,
+  CrmDemoCurrent2021: AsyncDemoCurrentPage2021,
+  CrmDemoArchive: AsyncDemoArchivePage,
+  CrmDemoArchive2021: AsyncDemoArchivePage2021,
+  CrmVisitArchive: AsyncVisitArchivePage,
+  CrmVisitArchive2021: AsyncVisitArchivePage2021,
+  CrmRecoView: AsyncRecoViewPage,
+  CrmRecoView2021: AsyncRecoViewPage2021,
+  CrmDemoView: AsyncDemoViewPage,
+  CrmDemoView2021: AsyncDemoViewPage2021,
+  CrmVisitView: AsyncVisitViewPage,
+  CrmVisitView2021: AsyncVisitViewPage2021,
+  CrmKpiSetting: AsyncKpiSettingPage,
+  CrmKpiSetting2021: AsyncKpiSettingPage2021,
   OutCallTaskPage: AsyncOutCallTaskPage,
   HrStaffList: AsyncStaffListPage,
   HrStaffUpdate: AsyncStaffUpdatePage,
@@ -1165,6 +1382,8 @@ const getComponent = {
   Dmsclist: AsyncDmscList,
   DmscLstExcel: AsyncDmscListExcel,
   // CrmSoldDemos: AsyncDemoSoldDemosPage,
+  CrmSoldDemos: AsyncDemoSoldDemosPage,
+  CrmSoldDemos2021: AsyncDemoSoldDemosPage2021,
   LogInvoiceForm: AsyncLogInvoicesForm,
   LogInvoiceList: AsyncLogInvoicesList,
   Dphbk: AsyncInterPhones,
@@ -1212,6 +1431,9 @@ const getComponent = {
   Focur: AsyncFocur,
   Foac: AsyncFoac,
   Srgfr: AsyncSrgfr,
+  Example: AsyncExample,
+  CrmWspace2021: AsyncCrmWspacePage2021,
+  CrmReference: AsyncCrmReference,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1246,7 +1468,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} /> */}
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
-
       <Route
         path="/hr/exitinterviews"
         exact={true}
@@ -1303,7 +1524,6 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncLogInvoicesForm}
       />
-
       <Route
         path="/service/mainoperation/smvs/serviceNumber=:id"
         exact={true}

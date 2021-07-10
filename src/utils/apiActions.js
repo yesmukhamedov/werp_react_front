@@ -1,6 +1,7 @@
 import axios from 'axios';
 import axiosInstance from './apiClient';
 import { ROOT_URL, SERVICE_URL, YANDEX_GEOCODE } from './constants';
+import { ROOT_URL, SERVICE_URL, CRM_URL, CRM_CALL_CENTER } from './constants';
 
 const defineBackendUrl = uri => {
   let arr = uri.split('/');
@@ -12,6 +13,10 @@ const defineBackendUrl = uri => {
         return ROOT_URL;
       case 'YANDEX_GEOCODE':
         return YANDEX_GEOCODE;
+      case 'CRM2':
+        return CRM_URL;
+      case 'CALL_CENTER_2021':
+        return CRM_CALL_CENTER;
       default:
         return ROOT_URL;
     }
@@ -27,6 +32,13 @@ export const doGet = (uri, params = {}) => {
 
 export const doGetYandex = (params = {}) => {
   return axios.get('https://geocode-maps.yandex.ru/1.x', {
+    params,
+  });
+};
+
+export const doGet2 = (uri, params = {}) => {
+  let url = CRM_URL;
+  return axiosInstance.get(url + '/api/' + uri, {
     params,
   });
 };

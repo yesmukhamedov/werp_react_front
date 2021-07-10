@@ -45,7 +45,7 @@ export const CRM_FETCH_PHONE_META = 'CRM_FETCH_PHONE_META';
 
 export function fetchPhoneNumberHistory(phoneId) {
   return function(dispatch) {
-    doGet(`crm/call/number-history/${phoneId}`)
+    doGet(`call/number-history/${phoneId}`)
       .then(({ data }) => {
         dispatch({
           type: CRM_FETCH_PHONE_NUMBER_HISTORY,
@@ -251,6 +251,7 @@ export function createRecoListNew(o) {
 export function blankReco(context, contextId) {
   return dispatch =>
     doGet(`crm/reco/create?context=${context}&contextId=${contextId}`);
+  console.log(context, contextId);
 }
 
 export function createRecoList(o, callBackOnError) {

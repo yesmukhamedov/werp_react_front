@@ -121,6 +121,8 @@ class DemoArchivePage extends Component {
 
   renderSearchForm(messages) {
     const { companyOptions } = this.props;
+    console.log('this props: ', this.props);
+    console.log('this state: ', this.state);
     return (
       <Form>
         <Form.Group widths="equal">

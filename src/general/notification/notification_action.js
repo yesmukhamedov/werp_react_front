@@ -1,5 +1,6 @@
 import browserHistory from '../../utils/history';
 import { clearUserAuth } from '../../actions/auth';
+import { address } from 'faker';
 
 export const NOTIFY = 'NOTIFY';
 
@@ -18,7 +19,6 @@ export function handleError(error, dispatch) {
   const language = localStorage.getItem('language');
 
   if (error.response) {
-    // console.log(error);
     if (error.response.status && error.response.status === 403) {
       browserHistory.push('/forbidden');
     } else if (error.response.status && error.response.status === 500) {
@@ -30,13 +30,20 @@ export function handleError(error, dispatch) {
         ),
       );
     } else if (error.response.status && error.response.status === 400) {
-      dispatch(
-        notify(
-          'error',
-          error.response.data.message,
-          errorTable[`132${language}`],
-        ),
-      );
+      if (error.response.data.messages) {
+        let message = error.response.data.messages;
+        dispatch(
+          notify('error', message.address, errorTable[`132${language}`]),
+        );
+      } else {
+        dispatch(
+          notify(
+            'error',
+            error.response.data.message,
+            errorTable[`132${language}`],
+          ),
+        );
+      }
     } else if (error.response.status && error.response.status === 401) {
       dispatch(clearUserAuth());
     } else
@@ -69,8 +76,7 @@ export function handleError(error, dispatch) {
     } else if (get(error, 'error') !== undefined) {
       message = error;
     } else {
-      message = 'TypeError, check console';
-      console.log(error);
+      message = 'TypeError, check console ' + '(' + error.message + ')';
     }
 
     Promise.resolve({ error }).then(response =>

@@ -177,16 +177,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchSingleReco,
-    toggleRecoUpdateModal,
-    fetchCallResults,
-    fetchReasons,
-    deleteReco,
-    blankForCreate,
-    modalToggle,
-    fetchDemoPrices,
-  },
-)(injectIntl(RecoViewPage));
+export default connect(mapStateToProps, {
+  fetchSingleReco,
+  toggleRecoUpdateModal,
+  fetchCallResults,
+  fetchReasons,
+  deleteReco,
+  blankForCreate,
+  modalToggle,
+  fetchDemoPrices,
+})(injectIntl(RecoViewPage));

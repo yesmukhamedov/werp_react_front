@@ -1,52 +1,34 @@
-import React from 'react';
-import { Modal } from 'semantic-ui-react';
-import {
-  YMaps,
-  Map,
-  Clusterer,
-  Placemark,
-  FullscreenControl,
-} from 'react-yandex-maps';
+import React, { useState, useEffect } from 'react';
+import { Modal, Header } from 'semantic-ui-react';
+import { YMaps, Map, Clusterer, Placemark } from 'react-yandex-maps';
 
 const YmapModal = props => {
-  const {
-    open,
-    onClose = () => {},
-    data = {},
-    handleClickPlacemark = () => {},
-    tempAddress,
-    mapCenter = [],
-  } = props;
-
-  const mapState = {
+  const { open, onClose = () => {}, mapData = {} } = props;
+  console.log('mapData', mapData);
+  const [mapState, setMapState] = useState({
     center: [43.22387586, 76.92826238],
     zoom: 8,
+  });
+
+  useEffect(() => {
+    if (mapData) {
+      setMapState({
+        ...mapState,
+        center: [mapData.latitude, mapData.longitude],
+        zoom: 15,
+      });
+    }
+  }, [mapData]);
+  const getPointData = index => {
+    return {
+      balloonContentBody: 'placemark',
+      clusterCaption: 'placemark',
+    };
   };
 
-  const getPointData = data => {
+  const getPointOptions = () => {
     return {
-      balloonContentHeader: data.staffFIO,
-      balloonContentBody:
-        '</table>' +
-        '<tr><td>Страна: </td><td><strong>' +
-        data.countryName +
-        '</strong><br></td></tr>' +
-        '<tr><td>Компания: </td><td><strong>' +
-        data.companyName +
-        '</strong><br></td></tr>' +
-        '<tr><td>Филиал: </td><td><strong>' +
-        data.branchName +
-        '</strong><br></td></tr>' +
-        '<tr><td>Должность: </td><td><strong>' +
-        data.positionName +
-        '</strong><br></td></tr>' +
-        '<tr><td>Статус: </td><td><strong>' +
-        data.maTrackStepName +
-        '</strong><br></td></tr>' +
-        '<tr><td>Адрес: </td><td></td></tr><strong>' +
-        tempAddress +
-        '</strong></table>',
-      clusterCaption: 'placemark <strong>' + data.index + '</strong>',
+      preset: 'islands#violetIcon',
     };
   };
 
@@ -70,27 +52,11 @@ const YmapModal = props => {
               }}
             >
               <Placemark
-                geometry={[data.latitude, data.longitude]}
-                properties={getPointData(data)}
-                modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
-                options={{
-                  preset:
-                    data.positionId === 3
-                      ? 'islands#bluePersonIcon'
-                      : data.positionId === 4
-                      ? 'islands#bluePersonIcon'
-                      : data.positionId === 9
-                      ? 'islands#blueMoneyIcon'
-                      : data.positionId === 16
-                      ? 'islands#oliveRepairShopIcon'
-                      : data.positionId === 17
-                      ? 'islands#greenRepairShopIcon'
-                      : 'islands#blueStarIcon',
-                }}
-                onClick={() => handleClickPlacemark(data)}
+                geometry={[mapData.latitude, mapData.longitude]}
+                properties={getPointData()}
+                options={getPointOptions()}
               />
             </Clusterer>
-            <FullscreenControl />
           </Map>
         </YMaps>
       </Modal.Content>

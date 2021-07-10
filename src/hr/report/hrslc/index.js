@@ -313,11 +313,7 @@ const Hrslc = props => {
       fluid
       style={{ width: '100%', height: '100%' }}
     >
-      <Sidebar.Pushable
-        as={Segment}
-        style={{ overflow: 'hidden' }}
-        style={{ width: '100%', height: '100%' }}
-      >
+      <Sidebar.Pushable as={Segment} style={{ width: '100%', height: '100%' }}>
         <VerticalSidebar
           animation={animation}
           direction={direction}

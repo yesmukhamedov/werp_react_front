@@ -19,16 +19,19 @@ import loaderReducer from '../general/loader/loader_reducer';
 import recoReducer from '../crm/mainoperation/reco/reducres/recoReducer';
 import demoReducer from '../crm/mainoperation/demo/reducres/demoReducer';
 import visitReducer from '../crm/mainoperation/visit/reducres/visitReducer';
+import visitReducer2021 from '../crm2021/mainoperation/visit/reducers/visitReducer';
 //import { UNAUTH_USER } from '../actions/types';
 import f4_reducer from '../reference/f4/f4_reducer';
 import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer';
 import hrPyramidReducer from '../hr/mainoperation/pyramid/reducers/hrPyramidReducer';
 import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer';
 import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReducer';
+import kpiSettingReducer2021 from '../crm2021/mainoperation/kpi/reducers/kpiSettingReducer';
 import hrTimesheetReducer from '../hr/mainoperation/timesheet/reducers/hrTimesheetReducer';
 import crmReportReducer from '../crm/report/general/reducers/crmReportReducer';
 import hrReportReducer from '../hr/report/general/reducers/hrReportReducer';
 import crmWspaceReducer from '../crm/mainoperation/wspace/reducers/wspaceReducer';
+import crmWspaceReducer2021 from '../crm2021/mainoperation/wspace/reducers/wspaceReducer';
 import faReducer from '../finance/fa_reducer';
 import accountingReducer from '../accounting/accounting_reducer';
 import dtskcTransactionReducer from '../dit/tasks/dtskc/reducers';
@@ -71,6 +74,10 @@ import srtbbReducer from '../service/report/srtbb/srtbbReducer';
 import srqpwgsReducer from '../service/report/srqpwgs/srqpwgsReducer';
 import foacReducer from '../finance/other/foac/foacReducer';
 import srgfr from '../service/report/srgfr/srgfrReducer';
+import exampleReducer from '../crm2021/example/exampleReducer';
+import recoReducer2021 from '../crm2021/mainoperation/reco/reducers/recoReducer';
+import demoReducer2021 from '../crm2021/mainoperation/demo/reducers/demoReducer';
+import crmreferenceReducer from '../crm2021/reference/crmreferenceReducer';
 
 const appReducer = combineReducers({
   form,
@@ -103,6 +110,7 @@ const appReducer = combineReducers({
   crmReportReducer,
   hrReportReducer,
   crmWspaceReducer,
+  crmWspaceReducer2021,
   accounting: accountingReducer,
   dtskcTransaction: dtskcTransactionReducer,
   dtskdepTransaction: dtskdepTranscationReducer,
@@ -144,6 +152,12 @@ const appReducer = combineReducers({
   srqpwgsReducer: srqpwgsReducer,
   foacReducer: foacReducer,
   srgfrReducer: srgfr,
+  exampleReducer: exampleReducer,
+  crmReco2021: recoReducer2021,
+  crmDemo2021: demoReducer2021,
+  crmVisit2021: visitReducer2021,
+  crmKpiSetting2021: kpiSettingReducer2021,
+  crmreferenceReducer: crmreferenceReducer,
 });
 
 const rootReducer = (state, action) => {

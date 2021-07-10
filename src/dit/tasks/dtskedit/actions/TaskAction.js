@@ -72,9 +72,11 @@ function extractAttachments(attachment) {
 }
 
 export function fetchTaskById(taskId) {
+  console.log('taskId', taskId);
   return dispatch => {
     doGet(`tasks/${taskId}`)
       .then(({ data }) => {
+        console.log('data', data);
         const { attachment, ...rest } = data;
         const parsedAttachment = extractAttachments(attachment);
 

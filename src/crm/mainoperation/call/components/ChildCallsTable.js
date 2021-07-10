@@ -10,6 +10,7 @@ import moment from 'moment';
 export default function ChildCallsTable(props) {
   // Список звонков
   const { items, messages } = props;
+  console.log(items);
 
   return (
     <Card fluid>
