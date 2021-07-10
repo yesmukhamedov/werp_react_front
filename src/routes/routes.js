@@ -19,13 +19,13 @@ const AsyncSettings = Loadable({
   loading: () => <LoadingPage />,
 });
 
-// const AsyncKpiReportPage = Loadable({
-//   loader: () =>
-//     import(
-//       '../crm/report/kpi/components/KpiReportPage' /* webpackChunkName: "KpiReportPage" */
-//     ),
-//   loading: () => <LoadingPage />,
-// });
+const AsyncKpiReportPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/report/kpi/components/KpiReportPage' /* webpackChunkName: "KpiReportPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 // const AsyncKpiRatingReportPage = Loadable({
 //   loader: () =>
@@ -231,13 +231,13 @@ const AsyncRecoArchivePage2021 = Loadable({
   loading: () => <LoadingPage />,
 });
 
-// const AsyncDemoCurrentPage = Loadable({
-//   loader: () =>
-//     import(
-//       '../crm/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage" */
-//     ),
-//   loading: () => <LoadingPage />,
-// });
+const AsyncDemoCurrentPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 // const AsyncDemoArchivePage = Loadable({
 //   loader: () =>
@@ -364,13 +364,13 @@ const AsyncRecoCreatePage2021 = Loadable({
   loading: () => <LoadingPage />,
 });
 
-// const AsyncDemoViewPage = Loadable({
-//   loader: () =>
-//     import(
-//       '../crm/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage" */
-//     ),
-//   loading: () => <LoadingPage />,
-// });
+const AsyncDemoViewPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 // const AsyncVisitViewPage = Loadable({
 //   loader: () =>
@@ -1305,7 +1305,7 @@ const getComponent = {
   LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
   // CrmRepKpi: AsyncKpiReportPage,
   // CrmRepKpiRtg: AsyncKpiRatingReportPage,
-  Prcltgs: AsyncPrcltgs,
+  //Prcltgs: AsyncPrcltgs,
   // CrmRecoCurrent: AsyncRecoCurrentPage,
   // CrmRecoArchive: AsyncRecoArchivePage,
   // CrmRecoCreate: AsyncRecoCreatePage,
@@ -1422,7 +1422,7 @@ const getComponent = {
   Smslsp: AsyncSmslsp,
   Smsetplp: AsyncSmsetplp,
   Smdis: AsyncSmdis,
-  Hrslc: AsyncHrslc,
+  //Hrslc: AsyncHrslc,
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
   // NewReco: AsyncNewReco,
@@ -1545,6 +1545,7 @@ const generateRoutes = transactionRoutes => {
         component={AsyncTaxiExpence} 
       />*/}
       <Route path="/finance/foac" exact={true} component={AsyncFoac} />
+      <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
 
       {transactionRoutes.map(route => {
         return (

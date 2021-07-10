@@ -1,7 +1,12 @@
 import axios from 'axios';
 import axiosInstance from './apiClient';
-import { ROOT_URL, SERVICE_URL, YANDEX_GEOCODE } from './constants';
-import { ROOT_URL, SERVICE_URL, CRM_URL, CRM_CALL_CENTER } from './constants';
+import {
+  ROOT_URL,
+  SERVICE_URL,
+  CRM_URL,
+  CRM_CALL_CENTER,
+  YANDEX_GEOCODE,
+} from './constants';
 
 const defineBackendUrl = uri => {
   let arr = uri.split('/');
