@@ -11,6 +11,7 @@ import {
   CRM_DEMO_CREATE_MODAL_TOGGLE,
   CRM_DEMO_FETCH_CHILD_DEMOS,
   CRM_DEMO_FETCH_CHILD_RECOS,
+  CRM_DEMO_FETCH_SOLD_DEMOS,
 } from '../actions/demoAction';
 
 const INITIAL_STATE = {
@@ -31,6 +32,7 @@ const INITIAL_STATE = {
     size: 1,
   },
   demoPage: {},
+  soldDemos: [],
   dealers: [],
   openDemoUpdateModal: false,
   openDemoCreateModal: false,
@@ -43,6 +45,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case CRM_DEMO_FETCH_ARCHIVE:
       return { ...state, demoPage: action.payload };
+
+    case CRM_DEMO_FETCH_SOLD_DEMOS:
+      return { ...state, soldDemos: action.payload };
 
     case CRM_DEMO_FETCH_RESULTS:
       return { ...state, demoResults: action.items };
