@@ -5,6 +5,7 @@ import { doGet, doGet2, doPut, doDelete } from '../../../../utils/apiActions';
 
 export const CRM_DEMO_FETCH_CURRENT = 'CRM_DEMO_FETCH_CURRENT';
 export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
+export const CRM_DEMO_FETCH_SOLD_DEMOS = 'CRM_DEMO_SOLD_DEMOS';
 
 // Load Single Demo By Id
 export const CRM_DEMO_FETCH_SINGLE = 'CRM_DEMO_FETCH_SINGLE';
@@ -131,14 +132,13 @@ export const fetchDemoArchive = params => {
 export const fetchSoldDemos = params => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet('crm2/demo/archive', params)
+    doGet('crm2/demo/sold-demos', params)
       .then(({ data }) => {
-        console.log('action sold demos: ', data);
+        console.log('action sold demos: ', params);
         dispatch(modifyLoader(false));
         dispatch({
-          type: CRM_DEMO_FETCH_ARCHIVE,
-          items: data.items,
-          meta: data,
+          type: CRM_DEMO_FETCH_SOLD_DEMOS,
+          payload: data,
         });
       })
       .catch(e => {

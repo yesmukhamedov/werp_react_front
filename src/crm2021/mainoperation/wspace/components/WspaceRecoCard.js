@@ -47,7 +47,7 @@ export default function WspaceRecoCard(props) {
 
 function renderRecosInModal(props) {
   const { item, messages } = props;
-  // console.log('category ID: ',this.props.categoryId)
+  console.log('recos in modal: ', props);
   switch (item.statusId) {
     case RECO_STATUS_NEW:
       return renderNewReco(item, messages);

@@ -40,6 +40,7 @@ class WspacePhoneModal extends Component {
 
   handleChange = (name, data) => {
     let callForm = Object.assign({}, this.state.callForm);
+    console.log('before substring: ', this.state.callForm);
     let value = '';
     switch (name) {
       case 'dateTime':
@@ -63,7 +64,6 @@ class WspacePhoneModal extends Component {
       default:
         break;
     }
-    console.log('before substring: ', callForm);
     if (name.substring(0, 4) === 'demo') {
       let demoForm = Object.assign({}, callForm.demo);
       let demoName = _.camelCase(name.substring(4));
@@ -358,6 +358,7 @@ class WspacePhoneModal extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    console.log('next props: ', nextProps, 'state: ', this.state);
     if (nextProps.callForm) {
       if (nextProps.callForm.id !== this.state.callForm) {
         this.setState({

@@ -22,6 +22,8 @@ import { connect } from 'react-redux';
 //import { demoResultOptions } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
 
+const PER_PAGE = 20;
+
 class DemoSoldDemosPage extends Component {
   constructor(props) {
     super(props);
@@ -51,12 +53,12 @@ class DemoSoldDemosPage extends Component {
     let { searchModel } = this.state;
     let params = {
       page: page,
-      perPage: this.state.perPage,
+      perPage: PER_PAGE,
     };
 
     let temp = [];
     temp.push('page=' + page);
-    temp.push('perPage=' + this.state.perPage);
+    temp.push('perPage=' + PER_PAGE);
     for (let key in searchModel) {
       if (searchModel.hasOwnProperty(key)) {
         if (key === 'branchIds') {
@@ -66,7 +68,7 @@ class DemoSoldDemosPage extends Component {
         params[key] = searchModel[key];
       }
     }
-
+    console.log('Params: ', params);
     this.props.fetchSoldDemos(params);
   }
 
@@ -191,7 +193,7 @@ class DemoSoldDemosPage extends Component {
         </Table.Row>
       );
     }
-    return this.props.items.map((item, idx) => {
+    return this.props.items.content.map((item, idx) => {
       return (
         <Table.Row key={idx}>
           <Table.Cell>{item.id}</Table.Cell>
@@ -288,11 +290,11 @@ class DemoSoldDemosPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.crmDemo.items,
+    items: state.crmDemo2021.soldDemos,
     loader: state.loader,
-    meta: state.crmDemo.meta,
-    dealers: state.crmDemo.dealers,
-    demoResults: state.crmDemo.demoResults,
+    meta: state.crmDemo2021.meta,
+    dealers: state.crmDemo2021.dealers,
+    demoResults: state.crmDemo2021.demoResults,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
   };
