@@ -24,6 +24,7 @@ export default function RecoCard(props) {
     phoneErrors,
     loadingPhones,
     phonePattern,
+    phoneCode,
     messages,
     locale,
     errors,
@@ -50,8 +51,6 @@ export default function RecoCard(props) {
     }
     return phoneErrors[item[name]] > 0;
   };
-
-  console.log('recoCard phone errors', errors);
 
   const isPhoneLoading = name => {
     if (!item[name]) {
@@ -168,7 +167,7 @@ export default function RecoCard(props) {
           <Form.Field error={phoneHasError('phoneNumber1')}>
             <label>{messages['Form.Reco.PhoneNumber']}</label>
             <Input
-              label={{ basic: true, content: props.phoneCode }}
+              label={{ basic: true, content: phoneCode }}
               placeholder={phonePattern}
               onChange={(e, d) =>
                 props.handleChange('phoneNumber1', index, d.value)
@@ -183,7 +182,7 @@ export default function RecoCard(props) {
           <Form.Field error={phoneHasError('phoneNumber2')}>
             <label>{messages['Form.Reco.PhoneNumber']}</label>
             <Input
-              label={{ basic: true, content: props.phoneCode }}
+              label={{ basic: true, content: phoneCode }}
               placeholder={phonePattern}
               onChange={(e, d) =>
                 props.handleChange('phoneNumber2', index, d.value)

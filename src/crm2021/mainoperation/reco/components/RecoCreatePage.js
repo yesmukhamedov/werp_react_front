@@ -27,6 +27,7 @@ import {
   fetchRecoCategories,
 } from '../actions/recoAction';
 import { injectIntl } from 'react-intl';
+import { doGet } from '../../../../utils/apiActions';
 require('moment/locale/ru');
 
 const DEFAULT_CONTEXT = 'aa';
@@ -36,8 +37,8 @@ class RecoCreatePage extends Component {
     super(props);
     this.loadedSuccess = true;
     this.state = {
-      phonePattern: '(999)-999-99-99',
-      phoneCode: '+7',
+      phonePattern: '',
+      phoneCode: '',
       reco: {
         context: null,
         contextId: null,
@@ -81,6 +82,17 @@ class RecoCreatePage extends Component {
           console.log(e);
         });
     }
+    doGet(`crm2/phone/meta`)
+      .then(({ data }) => {
+        this.setState({
+          ...this.state,
+          phonePattern: data.pattern,
+          phoneCode: data.code,
+        });
+      })
+      .catch(e => {
+        // handleError(e, dispatch);
+      });
   }
 
   handleItemChange(fieldName, index, value) {
