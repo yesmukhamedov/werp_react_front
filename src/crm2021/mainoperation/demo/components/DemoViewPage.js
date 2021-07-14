@@ -100,7 +100,13 @@ class DemoViewPage extends Component {
           trigger={() => <Button>{messages['Crm.ToPrint']}</Button>}
           content={() => this.componentRef}
         />
-        <Button onClick={this.openUpdateModal}>{messages['Crm.ToEdit']}</Button>
+        <Button
+          disabled={this.props.activeloader}
+          loading={this.props.activeloader}
+          onClick={this.openUpdateModal}
+        >
+          {messages['Crm.ToEdit']}
+        </Button>
         {notDemoDone ? (
           ''
         ) : (
@@ -148,6 +154,7 @@ class DemoViewPage extends Component {
 
   renderDeleteConfirmModal() {
     const { messages } = this.props.intl;
+    console.log('id!: ', this.props);
     return (
       <Modal open={this.state.showDeleteModal}>
         <Modal.Header>{messages['Crm.DeleteWarningHeader']}!</Modal.Header>
@@ -213,7 +220,7 @@ class DemoViewPage extends Component {
         </Segment>
         {this.renderActions(messages)}
         {this.renderDeleteConfirmModal()}
-        <DemoUpdateModal />
+        <DemoUpdateModal id={parseInt(this.props.match.params.id, 10)} />
         <DemoCreateModal
           parentId={this.props.demo.id}
           visitId={null}
@@ -269,6 +276,7 @@ function mapStateToProps(state) {
     recommender: state.crmDemo2021.recommender,
     childRecos: state.crmDemo2021.childRecos,
     childDemos: state.crmDemo2021.childDemos,
+    activeloader: state.loader.active,
   };
 }
 

@@ -26,14 +26,17 @@ export const CRM_DEMO_CLEAR_STATE = 'CRM_DEMO_CLEAR_STATE';
 export const CRM_DEMO_UPDATE_MODAL_TOGGLE = 'CRM_DEMO_UPDATE_MODAL_TOGGLE';
 export const CRM_DEMO_CREATE_MODAL_TOGGLE = 'CRM_DEMO_CREATE_MODAL_TOGGLE';
 
-export const updateDemo = demo => {
+export const updateDemo = (demo, refresh) => {
   return dispatch => {
+    dispatch(modifyLoader(true));
     doPut(`crm2/demo`, { ...demo })
       .then(({}) => {
+        dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_UPDATE,
           item: demo,
         });
+        refresh();
       })
       .catch(error => {
         handleError(error, dispatch);

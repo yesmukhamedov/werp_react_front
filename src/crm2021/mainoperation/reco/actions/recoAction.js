@@ -71,14 +71,18 @@ export const fetchPhoneNumberHistory = phoneId => {
   };
 };
 
-export const updateReco = reco => {
+export const updateReco = (reco, refresh) => {
   return dispatch => {
+    dispatch(modifyLoader(true));
     doPut(`crm2/reco/`, { ...reco })
       .then(() => {
+        console.log('RECOL: ', reco);
         dispatch({
           type: CRM_RECO_UPDATE,
           payload: reco,
         });
+        dispatch(modifyLoader(false));
+        refresh();
       })
       .catch(e => {
         handleError(e, dispatch);
