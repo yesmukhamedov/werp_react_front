@@ -45,7 +45,7 @@ class DemoArchivePage extends Component {
         saleDateTo: null,
         address: null,
       },
-      loading: false,
+      loadingOn: true,
     };
 
     this.renderTable = this.renderTable.bind(this);
@@ -74,6 +74,16 @@ class DemoArchivePage extends Component {
     this.props.fetchDemoResults();
     this.props.fetchGroupDealers();
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.demoPage !== prevProps.demoPage) {
+      this.setState({
+        ...this.state,
+        loadingOn: false,
+      });
+    }
+  }
+  demoPage;
 
   onPaginationItemClick(page) {
     this.loadDemoPage(page);
@@ -310,6 +320,7 @@ class DemoArchivePage extends Component {
           </Table.Row>
         </Table.Header>
         <Table.Body>
+          <Loader active={this.state.loadingOn} />
           {this.renderTableBody(demoPage['content'] || [], messages)}
         </Table.Body>
         <Table.Footer>

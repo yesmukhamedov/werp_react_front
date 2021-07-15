@@ -143,9 +143,10 @@ export const fetchDemoDetails = id => {
 
 export const fetchRecoCurrentData = type => {
   return dispatch => {
-    dispatch(modifyLoader(true));
+    // dispatch(modifyLoader(true));
     doGet(`crm2/reco/current/${type}`)
       .then(({ data }) => {
+        // dispatch(modifyLoader(false));
         let actionType;
         switch (type) {
           case 'new':
@@ -168,7 +169,6 @@ export const fetchRecoCurrentData = type => {
           type: actionType,
           items: data,
         });
-        dispatch(modifyLoader(false));
       })
       .catch(e => {
         handleError(e, dispatch);

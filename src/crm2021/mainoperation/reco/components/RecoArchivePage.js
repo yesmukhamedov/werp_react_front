@@ -21,6 +21,7 @@ import { fetchRecoArchive, fetchRecoStatuses } from '../actions/recoAction';
 import { fetchGroupDealers } from '../../demo/actions/demoAction';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { modifyLoader } from '../../../../general/loader/loader_action';
 
 class RecoArchivePage extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class RecoArchivePage extends Component {
         bukrs: '',
         branchIds: [],
       },
+      loaderOn: true,
     };
 
     this.renderTable = this.renderTable.bind(this);
@@ -46,6 +48,15 @@ class RecoArchivePage extends Component {
     this.props.fetchRecoStatuses();
     this.props.fetchGroupDealers();
     this.loadItems(0);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.items !== prevProps.items) {
+      this.setState({
+        ...this.state,
+        loaderOn: false,
+      });
+    }
   }
 
   loadItems(page) {
@@ -328,9 +339,8 @@ class RecoArchivePage extends Component {
     return (
       <Table celled>
         {this.renderTableHeader(messages)}
-        {this.props.loader.active
-          ? this.renderLoader()
-          : this.renderTableBody(messages)}
+        <Loader active={this.state.loaderOn} />
+        {this.renderTableBody(messages)}
         {this.renderTableFooter(messages)}
       </Table>
     );
@@ -376,6 +386,7 @@ function mapStateToProps(state) {
     dealers: state.crmDemo2021.dealers,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
+    activeLoader: state.loader.active,
   };
 }
 
@@ -383,4 +394,5 @@ export default connect(mapStateToProps, {
   fetchRecoArchive,
   fetchRecoStatuses,
   fetchGroupDealers,
+  modifyLoader,
 })(injectIntl(RecoArchivePage));
