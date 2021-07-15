@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Tab, Header, Container, Icon, Segment } from 'semantic-ui-react';
+import {
+  Tab,
+  Header,
+  Container,
+  Icon,
+  Segment,
+  Dimmer,
+  Loader,
+} from 'semantic-ui-react';
 import Phone from './Phone';
 //import moment from 'moment';
 import { connect } from 'react-redux';
@@ -17,6 +25,7 @@ import { getRecoCategoriesOptionsByLanguage } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
 import { fetchDemoPrices } from '../../../../reference/mainoperation/actions/referenceAction';
 import { Button } from 'react-yandex-maps';
+import { modifyLoader } from '../../../../general/loader/loader_action';
 
 class RecoCurrentPage extends Component {
   constructor(props) {
@@ -111,6 +120,9 @@ class RecoCurrentPage extends Component {
     );
     return (
       <div>
+        <Dimmer active={this.props.activeLoader}>
+          <Loader />
+        </Dimmer>
         <ReactTable
           defaultFilterMethod={(filter, row) => {
             const colName =
@@ -333,6 +345,7 @@ function mapStateToProps(state) {
     callResults: state.crmReco2021.callResults,
     statuses: state.crmReco2021.statuses,
     saveCrmResponse: state.crmReco2021.saveCrmResponse,
+    activeLoader: state.loader.active,
   };
 }
 
@@ -342,5 +355,6 @@ export default connect(mapStateToProps, {
   fetchCallResults,
   fetchRecoStatuses,
   fetchDemoPrices,
+  modifyLoader,
   // saveReco,
 })(injectIntl(RecoCurrentPage));

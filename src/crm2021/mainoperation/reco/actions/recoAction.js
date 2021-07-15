@@ -164,11 +164,11 @@ export const fetchRecoCurrentData = type => {
             actionType = CRM_RECO_FETCH_CURRENT_USED_2021;
             break;
         }
-        dispatch(modifyLoader(false));
         dispatch({
           type: actionType,
           items: data,
         });
+        dispatch(modifyLoader(false));
       })
       .catch(e => {
         handleError(e, dispatch);
@@ -178,8 +178,10 @@ export const fetchRecoCurrentData = type => {
 
 export const fetchCallResults = () => {
   return dispatch => {
+    dispatch(modifyLoader(true));
     doGet(`crm2/call/results`)
       .then(({ data }) => {
+        dispatch(modifyLoader(false));
         const loaded = Object.keys(data).map(k => ({
           key: k,
           text: data[k],
@@ -237,8 +239,10 @@ export const checkPhoneNumber = (staffId, phoneNumber) => {
 
 export const fetchRecoStatuses = () => {
   return dispatch => {
+    dispatch(modifyLoader(true));
     doGet(`crm2/reco/statuses`)
       .then(res => {
+        dispatch(modifyLoader(false));
         const loaded = Object.keys(res.data).map(k => ({
           key: k,
           text: res.data[k],
