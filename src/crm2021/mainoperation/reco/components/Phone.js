@@ -11,6 +11,8 @@ import {
   Tab,
   Table,
   TextArea,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -47,6 +49,7 @@ import {
   CALL_STATUS_NOTHING,
 } from '../../call/callConstant';
 import { doGet } from '../../../../utils/apiActions';
+import { modifyLoader } from '../../../../general/loader/loader_action';
 
 require('moment/locale/ru');
 
@@ -168,6 +171,9 @@ class Phone extends Component {
         open={this.state.opened}
         onClose={this.handleModalClose}
       >
+        <Dimmer active={this.props.activeLoader}>
+          <Loader />
+        </Dimmer>
         <Modal.Header>
           {messages['Form.PhoneNumber']}: {this.props.phoneNumber} /{' '}
           {messages['Table.ClientFullName']}: {this.props.clientName}
@@ -596,6 +602,7 @@ class Phone extends Component {
       ...this.state.call,
       demoForm: this.state.demo,
     };
+    this.props.modifyLoader(true);
     this.props
       .saveCall(this.props.phoneId, model)
       .then(({ data }) => {
@@ -603,6 +610,7 @@ class Phone extends Component {
           this.props.fetchSingleReco(this.props.recoId);
         }
         this.closeModal();
+        this.props.modifyLoader(false);
       })
       .catch(e => {
         alert('Error');
@@ -794,6 +802,7 @@ class Phone extends Component {
   render() {
     const { phoneNumber } = this.props;
     const { messages } = this.props.intl;
+    console.log('active loader: ', this.props.activeLoader);
     return (
       <p>
         {this.state.buttonLoading ? (
@@ -823,6 +832,7 @@ function mapStateToProps(state) {
     calling: state.callReducer.calling,
     createdCallData: state.callReducer.createdCallData,
     callStatus: state.callReducer.callStatus,
+    activeLoader: state.loader.active,
   };
 }
 
@@ -836,4 +846,5 @@ export default connect(mapStateToProps, {
   saveCall,
   callInfo,
   setCallStatus,
+  modifyLoader,
 })(injectIntl(Phone));

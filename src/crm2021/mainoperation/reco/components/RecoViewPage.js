@@ -8,6 +8,8 @@ import {
   Grid,
   Divider,
   Modal,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import RecoUpdateModal from './RecoUpdateModal';
 import {
@@ -118,10 +120,19 @@ class RecoViewPage extends Component {
         </Link>
         {/*<Button onClick={this.prepareForVisitCreate}>Добавить визит</Button>*/}
 
-        <Button onClick={() => this.props.toggleRecoUpdateModal(true)}>
+        <Button
+          loading={this.props.activeLoader}
+          disabled={this.props.activeLoader}
+          onClick={() => this.props.toggleRecoUpdateModal(true)}
+        >
           {messages['Crm.ToEdit']}
         </Button>
-        <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>
+        <Button
+          loading={this.props.activeLoader}
+          disabled={this.props.activeLoader}
+          color={'red'}
+          onClick={() => this.deleteModalTrigger(true)}
+        >
           {messages['Crm.ToDelete']}
         </Button>
       </div>
@@ -159,7 +170,7 @@ class RecoViewPage extends Component {
           </Header>
         </Segment>
         {this.renderActions(messages)}
-        <RecoUpdateModal />
+        <RecoUpdateModal id={parseInt(this.props.match.params.id, 10)} />
         <Divider />
         <VisitCreateModal />
         <Grid>
@@ -191,6 +202,7 @@ function mapStateToProps(state) {
     loader: state.loader,
     callDetails: state.crmReco2021.callDetails,
     demoDetails: state.crmReco2021.demoDetails,
+    activeLoader: state.loader.active,
   };
 }
 

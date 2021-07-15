@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, TextArea, Button } from 'semantic-ui-react';
+import {
+  Modal,
+  Form,
+  Input,
+  TextArea,
+  Button,
+  Dimmer,
+  Loader,
+} from 'semantic-ui-react';
 import {
   fetchSingleReco,
   toggleRecoUpdateModal,
@@ -13,6 +21,7 @@ import {
 } from '../../../crmUtil';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { modifyLoader } from '../../../../general/loader/loader_action';
 
 const callerIsDealer = [
   {
@@ -192,6 +201,7 @@ class RecoUpdateModal extends Component {
   }
 
   validateData() {
+    console.log('success', this.props);
     const { localReco, errors } = this.state;
     if (!localReco.clientName || localReco.clientName.length === 0) {
       errors.clientName = true;
@@ -211,11 +221,19 @@ class RecoUpdateModal extends Component {
     }
   }
 
+  onClick() {
+    this.props.updateReco(this.state.localReco, () => {
+      this.props.fetchSingleReco(this.props.id);
+    });
+  }
+
   render() {
-    console.log('localreco: ', this.state);
     const { messages, locale } = this.props.intl;
     return (
       <Modal size="small" open={this.props.updateModalOpened}>
+        <Dimmer active={this.props.activeLoader}>
+          <Loader />
+        </Dimmer>
         <Modal.Header>{messages['Crm.EditReco']}</Modal.Header>
         <Modal.Content>{this.renderUpdateForm(messages, locale)}</Modal.Content>
         <Modal.Actions>
@@ -228,9 +246,15 @@ class RecoUpdateModal extends Component {
           <Button
             positive
             icon="checkmark"
-            onClick={() => this.props.updateReco(this.state.localReco)}
+            onClick={() => {
+              this.props.updateReco(this.state.localReco, () =>
+                this.props.fetchSingleReco(this.props.id),
+              );
+            }}
             labelPosition="right"
             content={messages.save}
+            disabled={this.props.activeLoader}
+            loading={this.props.activeLoader}
           />
         </Modal.Actions>
       </Modal>
@@ -243,6 +267,7 @@ function mapStateToProps(state) {
     reco: state.crmReco2021.reco,
     updateModalOpened: state.crmReco2021.updateModalOpened,
     dealers: state.crmDemo2021.dealers,
+    activeLoader: state.loader.active,
   };
 }
 
@@ -250,5 +275,6 @@ export default connect(mapStateToProps, {
   fetchSingleReco,
   toggleRecoUpdateModal,
   updateReco,
+  modifyLoader,
   fetchGroupDealers,
 })(injectIntl(RecoUpdateModal));

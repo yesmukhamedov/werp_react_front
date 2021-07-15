@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, TextArea, Button } from 'semantic-ui-react';
+import {
+  Modal,
+  Form,
+  Input,
+  TextArea,
+  Button,
+  Dimmer,
+  Loader,
+} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -7,6 +15,7 @@ import {
   fetchGroupDealers,
   fetchDemoResults,
   fetchReasons,
+  fetchDemo,
   updateDemo,
   toggleDemoUpdateModal,
 } from '../actions/demoAction';
@@ -22,6 +31,7 @@ import {
 } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
 import { stringToMoment } from '../../../../utils/helpers';
+import { modifyLoader } from '../../../../general/loader/loader_action';
 
 require('moment/locale/ru');
 
@@ -359,29 +369,33 @@ class DemoUpdateModal extends Component {
     if (!isValid) {
       return;
     }
+    console.log('success');
 
-    this.props.updateDemo({
-      address: this.state.localDemo.address,
-      appointedBy: this.state.localDemo.appointedBy,
-      callDate: this.state.localDemo.callDate,
-      clientName: this.state.localDemo.clientName,
-      context: this.state.localDemo.context,
-      contextId: this.state.localDemo.contextId,
-      dateTime: moment(this.state.localDemo.dateTime).format(
-        'YYYY-MM-DDTHH:mm:ss.sssz',
-      ),
-      dealerId: this.state.localDemo.dealerId,
-      id: this.state.localDemo.id,
-      location: this.state.localDemo.location,
-      note: this.state.localDemo.note,
-      parentId: 0,
-      reasonId: this.state.localDemo.reasonId,
-      recallDate: this.state.localDemo.recallDate,
-      recoId: this.state.localDemo.recoId,
-      result: this.state.localDemo.result,
-      saleDate: this.state.localDemo.saleDate,
-      visitId: 0,
-    });
+    this.props.updateDemo(
+      {
+        address: this.state.localDemo.address,
+        appointedBy: this.state.localDemo.appointedBy,
+        callDate: this.state.localDemo.callDate,
+        clientName: this.state.localDemo.clientName,
+        context: this.state.localDemo.context,
+        contextId: this.state.localDemo.contextId,
+        dateTime: moment(this.state.localDemo.dateTime).format(
+          'YYYY-MM-DDTHH:mm:ss.sssz',
+        ),
+        dealerId: this.state.localDemo.dealerId,
+        id: this.state.localDemo.id,
+        location: this.state.localDemo.location,
+        note: this.state.localDemo.note,
+        parentId: 0,
+        reasonId: this.state.localDemo.reasonId,
+        recallDate: this.state.localDemo.recallDate,
+        recoId: this.state.localDemo.recoId,
+        result: this.state.localDemo.result,
+        saleDate: this.state.localDemo.saleDate,
+        visitId: 0,
+      },
+      () => this.props.fetchDemo(this.props.id),
+    );
   }
 
   close() {
@@ -394,6 +408,9 @@ class DemoUpdateModal extends Component {
     demo.recos = [];
     return (
       <Modal size="small" open={openDemoUpdateModal}>
+        <Dimmer active={this.props.activeLoader}>
+          <Loader />
+        </Dimmer>
         <Modal.Header>{messages['Crm.DemoEdition']}</Modal.Header>
         <Modal.Content>{this.renderUpdateForm(messages)}</Modal.Content>
         <Modal.Actions>
@@ -407,6 +424,8 @@ class DemoUpdateModal extends Component {
             positive
             icon="checkmark"
             onClick={this.saveDemo}
+            loading={this.props.activeLoader}
+            disabled={this.props.activeLoader}
             labelPosition="right"
             content={messages.save}
           />
@@ -424,6 +443,7 @@ function mapStateToProps(state) {
     reasons: state.crmDemo2021.reasons,
     demo: state.crmDemo2021.demo,
     openDemoUpdateModal: state.crmDemo2021.openDemoUpdateModal,
+    activeLoader: state.loader.active,
   };
 }
 
@@ -431,7 +451,9 @@ export default connect(mapStateToProps, {
   fetchGroupDealers,
   fetchDemoResults,
   fetchReasons,
+  modifyLoader,
   updateDemo,
+  fetchDemo,
   toggleDemoUpdateModal,
   getLocationOptionsByLanguage,
 })(injectIntl(DemoUpdateModal));
