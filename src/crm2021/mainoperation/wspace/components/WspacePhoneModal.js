@@ -27,6 +27,7 @@ import {
 } from '../../../crmUtil';
 import { renderCallResultLabel } from '../../../CrmHelper';
 import { injectIntl } from 'react-intl';
+import { blankCall } from '../../call/actions/callAction';
 require('moment/locale/ru');
 
 class WspacePhoneModal extends Component {
@@ -34,51 +35,43 @@ class WspacePhoneModal extends Component {
     super(props);
 
     this.state = {
-      callForm: {},
+      callForm: {
+        callDate: new Date(),
+        demoForm: {
+          result: 'UNKNOWN',
+        },
+      },
     };
   }
 
-  handleChange = (name, data) => {
-    console.log('handleChange data: ', data);
+  componentDidMount() {}
+
+  handleDemoForm = (name, data) => {
     let callForm = Object.assign({}, this.state.callForm);
-    let value = '';
-    switch (name) {
-      case 'dateTime':
-      case 'callRecallDateTime':
-      case 'demoDateTime':
-        value = data;
-        break;
-      case 'callResultId':
-      case 'demoLocationId':
-      case 'callReasonId':
-      case 'demoDealerId':
-        value = data.value;
-        break;
-      case 'demoAddress':
-      case 'demoNote':
-      case 'callNote':
-      case 'demoClientName':
-        value = data.value;
-        break;
-      default:
-        break;
-    }
-    if (name.substring(0, 4) === 'demo') {
-      let demoForm = Object.assign({}, callForm.demo);
-      let demoName = _.camelCase(name.substring(4));
-      demoForm[demoName] = value;
-      callForm['demo'] = demoForm;
-      console.log('callName: ', demoForm[demoName]);
-    } else if (name.substring(0, 4) === 'call') {
-      let callName = _.camelCase(name.substring(4));
-      callForm[callName] = value;
+    let form = Object.assign({}, callForm.demoForm);
+    if (name === 'dateTime') {
+      form[name] = data;
     } else {
-      callForm[name] = value;
+      form[name] = data.value;
     }
 
-    if (name === 'callResultId' && value !== CALL_RESULT_DEMO) {
-      callForm['demo'] = undefined;
+    callForm['demoForm'] = form;
+
+    this.setState({
+      ...this.state,
+      callForm: callForm,
+    });
+  };
+
+  handleChange = (name, data) => {
+    let callForm = Object.assign({}, this.state.callForm);
+    let value = '';
+    if (name === 'callDate' || name === 'calRecallDate') {
+      callForm[name] = data;
+    } else {
+      callForm[name] = data.value;
     }
+
     this.setState({
       ...this.state,
       callForm: callForm,
@@ -131,8 +124,8 @@ class WspacePhoneModal extends Component {
   renderCallResultDependentField = messages => {
     const { callForm } = this.state;
     const { locale } = this.props.intl;
-    console.log('result dependent field: ', callForm);
-    if (callForm.resultId === CALL_RESULT_REFUSE) {
+    const { formErrors } = this.props;
+    if (callForm.callResult === CALL_RESULT_REFUSE) {
       let reasonOptions = [];
       if (this.props.reasons) {
         for (let k in this.props.reasons) {
@@ -149,6 +142,7 @@ class WspacePhoneModal extends Component {
       // Otkaz
       return (
         <Form.Select
+          error={formErrors['callReasonId'] ? true : false}
           required
           fluid
           label={messages['Crm.RejectionReason']}
@@ -157,13 +151,16 @@ class WspacePhoneModal extends Component {
         />
       );
     } else if (
-      callForm.resultId === CALL_RESULT_RECALL ||
-      callForm.resultId === CALL_RESULT_NOT_AVAILABLE ||
-      callForm.resultId === CALL_RESULT_NO_ANSWER
+      callForm.callResult === CALL_RESULT_RECALL ||
+      callForm.callResult === CALL_RESULT_NOT_AVAILABLE ||
+      callForm.callResult === CALL_RESULT_NO_ANSWER
     ) {
       // Perzvonit'
       return (
-        <Form.Field required>
+        <Form.Field
+          required
+          error={formErrors['callRecallDate'] ? true : false}
+        >
           <label>{messages['Crm.RecallDateTime']}</label>
           <DatePicker
             locale={locale}
@@ -176,7 +173,7 @@ class WspacePhoneModal extends Component {
             dropdownMode="select"
             dateFormat="DD.MM.YYYY HH:mm"
             selected={callForm.callRecallDate}
-            onChange={v => this.handleChange('callRecallDateTime', v)}
+            onChange={v => this.handleChange('callRecallDate', v)}
           />
         </Form.Field>
       );
@@ -188,25 +185,30 @@ class WspacePhoneModal extends Component {
   renderDemoForm = () => {
     let callForm = Object.assign({}, this.state.callForm);
     const { messages, locale } = this.props.intl;
-    if (!callForm.callResult || callForm.callResult !== CALL_RESULT_DEMO) {
+    const { formErrors } = this.props;
+    console.log('callRes', callForm.callResult);
+    if (!callForm.callResult || callForm.callResult != CALL_RESULT_DEMO) {
       return null;
     }
 
-    let demoForm = callForm['demo'] || {};
+    let demoForm = callForm['demoForm'] || {};
 
     return (
       <div>
         <Form.Group widths="equal">
           <Form.Field
-            onChange={(e, o) => this.handleChange('demoClientName', o)}
-            value={demoForm.clientName || ''}
+            readOnly
             control={Input}
+            value={this.props.reco.clientName || ''}
             required
             label={messages['fioClient']}
             placeholder={messages['fioClient']}
           />
 
-          <Form.Field required>
+          <Form.Field
+            required
+            error={formErrors['demoForm.dateTime'] ? true : false}
+          >
             <label>{messages['Crm.DemoDateTime']}</label>
             <DatePicker
               autoComplete="off"
@@ -218,42 +220,45 @@ class WspacePhoneModal extends Component {
               showTimeSelect
               dropdownMode="select"
               dateFormat="DD.MM.YYYY HH:mm"
-              selected={demoForm.dateTime || null}
-              onChange={v => this.handleChange('demoDateTime', v)}
+              selected={demoForm.dateTime ? moment(demoForm.dateTime) : null}
+              onChange={v => this.handleDemoForm('dateTime', v)}
             />
           </Form.Field>
 
           <Form.Select
+            error={formErrors['demoForm.location'] ? true : false}
             required
             fluid
             selection
             label={messages['Crm.Location']}
             options={getLocationOptionsByLanguage(locale)}
-            onChange={(e, v) => this.handleChange('demoLocationId', v)}
+            onChange={(e, v) => this.handleDemoForm('location', v)}
           />
 
           <Form.Select
+            error={formErrors['demoForm.dealerId'] ? true : false}
             value={demoForm.dealerId}
             required
             fluid
             selection
             label={messages['dealer']}
             options={this.props.dealers}
-            onChange={(e, v) => this.handleChange('demoDealerId', v)}
+            onChange={(e, v) => this.handleDemoForm('dealerId', v)}
           />
         </Form.Group>
 
         <Form.Group widths="equal">
           <Form.Field
+            error={formErrors['demoForm.address'] ? true : false}
             required
             control={TextArea}
-            onChange={(e, o) => this.handleChange('demoAddress', o)}
+            onChange={(e, o) => this.handleDemoForm('address', o)}
             label={messages['Table.Address']}
             placeholder={messages['Table.Address']}
           />
           <Form.Field
             control={TextArea}
-            onChange={(e, o) => this.handleChange('demoNote', o)}
+            onChange={(e, o) => this.handleDemoForm('note', o)}
             label={messages['Crm.NoteForDemo']}
             placeholder={messages['Crm.NoteForDemo']}
           />
@@ -264,7 +269,8 @@ class WspacePhoneModal extends Component {
 
   renderCallForm = () => {
     let callForm = Object.assign({}, this.state.callForm);
-    console.log('render call form: ', callForm);
+    const errors = this.props.formErrors;
+    console.log(this.props.reco);
     const { messages, locale } = this.props.intl;
     return (
       <Form>
@@ -277,8 +283,9 @@ class WspacePhoneModal extends Component {
             placeholder={messages['Table.PhoneNumber']}
           />
 
-          <Form.Field required>
+          <Form.Field required error={errors['callDate'] ? true : false}>
             <label>{messages['Crm.CallDateTime']}</label>
+
             <DatePicker
               locale={locale}
               autoComplete="off"
@@ -289,19 +296,20 @@ class WspacePhoneModal extends Component {
               showTimeSelect
               dropdownMode="select"
               dateFormat="DD.MM.YYYY HH:mm"
-              selected={callForm.dateTime ? moment(callForm.dateTime) : null}
-              onChange={v => this.handleChange('dateTime', v)}
+              selected={callForm.callDate ? moment(callForm.callDate) : null}
+              onChange={v => this.handleChange('callDate', v)}
             />
           </Form.Field>
 
           <Form.Select
             required
-            name="resultId"
+            name="callResult"
+            error={errors['callResult'] ? true : false}
             fluid
             selection
             label={messages['Crm.ResultOfCall']}
             options={this.props.callResultOptions || []}
-            onChange={(e, v) => this.handleChange('callResultId', v)}
+            onChange={(e, v) => this.handleChange('callResult', v)}
           />
 
           {this.renderCallResultDependentField(messages)}
@@ -331,16 +339,18 @@ class WspacePhoneModal extends Component {
   saveCall = () => {
     let callForm = Object.assign({}, this.state.callForm);
     const { currentPhone, reco } = this.props;
-    //callForm['phone'] = currentPhone
+    if (callForm.callResult === CALL_RESULT_DEMO) {
+      callForm['demoForm']['clientName'] = reco.clientName;
+    }
     callForm['phoneNumber'] = currentPhone.phoneNumber;
-    callForm['context'] = 'reco';
+    callForm['context'] = 'RECO';
     callForm['contextId'] = reco.id;
-    this.props.saveCall(reco.id, callForm);
+    this.props.saveCall(currentPhone.id, callForm);
   };
 
-  onOpen() {
+  handleOpen = () => {
     console.log('onOpen');
-  }
+  };
 
   onMount() {
     console.log('onMount');
@@ -351,21 +361,12 @@ class WspacePhoneModal extends Component {
   }
 
   handleClose = () => {
+    console.log('CLLLLOOO');
     this.props.togglePhoneModal(false);
     this.setState({
       callForm: {},
     });
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.callForm) {
-      if (nextProps.callForm.id !== this.state.callForm) {
-        this.setState({
-          callForm: Object.assign({}, nextProps.callForm),
-        });
-      }
-    }
-  }
 
   render() {
     const { messages } = this.props.intl;
@@ -379,6 +380,7 @@ class WspacePhoneModal extends Component {
     ];
     return (
       <Modal
+        onOpen={this.handleOpen}
         size={'fullscreen'}
         open={this.props.opened}
         closeOnDimmerClick={false}
@@ -455,6 +457,7 @@ function mapStateToProps(state) {
     reasons: state.crmDemo2021.reasons,
     dealers: state.crmDemo2021.dealers,
     callForm: state.crmWspaceReducer2021.callForm,
+    formErrors: state.crmWspaceReducer2021.callFormErrors,
   };
 }
 
@@ -462,4 +465,5 @@ export default connect(mapStateToProps, {
   togglePhoneModal,
   saveCall,
   getLocationOptionsByLanguage,
+  blankCall,
 })(injectIntl(WspacePhoneModal));

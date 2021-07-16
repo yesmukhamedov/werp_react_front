@@ -23,6 +23,7 @@ export const WSP_FETCH_PHONE_NUMBER_HISTORY = 'WSP_FETCH_PHONE_NUMBER_HISTORY';
 export const WSP_TOGGLE_PHONE_MODAL = 'WSP_TOGGLE_PHONE_MODAL';
 export const WSP_SET_CURRENT_PHONE = 'WSP_SET_CURRENT_PHONE';
 export const WSP_SAVED_CALL = 'WSP_SAVED_CALL';
+export const WSP_SAVED_CALL_ERROR_RESP = 'WSP_SAVED_CALL_ERROR_RESP';
 export const WSP_FETCH_CURRENT_DEMOS = 'WSP_FETCH_CURRENT_DEMOS';
 export const WSP_FETCH_CURRENT_VISITS = 'WSP_FETCH_CURRENT_VISITS';
 export const WSP_HANDLE_FILTER = 'WSP_HANDLE_FILTER';
@@ -281,7 +282,16 @@ export function saveCall(phoneId, model) {
       })
       .catch(e => {
         dispatch(modifyLoader(WSP_SAVED_CALL, false));
-        handleError(e, dispatch);
+        if (e.response.data) {
+          if (e.response.data.status === 400 && e.response.data.messages) {
+            dispatch({
+              type: WSP_SAVED_CALL_ERROR_RESP,
+              payload: e.response.data.messages,
+            });
+          } else {
+            handleError(e, dispatch);
+          }
+        }
       });
   };
 }
