@@ -106,7 +106,6 @@ export function fetchDemoRecos(demoId) {
     dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
     doGet(`crm2/wspace/demo-recommends/${demoId}`)
       .then(({ data }) => {
-        console.log('fetchdemorecos: ', data);
         dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
         dispatch({
           type: WSP_FETCH_DEMO_RECOS,
@@ -270,7 +269,6 @@ export function fetchCurrentVisits(staffId) {
 }
 
 export function saveCall(phoneId, model) {
-  console.log('savecall: ', model);
   return function(dispatch) {
     dispatch(modifyLoader(WSP_SAVED_CALL, true));
     doPost(`crm2/call/${phoneId}`, { ...model })
@@ -311,7 +309,6 @@ export function setCurrentPhone(phone) {
 }
 
 export function handleFilter(name, key, value) {
-  console.log('name: ', name, 'key: ', key, 'value: ', JSON.stringify(value));
   return {
     key,
     type: WSP_HANDLE_FILTER,

@@ -39,8 +39,8 @@ class WspacePhoneModal extends Component {
   }
 
   handleChange = (name, data) => {
+    console.log('handleChange data: ', data);
     let callForm = Object.assign({}, this.state.callForm);
-    console.log('before substring: ', this.state.callForm);
     let value = '';
     switch (name) {
       case 'dateTime':
@@ -49,17 +49,16 @@ class WspacePhoneModal extends Component {
         value = data;
         break;
       case 'callResultId':
-      case 'callReasonId':
       case 'demoLocationId':
+      case 'callReasonId':
       case 'demoDealerId':
-        value = parseInt(data.value, 10);
+        value = data.value;
         break;
-
       case 'demoAddress':
       case 'demoNote':
       case 'callNote':
       case 'demoClientName':
-        value = _.trim(data.value);
+        value = data.value;
         break;
       default:
         break;
@@ -69,6 +68,7 @@ class WspacePhoneModal extends Component {
       let demoName = _.camelCase(name.substring(4));
       demoForm[demoName] = value;
       callForm['demo'] = demoForm;
+      console.log('callName: ', demoForm[demoName]);
     } else if (name.substring(0, 4) === 'call') {
       let callName = _.camelCase(name.substring(4));
       callForm[callName] = value;
@@ -79,7 +79,6 @@ class WspacePhoneModal extends Component {
     if (name === 'callResultId' && value !== CALL_RESULT_DEMO) {
       callForm['demo'] = undefined;
     }
-    console.log('after substring: ', callForm);
     this.setState({
       ...this.state,
       callForm: callForm,
@@ -132,13 +131,14 @@ class WspacePhoneModal extends Component {
   renderCallResultDependentField = messages => {
     const { callForm } = this.state;
     const { locale } = this.props.intl;
-    if (callForm.callResult === CALL_RESULT_REFUSE) {
+    console.log('result dependent field: ', callForm);
+    if (callForm.resultId === CALL_RESULT_REFUSE) {
       let reasonOptions = [];
       if (this.props.reasons) {
         for (let k in this.props.reasons) {
-          if (this.props.reasons[k]['id'] === 1) {
+          if (this.props.reasons[k]['type'] === 'DEMO_REFUSE') {
             reasonOptions.push({
-              key: this.props.reasons[k]['type'],
+              key: this.props.reasons[k]['id'],
               text: this.props.reasons[k]['name'],
               value: this.props.reasons[k]['type'],
             });
@@ -157,9 +157,9 @@ class WspacePhoneModal extends Component {
         />
       );
     } else if (
-      callForm.callResult === CALL_RESULT_RECALL ||
-      callForm.callResult === CALL_RESULT_NOT_AVAILABLE ||
-      callForm.callResult === CALL_RESULT_NO_ANSWER
+      callForm.resultId === CALL_RESULT_RECALL ||
+      callForm.resultId === CALL_RESULT_NOT_AVAILABLE ||
+      callForm.resultId === CALL_RESULT_NO_ANSWER
     ) {
       // Perzvonit'
       return (
@@ -264,6 +264,7 @@ class WspacePhoneModal extends Component {
 
   renderCallForm = () => {
     let callForm = Object.assign({}, this.state.callForm);
+    console.log('render call form: ', callForm);
     const { messages, locale } = this.props.intl;
     return (
       <Form>
@@ -329,7 +330,6 @@ class WspacePhoneModal extends Component {
 
   saveCall = () => {
     let callForm = Object.assign({}, this.state.callForm);
-    console.log('phone modal props: ', callForm);
     const { currentPhone, reco } = this.props;
     //callForm['phone'] = currentPhone
     callForm['phoneNumber'] = currentPhone.phoneNumber;
@@ -358,7 +358,6 @@ class WspacePhoneModal extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log('next props: ', nextProps, 'state: ', this.state);
     if (nextProps.callForm) {
       if (nextProps.callForm.id !== this.state.callForm) {
         this.setState({
@@ -378,7 +377,6 @@ class WspacePhoneModal extends Component {
       },
       { menuItem: messages['Crm.AddingCall'], render: this.renderCallForm },
     ];
-    // console.log('wspace phone modal: ',this.props)
     return (
       <Modal
         size={'fullscreen'}
