@@ -19,6 +19,7 @@ import {
   WSP_FETCH_KPI,
   WSP_CLEAR_STATE,
   WSP_RECO_ARCHIVED,
+  WSP_SAVED_CALL_ERROR_RESP,
 } from '../actions/wspaceAction';
 
 import { CRM_VISIT_CREATE } from '../../visit/actions/visitAction';
@@ -46,6 +47,7 @@ const INITIAL_STATE = {
   callForm: {},
   filters: {},
   kpiData: {},
+  callFormErrors: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -62,6 +64,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case WSP_FETCH_KPI:
       return { ...state, kpiData: action.payload };
+
+    case WSP_SAVED_CALL_ERROR_RESP:
+      return { ...state, callFormErrors: action.payload };
 
     case WSP_SET_CURRENT_PHONE:
       return { ...state, currentPhone: action.payload };

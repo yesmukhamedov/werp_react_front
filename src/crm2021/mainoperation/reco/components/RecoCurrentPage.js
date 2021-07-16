@@ -37,8 +37,9 @@ class RecoCurrentPage extends Component {
       // usedItems: [],
       // newItems: [],
       // doneItems: [],
-      // movedItems: []
+      // movedItems: [],
       demoPriceOptions: [],
+      loaderOn: true,
     };
 
     this.renderTabUsed = this.renderTabUsed.bind(this);
@@ -52,10 +53,10 @@ class RecoCurrentPage extends Component {
   loadItems() {}
 
   componentWillMount() {
+    this.props.fetchRecoCurrentData('used');
     this.props.fetchRecoCurrentData('new');
     this.props.fetchRecoCurrentData('demo-done');
     this.props.fetchRecoCurrentData('moved');
-    this.props.fetchRecoCurrentData('used');
     this.props.fetchReasons();
     this.props.fetchCallResults();
     this.props.fetchRecoStatuses();
@@ -68,6 +69,15 @@ class RecoCurrentPage extends Component {
         demoPriceOptions: data,
       });
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.usedItems !== prevProps.usedItems) {
+      this.setState({
+        ...this.state,
+        loaderOn: false,
+      });
+    }
   }
 
   renderPhoneCall(e, d) {
@@ -120,9 +130,7 @@ class RecoCurrentPage extends Component {
     );
     return (
       <div>
-        <Dimmer active={this.props.activeLoader}>
-          <Loader />
-        </Dimmer>
+        <Loader active={this.state.loaderOn} />
         <ReactTable
           defaultFilterMethod={(filter, row) => {
             const colName =

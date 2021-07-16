@@ -5,7 +5,7 @@
 // import { modifyLoader } from '../../../../general/loader/loader_action';
 // import browserHistory from '../../../../utils/history';
 import axios from 'axios';
-import { doPost, doPut } from '../../../../utils/apiActions';
+import { doGet, doPost, doPut } from '../../../../utils/apiActions';
 
 const CONNECTOR_URL = 'http://192.168.0.26:3454';
 export const CALL_CREATED = 'CALL_CREATED';
@@ -56,6 +56,10 @@ export const saveCall = (phoneId, model) => {
 
   return dispatch => doPut('crm/call/update-register', model);
 };
+
+export function blankCall(phoneId) {
+  return dispatch => doGet(`crm2/call/blank/${phoneId}`);
+}
 
 export const setCallingFlag = flag => {
   return {

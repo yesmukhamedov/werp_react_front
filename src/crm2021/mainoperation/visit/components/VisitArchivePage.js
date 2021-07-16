@@ -16,6 +16,7 @@ import { fetchPhoneMeta } from '../../reco/actions/recoAction';
 import { connect } from 'react-redux';
 import matchSorter from 'match-sorter';
 import { injectIntl } from 'react-intl';
+import { Loader } from 'semantic-ui-react';
 
 class VisitArchivePage extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class VisitArchivePage extends Component {
       callResultOptions: [],
       callRefuseOptions: [],
       showCreateModal: false,
+      loadingOn: true,
     };
 
     this.renderTable = this.renderTable.bind(this);
@@ -38,6 +40,15 @@ class VisitArchivePage extends Component {
     this.props.fetchPhoneMeta();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.visits !== prevProps.visits) {
+      this.setState({
+        ...this.state,
+        loadingOn: false,
+      });
+    }
+  }
+
   toUpdate(visit) {
     this.props.setVisitForUpdate(visit);
     this.props.modalToggle(true);
@@ -48,6 +59,7 @@ class VisitArchivePage extends Component {
     let trimmed = dealers.slice(1);
     return (
       <div>
+        <Loader active={this.state.loadingOn} />
         <ReactTable
           data={this.props.visits || []}
           columns={[
