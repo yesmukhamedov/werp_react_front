@@ -16,7 +16,6 @@ import {
   moneyFormat,
 } from '../../../../../utils/helpers';
 import { errorTableText } from '../../../../../utils/helpers';
-import moment from 'moment';
 import Table from './Table';
 import { fetchReportByCategories } from '../../srgfrAction';
 require('moment/locale/ru');
