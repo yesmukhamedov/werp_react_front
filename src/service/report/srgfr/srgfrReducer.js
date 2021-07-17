@@ -1,5 +1,6 @@
 import {
   CLEAR_ALL,
+  COEFFICIENT_TYPE_MONEY_RATE,
   FETCH_REPORT_BY_BRANCHES,
   FETCH_REPORT_BY_CATEGORIES,
 } from './srgfrAction';
@@ -7,6 +8,7 @@ import {
 const INITIAL_STATE = {
   reportByCategories: [],
   reportByBranches: [],
+  exhangeRate: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -21,7 +23,11 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         reportByBranches: [...action.payload],
       };
-
+    case COEFFICIENT_TYPE_MONEY_RATE:
+      return {
+        ...state,
+        exhangeRate: [...action.payload],
+      };
     case CLEAR_ALL:
       return {
         reportByCategories: [],
