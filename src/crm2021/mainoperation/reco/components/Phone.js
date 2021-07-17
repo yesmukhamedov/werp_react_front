@@ -32,6 +32,7 @@ import {
   fetchCallResults,
   fetchPhoneNumberHistory,
   fetchSingleReco,
+  fetchDemoDetails,
 } from '../actions/recoAction';
 import {
   callInfo,
@@ -609,6 +610,7 @@ class Phone extends Component {
         if (this.props.recoId) {
           this.props.fetchSingleReco(this.props.recoId);
         }
+        this.props.fetchDemoDetails(this.props.recoId);
         this.closeModal();
         this.props.modifyLoader(false);
       })
@@ -833,6 +835,7 @@ function mapStateToProps(state) {
     createdCallData: state.callReducer.createdCallData,
     callStatus: state.callReducer.callStatus,
     activeLoader: state.loader.active,
+    recoId: state.crmReco2021.reco.id,
   };
 }
 
@@ -847,4 +850,5 @@ export default connect(mapStateToProps, {
   callInfo,
   setCallStatus,
   modifyLoader,
+  fetchDemoDetails,
 })(injectIntl(Phone));
