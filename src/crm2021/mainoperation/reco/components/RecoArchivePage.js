@@ -130,7 +130,6 @@ class RecoArchivePage extends Component {
   handleDropdownChange(e, o) {
     const { name, value } = o;
     const queryParams = Object.assign({}, this.state.queryParams);
-    console.log('queryParams: ', this.props);
     switch (name) {
       case 'bukrs':
         queryParams[name] = value;
@@ -348,7 +347,6 @@ class RecoArchivePage extends Component {
 
   render() {
     const { messages } = this.props.intl;
-    console.log('intl: ', this.props);
     return (
       <Container
         fluid

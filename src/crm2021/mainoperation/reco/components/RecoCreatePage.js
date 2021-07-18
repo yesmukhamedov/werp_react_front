@@ -218,7 +218,6 @@ class RecoCreatePage extends Component {
     const { messages, locale } = this.props.intl;
     let { items } = this.state.reco;
     const { errors } = this.state;
-    console.log('this state: ', this.state);
 
     return items.map((item, index) => {
       return (
@@ -228,7 +227,7 @@ class RecoCreatePage extends Component {
           locale={locale}
           handleChangeDate={this.handleChangeDate}
           itemPhones={this.state.itemPhones}
-          phoneCode={this.state.reco['phoneCode']}
+          phoneCode={this.state.phoneCode}
           phonePattern={this.state.phonePattern}
           handleChange={this.handleItemChange}
           removeReco={this.removeReco}

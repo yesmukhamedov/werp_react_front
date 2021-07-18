@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Header, Table, Image, Card } from 'semantic-ui-react';
-import moment from 'moment';
 
 class DemoPrintPage extends Component {
   constructor(props) {
@@ -60,7 +59,7 @@ class DemoPrintPage extends Component {
                 {messages['Crm.DemoDateTime']}
               </Header>
             </Table.Cell>
-            <Table.Cell>{demo.dateTime}</Table.Cell>
+            <Table.Cell>{demo.dateTimeView}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
@@ -105,7 +104,7 @@ class DemoPrintPage extends Component {
                 {messages['Table.ClientFullName']}
               </Header>
             </Table.Cell>
-            <Table.Cell>{recommender.clientName}</Table.Cell>
+            <Table.Cell>{demo.clientName}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
@@ -115,9 +114,10 @@ class DemoPrintPage extends Component {
               </Header>
             </Table.Cell>
             <Table.Cell>
-              {phones.map(p => (
-                <span key={p.id}>{p.phoneNumber} &nbsp;</span>
-              ))}
+              {demo.phoneNumber}
+              {/*{phones.map(p => (*/}
+              {/*  <span key={p.id}>{p.phoneNumber} &nbsp;</span>*/}
+              {/*))}*/}
             </Table.Cell>
           </Table.Row>
           <Table.Row>

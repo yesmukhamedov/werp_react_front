@@ -99,9 +99,7 @@ class DemoCreateModal extends Component {
             showYearDropdown
             dropdownMode="select"
             dateFormat="DD.MM.YYYY HH:mm"
-            selected={
-              this.state.demo.recallDate ? this.state.demo.recallDate : null
-            }
+            selected={this.state.demo.recallDate}
             onChange={v => this.handleChange('recallDate', v)}
           />
         </Form.Field>

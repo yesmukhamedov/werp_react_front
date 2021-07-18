@@ -146,14 +146,7 @@ class RecoViewPage extends Component {
       this.props.callDetails != undefined ? this.props.callDetails : [];
     const demoDetails =
       this.props.demoDetails != undefined ? this.props.demoDetails : [];
-    console.log(
-      'demoDetails: ',
-      demoDetails,
-      'callDetails: ',
-      callDetails,
-      'visitDetails: ',
-      reco,
-    );
+
     return (
       <Container
         fluid

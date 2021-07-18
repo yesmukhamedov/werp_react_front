@@ -187,6 +187,7 @@ class Phone extends Component {
   }
 
   renderDemoForm(messages, locale) {
+    console.log('call: ', this.state.call);
     const callResult = this.state.call.callResult;
     if (!this.state.call.callResult || callResult !== CALL_RESULT_DEMO) {
       return null;

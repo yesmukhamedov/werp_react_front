@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Header,
@@ -28,36 +28,30 @@ import DemoViewTable from './DemoViewTable';
 import DemoPrintPage from './DemoPrintPage';
 import { injectIntl } from 'react-intl';
 
-class DemoViewPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      callResultOptions: [],
-      callRefuseOptions: [],
-      items: [],
-      createModalOpened: false,
-      showDeleteModal: false,
-      showPrintPage: false,
-      pageRefresh: 0,
-    };
+const DemoViewPage = props => {
+  const {
+    intl: { messages },
+    demo,
+  } = props;
+  const componentRef = useRef();
+  const [state, setState] = useState({
+    callResultOptions: [],
+    callRefuseOptions: [],
+    items: [],
+    createModalOpened: false,
+    showDeleteModal: false,
+    showPrintPage: false,
+    pageRefresh: 0,
+  });
 
-    this.renderActions = this.renderActions.bind(this);
-    this.openUpdateModal = this.openUpdateModal.bind(this);
-    this.openCreateModal = this.openCreateModal.bind(this);
-    this.onCloseCreateModal = this.onCloseCreateModal.bind(this);
-    this.onBeforePrint = this.onBeforePrint.bind(this);
-    this.onAfterPrint = this.onAfterPrint.bind(this);
-    this.refreshPage = this.refreshPage.bind(this);
-  }
+  useEffect(() => {
+    const id = parseInt(props.match.params.id, 10);
+    props.fetchDemo(id);
+    props.fetchDemoChildDemos(id);
+    props.fetchDemoChildRecos(id);
+  }, []);
 
-  componentWillMount() {
-    const id = parseInt(this.props.match.params.id, 10);
-    this.props.fetchDemo(id);
-    this.props.fetchDemoChildDemos(id);
-    this.props.fetchDemoChildRecos(id);
-  }
-
-  getSourceLink(demo) {
+  const getSourceLink = demo => {
     if (demo.visitId > 0) {
       return (
         <Link className="button" to={`/crm2021/visit/view/${demo.visitId}`}>
@@ -77,10 +71,10 @@ class DemoViewPage extends Component {
         </Link>
       );
     }
-  }
+  };
 
-  renderActions(messages) {
-    const { demo } = this.props;
+  const renderActions = messages => {
+    const { demo } = props;
     const notDemoDone =
       demo.result === 'UNKNOWN' ||
       demo.result === 7 ||
@@ -98,12 +92,13 @@ class DemoViewPage extends Component {
         </Link>
         <ReactToPrint
           trigger={() => <Button>{messages['Crm.ToPrint']}</Button>}
-          content={() => this.componentRef}
+          //content={() => componentRef}
+          content={() => componentRef.current}
         />
         <Button
-          disabled={this.props.activeloader}
-          loading={this.props.activeloader}
-          onClick={this.openUpdateModal}
+          disabled={props.activeloader}
+          loading={props.activeloader}
+          onClick={openUpdateModal}
         >
           {messages['Crm.ToEdit']}
         </Button>
@@ -120,54 +115,51 @@ class DemoViewPage extends Component {
         {notDemoDone ? (
           ''
         ) : (
-          <Button onClick={this.openCreateModal}>
-            {messages['Crm.ToAddDemo']}
-          </Button>
+          <Button onClick={openCreateModal}>{messages['Crm.ToAddDemo']}</Button>
         )}
-        <Button color="red" onClick={() => this.deleteModalTrigger(true)}>
+        <Button color="red" onClick={() => deleteModalTrigger(true)}>
           {messages['Crm.ToDelete']}
         </Button>
       </div>
     );
-  }
+  };
 
-  onBeforePrint() {
-    this.setState({
-      ...this.state,
+  const onBeforePrint = () => {
+    setState({
+      ...state,
       showPrintPage: true,
     });
-  }
+  };
 
-  onAfterPrint() {
-    this.setState({
-      ...this.state,
+  const onAfterPrint = () => {
+    setState({
+      ...state,
       showPrintPage: false,
     });
-  }
+  };
 
-  deleteModalTrigger(showDeleteModal) {
-    this.setState({
-      ...this.state,
+  const deleteModalTrigger = showDeleteModal => {
+    setState({
+      ...state,
       showDeleteModal,
     });
-  }
+  };
 
-  renderDeleteConfirmModal() {
-    const { messages } = this.props.intl;
-    console.log('id!: ', this.props);
+  const renderDeleteConfirmModal = () => {
+    const { messages } = props.intl;
     return (
-      <Modal open={this.state.showDeleteModal}>
+      <Modal open={state.showDeleteModal}>
         <Modal.Header>{messages['Crm.DeleteWarningHeader']}!</Modal.Header>
         <Modal.Content>
           <p>{messages['Crm.Demo.DeleteWarningTxt1']}!</p>
           <p>{messages['Crm.Demo.DeleteWarningTxt2']}!</p>
         </Modal.Content>
         <Modal.Actions>
-          <Button onClick={() => this.deleteModalTrigger(false)} negative>
+          <Button onClick={() => deleteModalTrigger(false)} negative>
             {messages.cancel}
           </Button>
           <Button
-            onClick={() => this.props.deleteDemo(this.props.demo.id)}
+            onClick={() => props.deleteDemo(demo.id)}
             positive
             icon="checkmark"
             labelPosition="right"
@@ -176,97 +168,92 @@ class DemoViewPage extends Component {
         </Modal.Actions>
       </Modal>
     );
-  }
+  };
 
-  openUpdateModal() {
-    this.props.toggleDemoUpdateModal(true);
-  }
+  const openUpdateModal = () => {
+    props.toggleDemoUpdateModal(true);
+  };
 
-  openCreateModal() {
-    this.props.toggleDemoCreateModal(true);
-  }
+  const openCreateModal = () => {
+    props.toggleDemoCreateModal(true);
+  };
 
-  onCloseCreateModal() {
-    this.setState({
-      ...this.state,
+  const onCloseCreateModal = () => {
+    setState({
+      ...state,
       createModalOpened: false,
     });
-  }
+  };
+  const refreshPage = () => {
+    const id = parseInt(props.match.params.id, 10);
+    props.fetchDemo(id);
+    props.fetchDemoChildDemos(id);
+    props.fetchDemoChildRecos(id);
+  };
 
-  refreshPage() {
-    const id = parseInt(this.props.match.params.id, 10);
-    this.props.fetchDemo(id);
-    this.props.fetchDemoChildDemos(id);
-    this.props.fetchDemoChildRecos(id);
-  }
-
-  render() {
-    const { demo } = this.props;
-    const { messages } = this.props.intl;
-    return (
-      <Container
-        fluid
-        style={{
-          marginTop: '2em',
-          marginBottom: '2em',
-          paddingLeft: '2em',
-          paddingRight: '2em',
-        }}
-      >
-        <Segment clearing>
-          <Header as="h2" floated="left">
-            {messages['Crm.Democard']} № {this.props.demo.id}
-          </Header>
-        </Segment>
-        {this.renderActions(messages)}
-        {this.renderDeleteConfirmModal()}
-        <DemoUpdateModal id={parseInt(this.props.match.params.id, 10)} />
-        <DemoCreateModal
-          parentId={this.props.demo.id}
-          visitId={null}
-          recoId={null}
-          dealerId={this.props.demo.dealerId}
-          onClose={this.onCloseCreateModal}
-          refresh={this.refreshPage}
-        />
-        <Divider />
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={8}>
-              {<DemoViewTable messages={messages} demo={demo} />}
-            </Grid.Column>
-
-            <Grid.Column width={8}>
-              {
-                <ChildRecosTable
-                  messages={messages}
-                  items={this.props.childRecos || []}
-                />
-              }
-              {
-                <ChildDemosTable
-                  messages={messages}
-                  items={this.props.childDemos || []}
-                />
-              }
-            </Grid.Column>
-          </Grid.Row>
+  return (
+    <Container
+      fluid
+      style={{
+        marginTop: '2em',
+        marginBottom: '2em',
+        paddingLeft: '2em',
+        paddingRight: '2em',
+      }}
+    >
+      <Segment clearing>
+        <Header as="h2" floated="left">
+          {messages['Crm.Democard']} № {demo.id}
+        </Header>
+      </Segment>
+      {renderActions(messages)}
+      {renderDeleteConfirmModal()}
+      <DemoUpdateModal id={parseInt(props.match.params.id, 10)} />
+      <DemoCreateModal
+        parentId={demo.id}
+        visitId={null}
+        recoId={null}
+        dealerId={demo.dealerId}
+        onClose={onCloseCreateModal}
+        refresh={refreshPage}
+      />
+      <Divider />
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={8}>
+            {<DemoViewTable messages={messages} demo={demo} />}
+          </Grid.Column>
 
           <Grid.Column width={8}>
-            <h3>{messages['Crm.VersionForPrint']}</h3>
-            <DemoPrintPage
-              messages={messages}
-              demo={demo}
-              recommender={this.props.recommender}
-              ref={el => (this.componentRef = el)}
-            />
+            {
+              <ChildRecosTable
+                messages={messages}
+                items={props.childRecos || []}
+              />
+            }
+            {
+              <ChildDemosTable
+                messages={messages}
+                items={props.childDemos || []}
+              />
+            }
           </Grid.Column>
-          <Grid.Column width={8} />
-        </Grid>
-      </Container>
-    );
-  }
-}
+        </Grid.Row>
+
+        <Grid.Column width={8}>
+          <h3>{messages['Crm.VersionForPrint']}</h3>
+          <DemoPrintPage
+            messages={messages}
+            demo={demo}
+            recommender={props.recommender}
+            ref={componentRef}
+          />
+        </Grid.Column>
+        <Grid.Column width={8} />
+      </Grid>
+    </Container>
+  );
+};
 
 function mapStateToProps(state) {
   return {
