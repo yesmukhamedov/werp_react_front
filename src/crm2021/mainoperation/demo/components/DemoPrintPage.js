@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import { Header, Table, Image, Card } from 'semantic-ui-react';
-import moment from 'moment';
-import {
-  momentToStringYYYYMMDDHHMMSS,
-  momentToStringDDMMYYYY,
-} from '../../../../utils/helpers';
 
 class DemoPrintPage extends Component {
   constructor(props) {
