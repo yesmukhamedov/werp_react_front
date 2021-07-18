@@ -105,7 +105,7 @@ class DemoPrintPage extends Component {
                 {messages['Table.ClientFullName']}
               </Header>
             </Table.Cell>
-            <Table.Cell>{recommender.clientName}</Table.Cell>
+            <Table.Cell>{demo.clientName}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
@@ -115,9 +115,10 @@ class DemoPrintPage extends Component {
               </Header>
             </Table.Cell>
             <Table.Cell>
-              {phones.map(p => (
-                <span key={p.id}>{p.phoneNumber} &nbsp;</span>
-              ))}
+              {demo.phoneNumber}
+              {/*{phones.map(p => (*/}
+              {/*  <span key={p.id}>{p.phoneNumber} &nbsp;</span>*/}
+              {/*))}*/}
             </Table.Cell>
           </Table.Row>
           <Table.Row>
