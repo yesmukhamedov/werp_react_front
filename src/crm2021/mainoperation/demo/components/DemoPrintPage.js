@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Header, Table, Image, Card } from 'semantic-ui-react';
 import moment from 'moment';
+import {
+  momentToStringYYYYMMDDHHMMSS,
+  momentToStringDDMMYYYY,
+} from '../../../../utils/helpers';
 
 class DemoPrintPage extends Component {
   constructor(props) {
@@ -60,7 +64,7 @@ class DemoPrintPage extends Component {
                 {messages['Crm.DemoDateTime']}
               </Header>
             </Table.Cell>
-            <Table.Cell>{demo.dateTime}</Table.Cell>
+            <Table.Cell>{demo.dateTimeView}</Table.Cell>
           </Table.Row>
 
           <Table.Row>
