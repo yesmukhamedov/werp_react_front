@@ -32,7 +32,6 @@ export default function RecoCard(props) {
   } = props;
   const patternLength = phonePattern.replace(/[^0-9]+/g, '').length;
   const errorKey = `items[${index}].`;
-  console.log('PROPS!: ', props);
   const phoneHasError = name => {
     const name2 = name === 'phoneNumber1' ? 'phoneNumber2' : 'phoneNumber1';
     if (!item[name]) {
@@ -174,6 +173,7 @@ export default function RecoCard(props) {
               }
               value={item.displayPhone1 || ''}
               loading={isPhoneLoading('phoneNumber1')}
+              maxLength="12"
             />
           </Form.Field>
           <div style={errorBlockCss}>{errors[errorKey + 'phoneNumber1']}</div>
@@ -189,6 +189,7 @@ export default function RecoCard(props) {
               }
               value={item.displayPhone2 || ''}
               loading={isPhoneLoading('phoneNumber2')}
+              maxLength="12"
             />
           </Form.Field>
           <div style={errorBlockCss}>{errors[errorKey + 'phoneNumber2']}</div>

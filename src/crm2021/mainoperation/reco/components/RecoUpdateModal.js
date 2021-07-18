@@ -201,7 +201,6 @@ class RecoUpdateModal extends Component {
   }
 
   validateData() {
-    console.log('success', this.props);
     const { localReco, errors } = this.state;
     if (!localReco.clientName || localReco.clientName.length === 0) {
       errors.clientName = true;

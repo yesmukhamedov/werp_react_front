@@ -142,7 +142,7 @@ export default function DemoViewTable(props) {
   );
 }
 
-function getSourceLink(demo, messages) {
+const getSourceLink = (demo, messages) => {
   if (demo.visitId) {
     return (
       <Link className="button" to={`/crm2021/visit/view/${demo.visitId}`}>
@@ -164,4 +164,4 @@ function getSourceLink(demo, messages) {
   }
 
   return '';
-}
+};

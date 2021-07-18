@@ -51,6 +51,7 @@ export const registerCall = model => {
 
 export const saveCall = (phoneId, model) => {
   if (model.id == null && !model.id) {
+    console.log('model: ', model);
     return dispatch => doPost('crm2/call/' + phoneId, model);
   }
 
