@@ -171,6 +171,13 @@ class KpiSettingPage extends Component {
               Header: 'Филиал',
               accessor: 'branchName',
               maxWidth: 250,
+              Cell: props => {
+                return props.value == null ? (
+                  <p>Для всех филиалов</p>
+                ) : (
+                  <p>{props.value}</p>
+                );
+              },
             },
             {
               Header: 'Должность',

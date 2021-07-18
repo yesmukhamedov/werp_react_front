@@ -32,7 +32,6 @@ export default function RecoCard(props) {
   } = props;
   const patternLength = phonePattern.replace(/[^0-9]+/g, '').length;
   const errorKey = `items[${index}].`;
-  console.log('PROPS!: ', patternLength);
   const phoneHasError = name => {
     const name2 = name === 'phoneNumber1' ? 'phoneNumber2' : 'phoneNumber1';
     if (!item[name]) {

@@ -309,7 +309,6 @@ class RecoCurrentPage extends Component {
 
   render() {
     const { messages } = this.props.intl;
-    // console.log('message geldi', this.props.messages)
     const panes = [
       { menuItem: messages['Crm.Used'], render: this.renderTabUsed },
       { menuItem: messages['Crm.New'], render: this.renderTabNew },
