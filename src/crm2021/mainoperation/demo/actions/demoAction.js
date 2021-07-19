@@ -209,8 +209,10 @@ export const fetchReasons = () => {
 
 export const deleteDemo = demoId => {
   return dispatch => {
+    dispatch(modifyLoader(true));
     doDelete(`crm2/demo/${demoId}`)
       .then(response => {
+        dispatch(modifyLoader(false));
         browserHistory.push('/crm2021/demo/current');
       })
       .catch(e => {
