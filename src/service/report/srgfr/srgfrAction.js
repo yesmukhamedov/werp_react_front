@@ -69,6 +69,86 @@ export const fetchExchangeRate = () => {
   };
 };
 
+export const fetchOperatorByHarvestingSystem = () => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`service/report/coefficients/coefficients`, {
+      type: COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
+    })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchLogisticsRate = () => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`service/report/coefficients/coefficients`, {
+      type: COEFFICIENT_TYPE_LOGISTICS_RATE,
+    })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: COEFFICIENT_TYPE_LOGISTICS_RATE,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchBonusOfManager = () => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`service/report/coefficients/coefficients`, {
+      type: COEFFICIENT_TYPE_MANAGER_BONUS,
+    })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: COEFFICIENT_TYPE_MANAGER_BONUS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchBonusOfHeadOfDepartment = () => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`service/report/coefficients/coefficients`, {
+      type: COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS,
+    })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
 export function clearAll() {
   return function(dispatch) {
     dispatch({

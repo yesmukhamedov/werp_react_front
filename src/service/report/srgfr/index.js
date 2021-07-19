@@ -9,6 +9,17 @@ import { clearAll } from './srgfrAction';
 const Srgfr = props => {
   const {
     intl: { messages },
+    countries = [],
+    companies = [],
+    branches = [],
+    categories = [],
+    reportByCategories = [],
+    reportByBranches = [],
+    exchangeRate = [],
+    operatorByHarvestingSystem = [],
+    logisticsRate = [],
+    bonusOfManager = [],
+    bonusOfHeadOfDepartment = [],
   } = props;
 
   useEffect(() => {
@@ -29,7 +40,19 @@ const Srgfr = props => {
     >
       <h3>{messages['general_financial_report']}</h3>
       <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-      <Tabs />
+      <Tabs
+        countries={countries}
+        companies={companies}
+        branches={branches}
+        categories={categories}
+        reportByCategories={reportByCategories}
+        reportByBranches={reportByBranches}
+        exchangeRate={exchangeRate}
+        operatorByHarvestingSystem={operatorByHarvestingSystem}
+        logisticsRate={logisticsRate}
+        bonusOfManager={bonusOfManager}
+        bonusOfHeadOfDepartment={bonusOfHeadOfDepartment}
+      />
     </Container>
   );
 };
@@ -37,11 +60,17 @@ const Srgfr = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    companyOptions: state.userInfo.companyOptions,
-    branchOptionsService: state.userInfo.branchOptionsService,
-    serviceAppStatus: state.f4.serviceAppStatus,
-    category: state.f4.category,
-    srtbbList: state.srtbbReducer.srtbbList,
+    countries: state.f4.countryList,
+    companies: state.userInfo.companyOptions,
+    branches: state.userInfo.branchOptionsService,
+    categories: state.f4.category,
+    reportByCategories: state.srgfrReducer.reportByCategories,
+    reportByBranches: state.srgfrReducer.reportByBranches,
+    exchangeRate: state.srgfrReducer.exchangeRate,
+    operatorByHarvestingSystem: state.srgfrReducer.operatorByHarvestingSystem,
+    logisticsRate: state.srgfrReducer.logisticsRate,
+    bonusOfManager: state.srgfrReducer.bonusOfManager,
+    bonusOfHeadOfDepartment: state.srgfrReducer.bonusOfHeadOfDepartment,
   };
 }
 
