@@ -8,6 +8,7 @@ import {
   Grid,
   Divider,
   Modal,
+  Loader,
 } from 'semantic-ui-react';
 import ReactToPrint from 'react-to-print';
 import DemoUpdateModal from './DemoUpdateModal';
@@ -27,6 +28,7 @@ import ChildRecosTable from '../../reco/components/ChildRecosTable';
 import DemoViewTable from './DemoViewTable';
 import DemoPrintPage from './DemoPrintPage';
 import { injectIntl } from 'react-intl';
+import { modifyLoader } from '../../../../general/loader/loader_action';
 
 const DemoViewPage = props => {
   const {
@@ -117,7 +119,11 @@ const DemoViewPage = props => {
         ) : (
           <Button onClick={openCreateModal}>{messages['Crm.ToAddDemo']}</Button>
         )}
-        <Button color="red" onClick={() => deleteModalTrigger(true)}>
+        <Button
+          color="red"
+          loading={state.showDeleteModal}
+          onClick={() => deleteModalTrigger(true)}
+        >
           {messages['Crm.ToDelete']}
         </Button>
       </div>
@@ -164,6 +170,8 @@ const DemoViewPage = props => {
             icon="checkmark"
             labelPosition="right"
             content={messages['Crm.ToDelete']}
+            loading={props.activeloader}
+            disabled={props.activeloader}
           />
         </Modal.Actions>
       </Modal>
@@ -275,4 +283,5 @@ export default connect(mapStateToProps, {
   clearState,
   fetchDemoChildDemos,
   fetchDemoChildRecos,
+  modifyLoader,
 })(injectIntl(DemoViewPage));

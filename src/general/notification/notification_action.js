@@ -20,7 +20,13 @@ export function handleError(error, dispatch) {
 
   if (error.response) {
     if (error.response.status && error.response.status === 403) {
-      browserHistory.push('/forbidden');
+      dispatch(
+        notify(
+          'error',
+          error.response.data.message,
+          errorTable[`132${language}`],
+        ),
+      );
     } else if (error.response.status && error.response.status === 500) {
       dispatch(
         notify(
