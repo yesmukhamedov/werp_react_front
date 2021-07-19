@@ -26,7 +26,7 @@ function renderCallsTable(items, messages) {
   const columns = [
     {
       Header: messages['Table.DateTime'],
-      accessor: 'dateTimeStr',
+      accessor: 'dateTime',
       maxWidth: 150,
     },
     {
