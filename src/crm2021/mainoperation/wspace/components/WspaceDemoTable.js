@@ -33,7 +33,7 @@ export default function WspaceDemoTable(props) {
           <Table.Row key={item.id}>
             <Table.Cell>{item.clientName}</Table.Cell>
             <Table.Cell>{item.address}</Table.Cell>
-            <Table.Cell>{item.dateTimeStr}</Table.Cell>
+            <Table.Cell>{item.dateTime}</Table.Cell>
             <Table.Cell>{item.dealerName}</Table.Cell>
             <Table.Cell>
               {item.parentReco

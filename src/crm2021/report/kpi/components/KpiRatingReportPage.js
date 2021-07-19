@@ -15,6 +15,8 @@ import BranchF4 from '../../../../reference/f4/branch/BranchF4';
 import YearF4 from '../../../../reference/f4/date/YearF4';
 import MonthF4 from '../../../../reference/f4/date/MonthF4';
 import { doGet } from '../../../../utils/apiActions';
+import { connect } from 'react-redux';
+import { fetchUserInfo } from '../../../../general/userInfo/userInfo_action';
 
 const currentDate = new Date();
 
@@ -159,7 +161,6 @@ class KpiRatingReportPage extends Component {
   handleDropdownChange(e, result) {
     const { value, name } = result;
     let { bukrs, branches, month, year } = this.state;
-    console.log(this.state.branches);
     if (name === 'bukrs') {
       bukrs = value;
     } else if (name === 'branch') {
@@ -251,3 +252,13 @@ class KpiRatingReportPage extends Component {
 }
 
 export default KpiRatingReportPage;
+
+// function mapStateToProps(state) {
+//   return {
+//     userInfo: state.userInfo.branchOptionsMarketing
+//   };
+// }
+
+// export default connect(mapStateToProps, {
+//   fetchUserInfo
+// })(KpiRatingReportPage);
