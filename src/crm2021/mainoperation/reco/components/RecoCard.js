@@ -173,7 +173,7 @@ export default function RecoCard(props) {
               }
               value={item.displayPhone1 || ''}
               loading={isPhoneLoading('phoneNumber1')}
-              maxLength="12"
+              maxLength={props.phonePattern.length - 3}
             />
           </Form.Field>
           <div style={errorBlockCss}>{errors[errorKey + 'phoneNumber1']}</div>
@@ -189,7 +189,7 @@ export default function RecoCard(props) {
               }
               value={item.displayPhone2 || ''}
               loading={isPhoneLoading('phoneNumber2')}
-              maxLength="12"
+              maxLength={props.phonePattern.length - 3}
             />
           </Form.Field>
           <div style={errorBlockCss}>{errors[errorKey + 'phoneNumber2']}</div>

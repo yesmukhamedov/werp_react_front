@@ -78,14 +78,15 @@ class DemoPrintPage extends Component {
               </Header>
             </Table.Cell>
             <Table.Cell>
-              {recomName},
-              {recommender.phones
-                ? recommender.phones.map(p => (
-                    <span key={p.id} style={{ marginLeft: '5px' }}>
-                      {p.phoneNumber}
-                    </span>
-                  ))
-                : ''}
+              {recommender.clientName}
+              {/*{recomName},*/}
+              {/*{recommender.phones*/}
+              {/*  ? recommender.phones.map(p => (*/}
+              {/*      <span key={p.id} style={{ marginLeft: '5px' }}>*/}
+              {/*        {p.phoneNumber}*/}
+              {/*      </span>*/}
+              {/*    ))*/}
+              {/*  : ''}*/}
             </Table.Cell>
           </Table.Row>
 
