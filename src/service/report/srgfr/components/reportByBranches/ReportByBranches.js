@@ -10,10 +10,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
-  moneyFormat,
 } from '../../../../../utils/helpers';
 import { errorTableText } from '../../../../../utils/helpers';
-import moment from 'moment';
 import { fetchReportByBranches } from '../../srgfrAction';
 import Table from './Table';
 require('moment/locale/ru');
@@ -192,10 +190,6 @@ const ReportByBranches = props => {
 const mapStateToProps = state => {
   return {
     language: state.locales.lang,
-    countries: state.f4.countryList,
-    companies: state.userInfo.companyOptions,
-    branches: state.userInfo.branchOptionsService,
-    reportByBranches: state.srgfrReducer.reportByBranches,
   };
 };
 

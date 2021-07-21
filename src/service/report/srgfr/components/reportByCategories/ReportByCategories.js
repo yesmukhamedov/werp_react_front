@@ -218,11 +218,6 @@ const ReportByCategories = props => {
 const mapStateToProps = state => {
   return {
     language: state.locales.lang,
-    countries: state.f4.countryList,
-    companies: state.userInfo.companyOptions,
-    branches: state.userInfo.branchOptionsService,
-    categories: state.f4.category,
-    reportByCategories: state.srgfrReducer.reportByCategories,
   };
 };
 
