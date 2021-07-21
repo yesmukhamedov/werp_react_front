@@ -454,6 +454,7 @@ class Phone extends Component {
   }
 
   renderCallForm() {
+    console.log('phone id: ', this.props.phoneId);
     let internalNumber = localStorage.getItem('internalNumber');
     if (internalNumber != null && internalNumber.length > 0) {
       return this.renderCallFormNew();
@@ -611,7 +612,7 @@ class Phone extends Component {
         if (this.props.recoId) {
           this.props.fetchSingleReco(this.props.recoId);
         }
-        this.props.fetchDemoDetails(this.props.recoId);
+        this.props.fetchDemoDetails(this.props.phoneId);
         this.closeModal();
         this.props.modifyLoader(false);
       })

@@ -64,11 +64,9 @@ class WspacePhoneModal extends Component {
   };
 
   handleChange = (name, data) => {
-    console.log('DATA: ', data);
-    console.log('DATA2: ', data.options);
     let callForm = Object.assign({}, this.state.callForm);
     let value = '';
-    if (name === 'callDate' || name === 'calRecallDate') {
+    if (name === 'callDate' || name === 'callRecallDate') {
       callForm[name] = data;
     } else if (name === 'callReasonId') {
       callForm[name] = data.value;
@@ -192,7 +190,6 @@ class WspacePhoneModal extends Component {
     let callForm = Object.assign({}, this.state.callForm);
     const { messages, locale } = this.props.intl;
     const { formErrors } = this.props;
-    console.log('callRes', callForm);
     if (!callForm.callResult || callForm.callResult != CALL_RESULT_DEMO) {
       return null;
     }
@@ -276,7 +273,6 @@ class WspacePhoneModal extends Component {
   renderCallForm = () => {
     let callForm = Object.assign({}, this.state.callForm);
     const errors = this.props.formErrors;
-    console.log(this.props.reco);
     const { messages, locale } = this.props.intl;
     return (
       <Form>

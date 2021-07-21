@@ -49,6 +49,7 @@ class DemoUpdateModal extends Component {
         clientName: false,
         address: false,
         location: false,
+        recallDate: false,
       },
     };
 
@@ -124,7 +125,7 @@ class DemoUpdateModal extends Component {
     const { messages, locale } = this.props.intl;
     if (result === DEMO_RESULT_MOVED || result === DEMO_RESULT_CANCELLED) {
       return (
-        <Form.Field>
+        <Form.Field error={this.state.errors.recallDate} required>
           <label>{messages['Crm.RecallDateTime']}</label>
           <DatePicker
             autoComplete="off"
@@ -322,6 +323,9 @@ class DemoUpdateModal extends Component {
     ) {
       if (!reasonId || reasonId === 0) {
         errors.reasonId = true;
+      }
+      if (!localDemo.recallDate || localDemo.recallDate.length === 0) {
+        errors.recallDate = true;
       }
     } else if (result === DEMO_RESULT_SOLD) {
       if (!localDemo.saleDate || localDemo.saleDate.length === 0) {
