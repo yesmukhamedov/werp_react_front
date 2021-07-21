@@ -264,7 +264,7 @@ class RecoCreatePage extends Component {
               ...this.state,
               saveBtnDisabled: false,
             });
-            // window.location.pathname = '/crm2021/reco/create';
+            window.location.pathname = '/crm2021/reco/create';
           })
           .catch(function(error) {
             let stateErrors = {};
