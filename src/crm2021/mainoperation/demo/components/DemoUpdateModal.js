@@ -81,7 +81,7 @@ class DemoUpdateModal extends Component {
         <Form.Select
           error={this.state.errors.reasonId}
           name="reasonId"
-          value={this.state.localDemo.reasonId}
+          // value={this.state.localDemo.reasonId}
           required
           fluid
           selection
@@ -260,7 +260,7 @@ class DemoUpdateModal extends Component {
 
   handleChange(fieldName, o) {
     const localDemo = Object.assign({}, this.state.localDemo);
-
+    console.log('o', o);
     switch (fieldName) {
       case 'dateTime':
       case 'saleDate':
@@ -304,6 +304,7 @@ class DemoUpdateModal extends Component {
       ...this.state,
       localDemo,
     });
+    console.log('localdemo: ', this.state.localDemo);
   }
 
   validateForm() {
@@ -316,11 +317,7 @@ class DemoUpdateModal extends Component {
     const result = localDemo.result;
     const reasonId = parseInt(localDemo.reasonId, 10);
 
-    if (
-      result === DEMO_RESULT_MOVED ||
-      result === DEMO_RESULT_CANCELLED ||
-      result === DEMO_RESULT_DONE
-    ) {
+    if (result === DEMO_RESULT_MOVED || result === DEMO_RESULT_CANCELLED) {
       if (!reasonId || reasonId === 0) {
         errors.reasonId = true;
       }
@@ -330,6 +327,12 @@ class DemoUpdateModal extends Component {
     } else if (result === DEMO_RESULT_SOLD) {
       if (!localDemo.saleDate || localDemo.saleDate.length === 0) {
         errors.saleDate = true;
+      }
+    }
+
+    if (result === DEMO_RESULT_DONE) {
+      if (!reasonId || reasonId === 0) {
+        errors.reasonId = true;
       }
     }
 
@@ -373,7 +376,6 @@ class DemoUpdateModal extends Component {
     if (!isValid) {
       return;
     }
-    console.log('success');
 
     this.props.updateDemo(
       {
