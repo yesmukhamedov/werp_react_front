@@ -179,7 +179,7 @@ class RecoViewPage extends Component {
             <Grid.Column width={10}>
               <ChildCallsTable messages={messages} items={callDetails || []} />
               <ChildDemosTable messages={messages} items={demoDetails || []} />
-              <ChildVisitsTable messages={messages} items={reco.visits || []} />
+              {/* <ChildVisitsTable messages={messages} items={reco.visits || []} /> */}
             </Grid.Column>
           </Grid.Row>
         </Grid>
