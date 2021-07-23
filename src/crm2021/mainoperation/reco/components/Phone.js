@@ -499,6 +499,7 @@ class Phone extends Component {
             name="resultId"
             fluid
             selection
+            value={this.state.call.callResult}
             label={messages['Crm.ResultOfCall']}
             options={this.props.callResultOptions}
             onChange={(e, v) => this.handleChange('callResult', v)}
@@ -713,7 +714,7 @@ class Phone extends Component {
 
   handleChange(fieldName, o) {
     let { call, showDemoForm, errors } = this.state;
-
+    console.log('state call: ', this.state.call);
     switch (fieldName) {
       case 'callDate':
       case 'callRecallDate':
