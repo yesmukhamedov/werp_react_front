@@ -81,7 +81,7 @@ class DemoUpdateModal extends Component {
         <Form.Select
           error={this.state.errors.reasonId}
           name="reasonId"
-          // value={this.state.localDemo.reasonId}
+          value={this.state.localDemo.reasonId}
           required
           fluid
           selection

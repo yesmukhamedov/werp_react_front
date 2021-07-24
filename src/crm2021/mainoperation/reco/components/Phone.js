@@ -187,7 +187,6 @@ class Phone extends Component {
   }
 
   renderDemoForm(messages, locale) {
-    console.log('call: ', this.state.call);
     const callResult = this.state.call.callResult;
     if (!this.state.call.callResult || callResult !== CALL_RESULT_DEMO) {
       return null;
@@ -500,6 +499,7 @@ class Phone extends Component {
             name="resultId"
             fluid
             selection
+            value={this.state.call.callResult}
             label={messages['Crm.ResultOfCall']}
             options={this.props.callResultOptions}
             onChange={(e, v) => this.handleChange('callResult', v)}
@@ -551,7 +551,11 @@ class Phone extends Component {
       if (!call.callReasonId || call.callReasonId === 0) {
         errors.callReasonId = true;
       }
-    } else if (call.callResult === CALL_RESULT_RECALL) {
+    } else if (
+      call.callResult === CALL_RESULT_RECALL ||
+      call.callResult === CALL_RESULT_NO_ANSWER ||
+      call.callResult === CALL_RESULT_NOT_AVAILABLE
+    ) {
       if (!call.callRecallDate || call.callRecallDate.length === 0) {
         errors.callRecallDate = true;
       }
@@ -710,7 +714,7 @@ class Phone extends Component {
 
   handleChange(fieldName, o) {
     let { call, showDemoForm, errors } = this.state;
-
+    console.log('state call: ', this.state.call);
     switch (fieldName) {
       case 'callDate':
       case 'callRecallDate':
@@ -786,6 +790,7 @@ class Phone extends Component {
           <DatePicker
             locale={locale}
             autoComplete="off"
+            required
             label=""
             placeholderText={messages['Crm.RecallDateTime']}
             showMonthDropdown
