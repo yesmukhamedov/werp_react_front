@@ -215,6 +215,7 @@ class Phone extends Component {
               autoComplete="off"
               locale={locale}
               label=""
+              value={this.state.demo.dateTime}
               placeholderText={messages['Crm.DemoDateTime']}
               showMonthDropdown
               showYearDropdown
@@ -230,6 +231,7 @@ class Phone extends Component {
           <Form.Field
             error={demoErrors.address}
             required
+            value={this.state.demo.address}
             control={TextArea}
             onChange={(e, o) => this.handleDemoForm('address', o)}
             label={messages['Table.Address']}
@@ -239,6 +241,7 @@ class Phone extends Component {
             error={demoErrors.location}
             required
             fluid
+            value={this.state.demo.location}
             selection
             label={messages['Crm.Location']}
             options={getLocationOptionsByLanguage(locale)}
@@ -248,6 +251,7 @@ class Phone extends Component {
         <Form.Group widths="equal">
           <Form.Field
             control={TextArea}
+            value={this.state.demo.note}
             onChange={(e, o) => this.handleDemoForm('note', o)}
             label={messages['Crm.NoteForDemo']}
             placeholder={messages['Crm.NoteForDemo']}
@@ -456,7 +460,6 @@ class Phone extends Component {
   }
 
   renderCallForm() {
-    console.log('phone id: ', this.props.phoneId);
     let internalNumber = localStorage.getItem('internalNumber');
     if (internalNumber != null && internalNumber.length > 0) {
       return this.renderCallFormNew();
@@ -512,6 +515,7 @@ class Phone extends Component {
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Field
+            value={this.state.call.callNote}
             control={TextArea}
             onChange={(e, o) => this.handleChange('callNote', o)}
             label={messages['Crm.NoteForCall']}
@@ -717,7 +721,6 @@ class Phone extends Component {
 
   handleChange(fieldName, o) {
     let { call, showDemoForm, errors } = this.state;
-    console.log('state call: ', this.state.call);
     switch (fieldName) {
       case 'callDate':
       case 'callRecallDate':
@@ -773,6 +776,7 @@ class Phone extends Component {
       // Otkaz
       return (
         <Form.Select
+          value={this.state.call.callReasonId}
           error={this.state.errors.callReasonId}
           required
           fluid
