@@ -178,6 +178,9 @@ class Phone extends Component {
         <Modal.Header>
           {messages['Form.PhoneNumber']}: {this.props.phoneNumber} /{' '}
           {messages['Table.ClientFullName']}: {this.props.clientName}
+          <Button floated={'right'} negative onClick={this.handleModalClose}>
+            {messages['Button.No']}
+          </Button>
         </Modal.Header>
         <Modal.Content>
           <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
@@ -811,7 +814,6 @@ class Phone extends Component {
   render() {
     const { phoneNumber } = this.props;
     const { messages } = this.props.intl;
-    console.log('active loader: ', this.props.activeLoader);
     return (
       <p>
         {this.state.buttonLoading ? (
