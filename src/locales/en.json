@@ -928,5 +928,18 @@
   "plan_by_program": "Plan by program",
   "total_arrival_for_the_current_month": "Total arrival for the current month",
   "salary_of_master": "Salary of master",
-  "salary_of_operator": "Salary of operator"
+  "salary_of_operator": "Salary of operator",
+  "sum_cost_sparepart": "The sum of the costs of the spare part",
+  "in_guarantee": "In guarantee",
+  "on_sale": "On sale",
+  "difference_of_profit_in_tg": "Difference of profit in tenge",
+  "salary_of_manager_and_coordinator": "Salary of manager and coordinator",
+  "bonus_of_manager": "Bonus of manager",
+  "total_profit_in_tg": "Total profit in tenge",
+  "consumables": "Consumables",
+  "total_profit_in_percent": "Total profit in percent",
+  "exchange_rate": "Exchange rate",
+  "operator_by_harvesting_systems": "Operator by harvesting systems",
+  "logistics_rate": "Logistics rate",
+  "bonus_of_head_of_department": "Bonus of head of department"
 }

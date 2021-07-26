@@ -48,13 +48,13 @@ const Table = ({ data, intl: { messages } }) => {
       filterAll: true,
     },
     {
-      Header: "messages['master_award']",
+      Header: `${messages['sum_cost_sparepart']} (${messages['on_sale']})`,
       accessor: 'sellPartsExpenseSum',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
-      Header: "messages['master_award']",
+      Header: `${messages['sum_cost_sparepart']} (${messages['in_guarantee']})`,
       accessor: 'warrantyPartsExpenseSum',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
@@ -66,7 +66,7 @@ const Table = ({ data, intl: { messages } }) => {
       filterAll: true,
     },
     {
-      Header: "messages['master_award']",
+      Header: messages['difference_of_profit_in_tg'],
       accessor: 'differenceOfProfit',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,

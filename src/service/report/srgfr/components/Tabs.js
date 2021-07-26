@@ -24,7 +24,7 @@ const Tabs = props => {
   const panes = [
     {
       menuItem: messages['report_by_categories'],
-      render: () => (
+      pane: (
         <Tab.Pane attached={false}>
           <ReportByCategories
             countries={countries}
@@ -38,7 +38,7 @@ const Tabs = props => {
     },
     {
       menuItem: messages['report_by_branches'],
-      render: () => (
+      pane: (
         <Tab.Pane attached={false}>
           <ReportByBranches
             countries={countries}
@@ -51,7 +51,7 @@ const Tabs = props => {
     },
     {
       menuItem: messages['configuration'],
-      render: () => (
+      pane: (
         <Tab.Pane attached={false}>
           <Configuration
             exchangeRate={exchangeRate}
@@ -64,7 +64,9 @@ const Tabs = props => {
       ),
     },
   ];
-  return <Tab menu={{ pointing: true }} panes={panes} />;
+  return (
+    <Tab menu={{ pointing: true }} panes={panes} renderActiveOnly={false} />
+  );
 };
 
 export default injectIntl(Tabs);

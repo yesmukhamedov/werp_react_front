@@ -924,5 +924,18 @@
   "plan_by_program": "План по программе",
   "total_arrival_for_the_current_month": "Всего приход за текущий месяц",
   "salary_of_master": "Оклад мастера",
-  "salary_of_operator": "Оклад оператора"
+  "salary_of_operator": "Оклад оператора",
+  "sum_cost_sparepart": "Cумма расходов запчасти",
+  "in_guarantee": "В гарантии",
+  "on_sale": "В продаже",
+  "difference_of_profit_in_tg": "Разница прибыль в тенге",
+  "salary_of_manager_and_coordinator": "Оклад нач сер и коор",
+  "bonus_of_manager": "Бонус менеджера",
+  "total_profit_in_tg": "Общая прибыль в тенге",
+  "consumables": "Расходные материалы",
+  "total_profit_in_percent": "Общая прибыль в процент",
+  "exchange_rate": "Курс валют",
+  "operator_by_harvesting_systems": "Оператор по уборочным системами",
+  "logistics_rate": "Ставка логистики",
+  "bonus_of_head_of_department": "Бонус начальника отдела"
 }
