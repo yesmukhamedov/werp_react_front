@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
-import {
-    Modal,
-    Button,
-    Icon,
-    Header,
-    Table,
-    Input,
-    Form,
-} from 'semantic-ui-react';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+import { Modal, Button, Icon, Header, Input, Form } from 'semantic-ui-react';
 
 const ModalAddCompany = props => {
-    const { open, close, setDataExample = () => {}, data = [] } = props;
+    const { open, close, setDataExample, data = [] } = props;
+
     const initialTempData = {
         id: 0,
         name: '',
@@ -22,8 +14,7 @@ const ModalAddCompany = props => {
 
     const [tempData, setTempData] = useState(initialTempData);
 
-    const onChangeName = (fieldName, value) => {
-        console.log('data', data.length);
+    const onChangeCell = (fieldName, value) => {
         switch (fieldName) {
             case 'name':
                 setTempData({ ...tempData, id: data.length + 1, name: value });
@@ -34,7 +25,6 @@ const ModalAddCompany = props => {
             case 'bukrs':
                 setTempData({ ...tempData, id: data.length + 1, bukrs: value });
                 break;
-
             default:
                 break;
         }
@@ -50,18 +40,16 @@ const ModalAddCompany = props => {
                         <Input
                             placeholder="Name"
                             value={data.name}
-                            onChange={(e, o) =>
-                                onChangeName('name', e.target.value)
-                            }
+                            onChange={e => onChangeCell('name', e.target.value)}
                         />
                     </Form.Field>
                     <Form.Field>
                         <label>Spras</label>
                         <Input
-                            placeholder="Time"
+                            placeholder="Spras"
                             value={data.spras}
-                            onChange={(e, o) =>
-                                onChangeName('spras', e.target.value)
+                            onChange={e =>
+                                onChangeCell('spras', e.target.value)
                             }
                         />
                     </Form.Field>
@@ -69,9 +57,9 @@ const ModalAddCompany = props => {
                         <label>Bukrs</label>
                         <Input
                             type="number"
-                            placeholder="Time"
-                            onChange={(e, o) =>
-                                onChangeName('bukrs', e.target.value)
+                            placeholder="Bukrs"
+                            onChange={e =>
+                                onChangeCell('bukrs', e.target.value)
                             }
                         />
                     </Form.Field>
@@ -86,7 +74,6 @@ const ModalAddCompany = props => {
                     onClick={() => {
                         setDataExample(tempData);
                         setTempData(initialTempData);
-                        close();
                     }}
                 >
                     <Icon name="checkmark" /> Сохранить

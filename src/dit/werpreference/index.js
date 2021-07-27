@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import { fetchTest, clearTest } from './werpreferenceActions';
-import { Tab } from 'semantic-ui-react';
-import TabCompany from './components/TabCompany';
+import TabCompany from './components/company/TabCompany';
 
 const WerpReference = props => {
     const {

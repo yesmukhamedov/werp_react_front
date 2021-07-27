@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Popup, Input, Modal, Icon, Header } from 'semantic-ui-react';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-import '../style.css';
+import { Button, Popup, Input } from 'semantic-ui-react';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import '../../style.css';
 import ModalAddCompany from './ModalAddCompany';
 
 export default function TabCompany({ messages, get, post, put, del }) {
@@ -23,8 +23,6 @@ export default function TabCompany({ messages, get, post, put, del }) {
             edit: false,
         },
     ]);
-
-    console.log('data', data);
 
     const onChangeData = (e, original, fieldName) => {
         setData(
@@ -57,23 +55,61 @@ export default function TabCompany({ messages, get, post, put, del }) {
             }),
         );
     };
+    console.log(data);
 
-    const onClickEdit = original => {
-        setData(
-            data.map(el =>
-                el.id === original.id
-                    ? {
-                          ...el,
-                          edit: !original.edit,
-                      }
-                    : el,
-            ),
-        );
+    const onClickEdit = (original, name) => {
+        switch (name) {
+            case 'save':
+                setData(
+                    data.map(function(el) {
+                        if (el.id === original.id) {
+                            if (
+                                original.name &&
+                                original.spras &&
+                                original.bukrs
+                            ) {
+                                console.log('NOT EMPTY');
+                                return {
+                                    ...el,
+                                    edit: !original.edit,
+                                };
+                            } else {
+                                console.log('EMPTY');
+                                return {
+                                    // ...el,
+                                    edit: original.edit,
+                                };
+                            }
+                        }
+                    }),
+                );
+
+            case 'pencil':
+                setData(
+                    data.map(el =>
+                        el.id === original.id
+                            ? {
+                                  ...el,
+                                  edit: !original.edit,
+                              }
+                            : el,
+                    ),
+                );
+            default:
+                break;
+        }
     };
 
     const onClickDelete = original => {
         const filtredItems = data.filter(el => el.id !== original.id);
         setData([...filtredItems]);
+    };
+
+    const setDataExample = tempData => {
+        if (tempData.name !== false && tempData.spras && tempData.bukrs) {
+            setData([...data, tempData]);
+            setOpenModal(false);
+        }
     };
 
     const columns = [
@@ -158,14 +194,18 @@ export default function TabCompany({ messages, get, post, put, del }) {
                                     icon="pencil"
                                     circular
                                     color="yellow"
-                                    onClick={() => onClickEdit(original)}
+                                    onClick={() =>
+                                        onClickEdit(original, 'pencil')
+                                    }
                                 />
                             ) : (
                                 <Button
                                     icon="save"
                                     circular
                                     color="blue"
-                                    onClick={() => onClickEdit(original)}
+                                    onClick={() =>
+                                        onClickEdit(original, 'save')
+                                    }
                                 />
                             )
                         }
@@ -185,10 +225,6 @@ export default function TabCompany({ messages, get, post, put, del }) {
             ),
         },
     ];
-    const setDataExample = tempData => {
-        console.log('tempData fun', tempData);
-        setData([...data, tempData]);
-    };
 
     return (
         <div>
