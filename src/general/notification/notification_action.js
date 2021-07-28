@@ -43,23 +43,34 @@ export function handleError(error, dispatch) {
         );
       } else {
         dispatch(
-          notify(
-            'error',
-            error.response.data.message,
-            errorTable[`132${language}`],
-          ),
+          notify('error', 'Доступ ограничен', errorTable[`132${language}`]),
+        );
+      }
+    } else if (error.response.status && error.response.status === 404) {
+      if (error.response.data.messages) {
+        let message = error.response.data.messages;
+        dispatch(
+          notify('error', message.address, errorTable[`132${language}`]),
+        );
+      } else {
+        dispatch(
+          notify('error', 'Доступ ограничен', errorTable[`132${language}`]),
         );
       }
     } else if (error.response.status && error.response.status === 401) {
       dispatch(clearUserAuth());
-    } else
-      dispatch(
-        notify(
-          'error',
-          error.response.data.message,
-          errorTable[`132${language}`],
-        ),
-      );
+    } else if (error.response.status && error.response.status === 404) {
+      if (error.response.data.messages) {
+        let message = error.response.data.messages;
+        dispatch(
+          notify('error', message.address, errorTable[`132${language}`]),
+        );
+      } else {
+        dispatch(
+          notify('error', 'Доступ ограничен', errorTable[`132${language}`]),
+        );
+      }
+    } else dispatch(notify('error', 123, errorTable[`132${language}`]));
   } else {
     // const name = getNestedObject(error, ['error', 'response']);
 
