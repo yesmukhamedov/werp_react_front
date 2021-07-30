@@ -15,6 +15,10 @@ import {
   getLocationOptionsByLanguage,
 } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
+import {
+  momentToStringYYYYMMDDHHMM,
+  stringYYYYMMDDHHMMToMoment,
+} from '../../../../utils/helpers';
 
 require('moment/locale/ru');
 
@@ -99,8 +103,14 @@ class DemoCreateModal extends Component {
             showYearDropdown
             dropdownMode="select"
             dateFormat="DD.MM.YYYY HH:mm"
-            selected={this.state.demo.recallDate}
-            onChange={v => this.handleChange('recallDate', v)}
+            selected={
+              this.state.demo.recallDate
+                ? stringYYYYMMDDHHMMToMoment(this.state.demo.recallDate)
+                : null
+            }
+            onChange={v =>
+              this.handleChange('recallDate', momentToStringYYYYMMDDHHMM(v))
+            }
           />
         </Form.Field>
       );
@@ -160,10 +170,12 @@ class DemoCreateModal extends Component {
               dateFormat="DD.MM.YYYY HH:mm"
               selected={
                 this.state.demo.dateTime
-                  ? moment(this.state.demo.dateTime)
+                  ? stringYYYYMMDDHHMMToMoment(this.state.demo.dateTime)
                   : null
               }
-              onChange={v => this.handleChange('dateTime', v)}
+              onChange={v =>
+                this.handleChange('dateTime', momentToStringYYYYMMDDHHMM(v))
+              }
             />
           </Form.Field>
         </Form.Group>
@@ -381,6 +393,7 @@ class DemoCreateModal extends Component {
   render() {
     const { openDemoCreateModal } = this.props;
     const { messages, locale } = this.props.intl;
+    console.log('STATE DEMO', this.state);
     return (
       <Modal size="small" open={openDemoCreateModal}>
         <Modal.Header>{messages['Crm.AdditionDemoFromDemo']}</Modal.Header>

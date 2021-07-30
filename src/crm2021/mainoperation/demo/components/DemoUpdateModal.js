@@ -30,7 +30,11 @@ import {
   demoResultOptions,
 } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
-import { stringToMoment } from '../../../../utils/helpers';
+import {
+  momentToStringYYYYMMDDHHMM,
+  stringToMoment,
+  stringYYYYMMDDHHMMToMoment,
+} from '../../../../utils/helpers';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 
 require('moment/locale/ru');
@@ -138,10 +142,12 @@ class DemoUpdateModal extends Component {
             dateFormat="DD.MM.YYYY HH:mm"
             selected={
               this.state.localDemo.recallDate
-                ? this.state.localDemo.recallDate
+                ? stringYYYYMMDDHHMMToMoment(this.state.localDemo.recallDate)
                 : null
             }
-            onChange={v => this.handleChange('recallDate', v)}
+            onChange={v =>
+              this.handleChange('recallDate', momentToStringYYYYMMDDHHMM(v))
+            }
           />
         </Form.Field>
       );
@@ -177,8 +183,10 @@ class DemoUpdateModal extends Component {
               showTimeSelect
               dropdownMode="select"
               dateFormat="DD-MM-YYYY HH:mm"
-              selected={stringToMoment(localDemo.dateTime)}
-              onChange={v => this.handleChange('dateTime', v)}
+              selected={stringYYYYMMDDHHMMToMoment(localDemo.dateTime)}
+              onChange={v =>
+                this.handleChange('dateTime', momentToStringYYYYMMDDHHMM(v))
+              }
             />
           </Form.Field>
         </Form.Group>
@@ -304,7 +312,6 @@ class DemoUpdateModal extends Component {
       ...this.state,
       localDemo,
     });
-    console.log('localdemo: ', this.state.localDemo);
   }
 
   validateForm() {
@@ -385,9 +392,7 @@ class DemoUpdateModal extends Component {
         clientName: this.state.localDemo.clientName,
         context: this.state.localDemo.context,
         contextId: this.state.localDemo.contextId,
-        dateTime: moment(this.state.localDemo.dateTime).format(
-          'YYYY-MM-DDTHH:mm:ss.sssz',
-        ),
+        dateTime: this.state.localDemo.dateTime,
         dealerId: this.state.localDemo.dealerId,
         id: this.state.localDemo.id,
         location: this.state.localDemo.location,

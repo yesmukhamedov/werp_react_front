@@ -19,7 +19,6 @@ export const fetchItems = params => {
     dispatch(modifyLoader(true));
     doGet(`crm2/kpi-setting`, params)
       .then(({ data }) => {
-        console.log('fetchItems: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_KPI_FETCH_ITEMS,
@@ -63,7 +62,7 @@ export const blankItem = () => {
   };
 };
 
-export const createItem = item => {
+export const createItem = (item, refresh) => {
   return dispatch => {
     doPost(`crm2/kpi-setting`, { ...item })
       .then(({ data }) => {
@@ -71,6 +70,7 @@ export const createItem = item => {
           type: CRM_KPI_ITEM_CREATED,
           item: data,
         });
+        refresh();
       })
       .catch(error => {
         handleError(error, dispatch);
@@ -78,14 +78,15 @@ export const createItem = item => {
   };
 };
 
-export const deleteItem = id => {
+export const deleteItem = (id, refresh) => {
   return dispatch => {
-    doDelete(`crm2/kpi/setting/${id}`)
+    doDelete(`crm2/kpi-setting/${id}`)
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_DELETED,
           item: data,
         });
+        refresh();
       })
       .catch(error => {
         handleError(error, dispatch);
@@ -95,7 +96,7 @@ export const deleteItem = id => {
 
 export const updateItem = item => {
   return dispatch => {
-    doPut(`crm/kpi/setting`, { ...item })
+    doPut(`crm2/kpi-setting`, { ...item })
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_UPDATED,

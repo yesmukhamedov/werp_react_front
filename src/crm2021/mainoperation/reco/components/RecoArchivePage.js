@@ -191,10 +191,12 @@ class RecoArchivePage extends Component {
   }
 
   getDealersSelect(dealers, messages) {
+    console.log('archive state: ', this.state.queryParams);
     return (
       <Form.Select
         name="responsibleId"
         multiple={false}
+        // value={this.state.queryParams || []}
         search
         label={messages['Form.Dealer']}
         options={dealers || []}

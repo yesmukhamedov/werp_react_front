@@ -196,6 +196,7 @@ class RecoArchivePage extends Component {
   renderSearchPanel(messages) {
     const { queryParams } = this.state;
     const { companyOptions, branchOptions } = this.props;
+    console.log('archive state: ', this.state);
     return (
       <Form>
         <Form.Group widths="equal">
