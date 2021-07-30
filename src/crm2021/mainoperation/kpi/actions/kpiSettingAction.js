@@ -95,7 +95,7 @@ export const deleteItem = id => {
 
 export const updateItem = item => {
   return dispatch => {
-    doPut(`crm/kpi/setting`, { ...item })
+    doPut(`crm2/kpi-setting`, { ...item })
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_UPDATED,

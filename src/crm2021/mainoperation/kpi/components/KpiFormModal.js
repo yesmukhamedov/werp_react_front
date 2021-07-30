@@ -266,7 +266,15 @@ class KpiFormModal extends Component {
 
   saveItem() {
     let { localItem } = this.state;
-    let { bukrs, branchId, positionId, year, month } = this.props;
+    let {
+      branchId,
+      bukrs,
+      id,
+      items,
+      month,
+      positionId,
+      year,
+    } = this.state.localItem;
 
     if (
       localItem.id &&
