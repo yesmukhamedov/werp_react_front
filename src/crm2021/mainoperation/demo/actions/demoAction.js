@@ -179,7 +179,7 @@ export const fetchGroupDealers = () => {
         loaded.unshift({
           key: 0,
           text: '',
-          value: 0,
+          value: null,
         });
         dispatch({
           type: CRM_DEMO_FETCH_GROUP_DEALERS,
