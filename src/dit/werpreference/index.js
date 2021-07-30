@@ -2,21 +2,28 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import { fetchTest, clearTest } from './werpreferenceActions';
+
+import { fetchCompanyList, updateCompany } from './werpreferenceActions';
 import TabCompany from './components/company/TabCompany';
+import { ProductCategory } from './components/productCategory/ProductCategory';
 
 const WerpReference = props => {
     const {
-        testDataProps,
         intl: { messages },
+        fetchCompanyList,
+        companyList = [],
     } = props;
+
+    useEffect(() => {
+        fetchCompanyList();
+    }, []);
 
     const panes = [
         {
             menuItem: messages['L__COMPANY'],
             render: () => (
                 <Tab.Pane>
-                    <TabCompany messages={messages} />
+                    <TabCompany messages={messages} companyList={companyList} />
                 </Tab.Pane>
             ),
         },
@@ -27,15 +34,11 @@ const WerpReference = props => {
             menuItem: messages['product_category'],
             render: () => (
                 <Tab.Pane>
-                    <TabCompany messages={messages} />
+                    <ProductCategory messages={messages} />
                 </Tab.Pane>
             ),
         },
     ];
-
-    useEffect(() => {
-        props.fetchTest();
-    }, []);
 
     return (
         <div>
@@ -49,11 +52,11 @@ const WerpReference = props => {
 
 function mapStateToProps(state) {
     return {
-        testDataProps: state.werpreferenceReducer.testData,
+        companyList: state.werpreferenceReducer.companyList,
     };
 }
 
 export default connect(mapStateToProps, {
-    fetchTest,
-    clearTest,
+    fetchCompanyList,
+    updateCompany,
 })(injectIntl(WerpReference));

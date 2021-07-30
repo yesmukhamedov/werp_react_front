@@ -15,200 +15,256 @@ export const REMOVE_UBC = 'REMOVE_UBC';
 export const CHANGE_ACCESS_UBC = 'CHANGE_ACCESS_UBC';
 
 export function fetchUsers() {
-  return function(dispatch) {
-    doGet(`dit/userBranch/FETCH_USERS`)
-      .then(response => {
-        dispatch({
-          type: FETCH_USERS,
-          payload: response,
-        });
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', error.response.data.message, 'Ошибка')),
-          );
-        }
-      });
-  };
+    return function(dispatch) {
+        doGet(`dit/userBranch/FETCH_USERS`)
+            .then(response => {
+                dispatch({
+                    type: FETCH_USERS,
+                    payload: response,
+                });
+            })
+            .catch(error => {
+                if (error.response) {
+                    dispatch(
+                        notify('error', error.response.data.message, 'Ошибка'),
+                    );
+                } else {
+                    Promise.resolve({ error }).then(response =>
+                        dispatch(
+                            notify(
+                                'error',
+                                error.response.data.message,
+                                'Ошибка',
+                            ),
+                        ),
+                    );
+                }
+            });
+    };
 }
 
 export function findUsers(userList, userSearchTerm) {
-  return function(dispatch) {
-    doPost(`dit/userBranch/FIND_USERS`, {
-      userList,
-      userSearchTerm,
-    })
-      .then(response => {
-        dispatch({
-          type: FIND_USERS,
-          payload: response,
-        });
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', error.response.data.message, 'Ошибка')),
-          );
-        }
-      });
-  };
+    return function(dispatch) {
+        doPost(`dit/userBranch/FIND_USERS`, {
+            userList,
+            userSearchTerm,
+        })
+            .then(response => {
+                dispatch({
+                    type: FIND_USERS,
+                    payload: response,
+                });
+            })
+            .catch(error => {
+                if (error.response) {
+                    dispatch(
+                        notify('error', error.response.data.message, 'Ошибка'),
+                    );
+                } else {
+                    Promise.resolve({ error }).then(response =>
+                        dispatch(
+                            notify(
+                                'error',
+                                error.response.data.message,
+                                'Ошибка',
+                            ),
+                        ),
+                    );
+                }
+            });
+    };
 }
 
 export function editUserBranches(selectedUserId, userBranchList) {
-  return function(dispatch) {
-    doPost(`dit/userBranch/EDIT_USER_BRANCHES`, {
-      selectedUserId,
-      userBranchList,
-    })
-      .then(response => {
-        dispatch({
-          type: EDIT_USER_BRANCHES,
-          payload: response,
-        });
-        dispatch(notify('success', 'Сохранен.', 'Успешно'));
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', error.response.data.message, 'Ошибка')),
-          );
-        }
-      });
-  };
+    return function(dispatch) {
+        doPost(`dit/userBranch/EDIT_USER_BRANCHES`, {
+            selectedUserId,
+            userBranchList,
+        })
+            .then(response => {
+                dispatch({
+                    type: EDIT_USER_BRANCHES,
+                    payload: response,
+                });
+                dispatch(notify('success', 'Сохранен.', 'Успешно'));
+            })
+            .catch(error => {
+                if (error.response) {
+                    dispatch(
+                        notify('error', error.response.data.message, 'Ошибка'),
+                    );
+                } else {
+                    Promise.resolve({ error }).then(response =>
+                        dispatch(
+                            notify(
+                                'error',
+                                error.response.data.message,
+                                'Ошибка',
+                            ),
+                        ),
+                    );
+                }
+            });
+    };
 }
 
 export function fethcUserBranches(selectedUserId) {
-  return function(dispatch) {
-    doPost(`dit/userBranch/FETCH_USER_BRANCHES`, {
-      selectedUserId,
-    })
-      .then(response => {
-        dispatch({
-          type: FETCH_USER_BRANCHES,
-          payload: response,
-        });
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', error.response.data.message, 'Ошибка')),
-          );
-        }
-      });
-  };
+    return function(dispatch) {
+        doPost(`dit/userBranch/FETCH_USER_BRANCHES`, {
+            selectedUserId,
+        })
+            .then(response => {
+                dispatch({
+                    type: FETCH_USER_BRANCHES,
+                    payload: response,
+                });
+            })
+            .catch(error => {
+                if (error.response) {
+                    dispatch(
+                        notify('error', error.response.data.message, 'Ошибка'),
+                    );
+                } else {
+                    Promise.resolve({ error }).then(response =>
+                        dispatch(
+                            notify(
+                                'error',
+                                error.response.data.message,
+                                'Ошибка',
+                            ),
+                        ),
+                    );
+                }
+            });
+    };
 }
 
 export function fethcUserBranchCustomers(selectedUserBranchId) {
-  return function(dispatch) {
-    doPost(`dit/userBranch/FETCH_USER_BRANCH_CUSTOMERS`, {
-      selectedUserBranchId,
-    })
-      .then(response => {
-        dispatch({
-          type: FETCH_USER_BRANCH_CUSTOMERS,
-          payload: response,
-        });
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', error.response.data.message, 'Ошибка')),
-          );
-        }
-      });
-  };
+    return function(dispatch) {
+        doPost(`dit/userBranch/FETCH_USER_BRANCH_CUSTOMERS`, {
+            selectedUserBranchId,
+        })
+            .then(response => {
+                dispatch({
+                    type: FETCH_USER_BRANCH_CUSTOMERS,
+                    payload: response,
+                });
+            })
+            .catch(error => {
+                if (error.response) {
+                    dispatch(
+                        notify('error', error.response.data.message, 'Ошибка'),
+                    );
+                } else {
+                    Promise.resolve({ error }).then(response =>
+                        dispatch(
+                            notify(
+                                'error',
+                                error.response.data.message,
+                                'Ошибка',
+                            ),
+                        ),
+                    );
+                }
+            });
+    };
 }
 export function saveUserBranchCustomers(ubcList) {
-  return function(dispatch) {
-    doPost(`dit/userBranch/SAVE_USER_BRANCH_CUSTOMERS`, {
-      ubcList,
-    })
-      .then(response => {
-        dispatch({
-          type: SAVE_USER_BRANCH_CUSTOMERS,
-          payload: response,
-        });
-        dispatch(notify('success', 'Сохранен.', 'Успешно'));
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-          // dispatch(errorMessage(msg + error.response.data.message));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', error.response.data.message, 'Ошибка')),
-          );
-        }
-      });
-  };
+    return function(dispatch) {
+        doPost(`dit/userBranch/SAVE_USER_BRANCH_CUSTOMERS`, {
+            ubcList,
+        })
+            .then(response => {
+                dispatch({
+                    type: SAVE_USER_BRANCH_CUSTOMERS,
+                    payload: response,
+                });
+                dispatch(notify('success', 'Сохранен.', 'Успешно'));
+            })
+            .catch(error => {
+                if (error.response) {
+                    dispatch(
+                        notify('error', error.response.data.message, 'Ошибка'),
+                    );
+                    // dispatch(errorMessage(msg + error.response.data.message));
+                } else {
+                    Promise.resolve({ error }).then(response =>
+                        dispatch(
+                            notify(
+                                'error',
+                                error.response.data.message,
+                                'Ошибка',
+                            ),
+                        ),
+                    );
+                }
+            });
+    };
 }
 
 export function sendTestSms() {
-  return function(dispatch) {
-    doGet(`dit/userBranch/testSms`)
-      .then(response => {
-        dispatch(notify('success', 'Сохранен.', 'Успешно'));
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        } else {
-          Promise.resolve({ error }).then(response =>
-            dispatch(notify('error', error.response.data.message, 'Ошибка')),
-          );
-        }
-      });
-  };
+    return function(dispatch) {
+        doGet(`dit/userBranch/testSms`)
+            .then(response => {
+                dispatch(notify('success', 'Сохранен.', 'Успешно'));
+            })
+            .catch(error => {
+                if (error.response) {
+                    dispatch(
+                        notify('error', error.response.data.message, 'Ошибка'),
+                    );
+                } else {
+                    Promise.resolve({ error }).then(response =>
+                        dispatch(
+                            notify(
+                                'error',
+                                error.response.data.message,
+                                'Ошибка',
+                            ),
+                        ),
+                    );
+                }
+            });
+    };
 }
 
 export function markBranch(idx) {
-  const obj = {
-    type: MARK_BRANCH,
-    payload: idx,
-  };
-  return obj;
+    const obj = {
+        type: MARK_BRANCH,
+        payload: idx,
+    };
+    return obj;
 }
 export function addUbc(ubc) {
-  const obj = {
-    type: ADD_UBC,
-    payload: ubc,
-  };
-  return obj;
+    const obj = {
+        type: ADD_UBC,
+        payload: ubc,
+    };
+    return obj;
 }
 export function removeUbc(idx) {
-  const obj = {
-    type: REMOVE_UBC,
-    payload: idx,
-  };
-  return obj;
+    const obj = {
+        type: REMOVE_UBC,
+        payload: idx,
+    };
+    return obj;
 }
 export function changeUbc(idx, ubc) {
-  const obj = {
-    type: CHANGE_UBC,
-    ubc,
-    idx,
-  };
-  return obj;
+    const obj = {
+        type: CHANGE_UBC,
+        ubc,
+        idx,
+    };
+    return obj;
 }
 
 export function changeAccessUbc(idx, access) {
-  // console.log(idx,access,"action");
-  const obj = {
-    type: CHANGE_ACCESS_UBC,
-    idx,
-    access,
-  };
+    // console.log(idx,access,"action");
+    const obj = {
+        type: CHANGE_ACCESS_UBC,
+        idx,
+        access,
+    };
 
-  return obj;
+    return obj;
 }

@@ -1,93 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Popup, Input } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import '../../style.css';
 import ModalAddCompany from './ModalAddCompany';
 
-export default function TabCompany({ messages, get, post, put, del }) {
+export default function TabCompany({
+    messages,
+    companyList,
+    get,
+    post,
+    put,
+    del,
+}) {
     const [openModal, setOpenModal] = useState(false);
 
-    const [data, setData] = useState([
-        {
-            id: 1,
-            name: 'AURA',
-            spras: 'en',
-            bukrs: 1000,
-            edit: false,
-        },
-        {
-            id: 2,
-            name: 'CEBILON',
-            spras: 'ru',
-            bukrs: 570,
-            edit: false,
-        },
-    ]);
+    const [data, setData] = useState([]);
 
-    const onChangeData = (e, original, fieldName) => {
-        setData(
-            data.map(el => {
-                switch (fieldName) {
-                    case 'companyName':
-                        if (el.id === original.id) {
-                            return {
-                                ...el,
-                                name: e.target.value,
-                            };
-                        }
-                    case 'companyLang':
-                        if (el.id === original.id) {
-                            return {
-                                ...el,
-                                spras: e.target.value,
-                            };
-                        }
-                    case 'companyId':
-                        if (el.id === original.id) {
-                            return {
-                                ...el,
-                                bukrs: e.target.value,
-                            };
-                        }
-                    default:
-                        return el;
-                }
-            }),
-        );
-    };
-    console.log(data);
+    useEffect(() => {
+        companyList.map(item => {
+            setData(el => [
+                ...el,
+                {
+                    name: item.name,
+                    spras: item.spras,
+                    bukrs: item.bukrs,
+                    edit: false,
+                },
+            ]);
+        });
+    }, [companyList]);
 
     const onClickEdit = (original, name) => {
         switch (name) {
             case 'save':
-                setData(
-                    data.map(function(el) {
-                        if (el.id === original.id) {
-                            if (
-                                original.name &&
-                                original.spras &&
-                                original.bukrs
-                            ) {
-                                console.log('NOT EMPTY');
-                                return {
-                                    ...el,
-                                    edit: !original.edit,
-                                };
-                            } else {
-                                console.log('EMPTY');
-                                return {
-                                    // ...el,
-                                    edit: original.edit,
-                                };
-                            }
+                const dt = data.map(el => {
+                    if (el.bukrs === original.bukrs) {
+                        if (original.name && original.spras && original.bukrs) {
+                            el.edit = true;
+                        } else {
+                            el.edit = false;
                         }
-                    }),
-                );
+                    }
+                });
+                setData(dt);
 
             case 'pencil':
                 setData(
                     data.map(el =>
-                        el.id === original.id
+                        el.bukrs === original.bukrs
                             ? {
                                   ...el,
                                   edit: !original.edit,
@@ -95,20 +55,65 @@ export default function TabCompany({ messages, get, post, put, del }) {
                             : el,
                     ),
                 );
+
             default:
                 break;
         }
     };
 
-    const onClickDelete = original => {
-        const filtredItems = data.filter(el => el.id !== original.id);
-        setData([...filtredItems]);
+    const onChangeInput = (e, original, fieldName) => {
+        setData(
+            data.map(el => {
+                if (el.bukrs === original.bukrs) {
+                    switch (fieldName) {
+                        case 'name':
+                            return { ...el, name: e.target.value };
+                        case 'spras':
+                            return { ...el, spras: e.target.value };
+                        case 'bukrs':
+                            return { ...el, bukrs: e.target.value };
+                        default:
+                            return el;
+                    }
+                } else {
+                    return { ...el };
+                }
+            }),
+        );
     };
 
-    const setDataExample = tempData => {
-        if (tempData.name !== false && tempData.spras && tempData.bukrs) {
-            setData([...data, tempData]);
-            setOpenModal(false);
+    const cellInput = (original, cell) => {
+        switch (cell) {
+            case 'name':
+                return original.edit ? (
+                    <Input
+                        placeholder={original.name}
+                        value={original.name}
+                        onChange={e => onChangeInput(e, original, 'name')}
+                    />
+                ) : (
+                    <div>{original.name}</div>
+                );
+            case 'spras':
+                return original.edit ? (
+                    <Input
+                        placeholder={original.spras}
+                        value={original.spras}
+                        onChange={e => onChangeInput(e, original, 'spras')}
+                    />
+                ) : (
+                    <div>{original.spras}</div>
+                );
+            case 'bukrs':
+                return original.edit ? (
+                    <Input
+                        placeholder={original.bukrs}
+                        value={original.bukrs}
+                        onChange={e => onChangeInput(e, original, 'bukrs')}
+                    />
+                ) : (
+                    <div>{original.bukrs}</div>
+                );
         }
     };
 
@@ -117,71 +122,20 @@ export default function TabCompany({ messages, get, post, put, del }) {
             Header: 'Наименование',
             accessor: 'name',
             filterable: true,
-            Cell: ({ original }) => {
-                return original.edit ? (
-                    <div>
-                        <Input
-                            size="mini"
-                            placeholder={original.name}
-                            name="companyName"
-                            value={original.name}
-                            onChange={e =>
-                                onChangeData(e, original, 'companyName')
-                            }
-                        />
-                    </div>
-                ) : (
-                    <div>{original.name}</div>
-                );
-            },
+            Cell: ({ original }) => cellInput(original, 'name'),
         },
-
         {
             Header: 'SPRAS',
             accessor: 'spras',
             filterable: true,
-            Cell: ({ original }) => {
-                return original.edit ? (
-                    <div>
-                        <Input
-                            size="mini"
-                            placeholder={original.spras}
-                            value={original.spras}
-                            name="companyLang"
-                            onChange={e =>
-                                onChangeData(e, original, 'companyLang')
-                            }
-                        />
-                    </div>
-                ) : (
-                    <div>{original.spras}</div>
-                );
-            },
+            Cell: ({ original }) => cellInput(original, 'spras'),
         },
-
         {
             Header: 'BUKRS',
             accessor: 'bukrs',
             filterable: true,
-            Cell: ({ original }) => {
-                return original.edit ? (
-                    <div>
-                        <Input
-                            size="mini"
-                            placeholder={original.bukrs}
-                            value={original.bukrs}
-                            name="companyId"
-                            onChange={e =>
-                                onChangeData(e, original, 'companyId')
-                            }
-                        />
-                    </div>
-                ) : (
-                    <div>{original.bukrs}</div>
-                );
-            },
+            Cell: ({ original }) => cellInput(original, 'bukrs'),
         },
-
         {
             filterable: false,
             Cell: ({ original }) => (
@@ -210,17 +164,6 @@ export default function TabCompany({ messages, get, post, put, del }) {
                             )
                         }
                     />
-                    <Popup
-                        content={messages['Crm.ToDelete']}
-                        trigger={
-                            <Button
-                                icon="remove"
-                                circular
-                                color="red"
-                                onClick={() => onClickDelete(original)}
-                            />
-                        }
-                    />
                 </div>
             ),
         },
@@ -231,22 +174,18 @@ export default function TabCompany({ messages, get, post, put, del }) {
             <ModalAddCompany
                 open={openModal}
                 close={() => setOpenModal(false)}
-                data={data}
+                companyList={companyList}
                 columns={columns}
-                setDataExample={setDataExample}
+                // setDataExample={setDataExample}
             />
 
             <div className="content-top">
                 <h3>Компания</h3>
-                <Button
-                    positive
-                    style={{ width: '164px' }}
-                    onClick={() => setOpenModal(true)}
-                >
+                <Button positive onClick={() => setOpenModal(true)}>
                     Добавить
                 </Button>
             </div>
-            <ReactTableWrapper key={data.id} data={data} columns={columns} />
+            <ReactTableWrapper data={data} columns={columns} />
         </div>
     );
 }

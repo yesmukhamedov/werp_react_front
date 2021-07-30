@@ -1,4 +1,8 @@
-import { FETCH_TEST, CLEAR_TEST } from './werpreferenceActions';
+import {
+    FETCH_COMPANY_LIST,
+    UPDATE_COMPANY,
+    CLEAR_TEST,
+} from './werpreferenceActions';
 
 const INITIAL_STATE = {
     testList: [],
@@ -6,10 +10,15 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case FETCH_TEST:
+        case FETCH_COMPANY_LIST:
             return {
                 ...state,
-                testData: { ...action.data },
+                companyList: [...action.data],
+            };
+        case UPDATE_COMPANY:
+            return {
+                ...state,
+                companyList: [...action.data],
             };
         case CLEAR_TEST:
             return {
