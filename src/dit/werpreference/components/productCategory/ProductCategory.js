@@ -1,91 +1,110 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Popup, Input } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
-// import { ModalAddCategory } from './ModalAddCategory';
+import { errorTableText } from '../../../../utils/helpers';
 
-export const ProductCategory = ({ messages }) => {
-    // const [openModal, setOpenModal] = useState(false);
+export const ProductCategory = props => {
+    const { getList, update, data = [], messages, clear } = props;
+    const [tempData, setTempData] = useState([]);
+    const [addData, setAddData] = useState({
+        code: '',
+        info: '',
+        nameEn: '',
+        nameKk: '',
+        nameRu: '',
+        nameTr: '',
+    });
+    const [error, setError] = useState([]);
 
-    const [data, setData] = useState([
-        {
-            id: 1,
-            code: 123456,
-            note: 'asdf',
-            name_en: 'english',
-            name_kk: 'қазақша',
-            name_ru: 'русский',
-            name_tr: 'turkce',
-            edit: false,
-        },
-        {
-            id: 2,
-            code: 654321,
-            note: 'note',
-            name_en: 'english2',
-            name_kk: 'қазақша2',
-            name_ru: 'русский2',
-            name_tr: 'turkce2',
-            edit: false,
-        },
-    ]);
+    useEffect(() => {
+        getList();
+    }, []);
 
-    const onClickEdit = (original, name) => {
-        switch (name) {
-            case 'save':
-                setData(
-                    data.map(el => {
-                        if (el.id === original.id) {
-                            if (
-                                original.code &&
-                                original.note &&
-                                original.name_en &&
-                                original.name_kk &&
-                                original.name_ru &&
-                                original.name_tr
-                            ) {
-                                el.edit = true;
-                            } else {
-                                el.edit = false;
-                            }
-                        }
-                    }),
-                );
-            case 'pencil':
-                setData(
-                    data.map(el =>
-                        el.id === original.id
-                            ? {
-                                  ...el,
-                                  edit: !original.edit,
-                              }
-                            : el,
-                    ),
-                );
-
-            default:
-                break;
+    useEffect(() => {
+        if (data.length) {
+            data.map(item =>
+                setTempData(prev => [
+                    ...prev,
+                    {
+                        id: item.id,
+                        code: item.code,
+                        info: item.info,
+                        nameEn: item.nameEn,
+                        nameKk: item.nameKk,
+                        nameRu: item.nameRu,
+                        nameTr: item.nameTr,
+                        edit: false,
+                    },
+                ]),
+            );
+        } else {
+            setTempData([]);
         }
+    }, [data]);
+
+    const onClickEdit = original => {
+        setTempData(
+            tempData.map(item =>
+                item.id === original.id
+                    ? {
+                          ...item,
+                          edit: true,
+                      }
+                    : item,
+            ),
+        );
     };
 
-    const onChangeInput = (e, original, fieldName) => {
-        setData(
-            data.map(el => {
-                if (el.id === original.id) {
+    const onClickSave = id => {
+        tempData.map(item => {
+            if (item.id === id) {
+                if (
+                    item.code &&
+                    item.nameEn &&
+                    item.nameKk &&
+                    item.nameRu &&
+                    item.nameTr
+                ) {
+                    update(
+                        {
+                            id: item.id,
+                            code: item.code,
+                            info: item.info,
+                            nameEn: item.nameEn,
+                            nameKk: item.nameKk,
+                            nameRu: item.nameRu,
+                            nameTr: item.nameTr,
+                        },
+                        () => {
+                            clear();
+                            getList();
+                        },
+                    );
+                }
+            }
+        });
+    };
+
+    const onChangeInput = (fieldName, data, value) => {
+        setTempData(
+            tempData.map(el => {
+                if (el.id === data.id) {
                     switch (fieldName) {
                         case 'code':
-                            return { ...el, code: e.target.value };
-                        case 'note':
-                            return { ...el, note: e.target.value };
-                        case 'name_en':
-                            return { ...el, name_en: e.target.value };
-                        case 'name_kk':
-                            return { ...el, name_kk: e.target.value };
-                        case 'name_ru':
-                            return { ...el, name_ru: e.target.value };
-                        case 'name_tr':
-                            return { ...el, name_tr: e.target.value };
+                            // if(value){}
+                            return { ...el, code: value };
+                        case 'info':
+                            return { ...el, info: value };
+                        case 'nameEn':
+                            return { ...el, nameEn: value };
+                        case 'nameKk':
+                            return { ...el, nameKk: value };
+                        case 'nameRu':
+                            return { ...el, nameRu: value };
+                        case 'nameTr':
+                            return { ...el, nameTr: value };
                         default:
-                            return el;
+                            break;
                     }
                 } else {
                     return { ...el };
@@ -94,67 +113,79 @@ export const ProductCategory = ({ messages }) => {
         );
     };
 
-    const cellInput = (original, cell) => {
-        switch (cell) {
+    const cellInput = (original, fieldName) => {
+        switch (fieldName) {
             case 'code':
                 return original.edit ? (
                     <Input
                         placeholder={original.code}
                         value={original.code}
-                        onChange={e => onChangeInput(e, original, 'code')}
+                        onChange={e =>
+                            onChangeInput('code', original, e.target.value)
+                        }
                     />
                 ) : (
                     <div>{original.code}</div>
                 );
-            case 'note':
+            case 'info':
                 return original.edit ? (
                     <Input
-                        placeholder={original.note}
-                        value={original.note}
-                        onChange={e => onChangeInput(e, original, 'note')}
+                        placeholder={original.info}
+                        value={original.info}
+                        onChange={e =>
+                            onChangeInput('info', original, e.target.value)
+                        }
                     />
                 ) : (
-                    <div>{original.note}</div>
+                    <div>{original.info}</div>
                 );
-            case 'name_en':
+            case 'nameEn':
                 return original.edit ? (
                     <Input
-                        placeholder={original.name_en}
-                        value={original.name_en}
-                        onChange={e => onChangeInput(e, original, 'name_en')}
+                        placeholder={original.nameEn}
+                        value={original.nameEn}
+                        onChange={e =>
+                            onChangeInput('nameEn', original, e.target.value)
+                        }
                     />
                 ) : (
-                    <div>{original.name_en}</div>
+                    <div>{original.nameEn}</div>
                 );
-            case 'name_kk':
+            case 'nameKk':
                 return original.edit ? (
                     <Input
-                        placeholder={original.name_kk}
-                        value={original.name_kk}
-                        onChange={e => onChangeInput(e, original, 'name_kk')}
+                        placeholder={original.nameKk}
+                        value={original.nameKk}
+                        onChange={e =>
+                            onChangeInput('nameKk', original, e.target.value)
+                        }
                     />
                 ) : (
-                    <div>{original.name_kk}</div>
+                    <div>{original.nameKk}</div>
                 );
-            case 'name_ru':
+            case 'nameRu':
                 return original.edit ? (
                     <Input
-                        placeholder={original.name_ru}
-                        value={original.name_ru}
-                        onChange={e => onChangeInput(e, original, 'name_ru')}
+                        placeholder={original.nameRu}
+                        value={original.nameRu}
+                        onChange={e =>
+                            onChangeInput('nameRu', original, e.target.value)
+                        }
                     />
                 ) : (
-                    <div>{original.name_ru}</div>
+                    <div>{original.nameRu}</div>
                 );
-            case 'name_tr':
+            case 'nameTr':
                 return original.edit ? (
                     <Input
-                        placeholder={original.name_tr}
-                        value={original.name_tr}
-                        onChange={e => onChangeInput(e, original, 'name_tr')}
+                        placeholder={original.nameTr}
+                        value={original.nameTr}
+                        onChange={e =>
+                            onChangeInput('nameTr', original, e.target.value)
+                        }
                     />
                 ) : (
-                    <div>{original.name_tr}</div>
+                    <div>{original.nameTr}</div>
                 );
         }
     };
@@ -174,62 +205,53 @@ export const ProductCategory = ({ messages }) => {
         },
         {
             Header: 'Примичание',
-            accessor: 'note',
+            accessor: 'info',
             filterable: true,
-            Cell: ({ original }) => cellInput(original, 'note'),
+            Cell: ({ original }) => cellInput(original, 'info'),
         },
         {
             Header: 'Наименование EN',
-            accessor: 'name_en',
+            accessor: 'nameEn',
             filterable: true,
-            Cell: ({ original }) => cellInput(original, 'name_en'),
+            Cell: ({ original }) => cellInput(original, 'nameEn'),
         },
         {
             Header: 'Наименование KK',
-            accessor: 'name_kk',
+            accessor: 'nameKk',
             filterable: true,
-            Cell: ({ original }) => cellInput(original, 'name_kk'),
+            Cell: ({ original }) => cellInput(original, 'nameKk'),
         },
         {
             Header: 'Наименование RU',
-            accessor: 'name_ru',
+            accessor: 'nameRu',
             filterable: true,
-            Cell: ({ original }) => cellInput(original, 'name_ru'),
+            Cell: ({ original }) => cellInput(original, 'nameRu'),
         },
         {
             Header: 'Наименование TR',
-            accessor: 'name_tr',
+            accessor: 'nameTr',
             filterable: true,
-            Cell: ({ original }) => cellInput(original, 'name_tr'),
+            Cell: ({ original }) => cellInput(original, 'nameTr'),
         },
         {
             filterable: false,
             Cell: ({ original }) => (
                 <div style={{ textAlign: 'center' }}>
-                    <Popup
-                        content={messages['BTN_EDIT']}
-                        trigger={
-                            !original.edit ? (
-                                <Button
-                                    icon="pencil"
-                                    circular
-                                    color="yellow"
-                                    onClick={() =>
-                                        onClickEdit(original, 'pencil')
-                                    }
-                                />
-                            ) : (
-                                <Button
-                                    icon="save"
-                                    circular
-                                    color="blue"
-                                    onClick={() =>
-                                        onClickEdit(original, 'save')
-                                    }
-                                />
-                            )
-                        }
-                    />
+                    {original.edit ? (
+                        <Button
+                            icon="save"
+                            circular
+                            color="blue"
+                            onClick={() => onClickSave(original.id)}
+                        />
+                    ) : (
+                        <Button
+                            icon="pencil"
+                            circular
+                            color="yellow"
+                            onClick={() => onClickEdit(original)}
+                        />
+                    )}
                 </div>
             ),
         },
@@ -237,12 +259,12 @@ export const ProductCategory = ({ messages }) => {
 
     return (
         <div>
-            {/* <ModalAddCategory openModal/> */}
+            {/* <ModalAddCategory openModal /> */}
             <div className="content-top">
                 <h3>Категория товара</h3>
                 <Button positive>Добавить</Button>
             </div>
-            <ReactTableWrapper data={data} columns={columns} />
+            <ReactTableWrapper data={tempData} columns={columns} />
         </div>
     );
 };

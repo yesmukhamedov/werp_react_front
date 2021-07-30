@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Icon, Header, Input, Form } from 'semantic-ui-react';
 
 const ModalAddCompany = props => {
-    const { open, close, setDataExample, data = [] } = props;
+    const { open, close, setDataExample, data = [], onChangeAdd } = props;
 
     const initialTempData = {
         id: 0,
@@ -12,23 +12,23 @@ const ModalAddCompany = props => {
         edit: false,
     };
 
-    const [tempData, setTempData] = useState(initialTempData);
+    // const [tempData, setTempData] = useState(initialTempData);
 
-    const onChangeCell = (fieldName, value) => {
-        switch (fieldName) {
-            case 'name':
-                setTempData({ ...tempData, id: data.length + 1, name: value });
-                break;
-            case 'spras':
-                setTempData({ ...tempData, id: data.length + 1, spras: value });
-                break;
-            case 'bukrs':
-                setTempData({ ...tempData, id: data.length + 1, bukrs: value });
-                break;
-            default:
-                break;
-        }
-    };
+    // const onChangeCell = (fieldName, value) => {
+    //     switch (fieldName) {
+    //         case 'name':
+    //             setTempData({ ...tempData, id: data.length + 1, name: value });
+    //             break;
+    //         case 'spras':
+    //             setTempData({ ...tempData, id: data.length + 1, spras: value });
+    //             break;
+    //         case 'bukrs':
+    //             setTempData({ ...tempData, id: data.length + 1, bukrs: value });
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // };
 
     return (
         <Modal closeIcon open={open} onClose={close}>

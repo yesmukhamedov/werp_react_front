@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 
-import { fetchCompanyList, updateCompany } from './werpreferenceActions';
+import {
+    fetchCompanyList,
+    updateCompany,
+    fetchCategoryList,
+    updateCategory,
+    clearCategoryList,
+    createCompany,
+} from './werpreferenceActions';
 import TabCompany from './components/company/TabCompany';
 import { ProductCategory } from './components/productCategory/ProductCategory';
 
@@ -12,6 +19,7 @@ const WerpReference = props => {
         intl: { messages },
         fetchCompanyList,
         companyList = [],
+        categoryList = [],
     } = props;
 
     useEffect(() => {
@@ -23,7 +31,11 @@ const WerpReference = props => {
             menuItem: messages['L__COMPANY'],
             render: () => (
                 <Tab.Pane>
-                    <TabCompany messages={messages} companyList={companyList} />
+                    <TabCompany
+                        messages={messages}
+                        companyList={companyList}
+                        create={createCompany}
+                    />
                 </Tab.Pane>
             ),
         },
@@ -34,7 +46,13 @@ const WerpReference = props => {
             menuItem: messages['product_category'],
             render: () => (
                 <Tab.Pane>
-                    <ProductCategory messages={messages} />
+                    <ProductCategory
+                        messages={messages}
+                        data={categoryList}
+                        getList={props.fetchCategoryList}
+                        update={props.updateCategory}
+                        clear={props.clearCategoryList}
+                    />
                 </Tab.Pane>
             ),
         },
@@ -45,6 +63,7 @@ const WerpReference = props => {
             <Tab
                 menu={{ fluid: true, vertical: true, tabular: true }}
                 panes={panes}
+                defaultActiveIndex={2}
             />
         </div>
     );
@@ -53,10 +72,17 @@ const WerpReference = props => {
 function mapStateToProps(state) {
     return {
         companyList: state.werpreferenceReducer.companyList,
+        categoryList: state.werpreferenceReducer.categoryList,
     };
 }
 
 export default connect(mapStateToProps, {
+    //Company
     fetchCompanyList,
     updateCompany,
+    //Category
+    fetchCategoryList,
+    updateCategory,
+    clearCategoryList,
+    createCompany,
 })(injectIntl(WerpReference));

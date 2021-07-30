@@ -2,6 +2,9 @@ import {
     FETCH_COMPANY_LIST,
     UPDATE_COMPANY,
     CLEAR_TEST,
+    //
+    FETCH_CATEGORY_LIST,
+    CLEAR_CATEGORY_LIST,
 } from './werpreferenceActions';
 
 const INITIAL_STATE = {
@@ -20,11 +23,17 @@ export default function(state = INITIAL_STATE, action) {
                 ...state,
                 companyList: [...action.data],
             };
-        case CLEAR_TEST:
+        case FETCH_CATEGORY_LIST:
             return {
                 ...state,
-                testData: {},
+                categoryList: [...action.data],
             };
+        case CLEAR_CATEGORY_LIST:
+            return {
+                ...state,
+                categoryList: [],
+            };
+
         default:
             return state;
     }
