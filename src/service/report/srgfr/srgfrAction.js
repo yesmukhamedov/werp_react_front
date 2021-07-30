@@ -1,4 +1,4 @@
-import { doGet } from '../../../utils/apiActions';
+import { doGet, doPost } from '../../../utils/apiActions';
 import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
@@ -14,145 +14,185 @@ export const COEFFICIENT_TYPE_MANAGER_BONUS = 'MANAGER_BONUS';
 export const COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS = 'CHIEF_DEPARTMENT_BONUS';
 
 export const fetchReportByCategories = param => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/srgfr/part1`, param)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_REPORT_BY_CATEGORIES,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/srgfr/part1`, param)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_REPORT_BY_CATEGORIES,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 
 export const fetchReportByBranches = param => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/srgfr/part2`, param)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_REPORT_BY_BRANCHES,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/srgfr/part2`, param)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_REPORT_BY_BRANCHES,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 
 export const fetchExchangeRate = () => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/report/coefficients/coefficients`, {
-      type: COEFFICIENT_TYPE_MONEY_RATE,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: COEFFICIENT_TYPE_MONEY_RATE,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/report/coefficients/coefficients`, {
+            type: COEFFICIENT_TYPE_MONEY_RATE,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: COEFFICIENT_TYPE_MONEY_RATE,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 
 export const fetchOperatorByHarvestingSystem = () => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/report/coefficients/coefficients`, {
-      type: COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/report/coefficients/coefficients`, {
+            type: COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 
 export const fetchLogisticsRate = () => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/report/coefficients/coefficients`, {
-      type: COEFFICIENT_TYPE_LOGISTICS_RATE,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: COEFFICIENT_TYPE_LOGISTICS_RATE,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/report/coefficients/coefficients`, {
+            type: COEFFICIENT_TYPE_LOGISTICS_RATE,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: COEFFICIENT_TYPE_LOGISTICS_RATE,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 
 export const fetchBonusOfManager = () => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/report/coefficients/coefficients`, {
-      type: COEFFICIENT_TYPE_MANAGER_BONUS,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: COEFFICIENT_TYPE_MANAGER_BONUS,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/report/coefficients/coefficients`, {
+            type: COEFFICIENT_TYPE_MANAGER_BONUS,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: COEFFICIENT_TYPE_MANAGER_BONUS,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 
 export const fetchBonusOfHeadOfDepartment = () => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/report/coefficients/coefficients`, {
-      type: COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/report/coefficients/coefficients`, {
+            type: COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+export const modifyBonusCoefficient = (params, callback) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(
+            `service/report/coefficients/add_update_bonus_coefficient`,
+            null,
+            params,
+        )
+            .then(() => {
+                dispatch(modifyLoader(false));
+                callback();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+                callback();
+            });
+    };
+};
+
+export const modifyExchangeRateCoefficient = (params, callback) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(
+            `service/report/coefficients/add_update_money_rate_coefficient`,
+            null,
+            params,
+        )
+            .then(() => {
+                dispatch(modifyLoader(false));
+                callback();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+                callback();
+            });
+    };
 };
 
 export function clearAll() {
-  return function(dispatch) {
-    dispatch({
-      type: CLEAR_ALL,
-    });
-  };
+    return function(dispatch) {
+        dispatch({
+            type: CLEAR_ALL,
+        });
+    };
 }
