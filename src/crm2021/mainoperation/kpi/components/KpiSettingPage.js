@@ -135,16 +135,24 @@ class KpiSettingPage extends Component {
   }
 
   deleteSetting = id => {
+    let { bukrs, branchId, month, year, positionId } = this.state;
     if (!window.confirm('Действительно хотите удалить?')) {
       return;
     }
 
-    this.props.deleteItem(id);
+    this.props.deleteItem(id, () => {
+      this.props.fetchItems({
+        bukrs: bukrs,
+        branchId: branchId,
+        year: year,
+        month: month,
+        positionId: positionId,
+      });
+    });
   };
 
   renderDataTable() {
     const { items } = this.props;
-
     return (
       <div>
         <ReactTable

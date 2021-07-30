@@ -78,14 +78,15 @@ export const createItem = (item, refresh) => {
   };
 };
 
-export const deleteItem = id => {
+export const deleteItem = (id, refresh) => {
   return dispatch => {
-    doDelete(`crm2/kpi/setting/${id}`)
+    doDelete(`crm2/kpi-setting/${id}`)
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_DELETED,
           item: data,
         });
+        refresh();
       })
       .catch(error => {
         handleError(error, dispatch);
