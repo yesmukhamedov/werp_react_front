@@ -7,6 +7,7 @@ import {
   toggleKpiSettingFormModal,
   createItem,
   updateItem,
+  fetchItems,
 } from '../actions/kpiSettingAction';
 import YearF4 from '../../../../reference/f4/date/YearF4';
 import MonthF4 from '../../../../reference/f4/date/MonthF4';
@@ -265,7 +266,8 @@ class KpiFormModal extends Component {
 
   saveItem() {
     let { localItem } = this.state;
-    console.log('localitem: ', localItem);
+    let { bukrs, branchId, positionId, year, month } = this.props;
+
     if (
       localItem.id &&
       typeof localItem.id !== 'undefined' &&
@@ -273,7 +275,15 @@ class KpiFormModal extends Component {
     ) {
       this.props.updateItem(localItem);
     } else {
-      this.props.createItem(localItem);
+      this.props.createItem(localItem, () => {
+        this.props.fetchItems({
+          bukrs: bukrs,
+          branchId: branchId,
+          year: year,
+          month: month,
+          positionId: positionId,
+        });
+      });
     }
   }
 
@@ -326,4 +336,5 @@ export default connect(mapStateToProps, {
   toggleKpiSettingFormModal,
   createItem,
   updateItem,
+  fetchItems,
 })(KpiFormModal);

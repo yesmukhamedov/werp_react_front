@@ -235,7 +235,6 @@ class KpiSettingPage extends Component {
 
   renderSearchForm() {
     let { companyOptions } = this.props;
-    console.log('kpisetting: ', this.props);
     return (
       <Form>
         <Form.Group widths="equal">
@@ -268,6 +267,7 @@ class KpiSettingPage extends Component {
   }
 
   render() {
+    let { bukrs, branchId, positionId, year, month } = this.state;
     return (
       <Container
         fluid
@@ -288,7 +288,13 @@ class KpiSettingPage extends Component {
           </Button>
           <Divider clearing />
           <Segment attached>
-            <KpiFormModal />
+            <KpiFormModal
+              bukrs={bukrs}
+              branchId={branchId}
+              year={year}
+              month={month}
+              positionId={positionId}
+            />
             {this.renderDataTable()}
           </Segment>
         </div>
