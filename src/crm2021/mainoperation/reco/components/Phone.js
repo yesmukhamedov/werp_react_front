@@ -51,6 +51,10 @@ import {
 } from '../../call/callConstant';
 import { doGet } from '../../../../utils/apiActions';
 import { modifyLoader } from '../../../../general/loader/loader_action';
+import {
+  stringYYYYMMDDHHMMToMoment,
+  momentToStringYYYYMMDDHHMM,
+} from '../../../../utils/helpers';
 
 require('moment/locale/ru');
 
@@ -65,7 +69,9 @@ class Phone extends Component {
       opened: false,
       buttonLoading: false,
       call: {
-        callDate: moment(),
+        callDate: moment()
+          .format('YYYY-MM-DD HH:mm')
+          .toString(),
       },
       demo: {},
       callContinue: false,
@@ -130,7 +136,9 @@ class Phone extends Component {
 
     doGet(`crm2/call/blank/${this.props.phoneId}`)
       .then(res => {
-        res.data.call.callDate = moment();
+        res.data.call.callDate = moment()
+          .format('YYYY-MM-DD HH:mm')
+          .toString();
         this.setState({
           ...this.state,
           call: res.data.call,
@@ -215,15 +223,19 @@ class Phone extends Component {
               autoComplete="off"
               locale={locale}
               label=""
-              value={this.state.demo.dateTime}
+              value={stringYYYYMMDDHHMMToMoment(this.state.demo.dateTime)}
               placeholderText={messages['Crm.DemoDateTime']}
               showMonthDropdown
               showYearDropdown
               showTimeSelect
               dropdownMode="select"
               dateFormat="DD.MM.YYYY HH:mm"
-              selected={demo.dateTime || null}
-              onChange={v => this.handleDemoForm('dateTime', v)}
+              selected={
+                demo.dateTime ? stringYYYYMMDDHHMMToMoment(demo.dateTime) : null
+              }
+              onChange={v =>
+                this.handleDemoForm('dateTime', momentToStringYYYYMMDDHHMM(v))
+              }
             />
           </Form.Field>
         </Form.Group>
@@ -493,8 +505,10 @@ class Phone extends Component {
               showTimeSelect
               dropdownMode="select"
               dateFormat="DD.MM.YYYY HH:mm"
-              selected={this.state.call.callDate}
-              onChange={v => this.handleChange('callDate', v)}
+              selected={stringYYYYMMDDHHMMToMoment(this.state.call.callDate)}
+              onChange={v =>
+                this.handleChange('callDate', momentToStringYYYYMMDDHHMM(v))
+              }
             />
           </Form.Field>
         </Form.Group>
@@ -805,8 +819,12 @@ class Phone extends Component {
             showTimeSelect
             dropdownMode="select"
             dateFormat="DD.MM.YYYY HH:mm"
-            selected={this.state.call.callRecallDate}
-            onChange={v => this.handleChange('callRecallDate', v)}
+            selected={stringYYYYMMDDHHMMToMoment(
+              this.state.call.callRecallDate,
+            )}
+            onChange={v =>
+              this.handleChange('callRecallDate', momentToStringYYYYMMDDHHMM(v))
+            }
           />
         </Form.Field>
       );
