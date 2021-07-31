@@ -393,7 +393,6 @@ class DemoCreateModal extends Component {
   render() {
     const { openDemoCreateModal } = this.props;
     const { messages, locale } = this.props.intl;
-    console.log('STATE DEMO', this.state);
     return (
       <Modal size="small" open={openDemoCreateModal}>
         <Modal.Header>{messages['Crm.AdditionDemoFromDemo']}</Modal.Header>

@@ -31,9 +31,11 @@ import {
 } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
 import {
+  momentToStringYYYYMMDD,
   momentToStringYYYYMMDDHHMM,
   stringToMoment,
   stringYYYYMMDDHHMMToMoment,
+  stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 
@@ -114,8 +116,10 @@ class DemoUpdateModal extends Component {
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"
-            selected={stringToMoment(this.state.localDemo.saleDate)}
-            onChange={v => this.handleChange('saleDate', v)}
+            selected={stringYYYYMMDDToMoment(this.state.localDemo.saleDate)}
+            onChange={v =>
+              this.handleChange('saleDate', momentToStringYYYYMMDD(v))
+            }
           />
         </Form.Field>
       );
