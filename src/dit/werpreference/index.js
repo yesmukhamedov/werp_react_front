@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
@@ -6,10 +6,12 @@ import { injectIntl } from 'react-intl';
 import {
     fetchCompanyList,
     updateCompany,
+    clearCompanyList,
+    createCompany,
     fetchCategoryList,
     updateCategory,
     clearCategoryList,
-    createCompany,
+    // createCompany,
 } from './werpreferenceActions';
 import TabCompany from './components/company/TabCompany';
 import { ProductCategory } from './components/productCategory/ProductCategory';
@@ -19,12 +21,14 @@ const WerpReference = props => {
         intl: { messages },
         fetchCompanyList,
         companyList = [],
+        clearCompanyList,
+        fetchCategoryList,
         categoryList = [],
+        updateCategory,
+        clearCategoryList,
     } = props;
 
-    useEffect(() => {
-        fetchCompanyList();
-    }, []);
+    const [activeTab, setActiveTab] = useState(0);
 
     const panes = [
         {
@@ -34,7 +38,9 @@ const WerpReference = props => {
                     <TabCompany
                         messages={messages}
                         companyList={companyList}
-                        create={createCompany}
+                        getList={fetchCompanyList}
+                        clear={clearCompanyList}
+                        create={props.createCompany}
                     />
                 </Tab.Pane>
             ),
@@ -48,10 +54,10 @@ const WerpReference = props => {
                 <Tab.Pane>
                     <ProductCategory
                         messages={messages}
-                        data={categoryList}
-                        getList={props.fetchCategoryList}
-                        update={props.updateCategory}
-                        clear={props.clearCategoryList}
+                        categoryList={categoryList}
+                        getList={fetchCategoryList}
+                        update={updateCategory}
+                        clear={clearCategoryList}
                     />
                 </Tab.Pane>
             ),
@@ -63,7 +69,11 @@ const WerpReference = props => {
             <Tab
                 menu={{ fluid: true, vertical: true, tabular: true }}
                 panes={panes}
-                defaultActiveIndex={2}
+                menuposition="right"
+                panes={panes}
+                onTabChange={(event, { activeIndex }) => {
+                    setActiveTab(activeIndex);
+                }}
             />
         </div>
     );
@@ -80,9 +90,13 @@ export default connect(mapStateToProps, {
     //Company
     fetchCompanyList,
     updateCompany,
+    clearCompanyList,
+    createCompany,
+
     //Category
     fetchCategoryList,
     updateCategory,
     clearCategoryList,
-    createCompany,
+
+    // createCompany,
 })(injectIntl(WerpReference));

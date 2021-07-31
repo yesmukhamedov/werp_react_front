@@ -1,28 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Popup, Input } from 'semantic-ui-react';
+import { Button, Input, Popup } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
-import { errorTableText } from '../../../../utils/helpers';
 
 export const ProductCategory = props => {
-    const { getList, update, data = [], messages, clear } = props;
+    const { getList, categoryList, update, clear, messages } = props;
+
+    // const [addData, setAddData] = useState({
+    //     code: '',
+    //     info: '',
+    //     nameEn: '',
+    //     nameKk: '',
+    //     nameRu: '',
+    //     nameTr: '',
+    // });
+
+    // const [error, setError] = useState([]);
+
     const [tempData, setTempData] = useState([]);
-    const [addData, setAddData] = useState({
-        code: '',
-        info: '',
-        nameEn: '',
-        nameKk: '',
-        nameRu: '',
-        nameTr: '',
-    });
-    const [error, setError] = useState([]);
 
     useEffect(() => {
+        clear();
         getList();
     }, []);
 
     useEffect(() => {
-        if (data.length) {
-            data.map(item =>
+        if (categoryList.length) {
+            categoryList.map(item =>
                 setTempData(prev => [
                     ...prev,
                     {
@@ -40,7 +43,7 @@ export const ProductCategory = props => {
         } else {
             setTempData([]);
         }
-    }, [data]);
+    }, [categoryList]);
 
     const onClickEdit = original => {
         setTempData(
@@ -91,7 +94,6 @@ export const ProductCategory = props => {
                 if (el.id === data.id) {
                     switch (fieldName) {
                         case 'code':
-                            // if(value){}
                             return { ...el, code: value };
                         case 'info':
                             return { ...el, info: value };
@@ -237,21 +239,26 @@ export const ProductCategory = props => {
             filterable: false,
             Cell: ({ original }) => (
                 <div style={{ textAlign: 'center' }}>
-                    {original.edit ? (
-                        <Button
-                            icon="save"
-                            circular
-                            color="blue"
-                            onClick={() => onClickSave(original.id)}
-                        />
-                    ) : (
-                        <Button
-                            icon="pencil"
-                            circular
-                            color="yellow"
-                            onClick={() => onClickEdit(original)}
-                        />
-                    )}
+                    <Popup
+                        content={messages['BTN__EDIT']}
+                        trigger={
+                            original.edit ? (
+                                <Button
+                                    icon="save"
+                                    circular
+                                    color="blue"
+                                    onClick={() => onClickSave(original.id)}
+                                />
+                            ) : (
+                                <Button
+                                    icon="pencil"
+                                    circular
+                                    color="yellow"
+                                    onClick={() => onClickEdit(original)}
+                                />
+                            )
+                        }
+                    />
                 </div>
             ),
         },

@@ -3,57 +3,139 @@ import { Button, Popup, Input } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import '../../style.css';
 import ModalAddCompany from './ModalAddCompany';
-import ModalUpdateCompany from './ModalUpdateCompany';
 
 export default function TabCompany({
     messages,
-    companyList,
-    get,
+    companyList = [],
+    getList,
+    clear,
     create,
-    put,
-    del,
+    update,
 }) {
     const [openModal, setOpenModal] = useState(false);
-
-    const [data, setData] = useState([]);
-    const [addData, setAddData] = useState({
-        name: '',
-        spras: '',
-        bukrs: 0,
-    });
-
-    const onChangeAdd = (fieldName, value) => {
-        switch (fieldName) {
-            case 'name':
-                setAddData({ ...tempData, name: value });
-                break;
-            case 'spras':
-                setAddData({ ...tempData, spras: value });
-                break;
-            case 'bukrs':
-                setAddData({ ...tempData, bukrs: value });
-                break;
-            default:
-                break;
-        }
-    };
+    const [tempData, setTempData] = useState([]);
 
     useEffect(() => {
-        companyList.map(item => {
-            setData(el => [
-                ...el,
-                {
-                    name: item.name,
-                    spras: item.spras,
-                    bukrs: item.bukrs,
-                    edit: false,
-                },
-            ]);
-        });
+        clear();
+        setTempData([]);
+        getList();
+    }, []);
+
+    useEffect(() => {
+        if (companyList.length > 0) {
+            companyList.map(item =>
+                setTempData(prev => {
+                    return [
+                        ...prev,
+                        {
+                            name: item.name,
+                            spras: item.spras,
+                            bukrs: item.bukrs,
+                            edit: false,
+                        },
+                    ];
+                }),
+            );
+        } else setTempData([]);
     }, [companyList]);
 
-    const getData = e => {
-        console.log(e);
+    const clearTempData = () => {
+        setTempData([]);
+    };
+
+    const onClickEdit = original => {
+        setTempData(
+            tempData.map(item =>
+                item.id === original.id
+                    ? {
+                          ...item,
+                          edit: true,
+                      }
+                    : item,
+            ),
+        );
+    };
+
+    const onClickSave = id => {
+        tempData.map(item => {
+            if (item.id === id) {
+                if (item.name && item.spras && item.bukrs) {
+                    update(
+                        {
+                            name: item.name,
+                            spras: item.spras,
+                            bukrs: item.bukrs,
+                        },
+                        () => {
+                            clear();
+                            getList();
+                        },
+                    );
+                }
+            }
+        });
+    };
+
+    const onChangeInput = (fieldName, data, value) => {
+        setTempData(
+            tempData.map(el => {
+                if (el.id === data.id) {
+                    switch (fieldName) {
+                        case 'name':
+                            return { ...el, name: value };
+                        case 'spras':
+                            return { ...el, spras: value };
+                        case 'bukrs':
+                            return { ...el, bukrs: value };
+                        default:
+                            break;
+                    }
+                } else {
+                    return { ...el };
+                }
+            }),
+        );
+    };
+
+    const cellInput = (original, fieldName) => {
+        switch (fieldName) {
+            case 'name':
+                return original.edit ? (
+                    <Input
+                        placeholder={original.name}
+                        value={original.name}
+                        onChange={e =>
+                            onChangeInput('name', original, e.target.value)
+                        }
+                    />
+                ) : (
+                    <div>{original.name}</div>
+                );
+            case 'spras':
+                return original.edit ? (
+                    <Input
+                        placeholder={original.spras}
+                        value={original.isprasnsprasfo}
+                        onChange={e =>
+                            onChangeInput('spras', original, e.target.value)
+                        }
+                    />
+                ) : (
+                    <div>{original.spras}</div>
+                );
+            case 'bukrs':
+                return original.edit ? (
+                    <Input
+                        placeholder={original.bukrs}
+                        value={original.bukrs}
+                        onChange={e =>
+                            onChangeInput('bukrs', original, e.target.value)
+                        }
+                    />
+                ) : (
+                    <div>{original.bukrs}</div>
+                );
+        }
     };
 
     const columns = [
@@ -61,19 +143,19 @@ export default function TabCompany({
             Header: 'Наименование',
             accessor: 'name',
             filterable: true,
-            Cell: ({ original }) => <div>{original.name}</div>,
+            Cell: ({ original }) => cellInput(original, 'name'),
         },
         {
             Header: 'SPRAS',
             accessor: 'spras',
             filterable: true,
-            Cell: ({ original }) => <div>{original.spras}</div>,
+            Cell: ({ original }) => cellInput(original, 'spras'),
         },
         {
             Header: 'BUKRS',
             accessor: 'bukrs',
             filterable: true,
-            Cell: ({ original }) => <div>{original.bukrs}</div>,
+            Cell: ({ original }) => cellInput(original, 'bukrs'),
         },
         {
             filterable: false,
@@ -82,12 +164,21 @@ export default function TabCompany({
                     <Popup
                         content={messages['BTN__EDIT']}
                         trigger={
-                            <Button
-                                icon="pencil"
-                                circular
-                                color="yellow"
-                                onClick={e => getData(e)}
-                            />
+                            original.edit ? (
+                                <Button
+                                    icon="save"
+                                    circular
+                                    color="blue"
+                                    onClick={() => onClickSave(original.id)}
+                                />
+                            ) : (
+                                <Button
+                                    icon="pencil"
+                                    circular
+                                    color="yellow"
+                                    onClick={() => onClickEdit(original)}
+                                />
+                            )
                         }
                     />
                 </div>
@@ -100,16 +191,10 @@ export default function TabCompany({
             <ModalAddCompany
                 open={openModal}
                 close={() => setOpenModal(false)}
-                companyList={companyList}
-                columns={columns}
-                onChangeAdd={onChangeAdd}
-            />
-
-            <ModalUpdateCompany
-                open={openModal}
-                close={() => setOpenModal(false)}
-                columns={columns}
-                data={data}
+                create={create}
+                getList={getList}
+                clear={clear}
+                clearTempData={clearTempData}
             />
 
             <div className="content-top">
@@ -117,7 +202,6 @@ export default function TabCompany({
                 <Button
                     positive
                     onClick={() => {
-                        //create();
                         setOpenModal(true);
                     }}
                 >
@@ -125,7 +209,7 @@ export default function TabCompany({
                 </Button>
             </div>
 
-            <ReactTableWrapper data={data} columns={columns} />
+            <ReactTableWrapper data={tempData} columns={columns} />
         </div>
     );
 }

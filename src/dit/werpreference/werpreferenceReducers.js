@@ -1,8 +1,8 @@
 import {
+    //company
     FETCH_COMPANY_LIST,
-    UPDATE_COMPANY,
-    CLEAR_TEST,
-    //
+    CLEAR_COMPANY_LIST,
+    //category
     FETCH_CATEGORY_LIST,
     CLEAR_CATEGORY_LIST,
 } from './werpreferenceActions';
@@ -18,10 +18,10 @@ export default function(state = INITIAL_STATE, action) {
                 ...state,
                 companyList: [...action.data],
             };
-        case UPDATE_COMPANY:
+        case CLEAR_COMPANY_LIST:
             return {
                 ...state,
-                companyList: [...action.data],
+                companyList: [],
             };
         case FETCH_CATEGORY_LIST:
             return {

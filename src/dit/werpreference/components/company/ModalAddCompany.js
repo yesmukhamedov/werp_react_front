@@ -2,33 +2,43 @@ import React, { useState } from 'react';
 import { Modal, Button, Icon, Header, Input, Form } from 'semantic-ui-react';
 
 const ModalAddCompany = props => {
-    const { open, close, setDataExample, data = [], onChangeAdd } = props;
+    const { open, close, create, getList, clear, clearTempData } = props;
 
-    const initialTempData = {
-        id: 0,
+    const initialCompany = {
         name: '',
         spras: '',
         bukrs: 0,
-        edit: false,
     };
+    const [company, setCompany] = useState(initialCompany);
 
-    // const [tempData, setTempData] = useState(initialTempData);
+    const onChangeAdd = (fieldName, value) => {
+        switch (fieldName) {
+            case 'name':
+                setCompany({ ...company, name: value });
 
-    // const onChangeCell = (fieldName, value) => {
-    //     switch (fieldName) {
-    //         case 'name':
-    //             setTempData({ ...tempData, id: data.length + 1, name: value });
-    //             break;
-    //         case 'spras':
-    //             setTempData({ ...tempData, id: data.length + 1, spras: value });
-    //             break;
-    //         case 'bukrs':
-    //             setTempData({ ...tempData, id: data.length + 1, bukrs: value });
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // };
+                break;
+            case 'spras':
+                setCompany({ ...company, spras: value });
+                break;
+
+            case 'bukrs':
+                setCompany({ ...company, bukrs: value });
+                break;
+
+            default:
+                break;
+        }
+    };
+    const saveCompany = () => {
+        if (company.name && company.spras && company.bukrs) {
+            create(company, () => {
+                clear();
+                clearTempData();
+                getList();
+                close();
+            });
+        }
+    };
 
     return (
         <Modal closeIcon open={open} onClose={close}>
@@ -39,18 +49,16 @@ const ModalAddCompany = props => {
                         <label>Наименование</label>
                         <Input
                             placeholder="Name"
-                            value={data.name}
-                            onChange={e => onChangeCell('name', e.target.value)}
+                            value={company.name}
+                            onChange={e => onChangeAdd('name', e.target.value)}
                         />
                     </Form.Field>
                     <Form.Field>
                         <label>Spras</label>
                         <Input
                             placeholder="Spras"
-                            value={data.spras}
-                            onChange={e =>
-                                onChangeCell('spras', e.target.value)
-                            }
+                            value={company.spras}
+                            onChange={e => onChangeAdd('spras', e.target.value)}
                         />
                     </Form.Field>
                     <Form.Field>
@@ -58,9 +66,8 @@ const ModalAddCompany = props => {
                         <Input
                             type="number"
                             placeholder="Bukrs"
-                            onChange={e =>
-                                onChangeCell('bukrs', e.target.value)
-                            }
+                            value={company.bukrs}
+                            onChange={e => onChangeAdd('bukrs', e.target.value)}
                         />
                     </Form.Field>
                 </Form>
@@ -69,13 +76,7 @@ const ModalAddCompany = props => {
                 <Button color="red" onClick={close}>
                     <Icon name="remove" /> No
                 </Button>
-                <Button
-                    color="green"
-                    onClick={() => {
-                        setDataExample(tempData);
-                        setTempData(initialTempData);
-                    }}
-                >
+                <Button color="green" onClick={() => saveCompany()}>
                     <Icon name="checkmark" /> Сохранить
                 </Button>
             </Modal.Actions>
