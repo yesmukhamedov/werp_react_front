@@ -12,6 +12,10 @@ import {
 } from '../actions/visitAction';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import {
+  momentToStringYYYYMMDD,
+  stringYYYYMMDDToMoment,
+} from '../../../../utils/helpers';
 
 const errorBlockCss = {
   display: 'flex',
@@ -96,9 +100,15 @@ class VisitCreateModal extends Component {
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
-              dateFormat="DD.MM.YYYY"
-              selected={localVisit.docDate ? moment(localVisit.docDate) : null}
-              onChange={v => this.handleChange('docDate', v)}
+              // dateFormat="DD.MM.YYYY"
+              selected={
+                localVisit.docDate
+                  ? stringYYYYMMDDToMoment(localVisit.docDate)
+                  : null
+              }
+              onChange={v =>
+                this.handleChange('docDate', momentToStringYYYYMMDD(v))
+              }
             />
             {errors.docDate ? (
               <div style={errorBlockCss}>{errors.docDate}</div>
@@ -260,6 +270,7 @@ class VisitCreateModal extends Component {
   render() {
     const { modalOpened } = this.props;
     const { messages } = this.props.intl;
+    console.log('localVisit', this.state.localVisit);
     return (
       <Modal size="small" open={modalOpened}>
         <Modal.Header>
