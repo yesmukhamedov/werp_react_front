@@ -18,6 +18,7 @@ class MonthF4 extends Component {
   render() {
     return (
       <Form.Select
+        required={this.props.required}
         defaultValue={currentDate.getMonth() + 1}
         name="month"
         label="Месяц"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Button } from 'semantic-ui-react';
+import { Modal, Form, Button, Message } from 'semantic-ui-react';
 import _ from 'lodash';
 import 'react-datepicker/dist/react-datepicker.css';
 import { connect } from 'react-redux';
@@ -22,6 +22,11 @@ class KpiFormModal extends Component {
         id: -1,
       },
       errors: {
+        bukrs: false,
+        branchId: false,
+        positionId: false,
+        itemValue: false,
+        itemPoint: false,
         dealerId: false,
         resultId: false,
         reasonId: false,
@@ -58,13 +63,47 @@ class KpiFormModal extends Component {
     return out;
   };
 
+  validateForm() {
+    const { localItem, errors } = this.state;
+    const { indicators } = this.props;
+
+    for (const k in errors) {
+      if (errors.hasOwnProperty(k)) {
+        errors[k] = false;
+      }
+    }
+
+    if (!localItem.bukrs || localItem.bukrs === null) {
+      errors.bukrs = true;
+    }
+
+    if (!localItem.branchId || localItem.branchId === null) {
+      errors.branchId = true;
+    }
+
+    if (!localItem.positionId || localItem.positionId === null) {
+      errors.positionId = true;
+    }
+
+    if (!localItem.items || localItem.items === null) {
+    }
+
+    this.setState({
+      ...this.state,
+      errors,
+    });
+  }
+
   renderUpdateForm() {
     let { companyOptions } = this.props;
-    let { localItem } = this.state;
+    let { localItem, errors } = this.state;
+
     return (
       <Form>
         <Form.Group widths="equal">
           <Form.Select
+            required
+            error={errors.bukrs}
             name="bukrs"
             label="Компания"
             options={companyOptions}
@@ -74,6 +113,8 @@ class KpiFormModal extends Component {
           />
 
           <Form.Select
+            required
+            error={errors.branchId}
             name="branchId"
             value={localItem.branchId}
             search={true}
@@ -85,14 +126,17 @@ class KpiFormModal extends Component {
           />
 
           <YearF4
+            required
             value={localItem.year}
             handleChange={this.handleDropdownChange}
           />
           <MonthF4
+            required
             value={localItem.month}
             handleChange={this.handleDropdownChange}
           />
           <PositionF4
+            error={errors.positionId}
             value={localItem.positionId}
             handleChange={this.handleDropdownChange}
           />
@@ -174,6 +218,7 @@ class KpiFormModal extends Component {
           />
 
           <Form.Input
+            error={this.state.itemValue}
             onChange={(e, o) => this.handleIndicatorChange('value', idx, o)}
             name="value"
             label="План"
@@ -182,6 +227,7 @@ class KpiFormModal extends Component {
           />
 
           <Form.Input
+            error={this.state.itemPoint}
             onChange={(e, o) => this.handleIndicatorChange('point', idx, o)}
             name="point"
             label="Балл"
@@ -265,6 +311,19 @@ class KpiFormModal extends Component {
   }
 
   saveItem() {
+    console.log('LOCALITEM', this.state.localItem);
+    this.validateForm();
+    let isValid = true;
+
+    for (const k in this.state.errors) {
+      if (this.state.errors[k]) {
+        isValid = false;
+      }
+    }
+
+    if (!isValid) {
+      return;
+    }
     let { localItem } = this.state;
     let {
       branchId,

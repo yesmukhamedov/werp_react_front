@@ -194,6 +194,14 @@ const AsyncRecoCurrentPage2021 = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRecosListPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecosListPage' /* webpackChunkName: "AsyncRecosListPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRecoArchivePage = Loadable({
   loader: () =>
     import(
@@ -439,6 +447,14 @@ const AsyncCrmReportPage = Loadable({
   loader: () =>
     import(
       '../crm/report/general/components/CrmReportPage' /* webpackChunkName: "CrmReportPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncCrmReportPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/report/general/components/CrmReportPage' /* webpackChunkName: "CrmReportPage2021" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -1202,6 +1218,7 @@ const getComponent = {
   Prcltgs: AsyncPrcltgs,
   CrmRecoCurrent: AsyncRecoCurrentPage,
   CrmRecoCurrent2021: AsyncRecoCurrentPage2021,
+  CrmRecoList2021: AsyncRecosListPage2021,
   CrmRecoArchive: AsyncRecoArchivePage,
   CrmRecoArchive2021: AsyncRecoArchivePage2021,
   CrmRecoCreate: AsyncRecoCreatePage,
@@ -1226,6 +1243,7 @@ const getComponent = {
   HrStaffView: AsyncStaffViewPage,
   HrTimesheetPage: AsyncHrTimesheetPage,
   CrmReportPage: AsyncCrmReportPage,
+  CrmReportPage2021: AsyncCrmReportPage2021,
   HrReportPage: AsyncHrReportPage,
   Ccaslt: AsyncContractListPage,
   Ccasao: AsyncSOContractListPage,
@@ -1325,6 +1343,10 @@ const generateRoutes = transactionRoutes => {
       {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
+      <Route
+        path="/crm2021/report/view/:id"
+        component={AsyncCrmReportPage2021}
+      />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />

@@ -19,6 +19,7 @@ class YearF4 extends Component {
   render() {
     return (
       <Form.Select
+        required={this.props.required}
         defaultValue={currentDate.getFullYear()}
         name="year"
         label="Год"

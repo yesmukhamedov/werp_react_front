@@ -141,8 +141,8 @@ class KpiRatingReportPage extends Component {
             },
             {
               Header: 'Набранный бал',
-              id: 'totalScore',
-              accessor: 'totalScore',
+              id: 'totalAverageScore',
+              accessor: 'totalAverageScore',
               maxWidth: 150,
             },
           ]}

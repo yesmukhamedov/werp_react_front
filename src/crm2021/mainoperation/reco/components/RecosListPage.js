@@ -1,0 +1,48 @@
+import React, { useEffect, useState } from 'react';
+import { Card } from 'semantic-ui-react';
+import { fetchDemo, fetchDemoChildRecos } from '../../demo/actions/demoAction';
+import MiniRecoCard from '../components/MiniRecoCard';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+
+function RecosListPage(props) {
+  const {
+    intl: { messages },
+    demo,
+    items,
+  } = props;
+
+  const [state, setState] = useState({
+    items: [],
+  });
+
+  useEffect(() => {
+    const id = parseInt(props.match.params.id, 10);
+    props.fetchDemo(id);
+    props.fetchDemoChildRecos(id);
+  }, []);
+
+  if (!items) {
+    return <h3>Нет данных!</h3>;
+  }
+
+  return (
+    <Card.Group>
+      {items.map(item => (
+        <MiniRecoCard messages={messages} key={item.id} item={item} />
+      ))}
+    </Card.Group>
+  );
+}
+
+function mapStateToProps(state) {
+  return {
+    demo: state.crmDemo2021.demo,
+    items: state.crmDemo2021.childRecos,
+  };
+}
+
+export default connect(mapStateToProps, {
+  fetchDemo,
+  fetchDemoChildRecos,
+})(injectIntl(RecosListPage));
