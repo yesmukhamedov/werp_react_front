@@ -142,7 +142,6 @@ class DemoUpdateModal extends Component {
             placeholderText={messages['Crm.RecallDateTime']}
             showMonthDropdown
             showYearDropdown
-            showTimeSelect
             dropdownMode="select"
             dateFormat="DD.MM.YYYY HH:mm"
             selected={
@@ -187,7 +186,7 @@ class DemoUpdateModal extends Component {
               showYearDropdown
               showTimeSelect
               dropdownMode="select"
-              dateFormat="DD.MM.YYYY HH:mm"
+              dateFormat="DD-MM-YYYY HH:mm"
               selected={stringYYYYMMDDHHMMToMoment(localDemo.dateTime)}
               onChange={v =>
                 this.handleChange('dateTime', momentToStringYYYYMMDDHHMM(v))
