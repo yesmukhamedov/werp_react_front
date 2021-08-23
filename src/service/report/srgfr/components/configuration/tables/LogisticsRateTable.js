@@ -1,27 +1,41 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
-import TextAlignCenter from '../../../../../utils/TextAlignCenter';
+import ReactTableWrapper from '../../../../../../utils/ReactTableWrapper';
+import TextAlignCenter from '../../../../../../utils/TextAlignCenter';
 
-const LogisticsRateTable = ({ data, intl: { messages } }) => {
+const textWithMultipleLines = text => (
+    <div className="text-wrap" style={{ textAlign: 'center' }}>
+        {text}
+    </div>
+);
+
+const LogisticsRateTable = ({ data, intl: { messages }, edit }) => {
     const columns = [
         {
-            Header: 'id',
+            Header: '#',
             accessor: 'id',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
-            Header: messages['TBL_H__DATE'],
+            Header: textWithMultipleLines(messages['TBL_H__DATE']),
             accessor: 'dateOpen',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
-            Header: 'percentAmount',
+            Header: textWithMultipleLines(messages['logistics_rate']),
             accessor: 'percentAmount',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
+        },
+        {
+            Header: textWithMultipleLines(messages['BTN__EDIT']),
+            filterable: false,
+            fixed: 'right',
+            Cell: ({ row }) => (
+                <div style={{ textAlign: 'center' }}>{edit(row)}</div>
+            ),
         },
     ];
 

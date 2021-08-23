@@ -2,18 +2,22 @@ import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Modal, Button, Form, Input } from 'semantic-ui-react';
+import { Modal, Button, Form, Input, Icon } from 'semantic-ui-react';
 import {
     momentToStringYYYYMMDDHHMMSS,
+    moneyFormat,
+    moneyInputHanler,
     stringYYYYMMDDHHMMSSToMoment,
-} from '../../../../../utils/helpers';
+} from '../../../../../../utils/helpers';
 
-const CreateBonusCoefficient = props => {
+const BonusCoefficientModal = props => {
     const {
         intl: { messages },
         type,
         locale,
         save,
+        create,
+        modify,
     } = props;
 
     const [open, setOpen] = useState(false);
@@ -32,7 +36,6 @@ const CreateBonusCoefficient = props => {
     });
 
     const onClose = () => {
-        // First off clean params
         setParams({
             bonusAmount: null,
             dateOpen: null,
@@ -41,7 +44,6 @@ const CreateBonusCoefficient = props => {
             type: type,
         });
 
-        // And Then close the modal window
         setOpen(false);
     };
 
@@ -71,11 +73,26 @@ const CreateBonusCoefficient = props => {
     return (
         <Modal
             onClose={() => onClose()}
-            onOpen={() => setOpen(true)}
+            onOpen={() => {
+                setOpen(true);
+                if (modify) {
+                    setParams({ ...props.modify, type: type });
+                }
+            }}
             open={open}
-            trigger={<Button primary>{messages['create']}</Button>}
+            trigger={
+                create ? (
+                    <Button secondary>{messages['create']}</Button>
+                ) : (
+                    <Button secondary icon>
+                        <Icon name="edit" />
+                    </Button>
+                )
+            }
         >
-            <Modal.Header>{messages['create']}</Modal.Header>
+            <Modal.Header>
+                {create ? messages['create'] : messages['BTN__EDIT']}
+            </Modal.Header>
 
             <Modal.Content>
                 <Form>
@@ -85,17 +102,17 @@ const CreateBonusCoefficient = props => {
                             onChange={e =>
                                 setParams({
                                     ...params,
-                                    bonusAmount: parseFloat(e.target.value),
+                                    bonusAmount: parseFloat(
+                                        moneyInputHanler(e.target.value, 2),
+                                    ),
                                 })
                             }
-                            value={params.bonusAmount}
-                            type="number"
-                            required
+                            value={moneyFormat(params.bonusAmount)}
                         />
                     </Form.Field>
 
                     <Form.Field error={errors.dateOpen} required>
-                        <label>{messages['Crm.DemoDateTime']}</label>
+                        <label>{messages['Task.StartDate']}</label>
                         <DatePicker
                             locale={locale}
                             autoComplete="off"
@@ -128,12 +145,12 @@ const CreateBonusCoefficient = props => {
                             onChange={e =>
                                 setParams({
                                     ...params,
-                                    fromPercent: parseFloat(e.target.value),
+                                    fromPercent: parseFloat(
+                                        moneyInputHanler(e.target.value, 2),
+                                    ),
                                 })
                             }
-                            value={params.fromPercent}
-                            type="number"
-                            required
+                            value={moneyFormat(params.fromPercent)}
                         />
                     </Form.Field>
 
@@ -143,12 +160,12 @@ const CreateBonusCoefficient = props => {
                             onChange={e =>
                                 setParams({
                                     ...params,
-                                    toPercent: parseFloat(e.target.value),
+                                    toPercent: parseFloat(
+                                        moneyInputHanler(e.target.value, 2),
+                                    ),
                                 })
                             }
-                            value={params.toPercent}
-                            type="number"
-                            required
+                            value={moneyFormat(params.toPercent)}
                         />
                     </Form.Field>
                 </Form>
@@ -175,4 +192,4 @@ const CreateBonusCoefficient = props => {
     );
 };
 
-export default injectIntl(CreateBonusCoefficient);
+export default injectIntl(BonusCoefficientModal);

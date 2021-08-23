@@ -13,13 +13,16 @@ import {
     COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
     COEFFICIENT_TYPE_MONEY_RATE,
     modifyExchangeRateCoefficient,
+    COEFFICIENT_TYPE_LOGISTICS_RATE,
+    modifyLogisticsRateCoefficient,
 } from '../../srgfrAction';
 import { Divider, Accordion, Icon, Rail } from 'semantic-ui-react';
-import ExchangeRateTable from './ExchangeRateTable';
-import BonusTable from './BonusTable';
-import LogisticsRateTable from './LogisticsRateTable';
-import CreateBonusCoefficient from './CreateBonusCoefficient';
-import CreateExchangeRateCoefficient from './CreateExchangeRateCoefficient';
+import ExchangeRateTable from './tables/ExchangeRateTable';
+import BonusTable from './tables/BonusTable';
+import LogisticsRateTable from './tables/LogisticsRateTable';
+import BonusCoefficientModal from './modalWindows/BonusCoefficientModal';
+import ExchangeRateCoefficientModal from './modalWindows/ExchangeRateCoefficientModal';
+import LogisticsRateCoefficientModal from './modalWindows/LogisticsRateCoefficientModal';
 
 const Configuration = props => {
     const {
@@ -33,6 +36,7 @@ const Configuration = props => {
         currencies = [],
         modifyBonusCoefficient,
         modifyExchangeRateCoefficient,
+        modifyLogisticsRateCoefficient,
     } = props;
 
     const [activeIndex, setActiveIndex] = useState();
@@ -63,10 +67,11 @@ const Configuration = props => {
                 </Accordion.Title>
 
                 <Accordion.Content active={activeIndex === 0}>
-                    <CreateExchangeRateCoefficient
+                    <ExchangeRateCoefficientModal
                         type={COEFFICIENT_TYPE_MONEY_RATE}
                         locale={language}
                         currencies={currencies}
+                        create
                         save={params => {
                             modifyExchangeRateCoefficient(params, () => {
                                 props.fetchExchangeRate();
@@ -75,7 +80,32 @@ const Configuration = props => {
                     />
                     <br />
                     <br />
-                    <ExchangeRateTable data={exchangeRate} />
+                    <ExchangeRateTable
+                        data={exchangeRate}
+                        language={language}
+                        edit={row => (
+                            <ExchangeRateCoefficientModal
+                                type={COEFFICIENT_TYPE_MONEY_RATE}
+                                locale={language}
+                                currencies={currencies}
+                                modify={{
+                                    id: row._original.id,
+                                    amount: row._original.amount,
+                                    dateOpen: row._original.dateOpen,
+                                    fromCurrency: row._original.fromCurrency,
+                                    toCurrency: row._original.toCurrency,
+                                }}
+                                save={params => {
+                                    modifyExchangeRateCoefficient(
+                                        params,
+                                        () => {
+                                            props.fetchExchangeRate();
+                                        },
+                                    );
+                                }}
+                            />
+                        )}
+                    />
                 </Accordion.Content>
 
                 <Accordion.Title
@@ -88,7 +118,7 @@ const Configuration = props => {
                 </Accordion.Title>
 
                 <Accordion.Content active={activeIndex === 1}>
-                    <CreateBonusCoefficient
+                    <BonusCoefficientModal
                         type={COEFFICIENT_TYPE_VC_OPERATOR_BONUS}
                         locale={language}
                         save={params => {
@@ -96,10 +126,31 @@ const Configuration = props => {
                                 props.fetchOperatorByHarvestingSystem();
                             });
                         }}
+                        create
                     />
                     <br />
                     <br />
-                    <BonusTable data={operatorByHarvestingSystem} />
+                    <BonusTable
+                        data={operatorByHarvestingSystem}
+                        edit={row => (
+                            <BonusCoefficientModal
+                                type={COEFFICIENT_TYPE_VC_OPERATOR_BONUS}
+                                locale={language}
+                                save={params => {
+                                    modifyBonusCoefficient(params, () => {
+                                        props.fetchOperatorByHarvestingSystem();
+                                    });
+                                }}
+                                modify={{
+                                    id: row._original.id,
+                                    bonusAmount: row._original.bonusAmount,
+                                    dateOpen: row._original.dateOpen,
+                                    fromPercent: row._original.fromPercent,
+                                    toPercent: row._original.toPercent,
+                                }}
+                            />
+                        )}
+                    />
                 </Accordion.Content>
 
                 <Accordion.Title
@@ -112,7 +163,40 @@ const Configuration = props => {
                 </Accordion.Title>
 
                 <Accordion.Content active={activeIndex === 2}>
-                    <LogisticsRateTable data={logisticsRate} />
+                    <LogisticsRateCoefficientModal
+                        type={COEFFICIENT_TYPE_LOGISTICS_RATE}
+                        locale={language}
+                        save={params => {
+                            modifyLogisticsRateCoefficient(params, () => {
+                                props.fetchLogisticsRate();
+                            });
+                        }}
+                        create
+                    />
+                    <br />
+                    <br />
+                    <LogisticsRateTable
+                        data={logisticsRate}
+                        edit={row => (
+                            <LogisticsRateCoefficientModal
+                                type={COEFFICIENT_TYPE_LOGISTICS_RATE}
+                                locale={language}
+                                save={params => {
+                                    modifyLogisticsRateCoefficient(
+                                        params,
+                                        () => {
+                                            props.fetchLogisticsRate();
+                                        },
+                                    );
+                                }}
+                                modify={{
+                                    id: row._original.id,
+                                    dateOpen: row._original.dateOpen,
+                                    percentAmount: row._original.percentAmount,
+                                }}
+                            />
+                        )}
+                    />
                 </Accordion.Content>
 
                 <Accordion.Title
@@ -125,7 +209,7 @@ const Configuration = props => {
                 </Accordion.Title>
 
                 <Accordion.Content active={activeIndex === 3}>
-                    <CreateBonusCoefficient
+                    <BonusCoefficientModal
                         type={COEFFICIENT_TYPE_MANAGER_BONUS}
                         locale={language}
                         save={params => {
@@ -133,10 +217,31 @@ const Configuration = props => {
                                 props.fetchBonusOfManager();
                             });
                         }}
+                        create
                     />
                     <br />
                     <br />
-                    <BonusTable data={bonusOfManager} />
+                    <BonusTable
+                        data={bonusOfManager}
+                        edit={row => (
+                            <BonusCoefficientModal
+                                type={COEFFICIENT_TYPE_MANAGER_BONUS}
+                                locale={language}
+                                save={params => {
+                                    modifyBonusCoefficient(params, () => {
+                                        props.fetchBonusOfManager();
+                                    });
+                                }}
+                                modify={{
+                                    id: row._original.id,
+                                    bonusAmount: row._original.bonusAmount,
+                                    dateOpen: row._original.dateOpen,
+                                    fromPercent: row._original.fromPercent,
+                                    toPercent: row._original.toPercent,
+                                }}
+                            />
+                        )}
+                    />
                 </Accordion.Content>
 
                 <Accordion.Title
@@ -149,7 +254,7 @@ const Configuration = props => {
                 </Accordion.Title>
 
                 <Accordion.Content active={activeIndex === 4}>
-                    <CreateBonusCoefficient
+                    <BonusCoefficientModal
                         type={COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS}
                         locale={language}
                         save={params => {
@@ -157,10 +262,32 @@ const Configuration = props => {
                                 props.fetchBonusOfHeadOfDepartment();
                             });
                         }}
+                        create
                     />
                     <br />
                     <br />
-                    <BonusTable data={bonusOfHeadOfDepartment} />
+                    <BonusTable
+                        data={bonusOfHeadOfDepartment}
+                        edit={row => (
+                            <BonusCoefficientModal
+                                type={COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS}
+                                locale={language}
+                                save={params => {
+                                    console.log(params);
+                                    modifyBonusCoefficient(params, () => {
+                                        props.fetchBonusOfHeadOfDepartment();
+                                    });
+                                }}
+                                modify={{
+                                    id: row._original.id,
+                                    bonusAmount: row._original.bonusAmount,
+                                    dateOpen: row._original.dateOpen,
+                                    fromPercent: row._original.fromPercent,
+                                    toPercent: row._original.toPercent,
+                                }}
+                            />
+                        )}
+                    />
                 </Accordion.Content>
             </Accordion>
         </>
@@ -181,4 +308,5 @@ export default connect(mapStateToProps, {
     fetchBonusOfHeadOfDepartment,
     modifyBonusCoefficient,
     modifyExchangeRateCoefficient,
+    modifyLogisticsRateCoefficient,
 })(injectIntl(Configuration));

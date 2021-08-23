@@ -189,6 +189,26 @@ export const modifyExchangeRateCoefficient = (params, callback) => {
     };
 };
 
+export const modifyLogisticsRateCoefficient = (params, callback) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(
+            `service/report/coefficients/add_update_logistics_coefficient`,
+            null,
+            params,
+        )
+            .then(() => {
+                dispatch(modifyLoader(false));
+                callback();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+                callback();
+            });
+    };
+};
+
 export function clearAll() {
     return function(dispatch) {
         dispatch({
