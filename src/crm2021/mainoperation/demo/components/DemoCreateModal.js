@@ -82,6 +82,7 @@ class DemoCreateModal extends Component {
             }
             onChange={v => this.handleChange('saleDate', v)}
           />
+          <>TEST</>
         </Form.Field>
       );
     }
