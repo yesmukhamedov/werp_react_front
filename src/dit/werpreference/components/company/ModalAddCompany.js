@@ -15,8 +15,8 @@ const ModalAddCompany = props => {
         switch (fieldName) {
             case 'name':
                 setCompany({ ...company, name: value });
-
                 break;
+
             case 'spras':
                 setCompany({ ...company, spras: value });
                 break;
@@ -29,6 +29,7 @@ const ModalAddCompany = props => {
                 break;
         }
     };
+
     const saveCompany = () => {
         if (company.name && company.spras && company.bukrs) {
             create(company, () => {

@@ -5,3 +5,12 @@
     border-bottom: 1px solid #c4c4c4;
     padding-bottom: 13px;
 }
+
+.ui.error.labeled {
+    display: flex;
+    flex-direction: column;
+}
+
+.ui.label.label {
+    color: #e74c3c;
+}

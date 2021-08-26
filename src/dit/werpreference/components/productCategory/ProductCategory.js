@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Input, Popup } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import ModalAddCategory from './ModalAddCategory';
+import '../../style.css';
 
-export const ProductCategory = props => {
-    const { getList, categoryList, update, clear, messages } = props;
-
-    // const [addData, setAddData] = useState({
-    //     code: '',
-    //     info: '',
-    //     nameEn: '',
-    //     nameKk: '',
-    //     nameRu: '',
-    //     nameTr: '',
-    // });
-
-    // const [error, setError] = useState([]);
+export default function ProductCategory({
+    create,
+    getList,
+    categoryList,
+    update,
+    clear,
+    messages,
+}) {
+    const [openModal, setOpenModal] = useState(false);
 
     const [tempData, setTempData] = useState([]);
+
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         clear();
@@ -45,6 +45,10 @@ export const ProductCategory = props => {
         }
     }, [categoryList]);
 
+    const clearTempData = () => {
+        setTempData([]);
+    };
+
     const onClickEdit = original => {
         setTempData(
             tempData.map(item =>
@@ -58,21 +62,44 @@ export const ProductCategory = props => {
         );
     };
 
+    const isFieldNullOrBlank = field =>
+        field === '' || field === null || field === undefined;
+
+    const validation = item => {
+        let success = true;
+        const arr = Object.values(item);
+
+        arr.map(value => {
+            if (isFieldNullOrBlank(value)) {
+                success = false;
+            }
+        });
+
+        setErrors(() => {
+            let temporaryObj = {};
+            Object.entries(item).map(keyAndValue => {
+                const key = keyAndValue[0];
+                const value = keyAndValue[1];
+                temporaryObj = {
+                    ...temporaryObj,
+                    [key]: isFieldNullOrBlank(value),
+                };
+            });
+            return temporaryObj;
+        });
+
+        return success;
+    };
+
     const onClickSave = id => {
         tempData.map(item => {
             if (item.id === id) {
-                if (
-                    item.code &&
-                    item.nameEn &&
-                    item.nameKk &&
-                    item.nameRu &&
-                    item.nameTr
-                ) {
+                if (validation(item)) {
                     update(
                         {
                             id: item.id,
-                            code: item.code,
                             info: item.info,
+                            code: item.code,
                             nameEn: item.nameEn,
                             nameKk: item.nameKk,
                             nameRu: item.nameRu,
@@ -120,6 +147,8 @@ export const ProductCategory = props => {
             case 'code':
                 return original.edit ? (
                     <Input
+                        label={errors.code ? 'Заполнте поле' : null}
+                        error={errors.code}
                         placeholder={original.code}
                         value={original.code}
                         onChange={e =>
@@ -132,6 +161,8 @@ export const ProductCategory = props => {
             case 'info':
                 return original.edit ? (
                     <Input
+                        label={errors.info ? 'Заполнте поле' : null}
+                        error={errors.info}
                         placeholder={original.info}
                         value={original.info}
                         onChange={e =>
@@ -139,11 +170,13 @@ export const ProductCategory = props => {
                         }
                     />
                 ) : (
-                    <div>{original.info}</div>
+                    <div>{original.info} </div>
                 );
             case 'nameEn':
                 return original.edit ? (
                     <Input
+                        label={errors.nameEn ? 'Заполнте поле' : null}
+                        error={errors.nameEn}
                         placeholder={original.nameEn}
                         value={original.nameEn}
                         onChange={e =>
@@ -156,6 +189,8 @@ export const ProductCategory = props => {
             case 'nameKk':
                 return original.edit ? (
                     <Input
+                        label={errors.nameKk ? 'Заполнте поле' : null}
+                        error={errors.nameKk}
                         placeholder={original.nameKk}
                         value={original.nameKk}
                         onChange={e =>
@@ -168,6 +203,8 @@ export const ProductCategory = props => {
             case 'nameRu':
                 return original.edit ? (
                     <Input
+                        label={errors.nameRu ? 'Заполнте поле' : null}
+                        error={errors.nameRu}
                         placeholder={original.nameRu}
                         value={original.nameRu}
                         onChange={e =>
@@ -180,6 +217,8 @@ export const ProductCategory = props => {
             case 'nameTr':
                 return original.edit ? (
                     <Input
+                        label={errors.nameTr ? 'Заполнте поле' : null}
+                        error={errors.nameTr}
                         placeholder={original.nameTr}
                         value={original.nameTr}
                         onChange={e =>
@@ -266,12 +305,27 @@ export const ProductCategory = props => {
 
     return (
         <div>
-            {/* <ModalAddCategory openModal /> */}
+            <ModalAddCategory
+                open={openModal}
+                close={() => setOpenModal(false)}
+                create={create}
+                getList={getList}
+                clear={clear}
+                clearTempData={clearTempData}
+                categoryList={categoryList}
+            />
             <div className="content-top">
                 <h3>Категория товара</h3>
-                <Button positive>Добавить</Button>
+                <Button
+                    positive
+                    onClick={() => {
+                        setOpenModal(true);
+                    }}
+                >
+                    Добавить
+                </Button>
             </div>
             <ReactTableWrapper data={tempData} columns={columns} />
         </div>
     );
-};
+}

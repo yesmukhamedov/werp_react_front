@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 
 import {
+    createCompany,
     fetchCompanyList,
     updateCompany,
     clearCompanyList,
-    createCompany,
+    createCategory,
     fetchCategoryList,
     updateCategory,
     clearCategoryList,
-    // createCompany,
 } from './werpreferenceActions';
 import TabCompany from './components/company/TabCompany';
-import { ProductCategory } from './components/productCategory/ProductCategory';
+import ProductCategory from './components/productCategory/ProductCategory';
 
 const WerpReference = props => {
     const {
@@ -36,11 +36,12 @@ const WerpReference = props => {
             render: () => (
                 <Tab.Pane>
                     <TabCompany
-                        messages={messages}
                         companyList={companyList}
                         getList={fetchCompanyList}
+                        update={props.updateCompany}
                         clear={clearCompanyList}
                         create={props.createCompany}
+                        messages={messages}
                     />
                 </Tab.Pane>
             ),
@@ -53,11 +54,12 @@ const WerpReference = props => {
             render: () => (
                 <Tab.Pane>
                     <ProductCategory
-                        messages={messages}
+                        create={props.createCategory}
                         categoryList={categoryList}
                         getList={fetchCategoryList}
                         update={updateCategory}
                         clear={clearCategoryList}
+                        messages={messages}
                     />
                 </Tab.Pane>
             ),
@@ -94,9 +96,8 @@ export default connect(mapStateToProps, {
     createCompany,
 
     //Category
+    createCategory,
     fetchCategoryList,
     updateCategory,
     clearCategoryList,
-
-    // createCompany,
 })(injectIntl(WerpReference));

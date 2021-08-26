@@ -5,19 +5,21 @@ import '../../style.css';
 import ModalAddCompany from './ModalAddCompany';
 
 export default function TabCompany({
-    messages,
-    companyList = [],
     getList,
-    clear,
+    companyList,
     create,
     update,
+    clear,
+    messages,
 }) {
     const [openModal, setOpenModal] = useState(false);
+
     const [tempData, setTempData] = useState([]);
+
+    const [error, setError] = useState([]);
 
     useEffect(() => {
         clear();
-        setTempData([]);
         getList();
     }, []);
 
@@ -36,7 +38,9 @@ export default function TabCompany({
                     ];
                 }),
             );
-        } else setTempData([]);
+        } else {
+            setTempData([]);
+        }
     }, [companyList]);
 
     const clearTempData = () => {
@@ -46,7 +50,7 @@ export default function TabCompany({
     const onClickEdit = original => {
         setTempData(
             tempData.map(item =>
-                item.id === original.id
+                item.bukrs === original.bukrs
                     ? {
                           ...item,
                           edit: true,
@@ -56,9 +60,9 @@ export default function TabCompany({
         );
     };
 
-    const onClickSave = id => {
+    const onClickSave = bukrs => {
         tempData.map(item => {
-            if (item.id === id) {
+            if (item.bukrs === bukrs) {
                 if (item.name && item.spras && item.bukrs) {
                     update(
                         {
@@ -79,7 +83,7 @@ export default function TabCompany({
     const onChangeInput = (fieldName, data, value) => {
         setTempData(
             tempData.map(el => {
-                if (el.id === data.id) {
+                if (el.bukrs === data.bukrs) {
                     switch (fieldName) {
                         case 'name':
                             return { ...el, name: value };
@@ -115,7 +119,7 @@ export default function TabCompany({
                 return original.edit ? (
                     <Input
                         placeholder={original.spras}
-                        value={original.isprasnsprasfo}
+                        value={original.spras}
                         onChange={e =>
                             onChangeInput('spras', original, e.target.value)
                         }
@@ -169,7 +173,7 @@ export default function TabCompany({
                                     icon="save"
                                     circular
                                     color="blue"
-                                    onClick={() => onClickSave(original.id)}
+                                    onClick={() => onClickSave(original.bukrs)}
                                 />
                             ) : (
                                 <Button
