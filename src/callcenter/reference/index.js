@@ -43,11 +43,11 @@ import {
     deleteVacancy,
     //
     fetchTaskCategories,
-} from './crmreferenceAction';
+} from './ccrefAction';
 import TabPresent from './components/TabPresent';
 import TabCategory from './components/TabCategory';
 
-const CrmReference = props => {
+const Ccref = props => {
     const {
         subjectAppealList = [],
         sourceRequestsList = [],
@@ -276,4 +276,4 @@ export default connect(mapStateToProps, {
     deleteVacancy,
     //
     fetchTaskCategories,
-})(injectIntl(CrmReference));
+})(injectIntl(Ccref));

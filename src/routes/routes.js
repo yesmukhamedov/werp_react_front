@@ -1245,10 +1245,6 @@ const AsyncExample = Loadable({
     loader: () => import('../crm2021/example'),
     loading: () => <LoadingPage />,
 });
-const AsyncCrmReference = Loadable({
-    loader: () => import('../crm2021/reference'),
-    loading: () => <LoadingPage />,
-});
 
 // const AsyncNewReco = Loadable({
 //   loader: () => import('../crm/mainoperation/reco/new_reco'),
@@ -1284,6 +1280,11 @@ const AsyncSrgfr = Loadable({
 const AsyncWerpReference = Loadable({
     loader: () =>
         import('../dit/werpreference/index') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
+const AsyncCcref = Loadable({
+    loader: () =>
+        import('../callcenter/reference/index') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
 
@@ -1464,8 +1465,9 @@ const getComponent = {
     Srgfr: AsyncSrgfr,
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
-    CrmReference: AsyncCrmReference,
     WerpReference: AsyncWerpReference,
+    //Call-center
+    Ccref: AsyncCcref,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1601,6 +1603,11 @@ const generateRoutes = transactionRoutes => {
                 path="/hr/report/hrslc"
                 exact={true}
                 component={AsyncHrSlc}
+            />
+            <Route
+                path="/callcenter/ccref"
+                exact={true}
+                component={AsyncCcref}
             />
 
             {transactionRoutes.map(route => {
