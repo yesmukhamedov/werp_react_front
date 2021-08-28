@@ -1185,8 +1185,8 @@ const AsyncExample = Loadable({
     loader: () => import('../crm2021/example'),
     loading: () => <LoadingPage />,
 });
-const AsyncCrmReference = Loadable({
-    loader: () => import('../crm2021/reference'),
+const AsyncCcref = Loadable({
+    loader: () => import('../callcenter/reference/index'),
     loading: () => <LoadingPage />,
 });
 
@@ -1348,7 +1348,7 @@ const getComponent = {
     Srqpwgs: AsyncSrqpwgs,
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
-    CrmReference: AsyncCrmReference,
+    Ccref: AsyncCcref,
 };
 
 const generateRoutes = transactionRoutes => {
