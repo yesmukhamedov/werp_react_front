@@ -39,7 +39,11 @@ export function handleError(error, dispatch) {
       if (error.response.data.messages) {
         let message = error.response.data.messages;
         dispatch(
-          notify('error', message.address, errorTable[`132${language}`]),
+          notify(
+            'error',
+            message.address || message,
+            errorTable[`132${language}`],
+          ),
         );
       } else {
         dispatch(
