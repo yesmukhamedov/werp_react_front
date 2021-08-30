@@ -787,7 +787,6 @@ class Phone extends Component {
           });
         }
       }
-
       // Otkaz
       return (
         <Form.Select
