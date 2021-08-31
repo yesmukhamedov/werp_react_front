@@ -1,13 +1,10 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
+import { moneyFormat } from '../../../../../../utils/helpers';
 import ReactTableWrapper from '../../../../../../utils/ReactTableWrapper';
 import TextAlignCenter from '../../../../../../utils/TextAlignCenter';
 
-const textWithMultipleLines = text => (
-    <div className="text-wrap" style={{ textAlign: 'center' }}>
-        {text}
-    </div>
-);
+const textWithMultipleLines = text => <TextAlignCenter text={text} />;
 
 const ExchangeRateTable = ({ data, intl: { messages }, edit }) => {
     const columns = [
@@ -38,7 +35,7 @@ const ExchangeRateTable = ({ data, intl: { messages }, edit }) => {
         {
             Header: textWithMultipleLines(messages['amount']),
             accessor: 'amount',
-            Cell: row => <TextAlignCenter text={row.value} />,
+            Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
             filterAll: true,
         },
         {
