@@ -16,7 +16,7 @@ export const CHANGE_ACCESS_UBC = 'CHANGE_ACCESS_UBC';
 
 export function fetchUsers() {
     return function(dispatch) {
-        doGet(`dit/userBranch/FETCH_USERS`)
+        doGet(`core/dit/userBranch/FETCH_USERS`)
             .then(response => {
                 dispatch({
                     type: FETCH_USERS,
@@ -45,7 +45,7 @@ export function fetchUsers() {
 
 export function findUsers(userList, userSearchTerm) {
     return function(dispatch) {
-        doPost(`dit/userBranch/FIND_USERS`, {
+        doPost(`core/dit/userBranch/FIND_USERS`, {
             userList,
             userSearchTerm,
         })
@@ -77,7 +77,7 @@ export function findUsers(userList, userSearchTerm) {
 
 export function editUserBranches(selectedUserId, userBranchList) {
     return function(dispatch) {
-        doPost(`dit/userBranch/EDIT_USER_BRANCHES`, {
+        doPost(`core/dit/userBranch/EDIT_USER_BRANCHES`, {
             selectedUserId,
             userBranchList,
         })
@@ -110,7 +110,7 @@ export function editUserBranches(selectedUserId, userBranchList) {
 
 export function fethcUserBranches(selectedUserId) {
     return function(dispatch) {
-        doPost(`dit/userBranch/FETCH_USER_BRANCHES`, {
+        doPost(`core/dit/userBranch/FETCH_USER_BRANCHES`, {
             selectedUserId,
         })
             .then(response => {
@@ -141,7 +141,7 @@ export function fethcUserBranches(selectedUserId) {
 
 export function fethcUserBranchCustomers(selectedUserBranchId) {
     return function(dispatch) {
-        doPost(`dit/userBranch/FETCH_USER_BRANCH_CUSTOMERS`, {
+        doPost(`core/dit/userBranch/FETCH_USER_BRANCH_CUSTOMERS`, {
             selectedUserBranchId,
         })
             .then(response => {
@@ -171,7 +171,7 @@ export function fethcUserBranchCustomers(selectedUserBranchId) {
 }
 export function saveUserBranchCustomers(ubcList) {
     return function(dispatch) {
-        doPost(`dit/userBranch/SAVE_USER_BRANCH_CUSTOMERS`, {
+        doPost(`core/dit/userBranch/SAVE_USER_BRANCH_CUSTOMERS`, {
             ubcList,
         })
             .then(response => {
@@ -204,7 +204,7 @@ export function saveUserBranchCustomers(ubcList) {
 
 export function sendTestSms() {
     return function(dispatch) {
-        doGet(`dit/userBranch/testSms`)
+        doGet(`core/dit/userBranch/testSms`)
             .then(response => {
                 dispatch(notify('success', 'Сохранен.', 'Успешно'));
             })

@@ -9,59 +9,59 @@ export const FETCH_MONEY_STATUS_LIST = 'FETCH_MONEY_STATUS_LIST';
 //const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
 export function fetchAlldemoList() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('getAllDemoList/')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_ALL_DEMO_LIST,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('core/getAllDemoList/')
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_ALL_DEMO_LIST,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function fetchMoneyStatusesList() {
-  return function(dispatch) {
-    dispatch.modifyLoader(true);
-    doGet('/moneyStatusesList')
-      .then(({ data }) => {
-        dispatch.modifyLoader(false);
-        dispatch({
-          type: FETCH_MONEY_STATUS_LIST,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch.modifyLoader(true);
+        doGet('core//moneyStatusesList')
+            .then(({ data }) => {
+                dispatch.modifyLoader(false);
+                dispatch({
+                    type: FETCH_MONEY_STATUS_LIST,
+                    payload: data.data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function clearDemoList() {
-  return function(dispatch) {
-    dispatch({
-      type: CLEAR_DEMO_LIST,
-    });
-  };
+    return function(dispatch) {
+        dispatch({
+            type: CLEAR_DEMO_LIST,
+        });
+    };
 }
 
 export function postEditMoneyStatuses(params, setFunc, clearFunc) {
-  return function(dispatch) {
-    doPost('postMoneyStatuses', params)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        setFunc();
-      })
-      .catch(error => {
-        clearFunc();
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPost('core/postMoneyStatuses', params)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                setFunc();
+            })
+            .catch(error => {
+                clearFunc();
+                handleError(error, dispatch);
+            });
+    };
 }

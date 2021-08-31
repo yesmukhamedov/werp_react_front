@@ -17,7 +17,7 @@ export const CLEAR_CATEGORY_LIST = 'CLEAR_CATEGORY_LIST';
 export const createCompany = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPost(`reference/company`, body)
+        doPost(`core/reference/company`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();
@@ -33,7 +33,7 @@ export const createCompany = (body, getList) => {
 export const fetchCompanyList = () => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doGet(`reference/company/list`)
+        doGet(`core/reference/company/list`)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
@@ -52,7 +52,7 @@ export const fetchCompanyList = () => {
 export const updateCompany = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPut(`reference/company`, body)
+        doPut(`core/reference/company`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();
@@ -77,7 +77,7 @@ export const clearCompanyList = () => {
 export const createCategory = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPost(`reference/service-category`, body)
+        doPost(`core/reference/service-category`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();
@@ -93,7 +93,7 @@ export const createCategory = (body, getList) => {
 export const fetchCategoryList = () => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doGet(`reference/service-category/list`)
+        doGet(`core/reference/service-category/list`)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
@@ -112,7 +112,7 @@ export const fetchCategoryList = () => {
 export const updateCategory = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPut(`reference/service-category`, body)
+        doPut(`core/reference/service-category`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();

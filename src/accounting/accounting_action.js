@@ -1,7 +1,7 @@
 import { doGet, doPost } from '../utils/apiActions';
 import {
-  handleError,
-  notify,
+    handleError,
+    notify,
 } from '../general/notification/notification_action';
 import { modifyLoader } from '../general/loader/loader_action';
 import { clearfaBkpf } from '../finance/fa_action';
@@ -15,384 +15,385 @@ export const CHANGE_DYNOBJ_ACC = 'CHANGE_DYNOBJ_ACC';
 export const CLEAR_DYNOBJ_ACC = 'CLEAR_DYNOBJ_ACC';
 
 export function amsgSave(a_bkpf, a_rows, a_rowsPs, a_lifnr) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
 
-    // .post(
-    //   `${ROOT_URL}/api/accounting/mainoperation/amsg/save`,
-    //   {
-    //     bkpf: a_bkpf,
-    //     l_bseg: a_rows,
-    //     l_payment_schedule: a_rowsPs,
-    //     lifnr: a_lifnr,
-    //   },
-    //   {
-    //     headers: {
-    //       // 'Content-Type': 'application/json;charset=UTF-8',
-    //       authorization: localStorage.getItem('token'),
-    //     },
-    //   },
-    // )
+        // .post(
+        //   `${ROOT_URL}/api/accounting/mainoperation/amsg/save`,
+        //   {
+        //     bkpf: a_bkpf,
+        //     l_bseg: a_rows,
+        //     l_payment_schedule: a_rowsPs,
+        //     lifnr: a_lifnr,
+        //   },
+        //   {
+        //     headers: {
+        //       // 'Content-Type': 'application/json;charset=UTF-8',
+        //       authorization: localStorage.getItem('token'),
+        //     },
+        //   },
+        // )
 
-    doPost(`accounting/mainoperation/amsg/save`, {
-      bkpf: a_bkpf,
-      l_bseg: a_rows,
-      l_payment_schedule: a_rowsPs,
-      lifnr: a_lifnr,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
-          dispatch(clearfaBkpf());
-        } else {
-          dispatch(
-            notify(
-              'info',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+        doPost(`core/accounting/mainoperation/amsg/save`, {
+            bkpf: a_bkpf,
+            l_bseg: a_rows,
+            l_payment_schedule: a_rowsPs,
+            lifnr: a_lifnr,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(
+                        notify(
+                            'success',
+                            errorTable[`104${language}`],
+                            errorTable[`101${language}`],
+                        ),
+                    );
+                    dispatch(clearfaBkpf());
+                } else {
+                    dispatch(
+                        notify(
+                            'info',
+                            errorTable[`133${language}`],
+                            errorTable[`132${language}`],
+                        ),
+                    );
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function amcddSave(a_contract) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
 
-    // .post(
-    //   `${ROOT_URL}/api/accounting/mainoperation/amcdd/save`,
-    //   {
-    //     ...a_contract,
-    //   },
-    //   {
-    //     headers: {
-    //       // 'Content-Type': 'application/json;charset=UTF-8',
-    //       authorization: localStorage.getItem('token'),
-    //     },
-    //   },
-    // )
-    doPost(`accounting/mainoperation/amcdd/save`, {
-      ...a_contract,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
-          dispatch(amcddFetch(a_contract.zregOrConNum));
-        } else {
-          dispatch(
-            notify(
-              'info',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+        // .post(
+        //   `${ROOT_URL}/api/accounting/mainoperation/amcdd/save`,
+        //   {
+        //     ...a_contract,
+        //   },
+        //   {
+        //     headers: {
+        //       // 'Content-Type': 'application/json;charset=UTF-8',
+        //       authorization: localStorage.getItem('token'),
+        //     },
+        //   },
+        // )
+        doPost(`core/accounting/mainoperation/amcdd/save`, {
+            ...a_contract,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(
+                        notify(
+                            'success',
+                            errorTable[`104${language}`],
+                            errorTable[`101${language}`],
+                        ),
+                    );
+                    dispatch(amcddFetch(a_contract.zregOrConNum));
+                } else {
+                    dispatch(
+                        notify(
+                            'info',
+                            errorTable[`133${language}`],
+                            errorTable[`132${language}`],
+                        ),
+                    );
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function amcddFetch(a_zregOrConNum) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    // .get(`${ROOT_URL}/api/accounting/mainoperation/amcdd/fetch`, {
-    //   headers: {
-    //     authorization: localStorage.getItem('token'),
-    //   },
-    //   params: {
-    //     zregOrConNum: a_zregOrConNum,
-    //   },
-    // })
-    doGet('accounting/mainoperation/amcdd/fetch', {
-      zregOrConNum: a_zregOrConNum,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_AMCDD,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-        dispatch(modifyLoader(false));
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        // .get(`${ROOT_URL}/api/accounting/mainoperation/amcdd/fetch`, {
+        //   headers: {
+        //     authorization: localStorage.getItem('token'),
+        //   },
+        //   params: {
+        //     zregOrConNum: a_zregOrConNum,
+        //   },
+        // })
+        doGet('core/accounting/mainoperation/amcdd/fetch', {
+            zregOrConNum: a_zregOrConNum,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_AMCDD,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+                dispatch(modifyLoader(false));
+            });
+    };
 }
 export function amcddChange(a_obj) {
-  const obj = {
-    type: CHANGE_AMCDD,
-    data: a_obj,
-  };
-  return obj;
+    const obj = {
+        type: CHANGE_AMCDD,
+        data: a_obj,
+    };
+    return obj;
 }
 
 export function amcddClear() {
-  const obj = {
-    type: CLEAR_AMCDD,
-  };
-  return obj;
+    const obj = {
+        type: CLEAR_AMCDD,
+    };
+    return obj;
 }
 
 export function changeDynObjAcc(a_obj) {
-  const obj = {
-    type: CHANGE_DYNOBJ_ACC,
-    data: a_obj,
-  };
-  return obj;
+    const obj = {
+        type: CHANGE_DYNOBJ_ACC,
+        data: a_obj,
+    };
+    return obj;
 }
 export function clearDynObjAcc() {
-  const obj = {
-    type: CLEAR_DYNOBJ_ACC,
-  };
-  return obj;
+    const obj = {
+        type: CLEAR_DYNOBJ_ACC,
+    };
+    return obj;
 }
 
 // ARLI/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function fetchARLI(
-  a_bukrs,
-  a_branchList,
-  a_dateFrom,
-  a_dateTo,
-  a_callBackFunc,
+    a_bukrs,
+    a_branchList,
+    a_dateFrom,
+    a_dateTo,
+    a_callBackFunc,
 ) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
 
-    // .get(`${ROOT_URL}/api/accounting/reports/arli/fetch`, {
-    //   headers: {
-    //     authorization: localStorage.getItem('token'),
-    //   },
-    //   params: {
-    //     bukrs: a_bukrs,
-    //     branchList: a_branchList.join(),
-    //     dateFrom: a_dateFrom,
-    //     dateTo: a_dateTo,
-    //   },
-    // })
-    doGet('accounting/reports/arli/fetch', {
-      bukrs: a_bukrs,
-      branchList: a_branchList.join(),
-      dateFrom: a_dateFrom,
-      dateTo: a_dateTo,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_DYNOBJ_ACC,
-          data,
-        });
-        a_callBackFunc(1);
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-        dispatch(modifyLoader(false));
-      });
-  };
+        // .get(`${ROOT_URL}/api/accounting/reports/arli/fetch`, {
+        //   headers: {
+        //     authorization: localStorage.getItem('token'),
+        //   },
+        //   params: {
+        //     bukrs: a_bukrs,
+        //     branchList: a_branchList.join(),
+        //     dateFrom: a_dateFrom,
+        //     dateTo: a_dateTo,
+        //   },
+        // })
+        doGet('core/accounting/reports/arli/fetch', {
+            bukrs: a_bukrs,
+            branchList: a_branchList.join(),
+            dateFrom: a_dateFrom,
+            dateTo: a_dateTo,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_DYNOBJ_ACC,
+                    data,
+                });
+                a_callBackFunc(1);
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+                dispatch(modifyLoader(false));
+            });
+    };
 }
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function saveAccSrcDocs(args, tcode, initFun) {
-  let url = '';
-  if (tcode === 'AMPI') url = `accounting/mainoperation/ampi/save`;
-  else if (tcode === 'AMRI') url = `accounting/mainoperation/amri/save`;
-  else if (tcode === 'AMTBS') url = `accounting/mainoperation/amtbs/save`;
+    let url = '';
+    if (tcode === 'AMPI') url = `core/accounting/mainoperation/ampi/save`;
+    else if (tcode === 'AMRI') url = `core/accounting/mainoperation/amri/save`;
+    else if (tcode === 'AMTBS')
+        url = `core/accounting/mainoperation/amtbs/save`;
 
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  return function(dispatch) {
-    // .post(
-    //   url,
-    //   {
-    //     ...args,
-    //   },
-    //   {
-    //     headers: {
-    //       authorization: localStorage.getItem('token'),
-    //     },
-    //   },
-    // )
-    doPost(url, {
-      ...args,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
-          initFun();
-        } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    return function(dispatch) {
+        // .post(
+        //   url,
+        //   {
+        //     ...args,
+        //   },
+        //   {
+        //     headers: {
+        //       authorization: localStorage.getItem('token'),
+        //     },
+        //   },
+        // )
+        doPost(url, {
+            ...args,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(
+                        notify(
+                            'success',
+                            errorTable[`104${language}`],
+                            errorTable[`101${language}`],
+                        ),
+                    );
+                    initFun();
+                } else {
+                    dispatch(
+                        notify(
+                            'error',
+                            errorTable[`133${language}`],
+                            errorTable[`132${language}`],
+                        ),
+                    );
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 //AREP1/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function fetchArep1Total(
-  bukrs,
-  branchList,
-  budatFrom,
-  budatTo,
-  bldatFrom,
-  bldatTo,
-  hkontRadio,
-  hkontList,
-  hkontFrom,
-  hkontTo,
-  enableBldat,
-  enableBudat,
-  disableStorno,
+    bukrs,
+    branchList,
+    budatFrom,
+    budatTo,
+    bldatFrom,
+    bldatTo,
+    hkontRadio,
+    hkontList,
+    hkontFrom,
+    hkontTo,
+    enableBldat,
+    enableBudat,
+    disableStorno,
 ) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
 
-    // .get(`${ROOT_URL}/api/accounting/reports/arep1/getTotal`, {
-    //   headers: {
-    //     authorization: localStorage.getItem('token'),
-    //   },
-    //   params: {
-    //     bukrs,
-    //     branchList: branchList.join(),
-    //     budatFrom,
-    //     budatTo,
-    //     bldatFrom,
-    //     bldatTo,
-    //     hkontRadio,
-    //     hkontList: hkontList.join(),
-    //     hkontFrom,
-    //     hkontTo,
-    //     enableBldat,
-    //     enableBudat,
-    //     disableStorno,
-    //   },
-    // })
+        // .get(`${ROOT_URL}/api/accounting/reports/arep1/getTotal`, {
+        //   headers: {
+        //     authorization: localStorage.getItem('token'),
+        //   },
+        //   params: {
+        //     bukrs,
+        //     branchList: branchList.join(),
+        //     budatFrom,
+        //     budatTo,
+        //     bldatFrom,
+        //     bldatTo,
+        //     hkontRadio,
+        //     hkontList: hkontList.join(),
+        //     hkontFrom,
+        //     hkontTo,
+        //     enableBldat,
+        //     enableBudat,
+        //     disableStorno,
+        //   },
+        // })
 
-    doGet('accounting/reports/arep1/getTotal', {
-      bukrs,
-      branchList: branchList.join(),
-      budatFrom,
-      budatTo,
-      bldatFrom,
-      bldatTo,
-      hkontRadio,
-      hkontList: hkontList.join(),
-      hkontFrom,
-      hkontTo,
-      enableBldat,
-      enableBudat,
-      disableStorno,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_DYNOBJ_ACC,
-          data: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-        dispatch(modifyLoader(false));
-      });
-  };
+        doGet('core/accounting/reports/arep1/getTotal', {
+            bukrs,
+            branchList: branchList.join(),
+            budatFrom,
+            budatTo,
+            bldatFrom,
+            bldatTo,
+            hkontRadio,
+            hkontList: hkontList.join(),
+            hkontFrom,
+            hkontTo,
+            enableBldat,
+            enableBudat,
+            disableStorno,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_DYNOBJ_ACC,
+                    data: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+                dispatch(modifyLoader(false));
+            });
+    };
 }
 export function fetchArep1Detail(
-  bukrs,
-  branchId,
-  hkont,
-  bldatFrom,
-  bldatTo,
-  enableBldat,
-  enableBudat,
-  budatFrom,
-  budatTo,
-  disableStorno,
-  waers,
+    bukrs,
+    branchId,
+    hkont,
+    bldatFrom,
+    bldatTo,
+    enableBldat,
+    enableBudat,
+    budatFrom,
+    budatTo,
+    disableStorno,
+    waers,
 ) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    // .get(`${ROOT_URL}/api/accounting/reports/arep1/getDetail`, {
-    //   headers: {
-    //     authorization: localStorage.getItem('token'),
-    //   },
-    //   params: {
-    //     bukrs,
-    //     branchId,
-    //     hkont,
-    //     bldatFrom,
-    //     bldatTo,
-    //     enableBldat,
-    //     enableBudat,
-    //     budatFrom,
-    //     budatTo,
-    //     disableStorno,
-    //     waers,
-    //   },
-    // })
-    doGet('accounting/reports/arep1/getDetail', {
-      bukrs,
-      branchId,
-      hkont,
-      bldatFrom,
-      bldatTo,
-      enableBldat,
-      enableBudat,
-      budatFrom,
-      budatTo,
-      disableStorno,
-      waers,
-    })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_DYNOBJ_ACC,
-          data: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-        dispatch(modifyLoader(false));
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        // .get(`${ROOT_URL}/api/accounting/reports/arep1/getDetail`, {
+        //   headers: {
+        //     authorization: localStorage.getItem('token'),
+        //   },
+        //   params: {
+        //     bukrs,
+        //     branchId,
+        //     hkont,
+        //     bldatFrom,
+        //     bldatTo,
+        //     enableBldat,
+        //     enableBudat,
+        //     budatFrom,
+        //     budatTo,
+        //     disableStorno,
+        //     waers,
+        //   },
+        // })
+        doGet('core/accounting/reports/arep1/getDetail', {
+            bukrs,
+            branchId,
+            hkont,
+            bldatFrom,
+            bldatTo,
+            enableBldat,
+            enableBudat,
+            budatFrom,
+            budatTo,
+            disableStorno,
+            waers,
+        })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_DYNOBJ_ACC,
+                    data: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+                dispatch(modifyLoader(false));
+            });
+    };
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

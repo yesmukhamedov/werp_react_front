@@ -15,113 +15,113 @@ export const CRM_KPI_FORM_MODAL_TOGGLE = 'CRM_KPI_FORM_MODAL_TOGGLE';
 export const CRM_KPI_CLEAR_STATE = 'CRM_KPI_CLEAR_STATE';
 
 export function fetchItems(params) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`crm/kpi/setting`, params)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: CRM_KPI_FETCH_ITEMS,
-          items: data.items,
-          meta: data.meta,
-        });
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/crm/kpi/setting`, params)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: CRM_KPI_FETCH_ITEMS,
+                    items: data.items,
+                    meta: data.meta,
+                });
+            })
+            .catch(e => {
+                dispatch(modifyLoader(false));
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function fetchIndicators() {
-  return function(dispatch) {
-    doGet(`crm/kpi/setting/indicators`)
-      .then(({ data }) => {
-        dispatch({
-          type: CRM_KPI_FETCH_INDICATORS,
-          payload: data,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`core/crm/kpi/setting/indicators`)
+            .then(({ data }) => {
+                dispatch({
+                    type: CRM_KPI_FETCH_INDICATORS,
+                    payload: data,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function blankItem() {
-  return function(dispatch) {
-    doGet(`crm/kpi/setting/blank`)
-      .then(({ data }) => {
-        dispatch({
-          type: CRM_KPI_BLANK_ITEM,
-          payload: data,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`core/crm/kpi/setting/blank`)
+            .then(({ data }) => {
+                dispatch({
+                    type: CRM_KPI_BLANK_ITEM,
+                    payload: data,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function createItem(item) {
-  return function(dispatch) {
-    doPost(`crm/kpi/setting`, { ...item })
-      .then(({ data }) => {
-        dispatch({
-          type: CRM_KPI_ITEM_CREATED,
-          item: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPost(`core/crm/kpi/setting`, { ...item })
+            .then(({ data }) => {
+                dispatch({
+                    type: CRM_KPI_ITEM_CREATED,
+                    item: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function deleteItem(id) {
-  return function(dispatch) {
-    doDelete(`crm/kpi/setting/${id}`)
-      .then(({ data }) => {
-        dispatch({
-          type: CRM_KPI_ITEM_DELETED,
-          item: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doDelete(`core/crm/kpi/setting/${id}`)
+            .then(({ data }) => {
+                dispatch({
+                    type: CRM_KPI_ITEM_DELETED,
+                    item: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function updateItem(item) {
-  return function(dispatch) {
-    doPut(`crm/kpi/setting`, { ...item })
-      .then(({ data }) => {
-        dispatch({
-          type: CRM_KPI_ITEM_UPDATED,
-          item: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPut(`core/crm/kpi/setting`, { ...item })
+            .then(({ data }) => {
+                dispatch({
+                    type: CRM_KPI_ITEM_UPDATED,
+                    item: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function toggleKpiSettingFormModal(flag) {
-  return function(dispatch) {
-    dispatch({
-      type: CRM_KPI_FORM_MODAL_TOGGLE,
-      payload: flag,
-    });
-  };
+    return function(dispatch) {
+        dispatch({
+            type: CRM_KPI_FORM_MODAL_TOGGLE,
+            payload: flag,
+        });
+    };
 }
 
 export function setForUpdate(item) {
-  return function(dispatch) {
-    dispatch({
-      type: CRM_KPI_SET_FOR_UPDATE,
-      payload: item,
-    });
-  };
+    return function(dispatch) {
+        dispatch({
+            type: CRM_KPI_SET_FOR_UPDATE,
+            payload: item,
+        });
+    };
 }
