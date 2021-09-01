@@ -50,7 +50,6 @@ class VisitViewPage extends Component {
 
     componentWillMount() {
         const id = parseInt(this.props.match.params.id, 10);
-        console.log('ID: ', id);
         this.props.fetchSingleVisit(id);
         this.props.fetchDemoChildDemos(id);
         this.props.fetchVisitChildRecos(id);

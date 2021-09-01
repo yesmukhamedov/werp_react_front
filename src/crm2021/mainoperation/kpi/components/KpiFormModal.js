@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Button, Message, Label } from 'semantic-ui-react';
+import { Modal, Form, Button, Message } from 'semantic-ui-react';
 import _ from 'lodash';
 import 'react-datepicker/dist/react-datepicker.css';
 import { connect } from 'react-redux';
@@ -25,6 +25,8 @@ class KpiFormModal extends Component {
                 bukrs: false,
                 branchId: false,
                 positionId: false,
+                itemValue: false,
+                itemPoint: false,
                 dealerId: false,
                 resultId: false,
                 reasonId: false,
@@ -65,12 +67,6 @@ class KpiFormModal extends Component {
         const { localItem, errors } = this.state;
         const { indicators } = this.props;
 
-        let indicator = [];
-
-        localItem.items.map(item => {
-            indicator.push(item);
-        });
-
         for (const k in errors) {
             if (errors.hasOwnProperty(k)) {
                 errors[k] = false;
@@ -89,16 +85,8 @@ class KpiFormModal extends Component {
             errors.positionId = true;
         }
 
-        // if (!localItem.items || localItem.items === null) {
-        // }
-
-        // if (!indicator || indicator.point === null) {
-        //   errors.itemPoint = true;
-        // }
-
-        // if (!indicator || indicator.value === null) {
-        //   errors.itemValue = true;
-        // }
+        if (!localItem.items || localItem.items === null) {
+        }
 
         this.setState({
             ...this.state,
@@ -215,7 +203,6 @@ class KpiFormModal extends Component {
     };
 
     renderIndicators(items) {
-        let { errors } = this.state;
         return items.map((item, idx) => {
             return (
                 <Form.Group widths="equal" key={idx}>
@@ -230,46 +217,28 @@ class KpiFormModal extends Component {
                         }
                     />
 
-                    <Form.Field>
-                        <Form.Input
-                            onChange={(e, o) =>
-                                this.handleIndicatorChange('value', idx, o)
-                            }
-                            required
-                            name="value"
-                            label="План"
-                            type="number"
-                            value={item.value || 0}
-                        />
-                        {this.props.notification ? (
-                            <Label basic color="red" pointing>
-                                {Object.values(this.props.notification)}
-                            </Label>
-                        ) : (
-                            ''
-                        )}
-                    </Form.Field>
+                    <Form.Input
+                        error={this.state.itemValue}
+                        onChange={(e, o) =>
+                            this.handleIndicatorChange('value', idx, o)
+                        }
+                        name="value"
+                        label="План"
+                        type="number"
+                        value={item.value || 0}
+                    />
 
-                    <Form.Field>
-                        <Form.Input
-                            error={errors.itemPoint}
-                            onChange={(e, o) =>
-                                this.handleIndicatorChange('point', idx, o)
-                            }
-                            required
-                            name="point"
-                            label="Балл"
-                            type="number"
-                            value={item.point || 0}
-                        />
-                        {this.props.notification ? (
-                            <Label basic color="red" pointing>
-                                {Object.values(this.props.notification)}
-                            </Label>
-                        ) : (
-                            ''
-                        )}
-                    </Form.Field>
+                    <Form.Input
+                        error={this.state.itemPoint}
+                        onChange={(e, o) =>
+                            this.handleIndicatorChange('point', idx, o)
+                        }
+                        name="point"
+                        label="Балл"
+                        type="number"
+                        value={item.point || 0}
+                    />
+
                     <Form.Field>
                         <label>&nbsp;</label>
                         <Button
@@ -346,6 +315,7 @@ class KpiFormModal extends Component {
     }
 
     saveItem() {
+        console.log('LOCALITEM', this.state.localItem);
         this.validateForm();
         let isValid = true;
 
@@ -436,7 +406,6 @@ function mapStateToProps(state) {
         indicatorOptions: state.crmKpiSetting.indicatorOptions,
         branchOptionsMarketing: state.userInfo.branchOptionsMarketing,
         companyOptions: state.userInfo.companyOptions,
-        notification: state.notification.text,
     };
 }
 

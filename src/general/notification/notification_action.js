@@ -36,23 +36,12 @@ export function handleError(error, dispatch) {
                 ),
             );
         } else if (error.response.status && error.response.status === 400) {
-            if (
-                error.response.data.messages &&
-                error.response.data.message === null
-            ) {
+            if (error.response.data.messages) {
                 let message = error.response.data.messages;
                 dispatch(
                     notify(
                         'error',
-                        message.address || message,
-                        errorTable[`132${language}`],
-                    ),
-                );
-            } else if (error.response.data.message) {
-                dispatch(
-                    notify(
-                        'error',
-                        error.response.data.message,
+                        message.address,
                         errorTable[`132${language}`],
                     ),
                 );
