@@ -39,6 +39,8 @@ class PositionF4 extends Component {
     render() {
         return (
             <Form.Select
+                required
+                error={this.props.error}
                 value={this.props.value || null}
                 name="position"
                 multiple={this.props.multiple || false}
