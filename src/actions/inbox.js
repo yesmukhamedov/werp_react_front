@@ -3,7 +3,7 @@ import { doGet } from '../utils/apiActions';
 
 export function fetchUnreadMessages({ userId }) {
     return dispatch => {
-        const url = `core/inbox/${userId}`;
+        const url = `inbox/${userId}`;
 
         // .get(url)
 
