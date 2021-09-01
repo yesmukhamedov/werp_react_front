@@ -216,6 +216,14 @@ const AsyncRecoCurrentPage2021 = Loadable({
     loading: () => <LoadingPage />,
 });
 
+const AsyncRecosListPage2021 = Loadable({
+    loader: () =>
+        import(
+            '../crm2021/mainoperation/reco/components/RecosListPage' /* webpackChunkName: "AsyncRecosListPage2021" */
+        ),
+    loading: () => <LoadingPage />,
+});
+
 const AsyncRecoArchivePage = Loadable({
     loader: () =>
         import(
@@ -522,6 +530,14 @@ const AsyncHrTimesheetPage = Loadable({
 //     ),
 //   loading: () => <LoadingPage />,
 // });
+
+const AsyncCrmReportPage2021 = Loadable({
+    loader: () =>
+        import(
+            '../crm2021/report/general/components/CrmReportPage' /* webpackChunkName: "CrmReportPage2021" */
+        ),
+    loading: () => <LoadingPage />,
+});
 
 const AsyncHrReportPage = Loadable({
     loader: () =>
@@ -1290,7 +1306,6 @@ const AsyncWerpReference = Loadable({
 const getComponent = {
     Dtrlist: AsyncTransaction,
     Ditaub: AsyncAssignUserBranch,
-    DitUserListNew: AsyncDitUserListNew,
     Hrb02: AsyncHrb02,
 
     Amsg: AsyncAmsg,
@@ -1334,19 +1349,6 @@ const getComponent = {
     SpList: AsyncSpListPage,
     LogRepAccStaff: AsyncAccountabilityStaffListPage,
     LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
-    // CrmRepKpi: AsyncKpiReportPage,
-    // CrmRepKpiRtg: AsyncKpiRatingReportPage,
-    //Prcltgs: AsyncPrcltgs,
-    // CrmRecoCurrent: AsyncRecoCurrentPage,
-    // CrmRecoArchive: AsyncRecoArchivePage,
-    // CrmRecoCreate: AsyncRecoCreatePage,
-    // CrmDemoCurrent: AsyncDemoCurrentPage,
-    // CrmDemoArchive: AsyncDemoArchivePage,
-    // CrmVisitArchive: AsyncVisitArchivePage,
-    // CrmRecoView: AsyncRecoViewPage,
-    // CrmDemoView: AsyncDemoViewPage,
-    // CrmVisitView: AsyncVisitViewPage,
-    // CrmKpiSetting: AsyncKpiSettingPage,
     CrmRepKpi: AsyncKpiReportPage,
     CrmRepKpi2021: AsyncKpiReportPage2021,
     CrmRepKpiRtg: AsyncKpiRatingReportPage,
@@ -1354,6 +1356,7 @@ const getComponent = {
     Prcltgs: AsyncPrcltgs,
     CrmRecoCurrent: AsyncRecoCurrentPage,
     CrmRecoCurrent2021: AsyncRecoCurrentPage2021,
+    CrmRecoList2021: AsyncRecosListPage2021,
     CrmRecoArchive: AsyncRecoArchivePage,
     CrmRecoArchive2021: AsyncRecoArchivePage2021,
     CrmRecoCreate: AsyncRecoCreatePage,
@@ -1377,7 +1380,8 @@ const getComponent = {
     HrStaffUpdate: AsyncStaffUpdatePage,
     HrStaffView: AsyncStaffViewPage,
     HrTimesheetPage: AsyncHrTimesheetPage,
-    // CrmReportPage: AsyncCrmReportPage,
+    CrmReportPage: AsyncCrmReportPage,
+    CrmReportPage2021: AsyncCrmReportPage2021,
     HrReportPage: AsyncHrReportPage,
     Ccaslt: AsyncContractListPage,
     Ccasao: AsyncSOContractListPage,
@@ -1412,7 +1416,6 @@ const getComponent = {
     Lplist: AsyncLPList,
     Dmsclist: AsyncDmscList,
     DmscLstExcel: AsyncDmscListExcel,
-    // CrmSoldDemos: AsyncDemoSoldDemosPage,
     CrmSoldDemos: AsyncDemoSoldDemosPage,
     CrmSoldDemos2021: AsyncDemoSoldDemosPage2021,
     LogInvoiceForm: AsyncLogInvoicesForm,
@@ -1453,19 +1456,12 @@ const getComponent = {
     Smslsp: AsyncSmslsp,
     Smsetplp: AsyncSmsetplp,
     Smdis: AsyncSmdis,
-    //Hrslc: AsyncHrslc,
+    HrSlc: AsyncHrSlc,
     Srtbb: AsyncSrtbb,
     Srqpwgs: AsyncSrqpwgs,
-    // NewReco: AsyncNewReco,
-    // Reception: AsyncReception,
-    // TaxiExpence: AsyncTaxiExpence,
-    Focur: AsyncFocur,
-    Foac: AsyncFoac,
-    Srgfr: AsyncSrgfr,
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
     CrmReference: AsyncCrmReference,
-    WerpReference: AsyncWerpReference,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1487,10 +1483,14 @@ const generateRoutes = transactionRoutes => {
             />
             <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
             {/*<Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />*/}
-            {/* <Route path="/crm/wspace" component={AsyncCrmWspacePage} /> */}
+            <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
             {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
             {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
-            {/* <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} /> */}
+            <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
+            <Route
+                path="/crm2021/report/view/:id"
+                component={AsyncCrmReportPage2021}
+            />
             <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
             <Route
                 path="/hr/doc/recruitment"
