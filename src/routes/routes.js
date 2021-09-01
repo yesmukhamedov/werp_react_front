@@ -1189,6 +1189,14 @@ const AsyncCcref = Loadable({
     loader: () => import('../callcenter/reference/index'),
     loading: () => <LoadingPage />,
 });
+const AsyncCcmra = Loadable({
+    loader: () => import('../callcenter/mainoperation/ccmra'),
+    loading: () => <LoadingPage />,
+});
+const AsyncCcmracn = Loadable({
+    loader: () => import('../callcenter/mainoperation/ccmracn'),
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1348,7 +1356,10 @@ const getComponent = {
     Srqpwgs: AsyncSrqpwgs,
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
+    //Call-center
     Ccref: AsyncCcref,
+    Ccmra: AsyncCcmra,
+    Ccmracn: AsyncCcmracn,
 };
 
 const generateRoutes = transactionRoutes => {
