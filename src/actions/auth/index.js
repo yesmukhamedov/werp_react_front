@@ -155,7 +155,7 @@ export function signoutUser() {
 
     return dispatch => {
         // .post(`${ROOT_URL}/signout`)
-        doPost(`signout`)
+        doPost(`core/signout`)
             .then(response => {
                 resetLocalStorage();
                 dispatch({
