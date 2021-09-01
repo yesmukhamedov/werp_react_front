@@ -71,8 +71,6 @@ class KpiFormModal extends Component {
       indicator.push(item);
     });
 
-    console.log('indicators:   ', indicator);
-
     for (const k in errors) {
       if (errors.hasOwnProperty(k)) {
         errors[k] = false;
@@ -344,7 +342,6 @@ class KpiFormModal extends Component {
   }
 
   saveItem() {
-    console.log('LOCALITEM', this.state.localItem);
     this.validateForm();
     let isValid = true;
 
