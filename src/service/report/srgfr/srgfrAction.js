@@ -221,7 +221,7 @@ export const fetchCalculationOfManagersBonus = params => {
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_CALCULATION_OF_MANAGERS_BONUS,
-                    payload: data.data.managerList,
+                    payload: data.data,
                 });
             })
             .catch(error => {
@@ -239,7 +239,7 @@ export const fetchCalculationOfOperatorsBonus = params => {
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_CALCULATION_OF_OPERATORS_BONUS,
-                    payload: data.data.seniorOperatorBonus,
+                    payload: data.data,
                 });
             })
             .catch(error => {

@@ -23,7 +23,7 @@ const BonusTable = ({ data, intl: { messages }, edit }) => {
         {
             Header: textWithMultipleLines(messages['Task.DateFrom']),
             accessor: 'fromPercent',
-            Cell: row => <TextAlignCenter text={`${row.value} %`} />,
+            Cell: row => <TextAlignCenter text={`${row.value ?? 0} %`} />,
             filterAll: true,
         },
         {
@@ -33,7 +33,13 @@ const BonusTable = ({ data, intl: { messages }, edit }) => {
             filterAll: true,
         },
         {
-            Header: textWithMultipleLines(messages['bonus']),
+            Header: textWithMultipleLines(messages['percent']),
+            accessor: 'percentAmount',
+            Cell: row => <TextAlignCenter text={`${row.value ?? 0} %`} />,
+            filterAll: true,
+        },
+        {
+            Header: textWithMultipleLines(messages['TBL_H__AMOUNT']),
             accessor: 'bonusAmount',
             Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
             filterAll: true,

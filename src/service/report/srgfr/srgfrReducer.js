@@ -20,7 +20,7 @@ const INITIAL_STATE = {
     bonusOfManager: [],
     bonusOfHeadOfDepartment: [],
     calculationOfManagersBonus: [],
-    calculationOfOperatorssBonus: [],
+    calculationOfOperatorsBonus: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -63,12 +63,12 @@ export default function(state = INITIAL_STATE, action) {
         case FETCH_CALCULATION_OF_MANAGERS_BONUS:
             return {
                 ...state,
-                calculationOfManagersBonus: [...action.payload],
+                calculationOfManagersBonus: { ...action.payload },
             };
         case FETCH_CALCULATION_OF_OPERATORS_BONUS:
             return {
                 ...state,
-                calculationOfOperatorsBonus: [...action.payload],
+                calculationOfOperatorsBonus: { ...action.payload },
             };
         case CLEAR_ALL:
             return {

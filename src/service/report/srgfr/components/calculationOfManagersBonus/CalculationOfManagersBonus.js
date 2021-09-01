@@ -22,7 +22,7 @@ const CalculationOfManagersBonus = props => {
         countries = [],
         branches = [],
         companies = [],
-        calculationOfManagersBonus = [],
+        calculationOfManagersBonus = {},
     } = props;
 
     const [filterParams, setFilterParams] = useState({
@@ -180,7 +180,10 @@ const CalculationOfManagersBonus = props => {
 
             <OutputErrors errors={errors} />
 
-            <Table data={calculationOfManagersBonus} />
+            <Table data={calculationOfManagersBonus.chiefDepartmentList} />
+            <br />
+            <br />
+            <Table data={calculationOfManagersBonus.managerList} />
         </>
     );
 };
