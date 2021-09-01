@@ -1380,7 +1380,7 @@ const getComponent = {
     HrStaffUpdate: AsyncStaffUpdatePage,
     HrStaffView: AsyncStaffViewPage,
     HrTimesheetPage: AsyncHrTimesheetPage,
-    CrmReportPage: AsyncCrmReportPage,
+    //CrmReportPage: AsyncCrmReportPage,
     CrmReportPage2021: AsyncCrmReportPage2021,
     HrReportPage: AsyncHrReportPage,
     Ccaslt: AsyncContractListPage,
@@ -1483,10 +1483,10 @@ const generateRoutes = transactionRoutes => {
             />
             <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
             {/*<Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />*/}
-            <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
+            {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
             {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
             {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
-            <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
+            {/* <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />*/}
             <Route
                 path="/crm2021/report/view/:id"
                 component={AsyncCrmReportPage2021}
