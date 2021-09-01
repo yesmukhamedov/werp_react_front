@@ -239,7 +239,7 @@ export const fetchCalculationOfOperatorsBonus = params => {
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_CALCULATION_OF_OPERATORS_BONUS,
-                    payload: data.data.operatorsList,
+                    payload: data.data.seniorOperatorBonus,
                 });
             })
             .catch(error => {
