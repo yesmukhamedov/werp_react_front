@@ -3,11 +3,7 @@ import { injectIntl } from 'react-intl';
 import ReactTableWrapper from '../../../../../../utils/ReactTableWrapper';
 import TextAlignCenter from '../../../../../../utils/TextAlignCenter';
 
-const textWithMultipleLines = text => (
-    <div className="text-wrap" style={{ textAlign: 'center' }}>
-        {text}
-    </div>
-);
+const textWithMultipleLines = text => <TextAlignCenter text={text} />;
 
 const LogisticsRateTable = ({ data, intl: { messages }, edit }) => {
     const columns = [

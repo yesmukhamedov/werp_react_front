@@ -1,52 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Form, Icon } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
-import {
-    f4fetchCategory,
-    f4FetchCountryList,
-} from '../../../../../reference/f4/f4_action';
+import { f4FetchCountryList } from '../../../../../reference/f4/f4_action';
 import OutputErrors from '../../../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
     stringYYYYMMDDToMoment,
     momentToStringYYYYMMDD,
-    moneyFormat,
 } from '../../../../../utils/helpers';
 import { errorTableText } from '../../../../../utils/helpers';
+import { fetchCalculationOfManagersBonus } from '../../srgfrAction';
 import Table from './Table';
-import { fetchReportByCategories } from '../../srgfrAction';
+import { Form, Icon } from 'semantic-ui-react';
 
-const ReportByCategories = props => {
+const CalculationOfManagersBonus = props => {
     const {
         intl: { messages },
         language,
         countries = [],
         branches = [],
         companies = [],
-        categories = [],
-        reportByCategories = [],
+        calculationOfManagersBonus = [],
     } = props;
 
     const [filterParams, setFilterParams] = useState({
         bukrs: null,
         branchId: null,
         countryId: null,
-        categoryId: null,
         dateAt: null,
     });
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         props.f4FetchCountryList();
-        props.f4fetchCategory();
     }, []);
 
     const apply = () => {
         if (validation()) {
-            props.fetchReportByCategories(filterParams);
+            props.fetchCalculationOfManagersBonus(filterParams);
         }
     };
 
@@ -56,7 +49,6 @@ const ReportByCategories = props => {
         if (!filterParams.bukrs) {
             errors.push(errorTableText(5));
         }
-
         if (!filterParams.dateAt) {
             errors.push(errorTableText(13));
         }
@@ -145,35 +137,8 @@ const ReportByCategories = props => {
                             }
                         />
                     </Form.Field>
-
-                    <Form.Field>
-                        <label>{messages['product_category']}</label>
-                        <DropdownClearable
-                            selection
-                            options={categories.map(item => {
-                                return {
-                                    key: item.id,
-                                    text: item.name,
-                                    value: item.id,
-                                };
-                            })}
-                            value={filterParams.categoryId}
-                            placeholder={messages['product_category']}
-                            onChange={(e, { value }) =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    categoryId: value,
-                                })
-                            }
-                            handleClear={() =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    categoryId: null,
-                                })
-                            }
-                        />
-                    </Form.Field>
                 </Form.Group>
+
                 <Form.Group className="spaceBetween">
                     <div className="flexDirectionRow">
                         <Form.Field className="marginRight" required>
@@ -201,7 +166,6 @@ const ReportByCategories = props => {
                                 dateFormat="DD.MM.YYYY"
                             />
                         </Form.Field>
-
                         <Form.Button
                             color="blue"
                             className="alignBottom"
@@ -216,7 +180,7 @@ const ReportByCategories = props => {
 
             <OutputErrors errors={errors} />
 
-            <Table data={reportByCategories} />
+            <Table data={calculationOfManagersBonus} />
         </>
     );
 };
@@ -229,6 +193,5 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     f4FetchCountryList,
-    f4fetchCategory,
-    fetchReportByCategories,
-})(injectIntl(ReportByCategories));
+    fetchCalculationOfManagersBonus,
+})(injectIntl(CalculationOfManagersBonus));

@@ -56,7 +56,7 @@ function Zreport(props) {
 
     const download = fileId => {
         excelDownload(
-            `dit/zreport/download/${fileId.id}`,
+            `core/dit/zreport/download/${fileId.id}`,
             fileId.name,
             'outputTable',
             [],

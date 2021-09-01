@@ -12,7 +12,7 @@ class PositionF4 extends Component {
     }
 
     componentWillMount() {
-        doGet(`reference/positions`)
+        doGet(`core/reference/positions`)
             .then(res => {
                 const loaded = res.data.map(p => ({
                     key: p.position_id,

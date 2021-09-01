@@ -24,196 +24,196 @@ export const CRM_DEMO_UPDATE_MODAL_TOGGLE = 'CRM_DEMO_UPDATE_MODAL_TOGGLE';
 export const CRM_DEMO_CREATE_MODAL_TOGGLE = 'CRM_DEMO_CREATE_MODAL_TOGGLE';
 
 export function updateDemo(demo) {
-  return function(dispatch) {
-    doPut(`crm/demo/${demo.id}`, { ...demo })
-      .then(({}) => {
-        dispatch({
-          type: CRM_DEMO_UPDATE,
-          item: demo,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPut(`core/crm/demo/${demo.id}`, { ...demo })
+            .then(({}) => {
+                dispatch({
+                    type: CRM_DEMO_UPDATE,
+                    item: demo,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function fetchDemo(id) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`crm/demo/${id}`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: CRM_DEMO_FETCH_SINGLE,
-          demo: data.demo,
-          recommender: data.recommender,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/crm/demo/${id}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: CRM_DEMO_FETCH_SINGLE,
+                    demo: data.demo,
+                    recommender: data.recommender,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function fetchDemoChildRecos(id) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`crm/demo/${id}/child-recos`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: CRM_DEMO_FETCH_CHILD_RECOS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/crm/demo/${id}/child-recos`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: CRM_DEMO_FETCH_CHILD_RECOS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function fetchDemoCurrentData() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`crm/demo/current`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: CRM_DEMO_FETCH_CURRENT,
-          items: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/crm/demo/current`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: CRM_DEMO_FETCH_CURRENT,
+                    items: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function fetchDemoArchive(q) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`crm/demo/archive?${q}`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: CRM_DEMO_FETCH_ARCHIVE,
-          items: data.items,
-          meta: data.meta,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/crm/demo/archive?${q}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: CRM_DEMO_FETCH_ARCHIVE,
+                    items: data.items,
+                    meta: data.meta,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function fetchSoldDemos(params) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('crm/demo/sold-demos', params)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: CRM_DEMO_FETCH_ARCHIVE,
-          items: data.items,
-          meta: data.meta,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('core/crm/demo/sold-demos', params)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: CRM_DEMO_FETCH_ARCHIVE,
+                    items: data.items,
+                    meta: data.meta,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function fetchDemoResults() {
-  return function(dispatch) {
-    doGet(`crm/demo/results`)
-      .then(({ data }) => {
-        dispatch({
-          type: CRM_DEMO_FETCH_RESULTS,
-          items: data,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`core/crm/demo/results`)
+            .then(({ data }) => {
+                dispatch({
+                    type: CRM_DEMO_FETCH_RESULTS,
+                    items: data,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function fetchGroupDealers() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`hr/pyramid/crm/group-dealers`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        const loaded = data.map(item => ({
-          key: item.staffId,
-          text: `${item.lastname} ${item.firstname}`,
-          value: item.staffId,
-        }));
-        loaded.unshift({
-          key: 0,
-          text: '',
-          value: 0,
-        });
-        dispatch({
-          type: CRM_DEMO_FETCH_GROUP_DEALERS,
-          items: loaded,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/hr/pyramid/crm/group-dealers`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                const loaded = data.map(item => ({
+                    key: item.staffId,
+                    text: `${item.lastname} ${item.firstname}`,
+                    value: item.staffId,
+                }));
+                loaded.unshift({
+                    key: 0,
+                    text: '',
+                    value: 0,
+                });
+                dispatch({
+                    type: CRM_DEMO_FETCH_GROUP_DEALERS,
+                    items: loaded,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function fetchReasons() {
-  return function(dispatch) {
-    doGet(`reference/reasons/0`)
-      .then(({ data }) => {
-        dispatch({
-          type: CRM_DEMO_FETCH_REASONS,
-          items: data,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`core/reference/reasons/0`)
+            .then(({ data }) => {
+                dispatch({
+                    type: CRM_DEMO_FETCH_REASONS,
+                    items: data,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function deleteDemo(demoId) {
-  return function(dispatch) {
-    doDelete(`crm/demo/${demoId}`)
-      .then(response => {
-        browserHistory.push('/crm/demo/current');
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doDelete(`core/crm/demo/${demoId}`)
+            .then(response => {
+                browserHistory.push('/crm/demo/current');
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function toggleDemoUpdateModal(flag) {
-  return {
-    type: CRM_DEMO_UPDATE_MODAL_TOGGLE,
-    payload: flag,
-  };
+    return {
+        type: CRM_DEMO_UPDATE_MODAL_TOGGLE,
+        payload: flag,
+    };
 }
 
 export function toggleDemoCreateModal(flag) {
-  return function(dispatch) {
-    dispatch({
-      type: CRM_DEMO_CREATE_MODAL_TOGGLE,
-      payload: flag,
-    });
-  };
+    return function(dispatch) {
+        dispatch({
+            type: CRM_DEMO_CREATE_MODAL_TOGGLE,
+            payload: flag,
+        });
+    };
 }
 
 export function clearState() {
-  return {
-    type: CRM_DEMO_CLEAR_STATE,
-  };
+    return {
+        type: CRM_DEMO_CLEAR_STATE,
+    };
 }

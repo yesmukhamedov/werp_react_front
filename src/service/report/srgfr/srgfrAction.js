@@ -4,6 +4,10 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_REPORT_BY_CATEGORIES = 'FETCH_REPORT_BY_CATEGORIES';
 export const FETCH_REPORT_BY_BRANCHES = 'FETCH_REPORT_BY_BRANCHES';
+export const FETCH_CALCULATION_OF_MANAGERS_BONUS =
+    'FETCH_CALCULATION_OF_MANAGERS_BONUS';
+export const FETCH_CALCULATION_OF_OPERATORS_BONUS =
+    'FETCH_CALCULATION_OF_OPERATORS_BONUS';
 export const CLEAR_ALL = 'CLEAR_ALL';
 
 // Types of coefficients
@@ -13,10 +17,10 @@ export const COEFFICIENT_TYPE_LOGISTICS_RATE = 'LOGISTICS_RATE';
 export const COEFFICIENT_TYPE_MANAGER_BONUS = 'MANAGER_BONUS';
 export const COEFFICIENT_TYPE_CHIEF_DEPARTMENT_BONUS = 'CHIEF_DEPARTMENT_BONUS';
 
-export const fetchReportByCategories = param => {
+export const fetchReportByCategories = params => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doGet(`service/srgfr/part1`, param)
+        doGet(`service/srgfr/part1`, params)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
@@ -31,10 +35,10 @@ export const fetchReportByCategories = param => {
     };
 };
 
-export const fetchReportByBranches = param => {
+export const fetchReportByBranches = params => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doGet(`service/srgfr/part2`, param)
+        doGet(`service/srgfr/part2`, params)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
@@ -205,6 +209,42 @@ export const modifyLogisticsRateCoefficient = (params, callback) => {
                 dispatch(modifyLoader(false));
                 handleError(error, dispatch);
                 callback();
+            });
+    };
+};
+
+export const fetchCalculationOfManagersBonus = params => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/srgfr/manager_bonuses`, params)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_CALCULATION_OF_MANAGERS_BONUS,
+                    payload: data.data.managerList,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+export const fetchCalculationOfOperatorsBonus = params => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/srgfr/senior_operator_bonuses`, params)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_CALCULATION_OF_OPERATORS_BONUS,
+                    payload: data.data.seniorOperatorBonus,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
             });
     };
 };

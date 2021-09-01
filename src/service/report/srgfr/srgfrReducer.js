@@ -5,6 +5,8 @@ import {
     COEFFICIENT_TYPE_MANAGER_BONUS,
     COEFFICIENT_TYPE_MONEY_RATE,
     COEFFICIENT_TYPE_VC_OPERATOR_BONUS,
+    FETCH_CALCULATION_OF_OPERATORS_BONUS,
+    FETCH_CALCULATION_OF_MANAGERS_BONUS,
     FETCH_REPORT_BY_BRANCHES,
     FETCH_REPORT_BY_CATEGORIES,
 } from './srgfrAction';
@@ -17,6 +19,8 @@ const INITIAL_STATE = {
     logisticsRate: [],
     bonusOfManager: [],
     bonusOfHeadOfDepartment: [],
+    calculationOfManagersBonus: [],
+    calculationOfOperatorssBonus: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -55,6 +59,16 @@ export default function(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 bonusOfHeadOfDepartment: [...action.payload],
+            };
+        case FETCH_CALCULATION_OF_MANAGERS_BONUS:
+            return {
+                ...state,
+                calculationOfManagersBonus: [...action.payload],
+            };
+        case FETCH_CALCULATION_OF_OPERATORS_BONUS:
+            return {
+                ...state,
+                calculationOfOperatorsBonus: [...action.payload],
             };
         case CLEAR_ALL:
             return {

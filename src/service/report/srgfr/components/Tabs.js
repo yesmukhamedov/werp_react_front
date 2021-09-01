@@ -4,6 +4,8 @@ import { injectIntl } from 'react-intl';
 import ReportByBranches from './reportByBranches/ReportByBranches';
 import ReportByCategories from './reportByCategories/ReportByCategories';
 import Configuration from './configuration/Configuration';
+import CalculationOfManagersBonus from './calculationOfManagersBonus/CalculationOfManagersBonus';
+import CalculationOfOperatorsBonus from './calculationOfOperatorsBonus/CalculationOfOperatorsBonus';
 
 const Tabs = props => {
     const {
@@ -19,6 +21,8 @@ const Tabs = props => {
         logisticsRate = [],
         bonusOfManager = [],
         bonusOfHeadOfDepartment = [],
+        calculationOfManagersBonus = [],
+        calculationOfOperatorsBonus = [],
     } = props;
 
     const panes = [
@@ -45,6 +49,34 @@ const Tabs = props => {
                         companies={companies}
                         branches={branches}
                         reportByBranches={reportByBranches}
+                    />
+                </Tab.Pane>
+            ),
+        },
+        {
+            menuItem: messages['calculation_of_managers_bonus'],
+            pane: (
+                <Tab.Pane attached={false}>
+                    <CalculationOfManagersBonus
+                        countries={countries}
+                        companies={companies}
+                        branches={branches}
+                        calculationOfManagersBonus={calculationOfManagersBonus}
+                    />
+                </Tab.Pane>
+            ),
+        },
+        {
+            menuItem: messages['calculation_of_operators_bonus'],
+            pane: (
+                <Tab.Pane attached={false}>
+                    <CalculationOfOperatorsBonus
+                        countries={countries}
+                        companies={companies}
+                        branches={branches}
+                        calculationOfOperatorsBonus={
+                            calculationOfOperatorsBonus
+                        }
                     />
                 </Tab.Pane>
             ),
