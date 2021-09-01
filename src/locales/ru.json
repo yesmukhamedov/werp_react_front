@@ -945,5 +945,6 @@
     "total_amount_with_discount": "Общая сумма со скидкой",
     "number_of_completed_services": "Количество выполненных услуг",
     "salary": "Зарплата",
-    "total_salary": "Общая заработная плата"
+    "total_salary": "Общая заработная плата",
+    "country_code": "Код страны"
 }
