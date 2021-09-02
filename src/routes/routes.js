@@ -1462,6 +1462,7 @@ const getComponent = {
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
     CrmReference: AsyncCrmReference,
+    Srgfr: AsyncSrgfr,
 };
 
 const generateRoutes = transactionRoutes => {
