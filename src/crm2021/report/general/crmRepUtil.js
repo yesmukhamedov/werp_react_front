@@ -13,24 +13,24 @@ export const REP_DEMO_RECO_ID = 934;
 export const REP_REC_SEARCH_ID = 1216;
 
 export const countedYearMonthsMap = () => {
-  const out = [];
-  let mCounter = 0;
-  let date = moment();
-  while (true) {
-    let tempMonth = parseInt(date.format('M'), 10);
-    if (tempMonth === 8 || tempMonth === 1) {
-    } else {
-      out.push({
-        y: date.format('Y'),
-        m: tempMonth,
-      });
-      mCounter++;
-    }
+    const out = [];
+    let mCounter = 0;
+    let date = moment();
+    while (true) {
+        let tempMonth = parseInt(date.format('M'), 10);
+        if (tempMonth === 8 || tempMonth === 1) {
+        } else {
+            out.push({
+                y: date.format('Y'),
+                m: tempMonth,
+            });
+            mCounter++;
+        }
 
-    date = date.subtract(1, 'month');
-    if (mCounter === 4) {
-      break;
+        date = date.subtract(1, 'month');
+        if (mCounter === 4) {
+            break;
+        }
     }
-  }
-  return out;
+    return out;
 };

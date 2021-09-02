@@ -87,6 +87,8 @@ const Smsrcus = props => {
     customerIinBin: null,
     fullAddress: null,
     fullPhone: null,
+    contractStatusId: null,
+    lastStateId: null,
   };
 
   const emptyBlackListParam = {
@@ -416,7 +418,6 @@ const Smsrcus = props => {
     setColumnsForTable([...initialColumns]);
     props.clearSmsrcusList();
     setServerSideParams({});
-
     setTablePage(0);
     props.fetchSmsrcusList({ ...param, page: 0, size: 20 }, () =>
       setTurnOnReactFetch(true),
@@ -525,7 +526,7 @@ const Smsrcus = props => {
   return (
     <Container fluid className="containerMargin">
       <Segment className="justifySegment">
-        <h3>Поиск клиентов {blackList == true ? '(Черный список)' : ''}</h3>
+        <h3>Поиск клиентов {blackList === true ? '(Черный список)' : ''}</h3>
 
         <Checkbox
           checked={blackList}
@@ -548,6 +549,7 @@ const Smsrcus = props => {
       </Modal>
 
       {blackList == true ? (
+        //Черный список
         <Segment>
           <Form>
             <Form.Group widths="equal">
@@ -886,8 +888,6 @@ const Smsrcus = props => {
                   }
                 />
               </Form.Field>
-            </Form.Group>
-            <Form.Group widths="equal">
               <Form.Field>
                 <label>ФИО клиента</label>
                 <Input
@@ -899,6 +899,8 @@ const Smsrcus = props => {
                   }
                 />
               </Form.Field>
+            </Form.Group>
+            <Form.Group widths="equal">
               <Form.Field>
                 <label>ИИН клиента</label>
                 <Input
@@ -932,6 +934,44 @@ const Smsrcus = props => {
                   }
                 />
               </Form.Field>
+              <Form.Select
+                label={messages['fin_status']}
+                placeholder={messages['fin_status']}
+                options={finStatusOptions}
+                onChange={(e, { value }) =>
+                  setParam({
+                    ...param,
+                    contractStatusId: value.length > 0 ? value.join() : null,
+                  })
+                }
+                value={
+                  param.contractStatusId
+                    ? param.contractStatusId.split(',').map(Number)
+                    : []
+                }
+                className="alignBottom"
+                multiple
+              />
+
+              <Form.Select
+                fluid
+                label={messages['phys_status']}
+                placeholder={messages['phys_status']}
+                options={getPhysStatus(physStatusOptions)}
+                onChange={(e, { value }) =>
+                  setParam({
+                    ...param,
+                    lastStateId: value.length > 0 ? value.join() : null,
+                  })
+                }
+                value={
+                  param.lastStateId
+                    ? param.lastStateId.split(',').map(Number)
+                    : []
+                }
+                className="alignBottom"
+                multiple
+              />
 
               <Form.Button
                 color="blue"

@@ -16,6 +16,7 @@ export const ROOT_URL = isLocalIpAddress()
 
 export const AUTH_URL = process.env.REACT_APP_ROOT_URL_AUTH;
 export const SERVICE_URL = process.env.REACT_APP_ROOT_URL_SERVICE;
+export const YANDEX_GEOCODE = process.env.REACT_APP_ROOT_URL_YANDEX_GEOCODE;
 export const CRM_URL = process.env.REACT_APP_ROOT_URL_CRM;
 export const CRM_CALL_CENTER = process.env.REACT_APP_ROOT_URL_CRM_CALL_CENTER;
 

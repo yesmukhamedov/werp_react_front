@@ -10,70 +10,70 @@ export const HR_REP_UPDATE_DIRECTOR_NOTE = 'HR_REP_UPDATE_DIRECTOR_NOTE';
 export const HR_REP_CLEAR_STATE = 'HR_REP_CLEAR_STATE';
 
 export function fetchItems(id, params) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`hr/report/${id}`, params)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: HR_REP_FETCH_ITEMS,
-          payload: data,
-        });
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/hr/report/${id}`, params)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: HR_REP_FETCH_ITEMS,
+                    payload: data,
+                });
+            })
+            .catch(e => {
+                dispatch(modifyLoader(false));
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function fetchMeta(id) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`hr/report/meta/${id}`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: HR_REP_FETCH_META,
-          payload: data,
-        });
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/hr/report/meta/${id}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: HR_REP_FETCH_META,
+                    payload: data,
+                });
+            })
+            .catch(e => {
+                dispatch(modifyLoader(false));
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function updateDirectorNote(demoId, note) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPut(`hr/report/note/${demoId}`, { note })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch(toggleRepModal(false));
-        dispatch({
-          type: HR_REP_UPDATE_DIRECTOR_NOTE,
-          note,
-          id: demoId,
-        });
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPut(`core/hr/report/note/${demoId}`, { note })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch(toggleRepModal(false));
+                dispatch({
+                    type: HR_REP_UPDATE_DIRECTOR_NOTE,
+                    note,
+                    id: demoId,
+                });
+            })
+            .catch(e => {
+                dispatch(modifyLoader(false));
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function toggleRepModal(flag) {
-  return {
-    type: HR_REP_MODAL_TOGGLE,
-    payload: flag,
-  };
+    return {
+        type: HR_REP_MODAL_TOGGLE,
+        payload: flag,
+    };
 }
 
 export function clearState() {
-  return {
-    type: HR_REP_CLEAR_STATE,
-  };
+    return {
+        type: HR_REP_CLEAR_STATE,
+    };
 }

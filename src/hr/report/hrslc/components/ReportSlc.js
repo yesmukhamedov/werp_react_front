@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Segment,
-  Table,
-  Menu,
-  Label,
-  Icon,
-  Container,
-  Divider,
-  Tab,
-} from 'semantic-ui-react';
+import React from 'react';
+import { Menu, Container, Tab } from 'semantic-ui-react';
 import TabDealers from './TabDealers';
 import TabFinAgent from './TabFinAgent';
 import TabMasterHarvestingSystem from './TabMasterHarvestingSystem';
 import TabMasterWaterClean from './TabMasterWaterClean';
 
 const ReportSlc = props => {
-  const { filterMapPoints = [], data = [] } = props;
+  const {
+    filterMapPoints = {},
+    data = [],
+    handleClickPlacemark,
+    tempAddress,
+  } = props;
+
   const panes = [
     {
       menuItem: <Menu.Item key={1}>Результат</Menu.Item>,
       pane: (
         <Tab.Pane key={1}>
-          <TabDealers data={data} />
+          <TabDealers
+            handleClickPlacemark={handleClickPlacemark}
+            data={data}
+            tempAddress={tempAddress}
+          />
         </Tab.Pane>
       ),
     },
@@ -50,7 +51,8 @@ const ReportSlc = props => {
       ),
     },
   ];
-  const filterDealer = filterMapPoints.filter(item => item.position == 'Дилер');
+
+  //const filterDealer = filterMapPoints.filter(item => item.position == 'Дилер');
   return (
     <Container fluid style={{ padding: '30px', height: '100%' }}>
       <Tab

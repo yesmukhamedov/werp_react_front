@@ -7,8 +7,11 @@ import {
   Modal,
   Dropdown,
   Radio,
+  Select,
 } from 'semantic-ui-react';
 import OutputErrors from '../../general/error/outputErrors';
+import MaskedInput from 'react-text-mask';
+import phoneMask from '../../utils/phoneMask';
 
 class AddUser extends Component {
   constructor(props) {
@@ -26,6 +29,7 @@ class AddUser extends Component {
       },
       hidden: true,
       randomPass: '',
+      countryCode: 'KZ',
     };
     this.inputChange = this.inputChange.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
@@ -46,6 +50,7 @@ class AddUser extends Component {
 
   inputChange(fieldName, o) {
     let sysUser = Object.assign({}, this.state.sysUser);
+
     let radioCheck = Object.assign({}, this.state.radioCheck);
     switch (fieldName) {
       case 'username':
@@ -100,6 +105,10 @@ class AddUser extends Component {
       case 'is_root':
         radioCheck.is_root = o.checked;
         break;
+      case 'phone':
+        sysUser.mobile = o;
+        break;
+
       default:
         sysUser[fieldName] = o.value;
     }
@@ -112,6 +121,25 @@ class AddUser extends Component {
   }
 
   submitForm() {
+    const successClear = () => {
+      this.setState({
+        sysUser: {
+          password: '',
+          username: '',
+          internal_number: '',
+          rname: [],
+          mobileNumber: '',
+        },
+        radioCheck: {
+          checked: false,
+          is_root: false,
+        },
+        hidden: true,
+        randomPass: '',
+        countryCode: 'KZ',
+      });
+    };
+
     const sysUser = Object.assign({}, this.state.sysUser);
     const radioCheck = Object.assign({}, this.state.radioCheck);
     sysUser['staff_id'] = this.props.selStaff.staff_id;
@@ -121,7 +149,12 @@ class AddUser extends Component {
     errors = this.validate();
 
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.newUser(sysUser);
+      let mobileFinish = this.state.sysUser.mobile
+        ? this.state.sysUser.mobile.replace(/[() -]/g, '')
+        : '';
+      this.props.newUser({ ...sysUser, mobile: mobileFinish }, () =>
+        successClear(),
+      );
     }
     this.setState({ errors });
   }
@@ -139,27 +172,10 @@ class AddUser extends Component {
       rids,
     } = this.state.sysUser;
 
-    if (
-      username === null ||
-      username === undefined ||
-      !username ||
-      password === null ||
-      password === undefined ||
-      !password
-    ) {
+    if (!username || !password) {
       errors.push(errorTable['134' + language]);
     }
-    if (
-      bukrs === null ||
-      bukrs === undefined ||
-      !bukrs ||
-      branchId === null ||
-      branchId === undefined ||
-      !branchId ||
-      rids === null ||
-      rids === undefined ||
-      !rids
-    ) {
+    if (!bukrs || !branchId || !rids) {
       errors.push(errorTable['138' + language]);
     }
     return errors;
@@ -188,7 +204,6 @@ class AddUser extends Component {
 
   render() {
     const { messages } = this.props;
-
     return (
       <Modal size={'small'} open={this.props.showAdd}>
         <Modal.Header>{messages['BTN__ADD']}</Modal.Header>
@@ -202,8 +217,12 @@ class AddUser extends Component {
     );
   }
   renderForm() {
-    const { messages } = this.props;
+    const { messages, countryCodeOptions = [], countryList = [] } = this.props;
     const { sysUser } = this.state;
+    const filterCountry = countryList.filter(
+      item => item.code == this.state.countryCode,
+    );
+
     return (
       <Form>
         <Form.Group widths="equal">
@@ -252,6 +271,37 @@ class AddUser extends Component {
               defaultValue={this.props.rids}
               onChange={(e, o) => this.inputChange('rids', o)}
             />
+          </Form.Field>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Field>
+            <label>Телефон</label>
+            <Form.Group>
+              <Select
+                compact
+                selection
+                value={this.state.countryCode}
+                options={countryCodeOptions}
+                onChange={(e, { value }) => {
+                  this.setState({ countryCode: value });
+                }}
+              />
+              <MaskedInput
+                value={
+                  this.state.sysUser.mobile ? this.state.sysUser.mobile : ''
+                }
+                mask={phoneMask(this.state.countryCode)}
+                placeholder={
+                  filterCountry.length > 0
+                    ? `${filterCountry[0].phoneCode} ${filterCountry[0].telPattern}`
+                    : 'Номер телефона'
+                }
+                onChange={event =>
+                  this.inputChange('phone', event.target.value)
+                }
+              />
+            </Form.Group>
           </Form.Field>
         </Form.Group>
         <Form.Group widths="equal">

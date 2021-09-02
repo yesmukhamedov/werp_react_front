@@ -9,20 +9,19 @@ export const EXAMPLE_ACTION_TYPE = 'EXAMPLE_ACTION_TYPE';
 
 //SRLS список сервисов
 export const fetchExample = param => {
-  console.log('ACTION');
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`reco/archive`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: EXAMPLE_ACTION_TYPE,
-          data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        //handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/reco/archive`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: EXAMPLE_ACTION_TYPE,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                //handleError(error, dispatch);
+            });
+    };
 };

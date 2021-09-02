@@ -1,9 +1,9 @@
 import { doPost } from '../../../../utils/apiActions';
 
-const createTaskUrl = `tasks`;
+const createTaskUrl = `core/tasks`;
 
 export default {
-  task: {
-    create: task => doPost(createTaskUrl, task).then(res => res.data),
-  },
+    task: {
+        create: task => doPost(createTaskUrl, task).then(res => res.data),
+    },
 };

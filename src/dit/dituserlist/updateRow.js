@@ -7,9 +7,14 @@ import {
   Icon,
   Radio,
   Dropdown,
+  Select,
 } from 'semantic-ui-react';
+import MaskedInput from 'react-text-mask';
+import phoneMask from '../../utils/phoneMask';
 
 export default function Update(props) {
+  const { filterCountry, countryCodeOptions = [] } = props;
+
   return (
     <Modal size={'small'} open={props.updateModalOpened}>
       <Modal.Header>{props.messages['change']}</Modal.Header>
@@ -69,6 +74,35 @@ export default function Update(props) {
                   options={props.roles}
                   onChange={(e, o) => props.handleChange('role_id', o)}
                 />
+              </Form.Field>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Field>
+                <label>Телефон</label>
+                <Form.Group>
+                  <Select
+                    compact
+                    selection
+                    value={props.countryCode ? props.countryCode : ''}
+                    options={countryCodeOptions}
+                    onChange={(e, { value }) =>
+                      props.handleChange('countryCode', value)
+                    }
+                  />
+                  <MaskedInput
+                    value={props.row.mobile}
+                    mask={phoneMask(props.countryCode)}
+                    placeholder={
+                      filterCountry.length > 0
+                        ? `${filterCountry[0].phoneCode} ${filterCountry[0].telPattern}`
+                        : 'Номер телефона'
+                    }
+                    onChange={event =>
+                      props.handleChange('mobileNumber', event.target.value)
+                    }
+                  />
+                </Form.Group>
               </Form.Field>
             </Form.Group>
 

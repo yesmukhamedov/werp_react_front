@@ -23,55 +23,57 @@ export const CALL_STATUS = 'CALL_STATUS';
 // }
 
 export const createCall = (code, phoneNumber) => {
-  return dispatch =>
-    axios.get(`${CONNECTOR_URL}/call/create/` + code + '/' + phoneNumber);
+    return dispatch =>
+        axios.get(
+            `${CONNECTOR_URL}core/call/create/` + code + '/' + phoneNumber,
+        );
 
-  return dispatch => {
-    axios
-      .get(`${CONNECTOR_URL}/call/create/` + code + '/' + phoneNumber)
-      .then(({ data }) => {
-        dispatch({
-          type: CALL_CREATED,
-          payload: data,
-        });
-      })
-      .catch(e => {
-        // handleError(e,dispatch)
-      });
-  };
+    return dispatch => {
+        axios
+            .get(`${CONNECTOR_URL}core/call/create/` + code + '/' + phoneNumber)
+            .then(({ data }) => {
+                dispatch({
+                    type: CALL_CREATED,
+                    payload: data,
+                });
+            })
+            .catch(e => {
+                // handleError(e,dispatch)
+            });
+    };
 };
 
 export const callInfo = code => {
-  return dispatch => axios.get(`${CONNECTOR_URL}/call/info/` + code);
+    return dispatch => axios.get(`${CONNECTOR_URL}core/call/info/` + code);
 };
 
 export const registerCall = model => {
-  return dispatch => doPost('crm/call/register', model);
+    return dispatch => doPost('core/crm/call/register', model);
 };
 
 export const saveCall = (phoneId, model) => {
-  if (model.id == null && !model.id) {
-    console.log('model: ', model);
-    return dispatch => doPost('crm2/call/' + phoneId, model);
-  }
+    if (model.id == null && !model.id) {
+        console.log('model: ', model);
+        return dispatch => doPost('crm2/call/' + phoneId, model);
+    }
 
-  return dispatch => doPut('crm/call/update-register', model);
+    return dispatch => doPut('core/crm/call/update-register', model);
 };
 
 export function blankCall(phoneId) {
-  return dispatch => doGet(`crm2/call/blank/${phoneId}`);
+    return dispatch => doGet(`crm2/call/blank/${phoneId}`);
 }
 
 export const setCallingFlag = flag => {
-  return {
-    type: CALLING_FLAG,
-    payload: flag,
-  };
+    return {
+        type: CALLING_FLAG,
+        payload: flag,
+    };
 };
 
 export const setCallStatus = status => {
-  return {
-    type: CALL_STATUS,
-    payload: status,
-  };
+    return {
+        type: CALL_STATUS,
+        payload: status,
+    };
 };

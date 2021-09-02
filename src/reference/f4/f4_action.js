@@ -1,7 +1,13 @@
-import { doGet, doPost, doPut, doDelete } from '../../utils/apiActions';
 import {
-  handleError,
-  notify,
+    doGet,
+    doPost,
+    doPut,
+    doDelete,
+    doGetYandex,
+} from '../../utils/apiActions';
+import {
+    handleError,
+    notify,
 } from '../../general/notification/notification_action';
 import { modifyLoader } from '../../general/loader/loader_action';
 import { errorTableText } from '../../utils/helpers';
@@ -128,7 +134,7 @@ export const F4_FETCH_CUSTOMERS_BY_ID = 'F4_FETCH_CUSTOMERS_BY_ID';
 export const F4_FETCH_SERVICE_STATUS_LIST = 'F4_FETCH_SERVICE_STATUS_LIST';
 
 export const F4_FETCH_OPERATORS_BY_BRANCH_ID =
-  'F4_FETCH_OPERATORS_BY_BRANCH_ID';
+    'F4_FETCH_OPERATORS_BY_BRANCH_ID';
 export const F4_FETCH_SERVICE_APP_STATUS = 'F4_FETCH_SERVICE_APP_STATUS';
 export const F4_FETCH_SERVICE_APP_TYPE = 'F4_FETCH_SERVICE_APP_TYPE';
 export const F4_FETCH_TOVAR_CATEGORYS = 'F4_FETCH_TOVAR_CATEGORYS';
@@ -144,1058 +150,1091 @@ export const F4_FETCH_CRM_CATEGORY = 'F4_FETCH_CRM_CATEGORY';
 export const F4_CLEAR_CRM_CATEGORY = 'F4_CLEAR_CRM_CATEGORY';
 
 export const F4_FETCH_AVAILABLED_TRANSACTION_BY_USER =
-  'F4_FETCH_AVAILABLED_TRANSACTION_BY_USER';
+    'F4_FETCH_AVAILABLED_TRANSACTION_BY_USER';
 
 export const F4_FETCH_CURRENT_STAFF = 'F4_FETCH_CURRENT_STAFF';
 export const F4_CLEAR_CURRENT_STAFF = 'F4_CLEAR_CURRENT_STAFF';
+
+export const F4_GET_LOCATION_ADDRESS_YANDEX = 'F4_GET_LOCATION_ADDRESS_YANDEX';
+export const F4_CLEAR_LOCATION_ADDRESS_YANDEX =
+    'F4_CLEAR_LOCATION_ADDRESS_YANDEX';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
 export function f4ClearAnyObject(a_const) {
-  const obj = {
-    type: a_const,
-  };
-  return obj;
+    const obj = {
+        type: a_const,
+    };
+    return obj;
 }
 
 export function f4FetchTovarCategorys() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('smcs/getCategoryList')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_TOVAR_CATEGORYS,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('smcs/getCategoryList')
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_TOVAR_CATEGORYS,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCompanyOptions() {
-  return function(dispatch) {
-    doGet('reference/companies/all?dto-type=options')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_COMPANY_OPTIONS,
-          payload: data,
-        });
-      })
+    return function(dispatch) {
+        doGet('core/reference/companies/all?dto-type=options')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_COMPANY_OPTIONS,
+                    payload: data,
+                });
+            })
 
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchBranchOptions(params = {}) {
-  return function(dispatch) {
-    doGet('reference/branches/all?dto-type=options')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_BRANCH_OPTIONS,
-          payload: data,
-        });
-      })
+    return function(dispatch) {
+        doGet('core/reference/branches/all?dto-type=options')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_BRANCH_OPTIONS,
+                    payload: data,
+                });
+            })
 
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchBranchesByBukrs(bukrs) {
-  return function(dispatch) {
-    doGet(`reference/branches/` + bukrs)
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_BUKRS_BRANCHES,
-          payload: data,
-        });
-      })
+    return function(dispatch) {
+        doGet(`core/reference/branches/` + bukrs)
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_BUKRS_BRANCHES,
+                    payload: data,
+                });
+            })
 
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4ClearBranchesByBukrs() {
-  return {
-    type: F4_CLEAR_BUKRS_BRANCHES,
-    payload: [],
-  };
+    return {
+        type: F4_CLEAR_BUKRS_BRANCHES,
+        payload: [],
+    };
 }
 
 export function f4FetchDepartmentList() {
-  return function(dispatch) {
-    doGet('reference/departments')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_DEPARTMENT_LIST,
-          departmentList: data,
-        });
-      })
+    return function(dispatch) {
+        doGet('core/reference/departments')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_DEPARTMENT_LIST,
+                    departmentList: data,
+                });
+            })
 
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCountryList() {
-  return function(dispatch) {
-    doGet('reference/countries')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_COUNTRY_LIST,
-          countryList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/countries')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_COUNTRY_LIST,
+                    countryList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchStateList() {
-  return function(dispatch) {
-    doGet('reference/states')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_STATE_LIST,
-          stateList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/states')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_STATE_LIST,
+                    stateList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCityList() {
-  return function(dispatch) {
-    doGet('reference/cities')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_CITY_LIST,
-          cityList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/cities')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_CITY_LIST,
+                    cityList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCityregList() {
-  return function(dispatch) {
-    doGet('reference/regions')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_CITYREG_LIST,
-          cityregList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/regions')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_CITYREG_LIST,
+                    cityregList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchMatnrList(trans) {
-  return function(dispatch) {
-    doGet('reference/matnrList', { trans })
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_MATNR_LIST,
-          matnrList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/matnrList', { trans })
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_MATNR_LIST,
+                    matnrList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4ClearMatnrList() {
-  const obj = {
-    type: F4_CLEAR_MATNR_LIST,
-  };
-  return obj;
+    const obj = {
+        type: F4_CLEAR_MATNR_LIST,
+    };
+    return obj;
 }
 
 export function f4FetchPriceList(trans, bukrs, waers) {
-  return function(dispatch) {
-    doGet('reference/priceList', { trans, bukrs, waers })
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_MATNR_LIST,
-          matnrList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/priceList', { trans, bukrs, waers })
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_MATNR_LIST,
+                    matnrList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchPositionList(trans) {
-  return function(dispatch) {
-    doGet('reference/positionList', { trans })
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_POSITION_LIST,
-          positionList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/positionList', { trans })
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_POSITION_LIST,
+                    positionList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4ClearPositionList() {
-  const obj = {
-    type: F4_CLEAR_POSITION_LIST,
-  };
-  return obj;
+    const obj = {
+        type: F4_CLEAR_POSITION_LIST,
+    };
+    return obj;
 }
 
 export function f4FetchCurrencyList(trans) {
-  return function(dispatch) {
-    doGet('reference/currencyList', { trans })
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_CURRENCY_LIST,
-          currencyList: data,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/currencyList', { trans })
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_CURRENCY_LIST,
+                    currencyList: data,
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
 }
 
 export function f4ClearCurrencyList() {
-  const obj = {
-    type: F4_CLEAR_CURRENCY_LIST,
-  };
-  return obj;
+    const obj = {
+        type: F4_CLEAR_CURRENCY_LIST,
+    };
+    return obj;
 }
 
 export function f4FetchWerksBranchList() {
-  return function(dispatch) {
-    doGet('reference/werksBranchList')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_WERKSBRANCH_LIST,
-          werksBranchList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/werksBranchList')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_WERKSBRANCH_LIST,
+                    werksBranchList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4ClearWerksBranchList() {
-  const obj = {
-    type: F4_CLEAR_WERKSBRANCH_LIST,
-  };
-  return obj;
+    const obj = {
+        type: F4_CLEAR_WERKSBRANCH_LIST,
+    };
+    return obj;
 }
 
 export function f4FetchBonusTypeList(trans) {
-  return function(dispatch) {
-    doGet('reference/bonusTypeList', { trans })
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_BONUSTYPE_LIST,
-          bonusTypeList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/bonusTypeList', { trans })
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_BONUSTYPE_LIST,
+                    bonusTypeList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4ClearBonusTypeList() {
-  const obj = {
-    type: F4_CLEAR_BONUSTYPE_LIST,
-  };
-  return obj;
+    const obj = {
+        type: F4_CLEAR_BONUSTYPE_LIST,
+    };
+    return obj;
 }
 
 export function f4FetchBusinessAreaList() {
-  return function(dispatch) {
-    doGet('reference/business-areas')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_BUSINESS_AREA_LIST,
-          businessAreaList: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/business-areas')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_BUSINESS_AREA_LIST,
+                    businessAreaList: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchBusinessAreaList2() {
-  return function(dispatch) {
-    doGet('reference/businessAreas')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_BUSINESS_AREA_LIST,
-          businessAreaList: data.ba,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/businessAreas')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_BUSINESS_AREA_LIST,
+                    businessAreaList: data.ba,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 export function f4FetchExchangeRateNational() {
-  return function(dispatch) {
-    doGet('reference/exchangeRateNational')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_EXCHANGERATE_NATIONAL,
-          exRateNational: data.exRateNational,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/exchangeRateNational')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_EXCHANGERATE_NATIONAL,
+                    exRateNational: data.exRateNational,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 export function f4FetchExpenceTypes() {
-  return function(dispatch) {
-    doGet('reference/expence-types')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_EXPENSE_TYPES,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/expence-types')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_EXPENSE_TYPES,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchSubCompanies() {
-  return function(dispatch) {
-    doGet('reference/sub-companies')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_SUB_COMPANIES,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/sub-companies')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_SUB_COMPANIES,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchNationalities() {
-  return function(dispatch) {
-    doGet('reference/nationalities')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_NATIONALITIES,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/nationalities')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_NATIONALITIES,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchNationalityOptions() {
-  return function(dispatch) {
-    doGet('reference/nationalities?dto-type=options')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_NATIONALITY_OPTIONS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/nationalities?dto-type=options')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_NATIONALITY_OPTIONS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 //Address Types
 export function f4FetchAddrTypeOptions() {
-  return function(dispatch) {
-    doGet('reference/address-types?dto-type=options')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_ADDR_TYPE_OPTIONS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/address-types?dto-type=options')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_ADDR_TYPE_OPTIONS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 //Address Types
 export function f4FetchBankPartnerOptions() {
-  return function(dispatch) {
-    doGet('reference/bankPartnerOptions')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_BANK_PARTNER_OPTIONS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/bankPartnerOptions')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_BANK_PARTNER_OPTIONS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchSubCompanyTypes() {
-  return function(dispatch) {
-    doGet('reference/sub-company-types')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_SUB_COMPANY_TYPES,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/sub-company-types')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_SUB_COMPANY_TYPES,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchLeaveReasonOptions() {
-  return function(dispatch) {
-    doGet('reference/leave-reasons?mode=options')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_LEAVE_REASON_OPTIONS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/leave-reasons?mode=options')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_LEAVE_REASON_OPTIONS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchStaffList(
-  trans,
-  bukrs,
-  brnch,
-  fio,
-  iinBin,
-  unemployed,
-  stopLoading,
+    trans,
+    bukrs,
+    brnch,
+    fio,
+    iinBin,
+    unemployed,
+    stopLoading,
 ) {
-  return function(dispatch) {
-    doGet('reference/staffList', {
-      trans,
-      bukrs,
-      brnch,
-      fio,
-      iinBin,
-      unemployed,
-    })
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_STAFF_LIST,
-          staffList: data,
-        });
-        stopLoading(false);
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-        stopLoading(false);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/staffList', {
+            trans,
+            bukrs,
+            brnch,
+            fio,
+            iinBin,
+            unemployed,
+        })
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_STAFF_LIST,
+                    staffList: data,
+                });
+                stopLoading(false);
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+                stopLoading(false);
+            });
+    };
 }
 
 export function f4ClearStaffList() {
-  const obj = {
-    type: F4_CLEAR_STAFF_LIST,
-  };
-  return obj;
+    const obj = {
+        type: F4_CLEAR_STAFF_LIST,
+    };
+    return obj;
 }
 ///////////////////////////////////////////////////////////////////////
 export function f4FetchCashBankBalanceList(a_bukrs, a_branch, a_callBackFun) {
-  return function(dispatch) {
-    doGet('finance/mainoperation/cashBankBalance', {
-      bukrs: a_bukrs,
-      branch: a_branch,
-    }).then(({ data }) => {
-      a_callBackFun();
-      dispatch({
-        type: F4_FETCH_CASHBANK_BALANCE_LIST,
-        data: data.cashBankBalanceList,
-      });
-    });
-  };
+    return function(dispatch) {
+        doGet('core/finance/mainoperation/cashBankBalance', {
+            bukrs: a_bukrs,
+            branch: a_branch,
+        }).then(({ data }) => {
+            a_callBackFun();
+            dispatch({
+                type: F4_FETCH_CASHBANK_BALANCE_LIST,
+                data: data.cashBankBalanceList,
+            });
+        });
+    };
 }
 
 ///////////////////////////////////////////////////////////////////////
 export function f4FetchHkontList(a_bukrs, a_tcode, a_branch) {
-  return function(dispatch) {
-    doGet('reference/fetchHkontList', {
-      bukrs: a_bukrs,
-      branch: a_branch,
-      tcode: a_tcode,
-    }).then(({ data }) => {
-      dispatch({
-        type: F4_FETCH_HKONT_LIST,
-        data: data.hkontOptions,
-      });
-    });
-  };
+    return function(dispatch) {
+        doGet('core/reference/fetchHkontList', {
+            bukrs: a_bukrs,
+            branch: a_branch,
+            tcode: a_tcode,
+        }).then(({ data }) => {
+            dispatch({
+                type: F4_FETCH_HKONT_LIST,
+                data: data.hkontOptions,
+            });
+        });
+    };
 }
 
 export function f4ClearBranchOptions() {
-  return {
-    type: F4_FETCH_BRANCH_OPTIONS,
-    payload: [],
-  };
+    return {
+        type: F4_FETCH_BRANCH_OPTIONS,
+        payload: [],
+    };
 }
 
 export function f4FetchConTypeList() {
-  return function(dispatch) {
-    doGet('reference/fetchContractTypeList')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_CONTYPE_LIST,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/fetchContractTypeList')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_CONTYPE_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchConStatusList() {
-  return function(dispatch) {
-    doGet('reference/fetchContractStatusList')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_CONSTATUS_LIST,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/fetchContractStatusList')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_CONSTATUS_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchBranches(params = {}) {
-  return function(dispatch) {
-    doGet('reference/branches/all')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_BRANCHES,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/branches/all')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_BRANCHES,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCustomers(params = {}, setIsLoading) {
-  return function(dispatch) {
-    doGet('reference/FETCH_CUSTOMERS', params)
-      .then(({ data }) => {
-        setIsLoading(false);
-        dispatch({
-          type: F4_FETCH_CUSTOMERS,
-          data,
-        });
-      })
-      .catch(error => {
-        setIsLoading(false);
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('core/reference/FETCH_CUSTOMERS', params)
+            .then(({ data }) => {
+                setIsLoading(false);
+                dispatch({
+                    type: F4_FETCH_CUSTOMERS,
+                    data,
+                });
+            })
+            .catch(error => {
+                setIsLoading(false);
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCustomersById(params = {}) {
-  return function(dispatch) {
-    doGet('smcs/getCustomer', params)
-      .then(({ data }) => {
-        // setIsLoading(false);
-        dispatch({
-          type: F4_FETCH_CUSTOMERS_BY_ID,
-          data,
-        });
-      })
-      .catch(error => {
-        // setIsLoading(false);
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('service/smcs/getCustomer', params)
+            .then(({ data }) => {
+                // setIsLoading(false);
+                dispatch({
+                    type: F4_FETCH_CUSTOMERS_BY_ID,
+                    data,
+                });
+            })
+            .catch(error => {
+                // setIsLoading(false);
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchAddresses(params = {}, setIsLoading) {
-  setIsLoading(true);
-  return function(dispatch) {
-    doGet('reference/address/FETCH_ADDRESSES', params)
-      .then(({ data }) => {
-        setIsLoading(false);
-        dispatch({
-          type: F4_FETCH_ADDRESSES,
-          data,
-        });
-      })
-      .catch(error => {
-        setIsLoading(false);
-        handleError(error, dispatch);
-      });
-  };
+    setIsLoading(true);
+    return function(dispatch) {
+        doGet('core/reference/address/FETCH_ADDRESSES', params)
+            .then(({ data }) => {
+                setIsLoading(false);
+                dispatch({
+                    type: F4_FETCH_ADDRESSES,
+                    data,
+                });
+            })
+            .catch(error => {
+                setIsLoading(false);
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function saveRfadd01(url, body, params, setIsLoading, clearAddress) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(url, body, { ...params })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        setIsLoading(false);
-        clearAddress();
-        dispatch({
-          type: POST_NEW_ADDRESS,
-          data,
-        });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`104${language}`],
-            errorTable[`101${language}`],
-          ),
-        );
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-        dispatch(modifyLoader(false));
-        setIsLoading(false);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(url, body, { ...params })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                setIsLoading(false);
+                clearAddress();
+                dispatch({
+                    type: POST_NEW_ADDRESS,
+                    data,
+                });
+                dispatch(
+                    notify(
+                        'success',
+                        errorTable[`104${language}`],
+                        errorTable[`101${language}`],
+                    ),
+                );
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+                dispatch(modifyLoader(false));
+                setIsLoading(false);
+            });
+    };
 }
 
 export function saveRfadd02(url, body, params, setIsLoading) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(url, body, { ...params })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        setIsLoading(false);
-        dispatch({
-          type: UPDATE_ADDRESS,
-          data,
-        });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`104${language}`],
-            errorTable[`101${language}`],
-          ),
-        );
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-        dispatch(modifyLoader(false));
-        setIsLoading(false);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(url, body, { ...params })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                setIsLoading(false);
+                dispatch({
+                    type: UPDATE_ADDRESS,
+                    data,
+                });
+                dispatch(
+                    notify(
+                        'success',
+                        errorTable[`104${language}`],
+                        errorTable[`101${language}`],
+                    ),
+                );
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+                dispatch(modifyLoader(false));
+                setIsLoading(false);
+            });
+    };
 }
 
 export function f4FetchPhone(param) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`phone?direction=DESC&orderBy=id`, param)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_PHONE,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/phone?direction=DESC&orderBy=id`, param)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_PHONE,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchPhoneType() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('phone_type')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_PHONE_TYPE,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('core/phone_type')
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_PHONE_TYPE,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4PostPhone(getData, countryId, fetchPhone) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(`phone/create?countryId=${countryId}`, getData)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_POST_PHONE,
-          payload: data,
-        });
-        dispatch(notify('success', errorTableText(101), errorTableText(104)));
-        fetchPhone();
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(`core/phone/create?countryId=${countryId}`, getData)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_POST_PHONE,
+                    payload: data,
+                });
+                dispatch(
+                    notify('success', errorTableText(101), errorTableText(104)),
+                );
+                fetchPhone();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4UpdatePhone(data, countryId, fetchPhone) {
-  return function(dispatch) {
-    doPut(`phone/update?countryId=${countryId}`, data)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_UPDATE_PHONE,
-          payload: data,
-        });
-        dispatch(notify('success', errorTableText(101), errorTableText(104)));
-        fetchPhone();
-        f4FetchPhoneHistory();
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPut(`core/phone/update?countryId=${countryId}`, data)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_UPDATE_PHONE,
+                    payload: data,
+                });
+                dispatch(
+                    notify('success', errorTableText(101), errorTableText(104)),
+                );
+                fetchPhone();
+                f4FetchPhoneHistory();
+            })
+            .catch(e => {
+                dispatch(modifyLoader(false));
+                handleError(e, dispatch);
+            });
+    };
 }
 export function f4DeletePhone(data, fetchPhone) {
-  return function(dispatch) {
-    doDelete('phone/delete', { data })
-      .then(data => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_DELETE_PHONE,
-        });
-        dispatch(notify('success', errorTableText(101), errorTableText(104)));
-        fetchPhone();
-        f4FetchPhoneHistory();
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        handleError(e, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doDelete('core/phone/delete', { data })
+            .then(data => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_DELETE_PHONE,
+                });
+                dispatch(
+                    notify('success', errorTableText(101), errorTableText(104)),
+                );
+                fetchPhone();
+                f4FetchPhoneHistory();
+            })
+            .catch(e => {
+                dispatch(modifyLoader(false));
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function f4FetchPhoneHistory() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('phone/audit?direction=DESC&orderBy=id')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_PHONE_HISTORY,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('core/phone/audit?direction=DESC&orderBy=id')
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_PHONE_HISTORY,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchMonthTerms(data) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('service/smcc/branchMonthTerms', data)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_MONTH_TERMS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('service/smcc/branchMonthTerms', data)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_MONTH_TERMS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchMatnrListView(data) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('service/smcc/matnrListView', data)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_MATNR_LIST_VIEW,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('service/smcc/matnrListView', data)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_MATNR_LIST_VIEW,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4CreateServContract(contract, clear) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    console.log(contract);
-    doPost('service/smcc/createContract', contract)
-      .then(({ data }) => {
-        console.log(data);
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        console.log(contract);
+        doPost('service/smcc/createContract', contract)
+            .then(({ data }) => {
+                console.log(data);
 
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_POST_SERV_CONTRACT,
-          payload: data,
-        });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`101${language}`],
-            errorTable[`104${language}`],
-          ),
-        );
-        clear();
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_POST_SERV_CONTRACT,
+                    payload: data,
+                });
+                dispatch(
+                    notify(
+                        'success',
+                        errorTable[`101${language}`],
+                        errorTable[`104${language}`],
+                    ),
+                );
+                clear();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 //Категория
 export function f4fetchCategory(data) {
-  return function(dispatch) {
-    doGet('service/service_category/view', data)
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_CATEGORY,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('service/service_category/view', data)
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_CATEGORY,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchServiceStatusList() {
-  return function(dispatch) {
-    doGet('service/service_status/view')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_SERVICE_STATUS_LIST,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('service/service_status/view')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_SERVICE_STATUS_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 export function f4FetchOperatorsByBranchId(param) {
-  return function(dispatch) {
-    doGet('service/smrd/operatorsByBranchId', param)
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_OPERATORS_BY_BRANCH_ID,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('service/smrd/operatorsByBranchId', param)
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_OPERATORS_BY_BRANCH_ID,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 //Статус заявки
 export function f4FetchServiceAppStatus() {
-  return function(dispatch) {
-    doGet('service/reference/serv_app_status')
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_SERVICE_APP_STATUS,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('service/reference/serv_app_status')
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_SERVICE_APP_STATUS,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchServiceAppType() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('service/reference/serv_app_type')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_SERVICE_APP_TYPE,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('service/reference/serv_app_type')
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_SERVICE_APP_TYPE,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchServicType() {
-  return function(dispatch) {
-    doGet('service/service_type')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_SERVICE_TYPE,
-          data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet('service/service_type')
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_SERVICE_TYPE,
+                    data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export const f4FetchMatnrPriceList = param => {
-  return function(dispatch) {
-    doGet(`service/smcs/matnr_pricelist`, param)
-      .then(({ data }) => {
-        //console.log(data, 'ACTION');
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_MATNR_PRICELIST,
-          data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`service/smcs/matnr_pricelist`, param)
+            .then(({ data }) => {
+                //console.log(data, 'ACTION');
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_MATNR_PRICELIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 export const f4FetchFilterPlanStatus = param => {
-  return function(dispatch) {
-    doGet(`service/filterPlan_status/view?direction=ASC`, param)
-      .then(({ data }) => {
-        //console.log(data, 'ACTION');
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_FILTER_PLAN_STATUS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`service/filterPlan_status/view?direction=ASC`, param)
+            .then(({ data }) => {
+                //console.log(data, 'ACTION');
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_FILTER_PLAN_STATUS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 };
 
 export function f4FetchPhysStatus() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/ContractLastState/view`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_PHYS_STATUS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/ContractLastState/view`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_PHYS_STATUS,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCrmCategory() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/crm_category/view`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_CRM_CATEGORY,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/crm_category/view`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_CRM_CATEGORY,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchCurrentStaff() {
-  return function(dispatch) {
-    doGet(`service/reference/currentStaff`)
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_CURRENT_STAFF,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`service/reference/currentStaff`)
+            .then(({ data }) => {
+                dispatch({
+                    type: F4_FETCH_CURRENT_STAFF,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function f4FetchAvailabledTransactionByUser() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`service/reference/transactions`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`service/reference/transactions`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
+}
+
+export function f4GetLocationAddressYandex(geocode, success) {
+    return function(dispatch) {
+        doGetYandex({
+            apikey: '42cf1ae0-38c3-454d-a55d-7d7732c05c71',
+            format: 'json',
+            ...geocode,
+        })
+            .then(data => {
+                dispatch({
+                    type: F4_GET_LOCATION_ADDRESS_YANDEX,
+                    data,
+                });
+                success(
+                    data.data.response.GeoObjectCollection.featureMember[0]
+                        .GeoObject.metaDataProperty.GeocoderMetaData.text,
+                );
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }

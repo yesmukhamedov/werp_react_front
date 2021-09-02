@@ -9,7 +9,7 @@ export const FETCH_SERVICE_TYPE_LIST = 'FETCH_SERVICE_TYPE_LIST';
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
 
-//SRLS список сервисов
+// SRLS список сервисов
 export const fetchSrls = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));

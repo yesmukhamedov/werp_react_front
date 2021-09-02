@@ -1,7 +1,7 @@
 import { modifyLoader } from '../general/loader/loader_action';
 import {
-  handleError,
-  notify,
+    handleError,
+    notify,
 } from '../general/notification/notification_action';
 import { doGet, doPut, doPost, doDelete } from '../utils/apiActions';
 
@@ -51,554 +51,559 @@ export const UPDATE_ZREPORT = 'UPDATE_ZREPORT';
 /*******************************************************************    DITELLST                 */
 
 export function fetchAllEllist(page) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`ditellist/ditellistAll?${page}`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ALL_DITELLST,
-          events: data.events,
-          evRowPr: data.evRowPr,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/ditellist/ditellistAll?${page}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: ALL_DITELLST,
+                    events: data.events,
+                    evRowPr: data.evRowPr,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 /*******************************************************************    SYSTEM USER ACTIONCALLS    */
 
 export function showAddModal(flag) {
-  return {
-    type: SHOW_DITUSERLST,
-    payload: flag,
-  };
+    return {
+        type: SHOW_DITUSERLST,
+        payload: flag,
+    };
 }
 export function showUpdateModal(flag) {
-  return {
-    type: SHOW_DITUSR_UPD,
-    payload: flag,
-  };
+    return {
+        type: SHOW_DITUSR_UPD,
+        payload: flag,
+    };
 }
 
 export function fetchDSUserAll() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`dituserlist/ditSUserAll`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ALL_DITUSRLST,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/dituserlist/ditSUserAll`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: ALL_DITUSRLST,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
-export function saveNewDSUser(newUser) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doPost(`dituserlist/ditsaveSUser`, newUser)
-      .then(({ data }) => {
+export function saveNewDSUser(newUser, successClear) {
+    return function(dispatch) {
         dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: NEW_DITUSRLST,
-            payload: newUser,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+        doPost(`core/dituserlist/ditsaveSUser`, newUser)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                successClear();
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: NEW_DITUSRLST,
+                        payload: newUser,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function updateDSUserRow(row) {
-  return function(dispatch) {
-    doPut('dituserlist/ditupdSUser', row)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: UPD_DITUSRLST,
-            payload: row,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPut('core/dituserlist/ditupdSUser', row)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: UPD_DITUSRLST,
+                        payload: row,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function searchStafforDSUser(sstaff) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doPost(`dituserlist/ditsearchStaff/forSUser`, sstaff)
-      .then(({ data }) => {
+    return function(dispatch) {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: STAFF_FOR_DITUSRLST,
-          payload: data,
-        });
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+        doPost(`core/dituserlist/ditsearchStaff/forSUser`, sstaff)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: STAFF_FOR_DITUSRLST,
+                    payload: data,
+                });
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function getBrByBukrDSysUser(bukrs) {
-  return function(dispatch) {
-    doGet(`dituserlist/ditbranchesbybukrs/${bukrs}`)
-      .then(({ data }) => {
-        dispatch({
-          type: BRNCHS_FOR_DITUSRLST,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`core/dituserlist/ditbranchesbybukrs/${bukrs}`)
+            .then(({ data }) => {
+                dispatch({
+                    type: BRNCHS_FOR_DITUSRLST,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 /*******************************************************************        DMULIST ACTIONCALLS    */
 
 export function fetchCurrDmulst() {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doGet(`dit/dmulist/dmulstAll`)
-      .then(({ data }) => {
-        modifyLoader(false);
-        dispatch({
-          type: ALL_DMULST,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(false));
+        doGet(`core/dit/dmulist/dmulstAll`)
+            .then(({ data }) => {
+                modifyLoader(false);
+                dispatch({
+                    type: ALL_DMULST,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function newDmuNode(newNode) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doPost(`dit/dmulist/dmusavenew`, newNode)
-      .then(({ data }) => {
+    return function(dispatch) {
         dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: NEW_DMULST,
-            payload: data,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+        doPost(`core/dit/dmulist/dmusavenew`, newNode)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: NEW_DMULST,
+                        payload: data,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function onMoveDmuNode(node, changeNode) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doPost(`dit/dmulist/dmumovenode`, { node, changeNode })
-      .then(({ data }) => {
+    return function(dispatch) {
         dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: ON_DMULST_MOVE,
-            payload: { node, changeNode },
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
+        doPost(`core/dit/dmulist/dmumovenode`, { node, changeNode })
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: ON_DMULST_MOVE,
+                        payload: { node, changeNode },
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(e => {
+                handleError(e, dispatch);
+            });
+    };
 }
 
 export function updDmuNode(node) {
-  return function(dispatch) {
-    doPut(`dit/dmulist/dmuupdate/${node.id}`, node)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: DMU_LST_NODE_UPD,
-          payload: node,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPut(`core/dit/dmulist/dmuupdate/${node.id}`, node)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: DMU_LST_NODE_UPD,
+                    payload: node,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function treeDmuChanged(treeMenu) {
-  return {
-    type: TREE_DMULST_CHANGED,
-    payload: treeMenu,
-  };
+    return {
+        type: TREE_DMULST_CHANGED,
+        payload: treeMenu,
+    };
 }
 
 export function getBlankDmu(parentId) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`dit/dmulist/dmublank/${parentId}`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: BLANK_DMULST_NODE,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/dit/dmulist/dmublank/${parentId}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: BLANK_DMULST_NODE,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function deleteDmuNode(nMenu) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(`dit/dmulist/dmudeletenode/${nMenu.id}`)
-      .then(() => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: DEL_DMULST_NODE,
-          payload: nMenu,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(`core/dit/dmulist/dmudeletenode/${nMenu.id}`)
+            .then(() => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: DEL_DMULST_NODE,
+                    payload: nMenu,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 /*******************************************************************        DRLIST ACTIONCALLS    */
 
 export function fetchDrlstAll() {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doGet(`dit/drlist/drlstAll`)
-      .then(({ data }) => {
-        modifyLoader(false);
-        dispatch({
-          type: ALL_DRLIST,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(false));
+        doGet(`core/dit/drlist/drlstAll`)
+            .then(({ data }) => {
+                modifyLoader(false);
+                dispatch({
+                    type: ALL_DRLIST,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function getDrlstAccesses(role_id) {
-  return function(dispatch) {
-    doGet(`dit/drlist/drlstaccesses/${role_id}`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ACCESS_DRLST,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doGet(`core/dit/drlist/drlstaccesses/${role_id}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: ACCESS_DRLST,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function saveDrLst(newRoles) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(`dit/drlist/drlstsave_roles`, newRoles)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: ACCESS_DRLST,
-            payload: newRoles,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(`core/dit/drlist/drlstsave_roles`, newRoles)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: ACCESS_DRLST,
+                        payload: newRoles,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function updDrlstNomin(role) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPut('dit/drlist/drlstupdate', role)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: UPD_DR_LST_NAME,
-            payload: role,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPut('core/dit/drlist/drlstupdate', role)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: UPD_DR_LST_NAME,
+                        payload: role,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function newDrole(role) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(`dit/drlist/drlstnew`, role)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: NEW_DR_LST,
-            payload: role,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(`core/dit/drlist/drlstnew`, role)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: NEW_DR_LST,
+                        payload: role,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 /*******************************************************************        DTRLST ACTIONCALLS    */
 
 export function fetchCurrDtrLst() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`dit/dtrlist/trall`)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ALL_CURR_DTR,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/dit/dtrlist/trall`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: ALL_CURR_DTR,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function newDtr(newTr) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doPost(`dit/dtrlist/newtr`, newTr)
-      .then(({ data }) => {
+    return function(dispatch) {
         dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: NEW_DTR,
-            payload: newTr,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+        doPost(`core/dit/dtrlist/newtr`, newTr)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: NEW_DTR,
+                        payload: newTr,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function updDtr(row) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPut('dit/dtrlist/trupdate', row)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: UPD_DTR,
-          payload: row,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        dispatch(notify('error', error.response.data.message, 'Ошибка'));
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPut('core/dit/dtrlist/trupdate', row)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: UPD_DTR,
+                    payload: row,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                dispatch(
+                    notify('error', error.response.data.message, 'Ошибка'),
+                );
+            });
+    };
 }
 
 /*******************************************************************        DPHBOOK ACTIONCALLS    */
 export function getPhoneBook(book) {
-  return function(dispatch) {
-    dispatch(clearDynObj());
-    dispatch(modifyLoader(true));
-    doGet('dit/phonebook', book)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: GET_PHONEBOOK,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        dispatch(notify('error', error.response.data.message, 'Ошибка'));
-      });
-  };
+    return function(dispatch) {
+        dispatch(clearDynObj());
+        dispatch(modifyLoader(true));
+        doGet('core/dit/phonebook', book)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: GET_PHONEBOOK,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                dispatch(
+                    notify('error', error.response.data.message, 'Ошибка'),
+                );
+            });
+    };
 }
 
 /*******************************************************************        ZREPORT ACTIONCALLS    */
 
 export function fetchZreports() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('dit/zreport/all')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ALL_ZREPORT,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet('core/dit/zreport/all')
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: ALL_ZREPORT,
+                    payload: data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function updateZreport(id, file, name) {
-  return function(dispatch) {
-    doPut(`dit/zreport/update/${id}`, file)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: UPDATE_ZREPORT,
-            payload: { id, name },
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+    return function(dispatch) {
+        doPut(`core/dit/zreport/update/${id}`, file)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: UPDATE_ZREPORT,
+                        payload: { id, name },
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function uploadZReport(newReport, fileData) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doPost(`dit/zreport/upload`, newReport)
-      .then(({ data }) => {
+    return function(dispatch) {
         dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: NEW_ZREPORT,
-            payload: fileData,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+        doPost(`core/dit/zreport/upload`, newReport)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: NEW_ZREPORT,
+                        payload: fileData,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function deleteFile(id) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    doDelete(`dit/zreport/delete/${id}`)
-      .then(({ data }) => {
+    return function(dispatch) {
         dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: DELETE_ZREPORT,
-            payload: id,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
+        doDelete(`core/dit/zreport/delete/${id}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                if (data) {
+                    dispatch(successed());
+                    dispatch({
+                        type: DELETE_ZREPORT,
+                        payload: id,
+                    });
+                } else {
+                    dispatch(notSuccessed());
+                }
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
 }
 
 export function clearDynObj() {
-  const obj = {
-    type: DIT_CLEAR_DYN_OBJ,
-  };
-  return obj;
+    const obj = {
+        type: DIT_CLEAR_DYN_OBJ,
+    };
+    return obj;
 }
 
 export function successed() {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  return notify(
-    'success',
-    errorTable[`104${language}`],
-    errorTable[`101${language}`],
-  );
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    return notify(
+        'success',
+        errorTable[`104${language}`],
+        errorTable[`101${language}`],
+    );
 }
 
 export function notSuccessed() {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  return notify(
-    'info',
-    errorTable[`104${language}`],
-    errorTable[`101${language}`],
-  );
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    return notify(
+        'info',
+        errorTable[`104${language}`],
+        errorTable[`101${language}`],
+    );
 }

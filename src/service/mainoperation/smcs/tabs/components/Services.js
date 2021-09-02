@@ -60,7 +60,7 @@ const Services = props => {
               <Table.Cell width={2}>
                 <Input
                   type="number"
-                  readOnly={item.serviceTypeId == 8 ? false : true}
+                  readOnly={item.serviceTypeId == 8 || 9 ? false : true}
                   fluid
                   value={item.sum != null ? item.sum : ''}
                   onChange={(e, value) =>
