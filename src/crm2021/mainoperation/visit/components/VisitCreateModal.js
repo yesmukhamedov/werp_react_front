@@ -270,7 +270,6 @@ class VisitCreateModal extends Component {
   render() {
     const { modalOpened } = this.props;
     const { messages } = this.props.intl;
-    console.log('localVisit', this.state.localVisit);
     return (
       <Modal size="small" open={modalOpened}>
         <Modal.Header>

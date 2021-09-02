@@ -15,7 +15,7 @@ import {
   Grid,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
-import ReactTable from 'react-table';
+import ReactTable, { useSortBy } from 'react-table';
 
 const currentDate = new Date();
 class VisitListPage extends Component {
@@ -269,30 +269,33 @@ class VisitListPage extends Component {
     return (
       <ReactTable
         data={this.state.items}
-        columns={[
-          {
-            Header: 'Номер №',
-            accessor: 'id',
-            Footer: (
-              <span>
-                <strong>Количество: </strong>
-                {this.state.items.length}
-              </span>
-            ),
-          },
-          {
-            Header: 'Филиал',
-            accessor: 'branchName',
-          },
-          {
-            Header: 'Посетитель',
-            accessor: 'visitorName',
-          },
-          {
-            Header: 'Дата посещения',
-            accessor: 'date',
-          },
-        ]}
+        columns={
+          ([
+            {
+              Header: 'Номер №',
+              accessor: 'id',
+              Footer: (
+                <span>
+                  <strong>Количество: </strong>
+                  {this.state.items.length}
+                </span>
+              ),
+            },
+            {
+              Header: 'Филиал',
+              accessor: 'branchName',
+            },
+            {
+              Header: 'Посетитель',
+              accessor: 'visitorName',
+            },
+            {
+              Header: 'Дата посещения',
+              accessor: 'date',
+            },
+          ],
+          useSortBy)
+        }
         className="-striped -highlight"
       />
     );

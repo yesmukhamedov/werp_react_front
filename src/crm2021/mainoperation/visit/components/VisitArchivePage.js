@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ReactTable from 'react-table';
+import ReactTable, { useSortBy } from 'react-table';
 import 'react-table/react-table.css';
 import { Header, Container, Icon, Button, Segment } from 'semantic-ui-react';
 import moment from 'moment';
@@ -92,11 +92,10 @@ class VisitArchivePage extends Component {
             },
             {
               Header: messages['Table.Visitor'],
-              accessor: 'visitorId',
+              accessor: 'visitorName',
               minWidth: 150,
               Cell: row => row.original.visitorName,
               filterMethod: (filter, d) => {
-                console.log('dealers: ', this.props.dealers);
                 // if (filter.value === 0) {
                 //   return true;
                 // }
@@ -105,11 +104,11 @@ class VisitArchivePage extends Component {
                 }
                 return filter.value == d[filter.id];
               },
+              // sortMethod: (a, b) => a.visitorName.localeCompare(b.visitorName),
               Filter: ({ filter, onChange }) => (
                 <select
                   onChange={event => onChange(event.target.value)}
                   style={{ width: '100%' }}
-                  // value={123}
                 >
                   <option>{'Все'}</option>
                   {trimmed.map(d => (
