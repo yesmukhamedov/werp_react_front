@@ -179,10 +179,10 @@ const CalculationOfManagersBonus = props => {
             </Form>
 
             <OutputErrors errors={errors} />
-
+            <h3>{messages['bonuses_of_the_head_of_the_service_department']}</h3>
             <Table data={calculationOfManagersBonus.chiefDepartmentList} />
             <br />
-            <br />
+            <h3>{messages['bonuses_of_the_managers']}</h3>
             <Table data={calculationOfManagersBonus.managerList} />
         </>
     );

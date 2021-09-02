@@ -178,13 +178,15 @@ const CalculationOfOperatorsBonus = props => {
             </Form>
 
             <OutputErrors errors={errors} />
-
+            <h3>
+                {messages['bonuses_of_the_operators_by_harvesting_systems']}
+            </h3>
             <Table data={calculationOfOperatorsBonus.VCOperatorsBonuses} />
             <br />
-            <br />
+            <h3>{messages['bonuses_of_the_operators']}</h3>
             <Table data={calculationOfOperatorsBonus.allOperatorsBonuses} />
             <br />
-            <br />
+            <h3>{messages['bonuses_of_the_senior_operator']}</h3>
             <Table data={calculationOfOperatorsBonus.seniorOperatorBonus} />
         </>
     );

@@ -949,5 +949,10 @@
     "total_amount_with_discount": "The total amount with a discount",
     "number_of_completed_services": "Number of completed services",
     "salary": "Salary",
-    "total_salary": "Total salary"
+    "total_salary": "Total salary",
+    "bonuses_of_the_head_of_the_service_department": "Bonuses of the head of the service department",
+    "bonuses_of_the_managers": "Bonuses of the managers",
+    "bonuses_of_the_operators": "Bonuses of the operators",
+    "bonuses_of_the_operators_by_harvesting_systems": "Bonuses of the operators by harvesting systems",
+    "bonuses_of_the_senior_operator": "Bonuses of the senior operator"
 }

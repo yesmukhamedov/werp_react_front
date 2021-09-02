@@ -945,5 +945,10 @@
     "total_amount_with_discount": "Общая сумма со скидкой",
     "number_of_completed_services": "Количество выполненных услуг",
     "salary": "Зарплата",
-    "total_salary": "Общая заработная плата"
+    "total_salary": "Общая заработная плата",
+    "bonuses_of_the_head_of_the_service_department": "Бонусы начальника сервис отдела",
+    "bonuses_of_the_managers": "Бонусы менеджеров",
+    "bonuses_of_the_operators": "Бонусы операторов",
+    "bonuses_of_the_operators_by_harvesting_systems": "Бонусы операторов по уборочной системе",
+    "bonuses_of_the_senior_operator": "Бонусы старшего оператора"
 }
