@@ -870,9 +870,6 @@ class Phone extends Component {
                         showTimeSelect
                         dropdownMode="select"
                         dateFormat="DD.MM.YYYY HH:mm"
-                        selected={stringYYYYMMDDHHMMToMoment(
-                            this.state.call.callRecallDate,
-                        )}
                         onChange={v =>
                             this.handleChange(
                                 'callRecallDate',
