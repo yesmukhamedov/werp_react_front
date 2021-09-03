@@ -282,6 +282,7 @@ export function saveCall(phoneId, model) {
             })
             .catch(e => {
                 dispatch(modifyLoader(WSP_SAVED_CALL, false));
+                console.log(e.response.data);
                 if (e.response.data) {
                     if (
                         e.response.data.status === 400 &&

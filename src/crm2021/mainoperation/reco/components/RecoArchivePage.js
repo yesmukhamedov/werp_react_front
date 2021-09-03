@@ -26,6 +26,7 @@ import MaskedInput from 'react-text-mask';
 import { Select } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../../reference/f4/f4_action';
 import phoneMask from '../../../../utils/phoneMask';
+import { Input } from 'semantic-ui-react';
 
 class RecoArchivePage extends Component {
     constructor(props) {
@@ -36,7 +37,10 @@ class RecoArchivePage extends Component {
                 bukrs: '',
                 branchIds: [],
             },
-            loaderOn: true,
+            loaderOn: false,
+            errors: {
+                phoneNumber: false,
+            },
         };
 
         this.renderTable = this.renderTable.bind(this);
@@ -52,7 +56,6 @@ class RecoArchivePage extends Component {
         this.props.fetchRecoStatuses();
         this.props.fetchGroupDealers();
         this.props.f4FetchCountryList();
-        this.loadItems(0);
     }
 
     componentDidUpdate(prevProps) {
@@ -67,22 +70,47 @@ class RecoArchivePage extends Component {
     loadItems(page) {
         const { queryParams } = this.state;
         const params = {};
-        for (const k in queryParams) {
-            if (k === 'branchIds' || k === 'statuses') {
-                if (
-                    typeof queryParams[k] !== 'undefined' &&
-                    queryParams[k].length > 0
-                ) {
-                    params[k] = queryParams[k].join();
+
+        if (this.validation(queryParams)) {
+            for (const k in queryParams) {
+                if (k === 'branchIds' || k === 'statuses') {
+                    if (
+                        typeof queryParams[k] !== 'undefined' &&
+                        queryParams[k].length > 0
+                    ) {
+                        params[k] = queryParams[k].join();
+                    }
+                } else {
+                    params[k] = queryParams[k];
                 }
-            } else {
-                params[k] = queryParams[k];
             }
+
+            params.page = page;
+
+            this.props.fetchRecoArchive(params);
+        }
+    }
+
+    isNullOrEmpty(param) {
+        return param === null || param === undefined || param === '';
+    }
+
+    validation(queryParams) {
+        const { phoneNumber } = queryParams;
+        let errors = {};
+
+        if (this.isNullOrEmpty(phoneNumber) || phoneNumber.length < 7) {
+            errors = {
+                ...errors,
+                phoneNumber: true,
+            };
         }
 
-        params.page = page;
-
-        this.props.fetchRecoArchive(params);
+        this.setState({
+            ...this.state,
+            errors: errors,
+        });
+        return Object.values(errors).length === 0;
     }
 
     renderTableHeader(messages) {
@@ -314,7 +342,7 @@ class RecoArchivePage extends Component {
                         label={messages['Form.ClientFullName']}
                         placeholder={messages['Form.ClientFullName']}
                     />
-                    <Form.Field>
+                    {/* <Form.Field>
                         <label>Телефон</label>
                         <Form.Group>
                             <Select
@@ -322,14 +350,18 @@ class RecoArchivePage extends Component {
                                 selection
                                 name="countryCode"
                                 options={countryCodeOptions}
-                                onChange={this.handleChange}
+                                onChange={(e, { value }) => {
+                                    this.setState({ countryCode: value });
+                                }}
                             />
                             <MaskedInput
-                                name="phoneNumber"
                                 fluid
                                 mask={phoneMask(this.state.countryCode)}
+                                value={
+                                  this.state.phoneNumber ? this.state.phoneNumber : ''
+                                }
                                 onChange={event => {
-                                    console.log(event);
+                                    console.log(event.target.value)
                                     this.setState({
                                         phoneNumber: event.target.value,
                                     });
@@ -338,14 +370,15 @@ class RecoArchivePage extends Component {
                                 placeholder={messages['Form.Reco.PhoneNumber']}
                             />
                         </Form.Group>
-                    </Form.Field>
-                    {/*           <Form.Input
-            name="phoneNumber"
-            onChange={this.handleChange}
-            fluid
-            label={messages['Form.Reco.PhoneNumber']}
-            placeholder={messages['Form.Reco.PhoneNumber']}
-          /> */}
+                    </Form.Field> */}
+                    <Form.Input
+                        name="phoneNumber"
+                        onChange={this.handleChange}
+                        fluid
+                        label={messages['Form.Reco.PhoneNumber']}
+                        placeholder={messages['Form.Reco.PhoneNumber']}
+                        error={this.state.errors.phoneNumber}
+                    />
                     <Form.Field>
                         <label>&nbsp;</label>
                         <Button onClick={() => this.loadItems(0)}>
