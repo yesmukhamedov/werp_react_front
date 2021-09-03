@@ -1463,6 +1463,7 @@ const getComponent = {
     CrmWspace2021: AsyncCrmWspacePage2021,
     CrmReference: AsyncCrmReference,
     Srgfr: AsyncSrgfr,
+    Foac: AsyncFoac,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1597,7 +1598,6 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncTaxiExpence} 
       />*/}
-            <Route path="/finance/foac" exact={true} component={AsyncFoac} />
             <Route
                 path="/hr/report/hrslc"
                 exact={true}
