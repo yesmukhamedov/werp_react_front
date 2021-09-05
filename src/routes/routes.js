@@ -1302,6 +1302,11 @@ const AsyncWerpReference = Loadable({
         import('../dit/werpreference/index') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
+const AsyncMrKaspi = Loadable({
+    loader: () =>
+        import('../marketing/report/mrKaspi') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1464,6 +1469,7 @@ const getComponent = {
     CrmReference: AsyncCrmReference,
     Srgfr: AsyncSrgfr,
     Foac: AsyncFoac,
+    MrKaspi: AsyncMrKaspi,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1602,6 +1608,11 @@ const generateRoutes = transactionRoutes => {
                 path="/hr/report/hrslc"
                 exact={true}
                 component={AsyncHrSlc}
+            />
+            <Route
+                path="/marketing/report/mrkaspi"
+                exact={true}
+                component={AsyncMrKaspi}
             />
 
             {transactionRoutes.map(route => {
