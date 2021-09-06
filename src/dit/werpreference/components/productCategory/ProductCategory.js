@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button, Input, Popup } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import ModalAddCategory from './ModalAddCategory';
-import '../../style.css';
 
 export default function ProductCategory({
     create,
-    getList,
+    getCategoryList,
     categoryList,
     update,
     clear,
@@ -20,7 +19,7 @@ export default function ProductCategory({
 
     useEffect(() => {
         clear();
-        getList();
+        getCategoryList();
     }, []);
 
     useEffect(() => {
@@ -62,30 +61,33 @@ export default function ProductCategory({
         );
     };
 
-    const isFieldNullOrBlank = field =>
-        field === '' || field === null || field === undefined;
+    const isFieldEmpty = field => {
+        return field === '' || field === null || field === undefined;
+    };
 
     const validation = item => {
         let success = true;
-        const arr = Object.values(item);
-
-        arr.map(value => {
-            if (isFieldNullOrBlank(value)) {
-                success = false;
-            }
-        });
 
         setErrors(() => {
             let temporaryObj = {};
-            Object.entries(item).map(keyAndValue => {
-                const key = keyAndValue[0];
-                const value = keyAndValue[1];
+            Object.entries(item).map(keyAndVal => {
                 temporaryObj = {
-                    ...temporaryObj,
-                    [key]: isFieldNullOrBlank(value),
+                    ...errors,
+                    [item.id]: {
+                        ...item,
+                        [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                    },
                 };
             });
             return temporaryObj;
+        });
+
+        const arr = Object.values(item);
+
+        arr.map(value => {
+            if (isFieldEmpty(value)) {
+                success = false;
+            }
         });
 
         return success;
@@ -107,7 +109,7 @@ export default function ProductCategory({
                         },
                         () => {
                             clear();
-                            getList();
+                            getCategoryList();
                         },
                     );
                 }
@@ -117,29 +119,96 @@ export default function ProductCategory({
 
     const onChangeInput = (fieldName, data, value) => {
         setTempData(
-            tempData.map(el => {
-                if (el.id === data.id) {
+            tempData.map(item => {
+                if (item.id === data.id) {
                     switch (fieldName) {
                         case 'code':
-                            return { ...el, code: value };
+                            return { ...item, code: value };
                         case 'info':
-                            return { ...el, info: value };
+                            return { ...item, info: value };
                         case 'nameEn':
-                            return { ...el, nameEn: value };
+                            return { ...item, nameEn: value };
                         case 'nameKk':
-                            return { ...el, nameKk: value };
+                            return { ...item, nameKk: value };
                         case 'nameRu':
-                            return { ...el, nameRu: value };
+                            return { ...item, nameRu: value };
                         case 'nameTr':
-                            return { ...el, nameTr: value };
+                            return { ...item, nameTr: value };
                         default:
                             break;
                     }
                 } else {
-                    return { ...el };
+                    return { ...item };
                 }
             }),
         );
+    };
+
+    const setRedLine = (original, fieldName) => {
+        var redLine = false;
+        Object.values(errors).map(item => {
+            if (item.id === original.id) {
+                switch (fieldName) {
+                    case 'code':
+                        if (
+                            item['code'] === '' ||
+                            item['code'] === null ||
+                            item['code'] === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'info':
+                        if (
+                            item['info'] === '' ||
+                            item['info'] === null ||
+                            item['info'] === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'nameEn':
+                        if (
+                            item.nameEn === '' ||
+                            item.nameEn === null ||
+                            item.nameEn === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'nameKk':
+                        if (
+                            item.nameKk === '' ||
+                            item.nameKk === null ||
+                            item.nameKk === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'nameRu':
+                        if (
+                            item.nameRu === '' ||
+                            item.nameRu === null ||
+                            item.nameRu === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'nameTr':
+                        if (
+                            item.nameTr === '' ||
+                            item.nameTr === null ||
+                            item.nameTr === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        return redLine;
     };
 
     const cellInput = (original, fieldName) => {
@@ -147,9 +216,16 @@ export default function ProductCategory({
             case 'code':
                 return original.edit ? (
                     <Input
-                        label={errors.code ? 'Заполнте поле' : null}
-                        error={errors.code}
-                        placeholder={original.code}
+                        label={Object.values(errors).map(item =>
+                            item.id === original.id
+                                ? item.code === '' ||
+                                  item.code === null ||
+                                  item.code === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'code')}
                         value={original.code}
                         onChange={e =>
                             onChangeInput('code', original, e.target.value)
@@ -161,9 +237,16 @@ export default function ProductCategory({
             case 'info':
                 return original.edit ? (
                     <Input
-                        label={errors.info ? 'Заполнте поле' : null}
-                        error={errors.info}
-                        placeholder={original.info}
+                        label={Object.values(errors).map(item =>
+                            item.id === original.id
+                                ? item.info === '' ||
+                                  item.info === null ||
+                                  item.info === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'info')}
                         value={original.info}
                         onChange={e =>
                             onChangeInput('info', original, e.target.value)
@@ -175,9 +258,16 @@ export default function ProductCategory({
             case 'nameEn':
                 return original.edit ? (
                     <Input
-                        label={errors.nameEn ? 'Заполнте поле' : null}
-                        error={errors.nameEn}
-                        placeholder={original.nameEn}
+                        label={Object.values(errors).map(item =>
+                            item.id === original.id
+                                ? item.nameEn === '' ||
+                                  item.nameEn === null ||
+                                  item.nameEn === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'nameEn')}
                         value={original.nameEn}
                         onChange={e =>
                             onChangeInput('nameEn', original, e.target.value)
@@ -189,9 +279,16 @@ export default function ProductCategory({
             case 'nameKk':
                 return original.edit ? (
                     <Input
-                        label={errors.nameKk ? 'Заполнте поле' : null}
-                        error={errors.nameKk}
-                        placeholder={original.nameKk}
+                        label={Object.values(errors).map(item =>
+                            item.id === original.id
+                                ? item.nameKk === '' ||
+                                  item.nameKk === null ||
+                                  item.nameKk === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'nameKk')}
                         value={original.nameKk}
                         onChange={e =>
                             onChangeInput('nameKk', original, e.target.value)
@@ -203,9 +300,16 @@ export default function ProductCategory({
             case 'nameRu':
                 return original.edit ? (
                     <Input
-                        label={errors.nameRu ? 'Заполнте поле' : null}
-                        error={errors.nameRu}
-                        placeholder={original.nameRu}
+                        label={Object.values(errors).map(item =>
+                            item.id === original.id
+                                ? item.nameRu === '' ||
+                                  item.nameRu === null ||
+                                  item.nameRu === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'nameRu')}
                         value={original.nameRu}
                         onChange={e =>
                             onChangeInput('nameRu', original, e.target.value)
@@ -217,9 +321,16 @@ export default function ProductCategory({
             case 'nameTr':
                 return original.edit ? (
                     <Input
-                        label={errors.nameTr ? 'Заполнте поле' : null}
-                        error={errors.nameTr}
-                        placeholder={original.nameTr}
+                        label={Object.values(errors).map(item =>
+                            item.id === original.id
+                                ? item.nameTr === '' ||
+                                  item.nameTr === null ||
+                                  item.nameTr === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'nameTr')}
                         value={original.nameTr}
                         onChange={e =>
                             onChangeInput('nameTr', original, e.target.value)
@@ -309,7 +420,7 @@ export default function ProductCategory({
                 open={openModal}
                 close={() => setOpenModal(false)}
                 create={create}
-                getList={getList}
+                getList={getCategoryList}
                 clear={clear}
                 clearTempData={clearTempData}
                 categoryList={categoryList}

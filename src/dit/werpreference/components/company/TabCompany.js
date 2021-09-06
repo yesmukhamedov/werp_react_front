@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Popup, Input } from 'semantic-ui-react';
+import { ValidationError } from 'yup';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
-import '../../style.css';
+// import '../../style.css';
 import ModalAddCompany from './ModalAddCompany';
 
 export default function TabCompany({
@@ -16,7 +17,7 @@ export default function TabCompany({
 
     const [tempData, setTempData] = useState([]);
 
-    const [error, setError] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         clear();
@@ -60,10 +61,42 @@ export default function TabCompany({
         );
     };
 
+    const isFieldEmpty = field => {
+        return field === '' || field === null || field === undefined;
+    };
+
+    const validation = item => {
+        let success = true;
+
+        setErrors(() => {
+            let temporaryObj = {};
+            Object.entries(item).map(keyAndVal => {
+                temporaryObj = {
+                    ...errors,
+                    [item.bukrs]: {
+                        ...item,
+                        [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                    },
+                };
+            });
+            return temporaryObj;
+        });
+
+        const arr = Object.values(item);
+
+        arr.map(value => {
+            if (isFieldEmpty(value)) {
+                success = false;
+            }
+        });
+
+        return success;
+    };
+
     const onClickSave = bukrs => {
         tempData.map(item => {
             if (item.bukrs === bukrs) {
-                if (item.name && item.spras && item.bukrs) {
+                if (validation(item)) {
                     update(
                         {
                             name: item.name,
@@ -101,11 +134,62 @@ export default function TabCompany({
         );
     };
 
+    const setRedLine = (original, fieldName) => {
+        var redLine = false;
+        Object.values(errors).map(item => {
+            if (item.bukrs === original.bukrs) {
+                switch (fieldName) {
+                    case 'name':
+                        if (
+                            item['name'] === '' ||
+                            item['name'] === null ||
+                            item['name'] === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'spras':
+                        if (
+                            item['spras'] === '' ||
+                            item['spras'] === null ||
+                            item['spras'] === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'bukrs':
+                        if (
+                            item.bukrs === '' ||
+                            item.bukrs === null ||
+                            item.bukrs === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+        return redLine;
+    };
+
     const cellInput = (original, fieldName) => {
         switch (fieldName) {
             case 'name':
                 return original.edit ? (
                     <Input
+                        label={Object.values(errors).map(item =>
+                            item.bukrs === original.bukrs
+                                ? item.name === '' ||
+                                  item.name === null ||
+                                  item.name === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'name')}
                         placeholder={original.name}
                         value={original.name}
                         onChange={e =>
@@ -118,6 +202,16 @@ export default function TabCompany({
             case 'spras':
                 return original.edit ? (
                     <Input
+                        label={Object.values(errors).map(item =>
+                            item.bukrs === original.bukrs
+                                ? item.spras === '' ||
+                                  item.spras === null ||
+                                  item.spras === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'spras')}
                         placeholder={original.spras}
                         value={original.spras}
                         onChange={e =>
@@ -130,6 +224,16 @@ export default function TabCompany({
             case 'bukrs':
                 return original.edit ? (
                     <Input
+                        label={Object.values(errors).map(item =>
+                            item.bukrs === original.bukrs
+                                ? item.bukrs === '' ||
+                                  item.bukrs === null ||
+                                  item.bukrs === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'bukrs')}
                         placeholder={original.bukrs}
                         value={original.bukrs}
                         onChange={e =>

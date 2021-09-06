@@ -22,6 +22,8 @@ const ModalAddCategory = ({
 
     const [category, setCategory] = useState(initialCategory);
 
+    const [errors, setErrors] = useState([]);
+
     const onChangeAdd = (fieldName, value) => {
         switch (fieldName) {
             case 'code':
@@ -77,15 +79,33 @@ const ModalAddCategory = ({
         }
     };
 
+    const isFieldEmpty = val => val === '' || val === null || val === undefined;
+
+    const validation = item => {
+        let success = true;
+        setErrors(() => {
+            let temporaryObj = {};
+            Object.entries(item).map(keyAndVal => {
+                temporaryObj = {
+                    ...temporaryObj,
+                    [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                };
+            });
+            console.log(temporaryObj);
+            return temporaryObj;
+        });
+        const arr = Object.values(item);
+        arr.map(val => {
+            if (isFieldEmpty(val)) {
+                success = false;
+            }
+        });
+
+        return success;
+    };
+
     const saveCategory = () => {
-        if (
-            category.code &&
-            category.info &&
-            category.nameEn &&
-            category.nameKk &&
-            category.nameRu &&
-            category.nameTr
-        ) {
+        if (validation(category)) {
             create(category, () => {
                 clear();
                 clearTempData();
@@ -100,9 +120,11 @@ const ModalAddCategory = ({
             <Header content="Добавить компанию" />
             <Modal.Content>
                 <Form>
-                    <Form.Field>
+                    <Form.Field error={errors.code}>
                         <label>Код</label>
                         <Input
+                            label="Заполните поле"
+                            error={errors.code}
                             type="number"
                             placeholder="Code"
                             value={category.code}
@@ -110,9 +132,11 @@ const ModalAddCategory = ({
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.info}>
                         <label>Примичание</label>
                         <Input
+                            label="Заполните поле"
+                            error={errors.info}
                             type="text"
                             placeholder="Info"
                             value={category.info}
@@ -120,9 +144,11 @@ const ModalAddCategory = ({
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.nameEn}>
                         <label>Наименование EN</label>
                         <Input
+                            label="Заполните поле"
+                            error={errors.nameEn}
                             type="text"
                             placeholder="nameEn"
                             value={category.nameEn}
@@ -132,9 +158,11 @@ const ModalAddCategory = ({
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.nameKk}>
                         <label>Наименование KK</label>
                         <Input
+                            label="Заполните поле"
+                            error={errors.nameKk}
                             type="text"
                             placeholder="nameKk"
                             value={category.nameKk}
@@ -144,9 +172,11 @@ const ModalAddCategory = ({
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.nameRu}>
                         <label>Наименование RU</label>
                         <Input
+                            label="Заполните поле"
+                            error={errors.nameRu}
                             type="text"
                             placeholder="nameRu"
                             value={category.nameRu}
@@ -156,9 +186,11 @@ const ModalAddCategory = ({
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.nameTr}>
                         <label>Наименование TR</label>
                         <Input
+                            label="Заполните поле"
+                            error={errors.nameTR}
                             type="text"
                             placeholder="nameTR"
                             value={category.nameTr}
