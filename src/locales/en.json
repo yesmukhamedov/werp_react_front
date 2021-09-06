@@ -954,5 +954,6 @@
     "bonuses_of_the_managers": "Bonuses of the managers",
     "bonuses_of_the_operators": "Bonuses of the operators",
     "bonuses_of_the_operators_by_harvesting_systems": "Bonuses of the operators by harvesting systems",
-    "bonuses_of_the_senior_operator": "Bonuses of the senior operator"
+    "bonuses_of_the_senior_operator": "Bonuses of the senior operator",
+    "country_code": "Код страны"
 }

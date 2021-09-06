@@ -677,7 +677,6 @@ class Phone extends Component {
                 this.props.fetchDemoDetails(this.props.phoneId);
                 this.closeModal();
                 this.props.modifyLoader(false);
-                window.location.reload(false);
             })
             .catch(e => {
                 alert('Error');
@@ -838,6 +837,7 @@ class Phone extends Component {
                     });
                 }
             }
+
             // Otkaz
             return (
                 <Form.Select
@@ -870,9 +870,6 @@ class Phone extends Component {
                         showTimeSelect
                         dropdownMode="select"
                         dateFormat="DD.MM.YYYY HH:mm"
-                        selected={stringYYYYMMDDHHMMToMoment(
-                            this.state.call.callRecallDate,
-                        )}
                         onChange={v =>
                             this.handleChange(
                                 'callRecallDate',

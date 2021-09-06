@@ -77,7 +77,7 @@ import srgfr from '../service/report/srgfr/srgfrReducer';
 import exampleReducer from '../crm2021/example/exampleReducer';
 import recoReducer2021 from '../crm2021/mainoperation/reco/reducers/recoReducer';
 import demoReducer2021 from '../crm2021/mainoperation/demo/reducers/demoReducer';
-import crmreferenceReducer from '../crm2021/reference/crmreferenceReducer';
+import ccrefReducer from '../callcenter/reference/ccrefReducer';
 import werpreferenceReducer from '../dit/werpreference/werpreferenceReducers';
 
 const appReducer = combineReducers({
@@ -158,7 +158,7 @@ const appReducer = combineReducers({
     crmDemo2021: demoReducer2021,
     crmVisit2021: visitReducer2021,
     crmKpiSetting2021: kpiSettingReducer2021,
-    crmreferenceReducer: crmreferenceReducer,
+    ccrefReducer: ccrefReducer,
     werpreferenceReducer: werpreferenceReducer,
 });
 

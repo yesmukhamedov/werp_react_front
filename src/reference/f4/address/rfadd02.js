@@ -175,16 +175,23 @@ const Rfadd02 = props => {
             (addr_id === null || addr_id === undefined || !addr_id)(
                 customerId === null || customerId === undefined || !customerId,
             ) ||
-            addrType === null || !['1', '2', '3', '4'].includes(addrType) ||
-            countryId === null || countryId === undefined || !countryId ||
-            stateId === null || stateId === undefined || !stateId ||
-            cityId === null || cityId === undefined || !cityId ||
+            addrType === null ||
+            !['1', '2', '3', '4'].includes(addrType) ||
+            countryId === null ||
+            countryId === undefined ||
+            !countryId ||
+            stateId === null ||
+            stateId === undefined ||
+            !stateId ||
+            cityId === null ||
+            cityId === undefined ||
+            !cityId ||
             ap_number === null ||
-                ap_number === undefined ||
-                ap_number.replace(/\s/g, '').length === 0 ||
+            ap_number === undefined ||
+            ap_number.replace(/\s/g, '').length === 0 ||
             telMob1 === null ||
-                telMob1 === undefined ||
-                telMob1.replace(/\s/g, '').length === 0
+            telMob1 === undefined ||
+            telMob1.replace(/\s/g, '').length === 0
         ) {
             errors.push(errorTable[`20${language}`]);
             return errors;

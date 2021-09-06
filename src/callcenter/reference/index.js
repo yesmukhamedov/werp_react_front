@@ -43,11 +43,11 @@ import {
     deleteVacancy,
     //
     fetchTaskCategories,
-} from './crmreferenceAction';
+} from './ccrefAction';
 import TabPresent from './components/TabPresent';
 import TabCategory from './components/TabCategory';
 
-const CrmReference = props => {
+const Ccref = props => {
     const {
         subjectAppealList = [],
         sourceRequestsList = [],
@@ -230,14 +230,14 @@ const CrmReference = props => {
 function mapStateToProps(state) {
     return {
         language: state.locales.lang,
-        subjectAppealList: state.crmreferenceReducer.subjectAppealList,
-        sourceRequestsList: state.crmreferenceReducer.sourceRequestsList,
-        sourceVacanciesList: state.crmreferenceReducer.sourceVacanciesList,
-        reasonContractList: state.crmreferenceReducer.reasonContractList,
-        presentList: state.crmreferenceReducer.presentList,
-        categoryList: state.crmreferenceReducer.categoryList,
-        vacancyList: state.crmreferenceReducer.vacancyList,
-        taskCategories: state.crmreferenceReducer.taskCategories,
+        subjectAppealList: state.ccrefReducer.subjectAppealList,
+        sourceRequestsList: state.ccrefReducer.sourceRequestsList,
+        sourceVacanciesList: state.ccrefReducer.sourceVacanciesList,
+        reasonContractList: state.ccrefReducer.reasonContractList,
+        presentList: state.ccrefReducer.presentList,
+        categoryList: state.ccrefReducer.categoryList,
+        vacancyList: state.ccrefReducer.vacancyList,
+        taskCategories: state.ccrefReducer.taskCategories,
     };
 }
 
@@ -276,4 +276,4 @@ export default connect(mapStateToProps, {
     deleteVacancy,
     //
     fetchTaskCategories,
-})(injectIntl(CrmReference));
+})(injectIntl(Ccref));
