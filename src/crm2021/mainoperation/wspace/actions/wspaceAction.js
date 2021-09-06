@@ -86,7 +86,7 @@ export function fetchRecosByDate(staffId) {
 export function fetchMovedRecos(staffId) {
     return function(dispatch) {
         dispatch(modifyLoader(MENU_MOVED, true));
-        doGet(`core/crm/wspace/moved/${staffId}`)
+        doGet(`core/crm2/wspace/moved/${staffId}`)
             .then(({ data }) => {
                 dispatch(modifyLoader(MENU_MOVED, false));
                 dispatch({
@@ -123,7 +123,7 @@ export function fetchDemoRecos(demoId) {
 export function fetchVisitRecos(visitId) {
     return function(dispatch) {
         dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
-        doGet(`core/crm/wspace/visit-recommends/${visitId}`)
+        doGet(`core/crm2/wspace/visit-recommends/${visitId}`)
             .then(({ data }) => {
                 dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
                 dispatch({
@@ -198,7 +198,7 @@ export function fetchKpi(year, month) {
 export function archiveReco(recoId) {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPut(`core/crm/wspace/archive/reco/${recoId}`, {})
+        doPut(`core/crm2/wspace/archive/reco/${recoId}`, {})
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({

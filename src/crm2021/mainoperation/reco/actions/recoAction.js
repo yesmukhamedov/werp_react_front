@@ -375,7 +375,7 @@ export const createRecoList = (o, callBackOnError) => {
 export const blankRecoItem = () => {
     return dispatch => {
         dispatch(modifyLoader(true));
-        doGet(`core/crm/reco/blank-reco-item`)
+        doGet(`crm2/reco/blank-reco-item`)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
@@ -392,7 +392,7 @@ export const blankRecoItem = () => {
 
 export const fetchPhoneMeta = () => {
     return dispatch => {
-        doGet(`core/crm/phone/meta`)
+        doGet(`crm2/phone/meta`)
             .then(({ data }) => {
                 dispatch({
                     type: CRM_FETCH_PHONE_META,
