@@ -362,7 +362,7 @@ class Frep5 extends Component {
         let errors = [];
         errors = this.validate();
         if (errors === null || errors === undefined || errors.length === 0) {
-            this.props.fetchDynamicFAGM('finance/reports/frep5/search', {
+            this.props.fetchDynamicFAGM('core/finance/reports/frep5/search', {
                 ...this.state.searchTerm,
                 branchList: this.state.searchTerm.branchList.join(),
                 ctTypeList: this.state.searchTerm.ctTypeList.join(),
@@ -516,7 +516,7 @@ class Frep5 extends Component {
     }
     getDetail(branchId, waers, ps) {
         this.props.modifyLoader(true);
-        this.props.fetchDynamicFAGM('finance/reports/frep5/searchDetail', {
+        this.props.fetchDynamicFAGM('core/finance/reports/frep5/searchDetail', {
             bukrs: this.state.searchTerm.bukrs,
             brnch: branchId,
             waers: waers,

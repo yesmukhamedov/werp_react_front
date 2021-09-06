@@ -1361,9 +1361,9 @@ const getComponent = {
     Srqpwgs: AsyncSrqpwgs,
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
-    CrmReference: AsyncCrmReference,
-    Srgfr: AsyncSrgfr,
-    Foac: AsyncFoac,
+    // CrmReference: AsyncCrmReference,
+    // Srgfr: AsyncSrgfr,
+    // Foac: AsyncFoac,
     MrKaspi: AsyncMrKaspi,
     //Call-center
     Ccref: AsyncCcref,
