@@ -9,6 +9,9 @@ import {
     fetchCompanyList,
     updateCompany,
     clearCompanyList,
+    //Branch
+    //fetchBranchList,
+    //clearBranchList,
     //Country
     createCountry,
     fetchCountryList,
@@ -20,9 +23,11 @@ import {
     updateCategory,
     clearCategoryList,
 } from './werpreferenceActions';
+
 import { f4FetchCurrencyList } from '../../reference/f4/f4_action';
 import TabCompany from './components/company/TabCompany';
 import TabCountry from './components/country/TabCountry';
+//import TabBranch from './components/country/TabBranch';
 import ProductCategory from './components/productCategory/ProductCategory';
 
 const WerpReference = props => {
@@ -50,6 +55,17 @@ const WerpReference = props => {
     }, []);
 
     const panes = [
+        // {
+        //     menuItem: "Филиалы",
+        //     render: () => (
+        //         <Tab.Pane>
+        //             <TabBranch
+        //                 getBranchList={fetchBranchList}
+        //             />
+        //         </Tab.Pane>
+        //     ),
+        // },
+
         {
             menuItem: messages['L__COMPANY'],
             render: () => (
@@ -135,6 +151,10 @@ export default connect(mapStateToProps, {
     updateCompany,
     clearCompanyList,
     createCompany,
+
+    //Branch
+    // fetchBranchList,
+    // clearBranchList,
 
     //Country
     createCountry,

@@ -1,6 +1,8 @@
 import {
     FETCH_COMPANY_LIST,
     CLEAR_COMPANY_LIST,
+    FETCH_BRANCH_LIST,
+    CLEAR_BRANCH_LIST,
     FETCH_COUNTRY_LIST,
     CLEAR_COUNTRY_LIST,
     FETCH_CATEGORY_LIST,
@@ -9,6 +11,7 @@ import {
 
 const INITIAL_STATE = {
     companyList: [],
+    branchList: [],
     countryList: [],
     categoryList: [],
 };
@@ -22,6 +25,17 @@ export default function(state = INITIAL_STATE, action) {
             };
 
         case CLEAR_COMPANY_LIST:
+            return {
+                ...state,
+                companyList: [],
+            };
+
+        case FETCH_BRANCH_LIST:
+            return {
+                ...state,
+                branchList: [...action.data],
+            };
+        case CLEAR_BRANCH_LIST:
             return {
                 ...state,
                 companyList: [],

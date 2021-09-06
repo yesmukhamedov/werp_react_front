@@ -1212,6 +1212,11 @@ const AsyncFoac = Loadable({
         import('../finance/other/foac') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
+const AsyncWerpreference = Loadable({
+    loader: () =>
+        import('../dit/werpreference') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1379,6 +1384,7 @@ const getComponent = {
     Ccref: AsyncCcref,
     Ccmra: AsyncCcmra,
     Ccmracn: AsyncCcmracn,
+    Werpreference: AsyncWerpreference,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1512,6 +1518,11 @@ const generateRoutes = transactionRoutes => {
                 path="/marketing/report/mrkaspi"
                 exact={true}
                 component={AsyncMrKaspi}
+            />
+            <Route
+                path="/dit/werpreference"
+                exact={true}
+                component={AsyncWerpreference}
             />
 
             {transactionRoutes.map(route => {
