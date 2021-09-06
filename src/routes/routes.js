@@ -1202,6 +1202,16 @@ const AsyncMrKaspi = Loadable({
         import('../marketing/report/mrKaspi') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
+const AsyncSrgfr = Loadable({
+    loader: () =>
+        import('../service/report/srgfr') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
+const AsyncFoac = Loadable({
+    loader: () =>
+        import('../finance/other/foac') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1362,8 +1372,8 @@ const getComponent = {
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
     // CrmReference: AsyncCrmReference,
-    // Srgfr: AsyncSrgfr,
-    // Foac: AsyncFoac,
+    Srgfr: AsyncSrgfr,
+    Foac: AsyncFoac,
     MrKaspi: AsyncMrKaspi,
     //Call-center
     Ccref: AsyncCcref,
