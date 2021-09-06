@@ -947,5 +947,6 @@
     "total_amount_with_discount": "The total amount with a discount",
     "number_of_completed_services": "Number of completed services",
     "salary": "Salary",
-    "total_salary": "Total salary"
+    "total_salary": "Total salary",
+    "country_code": "Код страны"
 }

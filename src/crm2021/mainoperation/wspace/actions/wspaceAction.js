@@ -282,6 +282,7 @@ export function saveCall(phoneId, model) {
             })
             .catch(e => {
                 dispatch(modifyLoader(WSP_SAVED_CALL, false));
+                console.log(e.response.data);
                 if (e.response.data) {
                     if (
                         e.response.data.status === 400 &&
@@ -322,6 +323,7 @@ export function setCurrentPhone(phone) {
 }
 
 export function handleFilter(name, key, value) {
+    console.log('name: ', name, 'key: ', key, 'value: ', value);
     return {
         key,
         type: WSP_HANDLE_FILTER,
