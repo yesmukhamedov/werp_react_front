@@ -1519,11 +1519,6 @@ const generateRoutes = transactionRoutes => {
                 exact={true}
                 component={AsyncMrKaspi}
             />
-            <Route
-                path="/dit/werpreference"
-                exact={true}
-                component={AsyncWerpreference}
-            />
 
             {transactionRoutes.map(route => {
                 return (
