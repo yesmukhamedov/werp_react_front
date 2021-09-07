@@ -857,12 +857,11 @@ class Phone extends Component {
         ) {
             // Perzvonit'
             return (
-                <Form.Field error={this.state.errors.callRecallDate} required>
+                <Form.Field required error={this.state.errors.callRecallDate}>
                     <label>{messages['Crm.RecallDateTime']}</label>
                     <DatePicker
                         locale={locale}
                         autoComplete="off"
-                        required
                         label=""
                         placeholderText={messages['Crm.RecallDateTime']}
                         showMonthDropdown
@@ -870,6 +869,7 @@ class Phone extends Component {
                         showTimeSelect
                         dropdownMode="select"
                         dateFormat="DD.MM.YYYY HH:mm"
+                        value={this.state.call.callRecallDate}
                         onChange={v =>
                             this.handleChange(
                                 'callRecallDate',
