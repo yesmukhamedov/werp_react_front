@@ -50,13 +50,7 @@ class KpiFormModal extends Component {
             return [];
         }
 
-        let out = [
-            {
-                key: null,
-                value: null,
-                text: 'Для всех филиалов',
-            },
-        ].concat(branchOptionsMarketing[bukrs]);
+        let out = [].concat(branchOptionsMarketing[bukrs]);
 
         return out;
     };
@@ -133,7 +127,7 @@ class KpiFormModal extends Component {
                         selection
                         label="Филиал"
                         options={this.branchOptions(localItem.bukrs)}
-                        placeholder="Для всех филиалов"
+                        // placeholder="Для всех филиалов"
                         onChange={this.handleDropdownChange}
                     />
 
