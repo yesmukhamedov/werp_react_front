@@ -5,6 +5,8 @@ import 'react-table/react-table.css';
 import { Header, Container, Segment } from 'semantic-ui-react';
 import { fetchDemoCurrentData } from '../actions/demoAction';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import { reverse } from 'lodash';
 
 const DemoCurrentPage = props => {
     const { items = [] } = props;
@@ -29,13 +31,9 @@ const DemoCurrentPage = props => {
         },
         {
             Header: 'Дата-время',
-            accessor: 'dateTime',
-            Cell: row => {
-                return row.value
-                    .split('-')
-                    .reverse()
-                    .join('.');
-            },
+            accessor: row => moment(row.value).format('x'),
+            id: 'dateTime',
+            Cell: row => moment(row.original.value).format('DD.MM.YYYY HH:mm'),
         },
         {
             Header: 'Дилер',
@@ -67,7 +65,12 @@ const DemoCurrentPage = props => {
             ),
         },
     ];
-
+    console.log(
+        '1: ',
+        moment('06.30.2018 20:30').format('x'),
+        '2: ',
+        moment('04.06.2018 19:30').format('x'),
+    );
     return (
         <Container
             fluid
@@ -88,12 +91,17 @@ const DemoCurrentPage = props => {
                 data={
                     items
                         ? items.map(item => {
+                              let itemDate = item.dateTime
+                                  .split('.')
+                                  .splice(2, item.dateTime.length);
                               return {
                                   ...item,
                                   dateTime: item.dateTime
                                       ? item.dateTime
                                             .split('.')
+                                            .splice(0, 2)
                                             .reverse()
+                                            .concat(itemDate)
                                             .join('-')
                                       : '',
                               };
