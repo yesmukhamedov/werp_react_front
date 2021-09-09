@@ -364,7 +364,7 @@
     "brnch": "Филиал",
     "budat": "Дата проводки",
     "bukrs": "Компания",
-    "business_area": "Бинзесс сфера",
+    "business_area": "Бизнес сфера",
     "contract_number": "SN номер",
     "customer_id": "Контрагент ID",
     "gjahr": "Год",
@@ -946,5 +946,9 @@
     "number_of_completed_services": "Количество выполненных услуг",
     "salary": "Зарплата",
     "total_salary": "Общая заработная плата",
-    "country_code": "Код страны"
+    "country_code": "Код страны",
+    "sales_and_demonstrations_indicators": "Показатели продаж и демонстраций",
+    "number_of_sales": "Количество продаж",
+    "clear": "Очистить",
+    "export_to_excel": "Экспорт в Excel"
 }
