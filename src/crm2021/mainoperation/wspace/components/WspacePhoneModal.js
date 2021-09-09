@@ -28,6 +28,10 @@ import {
 import { renderCallResultLabel } from '../../../CrmHelper';
 import { injectIntl } from 'react-intl';
 import { blankCall } from '../../call/actions/callAction';
+import {
+    momentToStringYYYYMMDDHHMM,
+    stringYYYYMMDDHHMMToMoment,
+} from '../../../../utils/helpers';
 require('moment/locale/ru');
 
 class WspacePhoneModal extends Component {
@@ -36,7 +40,7 @@ class WspacePhoneModal extends Component {
 
         this.state = {
             callForm: {
-                callDate: new Date(),
+                callDate: null,
                 demoForm: {
                     result: 'UNKNOWN',
                 },
@@ -67,7 +71,7 @@ class WspacePhoneModal extends Component {
         let callForm = Object.assign({}, this.state.callForm);
         let value = '';
         if (name === 'callDate' || name === 'callRecallDate') {
-            callForm[name] = data;
+            callForm[name] = momentToStringYYYYMMDDHHMM(data);
         } else if (name === 'callReasonId') {
             callForm[name] = data.value;
         } else {
@@ -187,7 +191,13 @@ class WspacePhoneModal extends Component {
                         showTimeSelect
                         dropdownMode="select"
                         dateFormat="DD.MM.YYYY HH:mm"
-                        selected={callForm.callRecallDate}
+                        selected={
+                            callForm.callRecallDate
+                                ? stringYYYYMMDDHHMMToMoment(
+                                      callForm.callRecallDate,
+                                  )
+                                : null
+                        }
                         onChange={v => this.handleChange('callRecallDate', v)}
                     />
                 </Form.Field>
@@ -318,7 +328,9 @@ class WspacePhoneModal extends Component {
                             dateFormat="DD.MM.YYYY HH:mm"
                             selected={
                                 callForm.callDate
-                                    ? moment(callForm.callDate)
+                                    ? stringYYYYMMDDHHMMToMoment(
+                                          callForm.callDate,
+                                      )
                                     : null
                             }
                             onChange={v => this.handleChange('callDate', v)}
@@ -369,7 +381,6 @@ class WspacePhoneModal extends Component {
         callForm['phoneNumber'] = currentPhone.phoneNumber;
         callForm['context'] = 'RECO';
         callForm['contextId'] = reco.id;
-        console.log(callForm);
         this.props.saveCall(currentPhone.id, callForm);
     };
 

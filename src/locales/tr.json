@@ -948,5 +948,9 @@
     "number_of_completed_services": "Number of completed services",
     "salary": "Salary",
     "total_salary": "Total salary",
-    "country_code": "Код страны"
+    "country_code": "Код страны",
+    "sales_and_demonstrations_indicators": "Sales and demonstrations indicators",
+    "number_of_sales": "Number of sales",
+    "clear": "Clear",
+    "export_to_excel": "Export to Excel"
 }
