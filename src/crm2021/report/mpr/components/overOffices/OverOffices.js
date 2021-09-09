@@ -6,7 +6,7 @@ import Table from './Table';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const HighestSalesAchievers = props => {
+const OverOffices = props => {
     const {
         language,
         messages,
@@ -140,4 +140,4 @@ const HighestSalesAchievers = props => {
 
 export default connect(null, {
     f4FetchCountryList,
-})(HighestSalesAchievers);
+})(OverOffices);

@@ -6,7 +6,7 @@ import Table from './Table';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const HighestSalesAchievers = props => {
+const HighestDemoAchievers = props => {
     const {
         language,
         messages,
@@ -91,17 +91,17 @@ const HighestSalesAchievers = props => {
                 </Form.Group>
                 <Form.Group>
                     <Form.Input
-                        label="Количество продаж от"
+                        label="Количество демо от"
                         placeholder="Количество демо от"
                         width={4}
                     />
                     <Form.Input
-                        label="Количество продаж до"
+                        label="Количество демо до"
                         placeholder="Количество демо до"
                         width={4}
                     />
                     <Form.Field>
-                        <label>Период продаж</label>
+                        <label>Период демонстраций</label>
                         <DatePicker
                             locale={language}
                             selected={filterParams.periodOfSales}
@@ -140,4 +140,4 @@ const HighestSalesAchievers = props => {
 
 export default connect(null, {
     f4FetchCountryList,
-})(HighestSalesAchievers);
+})(HighestDemoAchievers);
