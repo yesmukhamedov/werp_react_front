@@ -4,30 +4,40 @@ import { Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import './style.css';
 import {
-    //Company
+    //COMPANY
     createCompany,
     fetchCompanyList,
     updateCompany,
     clearCompanyList,
-    //Branch
-    //fetchBranchList,
-    //clearBranchList,
-    //Country
+    //BRANCH
+    fetchBranchList,
+    createBranch,
+    updateBranch,
+    clearBranchList,
+    //COUNTRY
     createCountry,
     fetchCountryList,
     clearCountryList,
     updateCountry,
-    //Category
+    //CATEGORY
     createCategory,
     fetchCategoryList,
     updateCategory,
     clearCategoryList,
 } from './werpreferenceActions';
 
-import { f4FetchCurrencyList } from '../../reference/f4/f4_action';
+import {
+    f4FetchCurrencyList,
+    f4FetchCompanyOptions,
+    f4FetchCountryList,
+    f4FetchBusinessAreaList,
+    f4FetchBranchOptions,
+    f4FetchStateList,
+    f4FetchSubCompanies,
+} from '../../reference/f4/f4_action';
 import TabCompany from './components/company/TabCompany';
 import TabCountry from './components/country/TabCountry';
-//import TabBranch from './components/country/TabBranch';
+import TabBranch from './components/branch/TabBranch';
 import ProductCategory from './components/productCategory/ProductCategory';
 
 const WerpReference = props => {
@@ -44,38 +54,38 @@ const WerpReference = props => {
         updateCategory,
         clearCategoryList,
         updateCountry,
-        currencyList = [],
         currencyOptions = [],
+        companyOptions = [],
     } = props;
 
     const [activeTab, setActiveTab] = useState(0);
 
     useEffect(() => {
         props.f4FetchCurrencyList('werpreference');
+        props.f4FetchCompanyOptions('werpreference');
+        props.f4FetchCountryList('werpreference');
+        props.f4FetchBusinessAreaList('werpreference');
+        props.f4FetchBranchOptions('werpreference');
+        props.f4FetchStateList('werpreference');
     }, []);
 
     const panes = [
-        // {
-        //     menuItem: "Филиалы",
-        //     render: () => (
-        //         <Tab.Pane>
-        //             <TabBranch
-        //                 getBranchList={fetchBranchList}
-        //             />
-        //         </Tab.Pane>
-        //     ),
-        // },
-
         {
-            menuItem: messages['L__COMPANY'],
+            menuItem: messages['brnch'],
             render: () => (
                 <Tab.Pane>
-                    <TabCompany
-                        companyList={companyList}
-                        getList={fetchCompanyList}
-                        update={props.updateCompany}
-                        clear={clearCompanyList}
-                        create={props.createCompany}
+                    <TabBranch
+                        getBranchList={props.fetchBranchList}
+                        branchList={props.branchList}
+                        clearBranchList={props.clearBranchList}
+                        createBranch={props.createBranch}
+                        updateBranch={props.updateBranch}
+                        companyOptions={props.companyOptions}
+                        countryOptions={props.countryOptions}
+                        businessAreaList={props.businessAreaList}
+                        stateList={props.stateList}
+                        getCategoryList={fetchCategoryList}
+                        categoryList={categoryList}
                         messages={messages}
                     />
                 </Tab.Pane>
@@ -90,7 +100,6 @@ const WerpReference = props => {
                         create={props.createCountry}
                         getCountryList={fetchCountryList}
                         countryList={countryList}
-                        currencyList={currencyList}
                         clearCountryList={clearCountryList}
                         currencyOptions={currencyOptions}
                         updateCountry={updateCountry}
@@ -110,6 +119,22 @@ const WerpReference = props => {
                         getCategoryList={fetchCategoryList}
                         update={updateCategory}
                         clear={clearCategoryList}
+                        messages={messages}
+                    />
+                </Tab.Pane>
+            ),
+        },
+
+        {
+            menuItem: messages['L__COMPANY'],
+            render: () => (
+                <Tab.Pane>
+                    <TabCompany
+                        companyList={companyList}
+                        getList={fetchCompanyList}
+                        update={props.updateCompany}
+                        clear={clearCompanyList}
+                        create={props.createCompany}
                         messages={messages}
                     />
                 </Tab.Pane>
@@ -135,34 +160,47 @@ const WerpReference = props => {
 function mapStateToProps(state) {
     return {
         companyList: state.werpreferenceReducer.companyList,
+        branchList: state.werpreferenceReducer.branchList,
         countryList: state.werpreferenceReducer.countryList,
         categoryList: state.werpreferenceReducer.categoryList,
-        currencyList: state.f4.currencyList,
+
         currencyOptions: state.f4.currencyOptions,
+        companyOptions: state.f4.companyOptions,
+        countryOptions: state.f4.countryList,
+        businessAreaList: state.f4.businessAreaList,
+        stateList: state.f4.stateList,
     };
 }
 
 export default connect(mapStateToProps, {
     //reference
     f4FetchCurrencyList,
+    f4FetchCompanyOptions,
+    f4FetchCountryList,
+    f4FetchBusinessAreaList,
+    f4FetchBranchOptions,
+    f4FetchStateList,
+    f4FetchSubCompanies,
 
-    //Company
+    //COMPANY
     fetchCompanyList,
     updateCompany,
     clearCompanyList,
     createCompany,
 
-    //Branch
-    // fetchBranchList,
-    // clearBranchList,
+    //BRANCH
+    fetchBranchList,
+    createBranch,
+    updateBranch,
+    clearBranchList,
 
-    //Country
+    //COUNTRY
     createCountry,
     fetchCountryList,
     clearCountryList,
     updateCountry,
 
-    //Category
+    //CATEGORY
     createCategory,
     fetchCategoryList,
     updateCategory,

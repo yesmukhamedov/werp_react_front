@@ -174,6 +174,7 @@ export function f4FetchTovarCategorys() {
         dispatch(modifyLoader(true));
         doGet('smcs/getCategoryList')
             .then(({ data }) => {
+                console.log('TOVAR', data);
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: F4_FETCH_TOVAR_CATEGORYS,

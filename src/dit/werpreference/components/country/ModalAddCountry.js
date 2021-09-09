@@ -33,8 +33,6 @@ const ModalAddCategory = ({
 
     const [errors, setErrors] = useState([]);
 
-    console.log('COUNTRY', country);
-
     const onChangeAdd = (fieldName, value) => {
         switch (fieldName) {
             case 'code':
@@ -95,7 +93,6 @@ const ModalAddCategory = ({
                     [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
                 };
             });
-            console.log(temporaryObj);
             return temporaryObj;
         });
         const arr = Object.values(item);
@@ -136,8 +133,6 @@ const ModalAddCategory = ({
             value: item.key,
         };
     });
-
-    console.log('CURRENCY_OPTIONS_FOR_DRPDWN', currencyOptionsForDropdown);
 
     return (
         <Modal closeIcon open={open} onClose={close}>

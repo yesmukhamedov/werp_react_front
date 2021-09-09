@@ -18,6 +18,7 @@ export default function TabCountry({
     const [openModal, setOpenModal] = useState(false);
 
     console.log('TEMPDATA', tempData);
+    console.log('currencyOptions', currencyOptions);
     const currencyOptionsForDropdown = currencyOptions.map(item => {
         return {
             key: item.key,
@@ -157,35 +158,6 @@ export default function TabCountry({
             }),
         );
     };
-
-    // const onChangeDropdown = (fieldName, data, value) => {
-    //     setTempData(
-    //         tempData.map(el => {
-    //             if (el.countryId === data.countryId) {
-    //                 switch (fieldName) {
-    //                     case 'code':
-    //                         return { ...el, code: value };
-    //                     case 'country':
-    //                         return { ...el, country: value };
-    //                     case 'currency':
-    //                         return {
-    //                             ...el,
-    //                             currency: getCurrency(value),
-    //                             currencyId: value,
-    //                         };
-    //                     case 'phoneCode':
-    //                         return { ...el, phoneCode: value };
-    //                     case 'telPattern':
-    //                         return { ...el, telPattern: value };
-    //                     default:
-    //                         break;
-    //                 }
-    //             } else {
-    //                 return { ...el };
-    //             }
-    //         }),
-    //     );
-    // };
 
     const onChangeDropdown = (data, value) => {
         setTempData(
@@ -442,9 +414,9 @@ export default function TabCountry({
                 close={() => setOpenModal(false)}
                 create={create}
                 getCountryList={getCountryList}
+                countryList={countryList}
                 clearCountryList={clearCountryList}
                 clearTempData={clearTempData}
-                countryList={countryList}
                 currencyOptions={currencyOptions}
             />
             <div className="content-top">

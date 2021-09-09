@@ -5,7 +5,7 @@ import { modifyLoader } from '../../general/loader/loader_action';
 export const FETCH_COMPANY_LIST = 'FETCH_COMPANY_LIST';
 export const CLEAR_COMPANY_LIST = 'CLEAR_COMPANY_LIST';
 //Branch
-export const FETCH_BRANCH_LIST = 'FETCH_BRANCH_LIST';
+export const GET_BRANCH_LIST = 'GET_BRANCH_LIST';
 export const CLEAR_BRANCH_LIST = 'CLEAR_BRANCH_LIST';
 //Country
 export const FETCH_COUNTRY_LIST = 'FETCH_COUNTRY_LIST';
@@ -85,10 +85,9 @@ export const fetchBranchList = () => {
         dispatch(modifyLoader(true));
         doGet(`core/reference/branch/list`)
             .then(({ data }) => {
-                console.log(data);
                 dispatch(modifyLoader(false));
                 dispatch({
-                    type: FETCH_BRANCH_LIST,
+                    type: GET_BRANCH_LIST,
                     data,
                 });
             })
@@ -103,7 +102,7 @@ export const fetchBranchList = () => {
 export const createBranch = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPost(`core/reference/company`, body)
+        doPost(`core/reference/branch`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();
@@ -119,7 +118,7 @@ export const createBranch = (body, getList) => {
 export const updateBranch = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPut(`core/reference/company`, body)
+        doPut(`core/reference/branch`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();
@@ -147,7 +146,6 @@ export const createCountry = (body, getList) => {
         dispatch(modifyLoader(true));
         doPost(`core/reference/country`, body)
             .then(({ data }) => {
-                console.log(data);
                 dispatch(modifyLoader(false));
                 getList();
             })
@@ -164,7 +162,6 @@ export const fetchCountryList = () => {
         dispatch(modifyLoader(true));
         doGet(`core/reference/country/list`)
             .then(({ data }) => {
-                console.log('FETCH_DATA', data);
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_COUNTRY_LIST,
@@ -184,7 +181,6 @@ export const updateCountry = (body, callBackFun) => {
         dispatch(modifyLoader(true));
         doPut(`core/reference/country`, body)
             .then(({ data }) => {
-                console.log(data);
                 dispatch(modifyLoader(false));
                 callBackFun();
             })
@@ -197,7 +193,6 @@ export const updateCountry = (body, callBackFun) => {
 
 // очистить список страны
 export const clearCountryList = () => {
-    console.log('CLEAR___COUNTRY');
     return function(dispatch) {
         dispatch({
             type: CLEAR_COUNTRY_LIST,
@@ -228,7 +223,6 @@ export const fetchCategoryList = () => {
         dispatch(modifyLoader(true));
         doGet(`core/reference/service-category/list`)
             .then(({ data }) => {
-                console.log(data);
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_CATEGORY_LIST,

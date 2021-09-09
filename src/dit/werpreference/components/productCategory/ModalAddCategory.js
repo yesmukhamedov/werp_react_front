@@ -91,7 +91,6 @@ const ModalAddCategory = ({
                     [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
                 };
             });
-            console.log(temporaryObj);
             return temporaryObj;
         });
         const arr = Object.values(item);
