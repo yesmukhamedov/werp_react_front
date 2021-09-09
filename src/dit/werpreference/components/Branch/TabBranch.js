@@ -22,6 +22,7 @@ export default function TabBranch({
     const [openModal, setOpenModal] = useState(false);
 
     console.log('TEMP_DATA', tempData);
+    console.log('errors', errors);
 
     useEffect(() => {
         clearBranchList();
@@ -96,20 +97,122 @@ export default function TabBranch({
         );
     };
 
-    const onChangeDropdown = (data, value) => {
-        // setTempDVALUE
-        //     tempData.map(el => {
-        //         if (el.countryId === data.countryId) {
-        //             return {
-        //                 ...el,
-        //                 currency: getCurrency(value),
-        //                 currencyId: value,
-        //             };
-        //         } else {
-        //             return { ...el };
-        //         }
-        //     }),
-        // );
+    // branchId: 0,
+    // bukrs: '',
+    // text45: '',
+    // countryId: '',
+    // type: '',
+    // tovarCategory: '',
+    // businessAreaId: '',
+    // stateId: '',
+
+    const onClickSave = branchId => {
+        tempData.map(item => {
+            if (item.branchId === branchId) {
+                if (validation(item)) {
+                    updateBranch(
+                        {
+                            branchId: item.branchId,
+                            bukrs: item.bukrs,
+                            text45: item.text45,
+                            countryId: item.countryId,
+                            type: item.type,
+                            tovarCategory: item.tovarCategory,
+                            businessAreaId: item.businessAreaId,
+                            stateId: item.stateId,
+                        },
+                        () => {
+                            setTempData([]);
+                            clearBranchList();
+                            getBranchList();
+                        },
+                    );
+                }
+            }
+        });
+    };
+
+    const isFieldEmpty = val => val === '' || val === undefined;
+
+    const validation = item => {
+        let success = true;
+
+        setErrors(() => {
+            let temporaryObj = {};
+            Object.entries(item).map(keyAndVal => {
+                temporaryObj = {
+                    ...errors,
+                    [item.branchId]: {
+                        ...item,
+                        [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                    },
+                };
+            });
+            return temporaryObj;
+        });
+        const arr = Object.values(item);
+        arr.map(value => {
+            if (isFieldEmpty(value)) {
+                success = false;
+            }
+        });
+        return success;
+    };
+
+    const onChangeData = (fieldName, data, value) => {
+        setTempData(
+            tempData.map(el => {
+                if (el.branchId === data.branchId) {
+                    switch (fieldName) {
+                        case 'bukrs':
+                            return { ...el, bukrs: value };
+                        case 'text45':
+                            return { ...el, text45: value };
+                        case 'countryId':
+                            return { ...el, countryId: value };
+                        case 'type':
+                            return { ...el, type: value };
+                        case 'tovarCategory':
+                            return { ...el, tovarCategory: value };
+                        case 'businessAreaId':
+                            return { ...el, businessAreaId: value };
+                        case 'stateId':
+                            return { ...el, stateId: value };
+                        default:
+                            break;
+                    }
+                } else {
+                    return { ...el };
+                }
+            }),
+        );
+    };
+
+    const setRedLine = (original, fieldName) => {
+        var redLine = false;
+        Object.values(errors).map(item => {
+            if (item.branchId === original.branchId) {
+                switch (fieldName) {
+                    case 'text45':
+                        if (
+                            item['text45'] === '' ||
+                            item['text45'] === undefined
+                        ) {
+                            redLine = true;
+                        }
+                        break;
+                    case 'type':
+                        if (item['type'] === '' || item['type'] === undefined) {
+                            redLine = true;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+        return redLine;
     };
 
     const cellInput = (original, fieldName) => {
@@ -117,11 +220,11 @@ export default function TabBranch({
             case 'bukrs':
                 return original.edit ? (
                     <Dropdown
-                        options
+                        options={companyOptions}
                         selection
                         value={original.bukrs}
                         onChange={(e, { value }) => {
-                            onChangeDropdown(original, value);
+                            onChangeData('bukrs', original, value);
                         }}
                     />
                 ) : (
@@ -134,16 +237,34 @@ export default function TabBranch({
                     </div>
                 );
             case 'text45':
-                return original.edit ? <Input /> : <div>{original.text45}</div>;
+                return original.edit ? (
+                    <Input
+                        label={Object.values(errors).map(item =>
+                            item.branchId === original.branchId
+                                ? item.country === '' ||
+                                  item.country === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'text45')}
+                        value={original.text45}
+                        onChange={(e, { value }) => {
+                            onChangeData('text45', original, value);
+                        }}
+                    />
+                ) : (
+                    <div>{original.text45}</div>
+                );
 
             case 'countryId':
                 return original.edit ? (
                     <Dropdown
                         options={countryOptionsForDropdown}
                         selection
-                        value={original.bukrs}
+                        value={original.countryId}
                         onChange={(e, { value }) => {
-                            onChangeDropdown(original, value);
+                            onChangeData('countryId', original, value);
                         }}
                     />
                 ) : (
@@ -158,19 +279,32 @@ export default function TabBranch({
             case 'type':
                 return original.edit ? (
                     <Input
-                    // onChange={e =>
-                    //     onChangeInput('type', original, e.target.value)
-                    // }
+                        label={Object.values(errors).map(item =>
+                            item.branchId === original.branchId
+                                ? item.country === '' ||
+                                  item.country === undefined
+                                    ? 'Заполните поле'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'type')}
+                        value={original.type}
+                        onChange={e =>
+                            onChangeData('type', original, e.target.value)
+                        }
                     />
                 ) : (
                     <div>{original.type}</div>
                 );
             case 'tovarCategory':
                 return original.edit ? (
-                    <Input
-                    // onChange={e =>
-                    //     onChangeInput('tovarCategory', original, e.target.value)
-                    // }
+                    <Dropdown
+                        options={categoryOptionsForDropdown}
+                        selection
+                        value={original.tovarCategory}
+                        onChange={(e, { value }) => {
+                            onChangeData('tovarCategory', original, value);
+                        }}
                     />
                 ) : (
                     <div>
@@ -183,14 +317,13 @@ export default function TabBranch({
                 );
             case 'businessAreaId':
                 return original.edit ? (
-                    <Input
-                    // onChange={e =>
-                    //     onChangeInput(
-                    //         'businessAreaId',
-                    //         original,
-                    //         e.target.value,
-                    //     )
-                    // }
+                    <Dropdown
+                        options={businessAreaOptionsForDropdown}
+                        selection
+                        value={original.businessAreaId}
+                        onChange={(e, { value }) => {
+                            onChangeData('businessAreaId', original, value);
+                        }}
                     />
                 ) : (
                     <div>
@@ -204,10 +337,13 @@ export default function TabBranch({
 
             case 'stateId':
                 return original.edit ? (
-                    <Input
-                    // onChange={e =>
-                    //     onChangeInput('stateId', original, e.target.value)
-                    // }
+                    <Dropdown
+                        options={stateOptionsForDropdown}
+                        selection
+                        value={original.stateId}
+                        onChange={(e, { value }) => {
+                            onChangeData('stateId', original, value);
+                        }}
                     />
                 ) : (
                     <div>
@@ -288,9 +424,9 @@ export default function TabBranch({
                                     icon="save"
                                     circular
                                     color="blue"
-                                    // onClick={() =>
-                                    //     onClickSave(original.branchId)
-                                    // }
+                                    onClick={() =>
+                                        onClickSave(original.branchId)
+                                    }
                                 />
                             ) : (
                                 <Button

@@ -8,7 +8,6 @@ import {
     Form,
     Dropdown,
 } from 'semantic-ui-react';
-import { validate } from 'uuid';
 
 function ModalAddBranch({
     open,
@@ -35,8 +34,6 @@ function ModalAddBranch({
         stateId: '',
     };
     const [tempBranches, setTempBranches] = useState(initialBranch);
-
-    console.log('tempBranches', tempBranches);
 
     const [errors, setErrors] = useState([]);
 
