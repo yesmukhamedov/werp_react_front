@@ -8,6 +8,7 @@ import SalesManager from './salesManager/SalesManager';
 
 const Tabs = props => {
     const {
+        language,
         messages,
         countriesOptions = [],
         companies = [],
@@ -20,6 +21,7 @@ const Tabs = props => {
             pane: (
                 <Tab.Pane attached={false}>
                     <HighestSalesAchievers
+                        language={language}
                         messages={messages}
                         countriesOptions={countriesOptions}
                         companies={companies}
@@ -33,6 +35,7 @@ const Tabs = props => {
             pane: (
                 <Tab.Pane attached={false}>
                     <HighestDemoAchievers
+                        language={language}
                         messages={messages}
                         countriesOptions={countriesOptions}
                         companies={companies}
@@ -46,6 +49,7 @@ const Tabs = props => {
             pane: (
                 <Tab.Pane attached={false}>
                     <HighestDemoProducers
+                        language={language}
                         messages={messages}
                         countriesOptions={countriesOptions}
                         companies={companies}
@@ -59,6 +63,7 @@ const Tabs = props => {
             pane: (
                 <Tab.Pane attached={false}>
                     <SalesManager
+                        language={language}
                         messages={messages}
                         countriesOptions={countriesOptions}
                         companies={companies}
@@ -72,6 +77,7 @@ const Tabs = props => {
             pane: (
                 <Tab.Pane attached={false}>
                     <OverOffices
+                        language={language}
                         messages={messages}
                         countriesOptions={countriesOptions}
                         companies={companies}

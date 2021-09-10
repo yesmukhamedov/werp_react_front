@@ -1308,6 +1308,11 @@ const AsyncCrmMpr2021 = Loadable({
     loading: () => <LoadingPage />,
 });
 
+const AsyncCrmMsr2021 = Loadable({
+    loader: () => import('../crm2021/report/msr') /* webpackChunkName: "msr" */,
+    loading: () => <LoadingPage />,
+});
+
 const getComponent = {
     Dtrlist: AsyncTransaction,
     Ditaub: AsyncAssignUserBranch,
@@ -1468,6 +1473,7 @@ const getComponent = {
     CrmWspace2021: AsyncCrmWspacePage2021,
     CrmReference: AsyncCrmReference,
     CrmMpr2021: AsyncCrmMpr2021,
+    CrmRepMsr2021: AsyncCrmMsr2021,
 };
 
 const generateRoutes = transactionRoutes => {

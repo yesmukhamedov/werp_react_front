@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Tabs from './components/Tabs';
 import { clearAll } from './action';
 
-const Mpr = props => {
+const Msr = props => {
     const {
         intl: { messages },
         language,
@@ -38,7 +38,9 @@ const Mpr = props => {
                 paddingRight: '2em',
             }}
         >
-            <h3>{messages['sales_and_demonstrations_indicators']}</h3>
+            <h3>
+                {messages['detailing_sales_by_customers_for_certain_period']}
+            </h3>
             <Divider style={{ marginTop: 20, marginBottom: 20 }} />
             <Tabs
                 language={language}
@@ -62,4 +64,4 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     clearAll,
-})(injectIntl(Mpr));
+})(injectIntl(Msr));
