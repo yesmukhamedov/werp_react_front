@@ -132,7 +132,7 @@ class KpiFormModal extends Component {
                         selection
                         label="Филиал"
                         options={this.branchOptions(localItem.bukrs)}
-                        // placeholder="Для всех филиалов"
+                        placeholder="Для всех филиалов"
                         onChange={this.handleDropdownChange}
                     />
 
