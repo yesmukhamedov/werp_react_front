@@ -49,8 +49,13 @@ class KpiFormModal extends Component {
         if (!branchOptionsMarketing || !branchOptionsMarketing[bukrs]) {
             return [];
         }
-
-        let out = [].concat(branchOptionsMarketing[bukrs]);
+        let out = [
+            {
+                key: null,
+                value: null,
+                text: 'Для всех филиалов',
+            },
+        ].concat(branchOptionsMarketing[bukrs]);
 
         return out;
     };
@@ -75,7 +80,7 @@ class KpiFormModal extends Component {
             errors.bukrs = true;
         }
 
-        if (!localItem.branchId || localItem.branchId === null) {
+        if (!localItem.bukrs || localItem.branchId === 0) {
             errors.branchId = true;
         }
 
