@@ -52,6 +52,8 @@ class VisitCreateModal extends Component {
         const hidePhoneInput =
             this.state.isUpdate ||
             (client && client.id && typeof client.id !== 'undefined');
+        const phonePattern = phoneMeta.pattern || '';
+        const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
         return (
             <Form>
                 <Form.Group widths="equal">
@@ -63,15 +65,13 @@ class VisitCreateModal extends Component {
                                 {messages['Form.PhoneNumber']}
                             </label>
                             <Input
-                                label={{
-                                    basic: true,
-                                    content: phoneMeta.phoneCode,
-                                }}
-                                placeholder={phoneMeta.phonePattern}
+                                label={{ basic: true, content: phoneMeta.code }}
+                                placeholder={phoneMeta.pattern}
                                 onChange={(e, v) =>
                                     this.handleChange('phoneNumber', v)
                                 }
                                 value={this.state.phoneNumberDisplay || ''}
+                                maxLength={ppLenght + 2}
                             />
                             {errors.phoneNumber ? (
                                 <div style={errorBlockCss}>
@@ -189,7 +189,7 @@ class VisitCreateModal extends Component {
 
             case 'phoneNumber':
                 const value = o.value;
-                const phonePattern = phoneMeta.phonePattern || '';
+                const phonePattern = phoneMeta.pattern || '';
                 const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
                 const v = value.replace(/[^0-9]+/g, '');
                 if (v.length === 0) {

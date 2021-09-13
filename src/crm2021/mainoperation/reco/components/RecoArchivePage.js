@@ -37,7 +37,7 @@ class RecoArchivePage extends Component {
                 bukrs: '',
                 branchIds: [],
             },
-            loaderOn: false,
+            loaderOn: true,
             errors: {
                 phoneNumber: false,
             },
@@ -56,6 +56,7 @@ class RecoArchivePage extends Component {
         this.props.fetchRecoStatuses();
         this.props.fetchGroupDealers();
         this.props.f4FetchCountryList();
+        this.loadItems(0);
     }
 
     componentDidUpdate(prevProps) {
@@ -99,7 +100,7 @@ class RecoArchivePage extends Component {
         const { phoneNumber } = queryParams;
         let errors = {};
 
-        if (this.isNullOrEmpty(phoneNumber) || phoneNumber.length < 7) {
+        if (!this.isNullOrEmpty(phoneNumber) && phoneNumber.length < 7) {
             errors = {
                 ...errors,
                 phoneNumber: true,

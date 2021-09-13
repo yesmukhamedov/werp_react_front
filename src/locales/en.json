@@ -950,10 +950,15 @@
     "number_of_completed_services": "Number of completed services",
     "salary": "Salary",
     "total_salary": "Total salary",
-    "bonuses_of_the_head_of_the_service_department": "Bonuses of the head of the service department",
+    "country_code": "Код страны",
+    "sales_and_demonstrations_indicators": "Sales and demonstrations indicators",
+    "number_of_sales": "Number of sales",
+    "clear": "Clear",
+    "export_to_excel": "Export to Excel",
+    "detailing_sales_by_customers_for_certain_period": "Detailing sales by customers for a certain period",
+    "phone_number_of_client": "Phone number of client",
     "bonuses_of_the_managers": "Bonuses of the managers",
     "bonuses_of_the_operators": "Bonuses of the operators",
     "bonuses_of_the_operators_by_harvesting_systems": "Bonuses of the operators by harvesting systems",
-    "bonuses_of_the_senior_operator": "Bonuses of the senior operator",
-    "country_code": "Код страны"
+    "bonuses_of_the_senior_operator": "Bonuses of the senior operator"
 }

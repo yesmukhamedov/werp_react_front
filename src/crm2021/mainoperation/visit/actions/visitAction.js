@@ -146,7 +146,7 @@ export function blankForCreate(recoId, staffId) {
     return function(dispatch) {
         dispatch(modifyLoader(true));
 
-        doGet(`core/crm/visit/blank/${recoId}/${staffId}`)
+        doGet(`crm2/visit/blank?staffId=${staffId}`)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({

@@ -129,6 +129,17 @@ export const RECO_CATEGORY_COLORS = {
     null: 'grey',
 };
 
+export const RECO_STATUS_COLORS = {
+    NEW: '#195bd4',
+    NOT_AVAILABLE: '#b30b0b',
+    NO_ANSWER: '#b30b0b',
+    POSITIVE: '#07b048',
+    PHONED_RECALL: '#b30b0b',
+    PHONED: '#6c67b8',
+    REJECT: '#b30b0b',
+    UNKNOWN: '#495159',
+};
+
 export const getCallerOptionsByLanguage = language => {
     if (language === 'en' || language == 'tr') {
         return [

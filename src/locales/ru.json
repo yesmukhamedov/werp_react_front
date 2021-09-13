@@ -946,11 +946,17 @@
     "number_of_completed_services": "Количество выполненных услуг",
     "salary": "Зарплата",
     "total_salary": "Общая заработная плата",
+    "country_code": "Код страны",
+    "sales_and_demonstrations_indicators": "Показатели продаж и демонстраций",
+    "number_of_sales": "Количество продаж",
+    "clear": "Очистить",
+    "export_to_excel": "Экспорт в Excel",
+    "detailing_sales_by_customers_for_certain_period": "Детализация продаж по клиентам за определенный период",
+    "phone_number_of_client": "Номер телефона клиента",
     "bonuses_of_the_head_of_the_service_department": "Бонусы начальника сервис отдела",
     "bonuses_of_the_managers": "Бонусы менеджеров",
     "bonuses_of_the_operators": "Бонусы операторов",
     "bonuses_of_the_operators_by_harvesting_systems": "Бонусы операторов по уборочной системе",
     "bonuses_of_the_senior_operator": "Бонусы старшего оператора",
-    "country_code": "Код страны",
     "subject_of_appeal": "Тема обращения"
 }

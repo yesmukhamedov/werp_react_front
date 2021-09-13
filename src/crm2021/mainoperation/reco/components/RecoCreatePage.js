@@ -73,7 +73,6 @@ class RecoCreatePage extends Component {
             this.props
                 .blankReco(context, contextId)
                 .then(res => {
-                    console.log('context: ', res);
                     this.setState({
                         ...this.state,
                         reco: res.data,
@@ -268,7 +267,11 @@ class RecoCreatePage extends Component {
                             ...this.state,
                             saveBtnDisabled: false,
                         });
-                        window.location.pathname = `/crm2021/reco/recolist/${data.demoId}`;
+                        if (data.demoId) {
+                            window.location.pathname = `/crm2021/reco/recolist/${data.demoId}`;
+                        } else {
+                            window.location.pathname = `/crm2021/visit/view/${data.visitId}`;
+                        }
                     })
                     .catch(function(error) {
                         let stateErrors = {};

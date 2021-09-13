@@ -960,7 +960,6 @@ const Ccmsc = props => {
                     }}
                 />
             </Segment>
-            }
         </Container>
     );
 };

@@ -34,7 +34,7 @@ export const fetchItems = params => {
 
 export const fetchIndicators = () => {
     return dispatch => {
-        doGet(`core/crm/kpi/setting/indicators`)
+        doGet(`crm2/kpi-setting/indicators`)
             .then(({ data }) => {
                 dispatch({
                     type: CRM_KPI_FETCH_INDICATORS,
@@ -49,7 +49,7 @@ export const fetchIndicators = () => {
 
 export const blankItem = () => {
     return dispatch => {
-        doGet(`core/crm/kpi/setting/blank`)
+        doGet(`crm2/kpi-setting/blank`)
             .then(({ data }) => {
                 dispatch({
                     type: CRM_KPI_BLANK_ITEM,

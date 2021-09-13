@@ -67,6 +67,7 @@ export const fetchPhoneNumberHistory = phoneId => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -85,6 +86,7 @@ export const updateReco = (reco, refresh) => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -102,6 +104,7 @@ export const fetchSingleReco = id => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -119,6 +122,7 @@ export const fetchCallDetails = id => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -136,6 +140,7 @@ export const fetchDemoDetails = id => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -171,6 +176,7 @@ export const fetchRecoCurrentData = type => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -194,6 +200,7 @@ export const fetchCallResults = () => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -212,6 +219,7 @@ export const fetchRecoArchive = params => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -254,6 +262,7 @@ export const fetchRecoStatuses = () => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -365,6 +374,7 @@ export const createRecoList = (o, callBackOnError) => {
                     dispatch(notify('error', errorsArr.join(', '), 'Ошибка'));
                 } else {
                     handleError(e, dispatch);
+                    dispatch(modifyLoader(false));
                 }
 
                 // handleError(e,dispatch)
@@ -375,7 +385,7 @@ export const createRecoList = (o, callBackOnError) => {
 export const blankRecoItem = () => {
     return dispatch => {
         dispatch(modifyLoader(true));
-        doGet(`core/crm/reco/blank-reco-item`)
+        doGet(`crm2/reco/blank-reco-item`)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
@@ -392,7 +402,7 @@ export const blankRecoItem = () => {
 
 export const fetchPhoneMeta = () => {
     return dispatch => {
-        doGet(`core/crm/phone/meta`)
+        doGet(`crm2/phone/meta`)
             .then(({ data }) => {
                 dispatch({
                     type: CRM_FETCH_PHONE_META,
@@ -401,6 +411,7 @@ export const fetchPhoneMeta = () => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };
@@ -422,6 +433,7 @@ export const fetchRecoCategories = () => {
             })
             .catch(e => {
                 handleError(e, dispatch);
+                dispatch(modifyLoader(false));
             });
     };
 };

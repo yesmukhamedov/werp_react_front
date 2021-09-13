@@ -431,26 +431,10 @@ const AsyncPyramidTreePage = Loadable({
     loading: () => <LoadingPage />,
 });
 
-const AsyncCrmWspacePage = Loadable({
-    loader: () =>
-        import(
-            '../crm/mainoperation/wspace/components/WspaceMainPage' /* webpackChunkName: "WspaceMainPage" */
-        ),
-    loading: () => <LoadingPage />,
-});
-
 const AsyncHrTimesheetPage = Loadable({
     loader: () =>
         import(
             '../hr/mainoperation/timesheet/components/TimesheetPage' /* webpackChunkName: "TimesheetPage" */
-        ),
-    loading: () => <LoadingPage />,
-});
-
-const AsyncCrmReportPage = Loadable({
-    loader: () =>
-        import(
-            '../crm/report/general/components/CrmReportPage' /* webpackChunkName: "CrmReportPage" */
         ),
     loading: () => <LoadingPage />,
 });
@@ -1185,10 +1169,16 @@ const AsyncExample = Loadable({
     loader: () => import('../crm2021/example'),
     loading: () => <LoadingPage />,
 });
+
+const AsyncDitUserListNew = Loadable({
+    loader: () => import('../dit/dituserlistnew'),
+    loading: () => <LoadingPage />,
+});
 const AsyncCcref = Loadable({
     loader: () => import('../callcenter/reference/index'),
     loading: () => <LoadingPage />,
 });
+
 const AsyncCcmra = Loadable({
     loader: () => import('../callcenter/mainoperation/ccmra'),
     loading: () => <LoadingPage />,
@@ -1197,9 +1187,13 @@ const AsyncCcmracn = Loadable({
     loader: () => import('../callcenter/mainoperation/ccmracn'),
     loading: () => <LoadingPage />,
 });
-const AsyncMrKaspi = Loadable({
-    loader: () =>
-        import('../marketing/report/mrKaspi') /* webpackChunkName: "srgfr" */,
+const AsyncFocur = Loadable({
+    loader: () => import('../finance/other/focur'),
+    loading: () => <LoadingPage />,
+});
+
+const AsyncFoac = Loadable({
+    loader: () => import('../finance/other/foac'),
     loading: () => <LoadingPage />,
 });
 const AsyncSrgfr = Loadable({
@@ -1207,9 +1201,20 @@ const AsyncSrgfr = Loadable({
         import('../service/report/srgfr') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
-const AsyncFoac = Loadable({
+
+const AsyncWerpReference = Loadable({
     loader: () =>
-        import('../finance/other/foac') /* webpackChunkName: "srgfr" */,
+        import('../dit/werpreference/index') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
+
+const AsyncCrmMpr2021 = Loadable({
+    loader: () => import('../crm2021/report/mpr') /* webpackChunkName: "mpr" */,
+    loading: () => <LoadingPage />,
+});
+
+const AsyncCrmMsr2021 = Loadable({
+    loader: () => import('../crm2021/report/msr') /* webpackChunkName: "msr" */,
     loading: () => <LoadingPage />,
 });
 
@@ -1290,7 +1295,6 @@ const getComponent = {
     HrStaffUpdate: AsyncStaffUpdatePage,
     HrStaffView: AsyncStaffViewPage,
     HrTimesheetPage: AsyncHrTimesheetPage,
-    CrmReportPage: AsyncCrmReportPage,
     CrmReportPage2021: AsyncCrmReportPage2021,
     HrReportPage: AsyncHrReportPage,
     Ccaslt: AsyncContractListPage,
@@ -1371,10 +1375,11 @@ const getComponent = {
     Srqpwgs: AsyncSrqpwgs,
     Example: AsyncExample,
     CrmWspace2021: AsyncCrmWspacePage2021,
-    // CrmReference: AsyncCrmReference,
+    CrmMpr2021: AsyncCrmMpr2021,
+    CrmRepMsr2021: AsyncCrmMsr2021,
     Srgfr: AsyncSrgfr,
     Foac: AsyncFoac,
-    MrKaspi: AsyncMrKaspi,
+    //MrKaspi: AsyncMrKaspi,
     //Call-center
     Ccref: AsyncCcref,
     Ccmra: AsyncCcmra,
@@ -1400,10 +1405,8 @@ const generateRoutes = transactionRoutes => {
             />
             <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
             {/*<Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />*/}
-            <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
             {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
             {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
-            <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
             <Route
                 path="/crm2021/report/view/:id"
                 component={AsyncCrmReportPage2021}
@@ -1493,6 +1496,16 @@ const generateRoutes = transactionRoutes => {
                 exact={true}
                 component={AsyncSmvs}
             />
+            <Route
+                path="/dit/dituserlistnew"
+                exact={true}
+                component={AsyncDitUserListNew}
+            />
+            <Route
+                path="/dit/werpreference"
+                exact={true}
+                component={AsyncWerpReference}
+            />
 
             {/* dynamically generated URLs  */}
 
@@ -1508,11 +1521,11 @@ const generateRoutes = transactionRoutes => {
                 exact={true}
                 component={AsyncHrSlc}
             />
-            <Route
-                path="/marketing/report/mrkaspi"
-                exact={true}
-                component={AsyncMrKaspi}
-            />
+            {/*<Route*/}
+            {/*    path="/marketing/report/mrkaspi"*/}
+            {/*    exact={true}*/}
+            {/*    component={AsyncMrKaspi}*/}
+            {/*/>*/}
 
             {transactionRoutes.map(route => {
                 return (

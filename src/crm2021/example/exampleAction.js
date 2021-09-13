@@ -9,7 +9,6 @@ export const EXAMPLE_ACTION_TYPE = 'EXAMPLE_ACTION_TYPE';
 
 //SRLS список сервисов
 export const fetchExample = param => {
-    console.log('ACTION');
     return function(dispatch) {
         dispatch(modifyLoader(true));
         doGet(`core/reco/archive`)

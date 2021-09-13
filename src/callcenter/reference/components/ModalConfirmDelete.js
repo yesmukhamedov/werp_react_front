@@ -2,25 +2,31 @@ import React, { useEffect } from 'react';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 
 const ModalConfirmDelete = props => {
-    const {} = props;
-    const [open, setOpen] = React.useState(false);
-
+    const { openModal, closeModal, yesAction } = props;
+    const [open, setOpen] = React.useState(openModal);
     return (
         <Modal
             closeIcon
-            open={open}
-            trigger={<Button>Show Modal</Button>}
-            onClose={() => setOpen(false)}
+            size="tiny"
+            open={openModal}
+            //trigger={<Button>Show Modal</Button>}
+            onClose={() => closeModal()}
             onOpen={() => setOpen(true)}
         >
             <Modal.Content>
-                <p>Вы действительно хотите удалить эту запись?</p>
+                <h4 align="center">
+                    Вы действительно хотите удалить эту запись?
+                </h4>
             </Modal.Content>
             <Modal.Actions>
-                <Button color="red" onClick={() => setOpen(false)}>
+                <Button align="center" color="red" onClick={() => closeModal()}>
                     <Icon name="remove" /> Нет
                 </Button>
-                <Button color="green" onClick={() => setOpen(false)}>
+                <Button
+                    align="center"
+                    color="green"
+                    onClick={() => yesAction()}
+                >
                     <Icon name="checkmark" /> Да
                 </Button>
             </Modal.Actions>
