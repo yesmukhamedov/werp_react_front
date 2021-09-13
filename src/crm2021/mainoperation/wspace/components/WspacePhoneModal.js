@@ -74,6 +74,9 @@ class WspacePhoneModal extends Component {
             callForm[name] = momentToStringYYYYMMDDHHMM(data);
         } else if (name === 'callReasonId') {
             callForm[name] = data.value;
+        } else if (name === 'callResult') {
+            callForm[name] = data.value;
+            callForm['callRecallDate'] = null;
         } else {
             callForm[name] = data.value;
         }

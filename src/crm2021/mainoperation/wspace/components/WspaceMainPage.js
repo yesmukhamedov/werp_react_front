@@ -196,12 +196,6 @@ class WspaceMainPage extends Component {
         let menuItems = this.props.staffRecoData[this.state.currentMenu] || [];
         let filters = this.props.filters[this.state.currentMenu] || {};
         menuItems = this.doFilterData(filters, menuItems);
-        console.log(
-            'menuitems: ',
-            menuItems,
-            'current menu: ',
-            this.state.currentMenu,
-        );
         switch (this.state.currentMenu) {
             case MENU_ALL_RECOS:
             case MENU_BY_RECO:
