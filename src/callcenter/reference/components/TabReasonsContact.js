@@ -29,12 +29,21 @@ const TabReasonsContact = props => {
         nameTr: '',
         category: null,
     };
+    const initialTempFormErrors = {
+        nameError: false,
+        nameEnError: false,
+        nameTrError: false,
+        dropdownError: false,
+    };
     const [tempData, setTempData] = useState(initialTempData);
     const [modalOpen, setModalOpen] = useState(false);
     const [dataList, setDataList] = useState([]);
     const [dropdownError, setDropdownError] = useState(false);
     const [openComfirmModal, setOpenConfirmModal] = useState(false);
     const [rowItem, setRowItem] = useState();
+    const [createFormErrors, setCreateFormErrors] = useState({
+        ...initialTempFormErrors,
+    });
 
     useEffect(() => {
         if (data.length > 0) {
@@ -49,18 +58,34 @@ const TabReasonsContact = props => {
     }, [data]);
 
     const createFormData = (fieldName, value) => {
+        let hasError = value === null || value === undefined || value === '';
         switch (fieldName) {
             case 'name':
+                setCreateFormErrors({
+                    ...createFormErrors,
+                    nameError: hasError,
+                });
                 setTempData({ ...tempData, name: value });
                 break;
             case 'nameEn':
+                setCreateFormErrors({
+                    ...createFormErrors,
+                    nameEnError: hasError,
+                });
                 setTempData({ ...tempData, nameEn: value });
                 break;
             case 'nameTr':
+                setCreateFormErrors({
+                    ...createFormErrors,
+                    nameTrError: hasError,
+                });
                 setTempData({ ...tempData, nameTr: value });
                 break;
             case 'category':
-                console.log(fieldName, value);
+                setCreateFormErrors({
+                    ...createFormErrors,
+                    dropdownError: hasError,
+                });
                 setTempData({ ...tempData, category: value });
                 break;
         }
@@ -70,53 +95,97 @@ const TabReasonsContact = props => {
         switch (fieldName) {
             case 'name':
                 setDataList(
-                    dataList.map(el =>
-                        el.id === id
-                            ? {
-                                  ...el,
-                                  name: value,
-                              }
-                            : el,
-                    ),
+                    dataList.map(el => {
+                        if (el.id === id) {
+                            return value === null ||
+                                value === undefined ||
+                                value === ''
+                                ? {
+                                      ...el,
+                                      name: value,
+                                      errorName: true,
+                                  }
+                                : {
+                                      ...el,
+                                      name: value,
+                                      errorName: false,
+                                  };
+                        } else {
+                            return el;
+                        }
+                    }),
                 );
 
                 break;
             case 'nameEn':
                 setDataList(
-                    dataList.map(el =>
-                        el.id === id
-                            ? {
-                                  ...el,
-                                  nameEn: value,
-                              }
-                            : el,
-                    ),
+                    dataList.map(el => {
+                        if (el.id === id) {
+                            return value === null ||
+                                value === undefined ||
+                                value === ''
+                                ? {
+                                      ...el,
+                                      nameEn: value,
+                                      errorNameEn: true,
+                                  }
+                                : {
+                                      ...el,
+                                      nameEn: value,
+                                      errorNameEn: false,
+                                  };
+                        } else {
+                            return el;
+                        }
+                    }),
                 );
 
                 break;
             case 'nameTr':
                 setDataList(
-                    dataList.map(el =>
-                        el.id === id
-                            ? {
-                                  ...el,
-                                  nameTr: value,
-                              }
-                            : el,
-                    ),
+                    dataList.map(el => {
+                        if (el.id === id) {
+                            return value === null ||
+                                value === undefined ||
+                                value === ''
+                                ? {
+                                      ...el,
+                                      nameTr: value,
+                                      errorNameTr: true,
+                                  }
+                                : {
+                                      ...el,
+                                      nameTr: value,
+                                      errorNameTr: false,
+                                  };
+                        } else {
+                            return el;
+                        }
+                    }),
                 );
 
                 break;
             case 'category':
                 setDataList(
-                    dataList.map(el =>
-                        el.id === id
-                            ? {
-                                  ...el,
-                                  category: value,
-                              }
-                            : el,
-                    ),
+                    dataList.map(el => {
+                        if (el.id === id) {
+                            return value === null ||
+                                value === undefined ||
+                                value === ''
+                                ? {
+                                      ...el,
+                                      category: value,
+                                      dropdownError: true,
+                                  }
+                                : {
+                                      ...el,
+                                      category: value,
+                                      dropdownError: false,
+                                  };
+                        } else {
+                            return el;
+                        }
+                    }),
                 );
 
                 break;
@@ -124,14 +193,34 @@ const TabReasonsContact = props => {
     };
 
     const saveCrudModal = () => {
+        const hasError = createFormErrors;
+        for (const [key, val] of Object.entries(tempData)) {
+            if (val === null || val === undefined || val === '') {
+                switch (key) {
+                    case 'name':
+                        hasError.nameError = true;
+                        break;
+                    case 'nameEn':
+                        hasError.nameEnError = true;
+                        break;
+                    case 'nameTr':
+                        hasError.nameTrError = true;
+                        break;
+                    case 'category':
+                        hasError.dropdownError = true;
+                        break;
+                }
+            }
+        }
+        setCreateFormErrors({ ...hasError });
         if (
-            tempData.category === undefined ||
-            tempData.category === null ||
-            tempData.category === ''
+            !(
+                createFormErrors.nameError ||
+                createFormErrors.nameEnError ||
+                createFormErrors.nameTrError ||
+                createFormErrors.dropdownError
+            )
         ) {
-            setDropdownError(true);
-        } else {
-            setDropdownError(false);
             create(tempData, () => {
                 get();
                 setModalOpen(false);
@@ -152,11 +241,6 @@ const TabReasonsContact = props => {
         );
     };
 
-    const deleteRow = () => {
-        deleteReasonContract(rowItem.id, () => get());
-        setOpenConfirmModal(false);
-    };
-
     const saveEditRow = id => {
         let filterData = dataList
             .filter(item => item.id === id)
@@ -173,6 +257,7 @@ const TabReasonsContact = props => {
             get();
         });
     };
+
     const options = optionsData.map((item, index) => {
         return {
             key: item.id,
@@ -180,6 +265,11 @@ const TabReasonsContact = props => {
             value: item.id,
         };
     });
+
+    const deleteRow = () => {
+        deleteReasonContract(rowItem.id, () => get());
+        setOpenConfirmModal(false);
+    };
     return (
         <div>
             <ModalCreate
@@ -191,7 +281,7 @@ const TabReasonsContact = props => {
                 trans="ReasonsContact"
                 options={options}
                 getCategory={getCategory}
-                dropdownError={dropdownError}
+                createFormErrors={createFormErrors}
             />
 
             <ModalConfirmDelete

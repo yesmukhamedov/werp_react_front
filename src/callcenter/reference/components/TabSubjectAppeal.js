@@ -86,7 +86,7 @@ const TabSubjectAppeal = props => {
                     dataList.map(el => {
                         if (el.id === id) {
                             return value === null ||
-                                values === undefined ||
+                                value === undefined ||
                                 value === ''
                                 ? {
                                       ...el,
@@ -110,7 +110,7 @@ const TabSubjectAppeal = props => {
                     dataList.map(el => {
                         if (el.id === id) {
                             return value === null ||
-                                values === undefined ||
+                                value === undefined ||
                                 value === ''
                                 ? {
                                       ...el,
@@ -157,31 +157,30 @@ const TabSubjectAppeal = props => {
     };
 
     const saveCrudModal = () => {
+        const hasError = createFormErrors;
         for (const [key, val] of Object.entries(tempData)) {
             if (val === null || val === undefined || val === '') {
                 switch (key) {
                     case 'name':
-                        setCreateFormErrors({
-                            ...createFormErrors,
-                            nameError: true,
-                        });
+                        hasError.nameError = true;
                         break;
                     case 'nameEn':
-                        setCreateFormErrors({
-                            ...createFormErrors,
-                            nameEnError: true,
-                        });
+                        hasError.nameEnError = true;
                         break;
                     case 'nameTr':
-                        setCreateFormErrors({
-                            ...createFormErrors,
-                            nameTrError: true,
-                        });
+                        hasError.nameTrError = true;
                         break;
                 }
             }
         }
-        if (createFormErrors.nameTrError) {
+        setCreateFormErrors({ ...hasError });
+        if (
+            !(
+                createFormErrors.nameError ||
+                createFormErrors.nameEnError ||
+                createFormErrors.nameTrError
+            )
+        ) {
             create(tempData, () => {
                 get();
                 setModalOpen(false);
@@ -220,12 +219,10 @@ const TabSubjectAppeal = props => {
             });
         }
     };
-
     const deleteRow = () => {
         deleteSubjectAppeal(rowItem.id, () => get());
         setOpenConfirmModal(false);
     };
-
     return (
         <div>
             <ModalCreate

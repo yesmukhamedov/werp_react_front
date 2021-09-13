@@ -21,7 +21,6 @@ const ModalCreate = props => {
         getCategory = () => {},
         options = [],
         createFormErrors,
-        dropdownError,
     } = props;
 
     const { headerText, data = [] } = crudData;
@@ -82,7 +81,7 @@ const ModalCreate = props => {
                                 <Table.Cell>
                                     <Dropdown
                                         selection
-                                        error={dropdownError}
+                                        error={createFormErrors.dropdownError}
                                         options={options}
                                         onChange={(e, { value }) =>
                                             createFormData('category', value)

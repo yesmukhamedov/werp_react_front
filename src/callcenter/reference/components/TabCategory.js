@@ -11,11 +11,20 @@ const TabCategory = props => {
         nameEn: '',
         nameTr: '',
     };
+    const initialTempFormErrors = {
+        nameError: false,
+        nameEnError: false,
+        nameTrError: false,
+        dropdownError: false,
+    };
     const [tempData, setTempData] = useState(initialTempData);
     const [modalOpen, setModalOpen] = useState(false);
     const [dataList, setDataList] = useState([]);
     const [openComfirmModal, setOpenConfirmModal] = useState(false);
     const [rowItem, setRowItem] = useState();
+    const [createFormErrors, setCreateFormErrors] = useState({
+        ...initialTempFormErrors,
+    });
 
     useEffect(() => {
         if (data.length > 0) {
@@ -30,14 +39,27 @@ const TabCategory = props => {
     }, [data]);
 
     const createFormData = (fieldName, value) => {
+        let hasError = value === null || value === undefined || value === '';
         switch (fieldName) {
             case 'name':
+                setCreateFormErrors({
+                    ...createFormErrors,
+                    nameError: hasError,
+                });
                 setTempData({ ...tempData, name: value });
                 break;
             case 'nameEn':
+                setCreateFormErrors({
+                    ...createFormErrors,
+                    nameEnError: hasError,
+                });
                 setTempData({ ...tempData, nameEn: value });
                 break;
             case 'nameTr':
+                setCreateFormErrors({
+                    ...createFormErrors,
+                    nameTrError: hasError,
+                });
                 setTempData({ ...tempData, nameTr: value });
                 break;
         }
@@ -47,40 +69,73 @@ const TabCategory = props => {
         switch (fieldName) {
             case 'name':
                 setDataList(
-                    dataList.map(el =>
-                        el.id === id
-                            ? {
-                                  ...el,
-                                  name: value,
-                              }
-                            : el,
-                    ),
+                    dataList.map(el => {
+                        if (el.id === id) {
+                            return value === null ||
+                                value === undefined ||
+                                value === ''
+                                ? {
+                                      ...el,
+                                      name: value,
+                                      errorName: true,
+                                  }
+                                : {
+                                      ...el,
+                                      name: value,
+                                      errorName: false,
+                                  };
+                        } else {
+                            return el;
+                        }
+                    }),
                 );
 
                 break;
             case 'nameEn':
                 setDataList(
-                    dataList.map(el =>
-                        el.id === id
-                            ? {
-                                  ...el,
-                                  nameEn: value,
-                              }
-                            : el,
-                    ),
+                    dataList.map(el => {
+                        if (el.id === id) {
+                            return value === null ||
+                                value === undefined ||
+                                value === ''
+                                ? {
+                                      ...el,
+                                      nameEn: value,
+                                      errorNameEn: true,
+                                  }
+                                : {
+                                      ...el,
+                                      nameEn: value,
+                                      errorNameEn: false,
+                                  };
+                        } else {
+                            return el;
+                        }
+                    }),
                 );
 
                 break;
             case 'nameTr':
                 setDataList(
-                    dataList.map(el =>
-                        el.id === id
-                            ? {
-                                  ...el,
-                                  nameTr: value,
-                              }
-                            : el,
-                    ),
+                    dataList.map(el => {
+                        if (el.id === id) {
+                            return value === null ||
+                                value === undefined ||
+                                value === ''
+                                ? {
+                                      ...el,
+                                      nameTr: value,
+                                      errorNameTr: true,
+                                  }
+                                : {
+                                      ...el,
+                                      nameTr: value,
+                                      errorNameTr: false,
+                                  };
+                        } else {
+                            return el;
+                        }
+                    }),
                 );
 
                 break;
@@ -88,12 +143,36 @@ const TabCategory = props => {
     };
 
     const saveCrudModal = () => {
-        create(tempData, () => {
-            get();
-            setModalOpen(false);
-        });
+        const hasError = createFormErrors;
+        for (const [key, val] of Object.entries(tempData)) {
+            if (val === null || val === undefined || val === '') {
+                switch (key) {
+                    case 'name':
+                        hasError.nameError = true;
+                        break;
+                    case 'nameEn':
+                        hasError.nameEnError = true;
+                        break;
+                    case 'nameTr':
+                        hasError.nameTrError = true;
+                        break;
+                }
+            }
+        }
+        setCreateFormErrors({ ...hasError });
+        if (
+            !(
+                createFormErrors.nameError ||
+                createFormErrors.nameEnError ||
+                createFormErrors.nameTrError
+            )
+        ) {
+            create(tempData, () => {
+                get();
+                setModalOpen(false);
+            });
+        }
     };
-
     const editRow = data => {
         setDataList(
             dataList.map(el =>
@@ -106,12 +185,6 @@ const TabCategory = props => {
             ),
         );
     };
-
-    const deleteRow = () => {
-        deleteCategory(rowItem.id, () => get());
-        setOpenConfirmModal(false);
-    };
-
     const saveEditRow = id => {
         let filterData = dataList
             .filter(item => item.id === id)
@@ -127,7 +200,10 @@ const TabCategory = props => {
             get();
         });
     };
-
+    const deleteRow = () => {
+        deleteCategory(rowItem.id, () => get());
+        setOpenConfirmModal(false);
+    };
     return (
         <div>
             <ModalCreate
@@ -136,6 +212,7 @@ const TabCategory = props => {
                 crudData={crudData}
                 saveCrudModal={saveCrudModal}
                 createFormData={createFormData}
+                createFormErrors={createFormErrors}
             />
 
             <ModalConfirmDelete
