@@ -171,6 +171,7 @@ const TabCategory = props => {
                 get();
                 setModalOpen(false);
             });
+            setTempData({ ...initialTempData });
         }
     };
     const editRow = data => {

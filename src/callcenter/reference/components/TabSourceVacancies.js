@@ -174,6 +174,7 @@ const TabSourceVacancies = props => {
                 get({ type: 'VACANCY' });
                 setModalOpen(false);
             });
+            setTempData({ ...initialTempData });
         }
     };
     const editRow = data => {

@@ -171,6 +171,7 @@ const TabVacancies = props => {
                 get();
                 setModalOpen(false);
             });
+            setTempData({ ...initialTempData });
         }
     };
 

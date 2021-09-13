@@ -180,6 +180,7 @@ const TabSourceRequests = props => {
                 get({ type: 'APPLICATION' });
                 setModalOpen(false);
             });
+            setTempData({ ...initialTempData });
         }
     };
 

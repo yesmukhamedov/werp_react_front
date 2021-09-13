@@ -225,6 +225,7 @@ const TabReasonsContact = props => {
                 get();
                 setModalOpen(false);
             });
+            setTempData({ ...initialTempData });
         }
     };
 

@@ -24,7 +24,7 @@ const ModalCreate = props => {
     } = props;
 
     const { headerText, data = [] } = crudData;
-
+    console.log('from', tempData);
     useEffect(() => {
         if (trans === 'ReasonsContact') {
             getCategory();
@@ -54,6 +54,11 @@ const ModalCreate = props => {
                                 <Input
                                     value={tempData.name}
                                     error={createFormErrors.nameError}
+                                    placeholder={
+                                        createFormErrors.nameError
+                                            ? 'Заполните поля'
+                                            : ''
+                                    }
                                     onChange={(e, { value }) =>
                                         createFormData('name', value)
                                     }
@@ -63,6 +68,11 @@ const ModalCreate = props => {
                                 <Input
                                     value={tempData.nameEn}
                                     error={createFormErrors.nameEnError}
+                                    placeholder={
+                                        createFormErrors.nameEnError
+                                            ? 'Заполните поля'
+                                            : ''
+                                    }
                                     onChange={(e, { value }) =>
                                         createFormData('nameEn', value)
                                     }
@@ -72,6 +82,11 @@ const ModalCreate = props => {
                                 <Input
                                     value={tempData.nameTr}
                                     error={createFormErrors.nameTrError}
+                                    placeholder={
+                                        createFormErrors.nameTrError
+                                            ? 'Заполните поля'
+                                            : ''
+                                    }
                                     onChange={(e, { value }) =>
                                         createFormData('nameTr', value)
                                     }
@@ -82,6 +97,11 @@ const ModalCreate = props => {
                                     <Dropdown
                                         selection
                                         error={createFormErrors.dropdownError}
+                                        placeholder={
+                                            createFormErrors.dropdownError
+                                                ? 'Заполните поля'
+                                                : ''
+                                        }
                                         options={options}
                                         onChange={(e, { value }) =>
                                             createFormData('category', value)

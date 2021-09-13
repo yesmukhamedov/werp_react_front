@@ -178,6 +178,7 @@ const TabPresent = props => {
                 get();
                 setModalOpen(false);
             });
+            setTempData({ ...initialTempData });
         }
     };
 
