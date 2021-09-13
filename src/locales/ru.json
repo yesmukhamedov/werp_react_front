@@ -950,5 +950,7 @@
     "sales_and_demonstrations_indicators": "Показатели продаж и демонстраций",
     "number_of_sales": "Количество продаж",
     "clear": "Очистить",
-    "export_to_excel": "Экспорт в Excel"
+    "export_to_excel": "Экспорт в Excel",
+    "detailing_sales_by_customers_for_certain_period": "Детализация продаж по клиентам за определенный период",
+    "phone_number_of_client": "Номер телефона клиента"
 }

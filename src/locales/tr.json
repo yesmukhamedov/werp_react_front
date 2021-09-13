@@ -952,5 +952,7 @@
     "sales_and_demonstrations_indicators": "Sales and demonstrations indicators",
     "number_of_sales": "Number of sales",
     "clear": "Clear",
-    "export_to_excel": "Export to Excel"
+    "export_to_excel": "Export to Excel",
+    "detailing_sales_by_customers_for_certain_period": "Detailing sales by customers for a certain period",
+    "phone_number_of_client": "Phone number of client"
 }
