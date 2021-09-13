@@ -241,13 +241,7 @@ const TabSubjectAppeal = props => {
             />
             <div className="tab-header">
                 <h5>{headerText}</h5>
-                <Button
-                    color="green"
-                    onClick={() => {
-                        console.log(tempData);
-                        setModalOpen(true);
-                    }}
-                >
+                <Button color="green" onClick={() => setModalOpen(true)}>
                     Добавить
                 </Button>
             </div>
