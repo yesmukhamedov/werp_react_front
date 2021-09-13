@@ -8,6 +8,7 @@ import {
     Popup,
     Dropdown,
 } from 'semantic-ui-react';
+import ModalConfirmDelete from './ModalConfirmDelete';
 
 //
 const TabReasonsContact = props => {
@@ -31,6 +32,9 @@ const TabReasonsContact = props => {
     const [tempData, setTempData] = useState(initialTempData);
     const [modalOpen, setModalOpen] = useState(false);
     const [dataList, setDataList] = useState([]);
+    const [dropdownError, setDropdownError] = useState(false);
+    const [openComfirmModal, setOpenConfirmModal] = useState(false);
+    const [rowItem, setRowItem] = useState();
 
     useEffect(() => {
         if (data.length > 0) {
@@ -120,10 +124,19 @@ const TabReasonsContact = props => {
     };
 
     const saveCrudModal = () => {
-        create(tempData, () => {
-            get();
-            setModalOpen(false);
-        });
+        if (
+            tempData.category === undefined ||
+            tempData.category === null ||
+            tempData.category === ''
+        ) {
+            setDropdownError(true);
+        } else {
+            setDropdownError(false);
+            create(tempData, () => {
+                get();
+                setModalOpen(false);
+            });
+        }
     };
 
     const editRow = data => {
@@ -138,6 +151,12 @@ const TabReasonsContact = props => {
             ),
         );
     };
+
+    const deleteRow = () => {
+        deleteReasonContract(rowItem.id, () => get());
+        setOpenConfirmModal(false);
+    };
+
     const saveEditRow = id => {
         let filterData = dataList
             .filter(item => item.id === id)
@@ -172,7 +191,15 @@ const TabReasonsContact = props => {
                 trans="ReasonsContact"
                 options={options}
                 getCategory={getCategory}
+                dropdownError={dropdownError}
             />
+
+            <ModalConfirmDelete
+                openModal={openComfirmModal}
+                closeModal={() => setOpenConfirmModal(false)}
+                yesAction={deleteRow}
+            />
+
             <div className="tab-header">
                 <h5>{headerText}</h5>
                 <Button color="green" onClick={() => setModalOpen(true)}>
@@ -285,12 +312,10 @@ const TabReasonsContact = props => {
                                         <Button
                                             circular
                                             color="red"
-                                            onClick={() =>
-                                                deleteReasonContract(
-                                                    item.id,
-                                                    () => get(),
-                                                )
-                                            }
+                                            onClick={() => {
+                                                setOpenConfirmModal(true);
+                                                setRowItem(item);
+                                            }}
                                             icon="delete"
                                         />
                                     }

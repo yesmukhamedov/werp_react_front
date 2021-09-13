@@ -20,6 +20,8 @@ const ModalCreate = props => {
         trans = '',
         getCategory = () => {},
         options = [],
+        createFormErrors,
+        dropdownError,
     } = props;
 
     const { headerText, data = [] } = crudData;
@@ -52,6 +54,7 @@ const ModalCreate = props => {
                             <Table.Cell>
                                 <Input
                                     value={tempData.name}
+                                    error={createFormErrors.nameError}
                                     onChange={(e, { value }) =>
                                         createFormData('name', value)
                                     }
@@ -60,6 +63,7 @@ const ModalCreate = props => {
                             <Table.Cell>
                                 <Input
                                     value={tempData.nameEn}
+                                    error={createFormErrors.nameEnError}
                                     onChange={(e, { value }) =>
                                         createFormData('nameEn', value)
                                     }
@@ -68,6 +72,7 @@ const ModalCreate = props => {
                             <Table.Cell>
                                 <Input
                                     value={tempData.nameTr}
+                                    error={createFormErrors.nameTrError}
                                     onChange={(e, { value }) =>
                                         createFormData('nameTr', value)
                                     }
@@ -77,6 +82,7 @@ const ModalCreate = props => {
                                 <Table.Cell>
                                     <Dropdown
                                         selection
+                                        error={dropdownError}
                                         options={options}
                                         onChange={(e, { value }) =>
                                             createFormData('category', value)

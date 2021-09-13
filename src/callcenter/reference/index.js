@@ -9,6 +9,7 @@ import TabReasonsContact from './components/TabReasonsContact';
 import TabPresets from './components/TabPresent';
 import TabVacancies from './components/TabVacancies';
 import { injectIntl } from 'react-intl';
+import ModalConfirmDelete from './components/ModalConfirmDelete';
 import './crmreference.css';
 import {
     // Тема обращения
@@ -81,6 +82,7 @@ const Ccref = props => {
                         create={props.createSubjectAppeal}
                         update={props.updateSubjectAppeal}
                         deleteSubjectAppeal={props.deleteSubjectAppeal}
+                        ModalConfirmDelete={ModalConfirmDelete}
                     />
                 </Tab.Pane>
             ),

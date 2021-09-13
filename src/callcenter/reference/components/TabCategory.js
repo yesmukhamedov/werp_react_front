@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ModalCreate from './ModalCreate';
 import { Button, Divider, Input, Popup, Table } from 'semantic-ui-react';
-
+import ModalConfirmDelete from './ModalConfirmDelete';
 //
 const TabCategory = props => {
     const { crudData, create, update, get, deleteCategory, data = [] } = props;
@@ -14,6 +14,8 @@ const TabCategory = props => {
     const [tempData, setTempData] = useState(initialTempData);
     const [modalOpen, setModalOpen] = useState(false);
     const [dataList, setDataList] = useState([]);
+    const [openComfirmModal, setOpenConfirmModal] = useState(false);
+    const [rowItem, setRowItem] = useState();
 
     useEffect(() => {
         if (data.length > 0) {
@@ -104,6 +106,12 @@ const TabCategory = props => {
             ),
         );
     };
+
+    const deleteRow = () => {
+        deleteCategory(rowItem.id, () => get());
+        setOpenConfirmModal(false);
+    };
+
     const saveEditRow = id => {
         let filterData = dataList
             .filter(item => item.id === id)
@@ -128,6 +136,12 @@ const TabCategory = props => {
                 crudData={crudData}
                 saveCrudModal={saveCrudModal}
                 createFormData={createFormData}
+            />
+
+            <ModalConfirmDelete
+                openModal={openComfirmModal}
+                closeModal={() => setOpenConfirmModal(false)}
+                yesAction={deleteRow}
             />
             <div className="tab-header">
                 <h5>{headerText}</h5>
@@ -212,11 +226,10 @@ const TabCategory = props => {
                                         <Button
                                             circular
                                             color="red"
-                                            onClick={() =>
-                                                deleteCategory(item.id, () =>
-                                                    get(),
-                                                )
-                                            }
+                                            onClick={() => {
+                                                setOpenConfirmModal(true);
+                                                setRowItem(item);
+                                            }}
                                             icon="delete"
                                         />
                                     }

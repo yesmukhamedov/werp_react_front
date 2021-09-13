@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ModalCreate from './ModalCreate';
 import { Button, Divider, Input, Popup, Table } from 'semantic-ui-react';
 import { deleteVacancy } from '../ccrefAction';
-
+import ModalConfirmDelete from './ModalConfirmDelete';
 //
 const TabSourceVacancies = props => {
     const { crudData, create, update, get, data = [], deleteVacancy } = props;
@@ -17,6 +17,8 @@ const TabSourceVacancies = props => {
     const [tempData, setTempData] = useState(initialTempData);
     const [modalOpen, setModalOpen] = useState(false);
     const [dataList, setDataList] = useState([]);
+    const [openComfirmModal, setOpenConfirmModal] = useState(false);
+    const [rowItem, setRowItem] = useState();
 
     useEffect(() => {
         if (data.length > 0) {
@@ -107,6 +109,12 @@ const TabSourceVacancies = props => {
             ),
         );
     };
+
+    const deleteRow = () => {
+        deleteVacancy(rowItem.id, () => get({ type: 'VACANCY' }));
+        setOpenConfirmModal(false);
+    };
+
     const saveEditRow = id => {
         let filterData = dataList
             .filter(item => item.id === id)
@@ -131,6 +139,12 @@ const TabSourceVacancies = props => {
                 crudData={crudData}
                 saveCrudModal={saveCrudModal}
                 createFormData={createFormData}
+            />
+
+            <ModalConfirmDelete
+                openModal={openComfirmModal}
+                closeModal={() => setOpenConfirmModal(false)}
+                yesAction={deleteRow}
             />
             <div className="tab-header">
                 <h5>{headerText}</h5>
@@ -215,11 +229,10 @@ const TabSourceVacancies = props => {
                                         <Button
                                             circular
                                             color="red"
-                                            onClick={() =>
-                                                deleteVacancy(item.id, () =>
-                                                    get({ type: 'VACANCY' }),
-                                                )
-                                            }
+                                            onClick={() => {
+                                                setOpenConfirmModal(true);
+                                                setRowItem(item);
+                                            }}
                                             icon="delete"
                                         />
                                     }
