@@ -1,6 +1,6 @@
-import browserHistory from '../../utils/history';
+// import browserHistory from '../../utils/history';
 import { clearUserAuth } from '../../actions/auth';
-import { address } from 'faker';
+// import { address } from 'faker';
 
 export const NOTIFY = 'NOTIFY';
 
@@ -19,6 +19,7 @@ export function handleError(error, dispatch) {
     const language = localStorage.getItem('language');
 
     if (error.response) {
+        // Status 403: Запрещено
         if (error.response.status && error.response.status === 403) {
             dispatch(
                 notify(
@@ -27,74 +28,52 @@ export function handleError(error, dispatch) {
                     errorTable[`132${language}`],
                 ),
             );
-        } else if (error.response.status && error.response.status === 500) {
+        }
+        // Status 500: Внутренняя ошибка сервера
+        else if (error.response.status && error.response.status === 500) {
             dispatch(
                 notify(
                     'error',
                     error.response.data.message,
-                    errorTable[`132${language}`],
+                    'Внутренняя ошибка сервера!',
                 ),
             );
-        } else if (error.response.status && error.response.status === 400) {
+        }
+        // Status 400: Плохой запрос
+        else if (error.response.status && error.response.status === 400) {
             if (error.response.data.messages) {
                 let message = error.response.data.messages;
-                dispatch(
-                    notify(
-                        'error',
-                        message.address,
-                        errorTable[`132${language}`],
-                    ),
-                );
+                dispatch(notify('error', message.address, 'Плохой запрос!'));
+            } else {
+                dispatch(notify('error', 'Плохой запрос.', 'Плохой запрос!'));
+            }
+        }
+        // Status 404: Не найден
+        else if (error.response.status && error.response.status === 404) {
+            if (error.response.data.messages) {
+                let message = error.response.data.messages;
+                dispatch(notify('error', message.address, 'Не найден!'));
             } else {
                 dispatch(
                     notify(
                         'error',
-                        'Доступ ограничен',
-                        errorTable[`132${language}`],
+                        'Сервер не может найти запрашиваемый ресурс.',
+                        'Не найден!',
                     ),
                 );
             }
-        } else if (error.response.status && error.response.status === 404) {
-            if (error.response.data.messages) {
-                let message = error.response.data.messages;
-                dispatch(
-                    notify(
-                        'error',
-                        message.address,
-                        errorTable[`132${language}`],
-                    ),
-                );
-            } else {
-                dispatch(
-                    notify(
-                        'error',
-                        'Доступ ограничен',
-                        errorTable[`132${language}`],
-                    ),
-                );
-            }
-        } else if (error.response.status && error.response.status === 401) {
+        }
+        // Status 401: Неавторизованно
+        else if (error.response.status && error.response.status === 401) {
             dispatch(clearUserAuth());
-        } else if (error.response.status && error.response.status === 404) {
-            if (error.response.data.messages) {
-                let message = error.response.data.messages;
-                dispatch(
-                    notify(
-                        'error',
-                        message.address,
-                        errorTable[`132${language}`],
-                    ),
-                );
-            } else {
-                dispatch(
-                    notify(
-                        'error',
-                        'Доступ ограничен',
-                        errorTable[`132${language}`],
-                    ),
-                );
-            }
-        } else dispatch(notify('error', 123, errorTable[`132${language}`]));
+        } else
+            dispatch(
+                notify(
+                    'error',
+                    'Для получения запрашиваемого ответа нужна аутентификация.',
+                    'Неавторизованно!',
+                ),
+            );
     } else {
         // const name = getNestedObject(error, ['error', 'response']);
 
