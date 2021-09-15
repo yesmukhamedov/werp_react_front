@@ -28,11 +28,7 @@ import {
     f4FetchCurrentStaff,
 } from '../../../reference/f4/f4_action';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
-import TotalCountsTable from '../../../utils/TotalCountsTable';
-import DropdownClearable from '../../../utils/DropdownClearable';
-import ColumnsModal from '../../../utils/ColumnsModal';
 import '../../../service/service.css';
-import CcmraCard from './ccmraCard';
 const Ccmsc = props => {
     const {
         intl: { messages },
