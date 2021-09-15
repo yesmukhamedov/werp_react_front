@@ -10,6 +10,7 @@ import persistPath from './PersistPath';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 import { AsyncHrDocAllDocsPage } from '../hr/hrLoader';
+import Ccmva from '../callcenter/mainoperation/ccmva';
 
 const AsyncSettings = Loadable({
     loader: () =>
@@ -1224,6 +1225,13 @@ const AsyncCcmsc = Loadable({
         ) /* webpackChunkName: "msr" */,
     loading: () => <LoadingPage />,
 });
+const AsyncCcmva = Loadable({
+    loader: () =>
+        import(
+            '../callcenter/mainoperation/ccmva'
+        ) /* webpackChunkName: "msr" */,
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1392,6 +1400,7 @@ const getComponent = {
     Ccmra: AsyncCcmra,
     Ccmracn: AsyncCcmracn,
     Ccmsc: AsyncCcmsc,
+    Ccmva: AsyncCcmva,
 };
 
 const generateRoutes = transactionRoutes => {
