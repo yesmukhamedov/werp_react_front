@@ -1217,6 +1217,13 @@ const AsyncCrmMsr2021 = Loadable({
     loader: () => import('../crm2021/report/msr') /* webpackChunkName: "msr" */,
     loading: () => <LoadingPage />,
 });
+const AsyncCcmsc = Loadable({
+    loader: () =>
+        import(
+            '../callcenter/mainoperation/ccmsc'
+        ) /* webpackChunkName: "msr" */,
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1384,6 +1391,7 @@ const getComponent = {
     Ccref: AsyncCcref,
     Ccmra: AsyncCcmra,
     Ccmracn: AsyncCcmracn,
+    Ccmsc: AsyncCcmsc,
 };
 
 const generateRoutes = transactionRoutes => {
