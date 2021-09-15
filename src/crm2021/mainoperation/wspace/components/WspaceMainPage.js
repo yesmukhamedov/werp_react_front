@@ -341,6 +341,7 @@ class WspaceMainPage extends Component {
 }
 
 function mapStateToProps(state) {
+    let filters = state.crmWspaceReducer2021.filters;
     return {
         dealers: state.crmDemo2021.dealers,
         demoResults: state.crmDemo2021.demoResults,
@@ -350,7 +351,7 @@ function mapStateToProps(state) {
         currentRecommenderRecos:
             state.crmWspaceReducer2021.currentRecommenderRecos,
         loaders: state.crmWspaceReducer2021.loaders,
-        filters: state.crmWspaceReducer2021.filters,
+        filters: filters,
     };
 }
 

@@ -7,7 +7,6 @@ export default function WspaceRecoList(props) {
     if (!items) {
         return <h3>Нет данных!</h3>;
     }
-    console.log('items: ', items);
     return (
         <Card.Group>
             {items.map(item => (
