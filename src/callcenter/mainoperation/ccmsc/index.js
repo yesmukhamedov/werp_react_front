@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import {
     Form,
     Container,
@@ -22,16 +23,37 @@ import {
 } from '../../../reference/f4/f4_action';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
 import '../../../service/service.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import {
+    stringYYYYMMDDToMoment,
+    momentToStringYYYYMMDD,
+    moneyFormat,
+} from '../../../utils/helpers';
+
 const Ccmsc = props => {
     const {
         intl: { messages },
+        language,
     } = props;
     const headerStyle = {
         whiteSpace: 'pre-wrap',
     };
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [startDate1, setStartDate1] = useState(new Date());
+    const [endDate1, setEndDate1] = useState(new Date());
+    const onChange = dates => {
+        const [start, end] = dates;
+        setStartDate(start);
+        setEndDate(end);
+    };
+
     let statusColor = 'red';
     let iconName = 'file alternate outline';
     let buttonColor = 'aqua';
+    let linkTo = ``;
     return (
         <Container fluid className="containerMargin">
             <Segment className="justifySegment">
@@ -120,6 +142,31 @@ const Ccmsc = props => {
                             className="alignBottom"
                             multiple
                         />
+                        <Form.Field>
+                            <label>{'Период продажи товара'}</label>
+                            <div className="flexDirectionRow">
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Начало"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(startDate)}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setStartDate(date)}
+                                    withPortal
+                                />
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Конец"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(endDate)}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setEndDate(date)}
+                                    withPortal
+                                />
+                            </div>
+                        </Form.Field>
                         <Form.Select
                             fluid
                             label="Фин. статус"
@@ -127,21 +174,34 @@ const Ccmsc = props => {
                             className="alignBottom"
                             multiple
                         />
-                        <Form.Field>
-                            <label>{'Период продажи товара'}</label>
-                            <Input
-                                placeholder={'Период продажи товара'}
-                                fluid
-                            />
-                        </Form.Field>
                     </Form.Group>
                     <Form.Group widths="7">
                         <Form.Field>
-                            <label>{'Период создания товара'}</label>
-                            <Input
-                                placeholder={'Период создания товара'}
-                                fluid
-                            />
+                            <label>{'Период создания договора'}</label>
+                            <div className="flexDirectionRow">
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Начало"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(
+                                        startDate1,
+                                    )}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setStartDate1(date)}
+                                    withPortal
+                                />
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Конец"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(endDate1)}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setEndDate1(date)}
+                                    withPortal
+                                />
+                            </div>
                         </Form.Field>
                         <div className="flexDirectionRow">
                             <Form.Button
@@ -159,12 +219,10 @@ const Ccmsc = props => {
                                 color="red"
                                 icon
                                 labelPosition="left"
-                                onClick={() => {
-                                    console.log('Перейти на поиск клиента');
-                                }}
+                                onClick={() => {}}
                             >
                                 <Icon name="cancel"></Icon>
-                                Отмена
+                                Очистить
                             </Form.Button>
                         </div>
                     </Form.Group>
@@ -298,16 +356,19 @@ const Ccmsc = props => {
                             Cell: row => {
                                 switch (row.value) {
                                     case 'Необработанный':
+                                        linkTo = `/callcenter/mainoperation/ccmsc`;
                                         statusColor = 'red';
                                         iconName = 'plus';
                                         buttonColor = 'blue';
                                         break;
                                     case 'В обработке':
+                                        linkTo = `/callcenter/mainoperation/ccmsc`;
                                         statusColor = 'teal';
                                         iconName = 'file alternate outline';
                                         buttonColor = 'teal';
                                         break;
                                     case 'Обработан':
+                                        linkTo = `/callcenter/mainoperation/ccmva`;
                                         statusColor = 'blue';
                                         iconName = 'file alternate outline';
                                         buttonColor = 'teal';
@@ -356,19 +417,17 @@ const Ccmsc = props => {
                             ),
                         },
                         {
-                            Header: 'Регистрация',
+                            Header: 'Действия',
                             headerStyle: headerStyle,
                             filterable: false,
                             fixed: 'right',
                             Cell: ({ row }) => (
                                 <div style={{ textAlign: 'center' }}>
-                                    <Button
-                                        color={buttonColor}
-                                        icon
-                                        onClick={() => console.log('Link')}
-                                    >
-                                        <Icon name={iconName}></Icon>
-                                    </Button>
+                                    <Link to={linkTo} target="_blank">
+                                        <Button color={buttonColor} icon>
+                                            <Icon name={iconName}></Icon>
+                                        </Button>
+                                    </Link>
                                 </div>
                             ),
                         },
@@ -385,7 +444,6 @@ const Ccmsc = props => {
 function mapStateToProps(state) {
     return {
         language: state.locales.lang,
-        //
         companyOptions: state.userInfo.companyOptions,
         countryList: state.f4.countryList,
         category: state.f4.category,

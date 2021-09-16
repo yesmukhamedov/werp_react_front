@@ -27,16 +27,6 @@ export default function CcmvaCard(props) {
                 <Label as="a" color={'teal'} ribbon>
                     № {index + 1}
                 </Label>
-                <Button
-                    size={'mini'}
-                    color={'red'}
-                    icon="delete"
-                    className="right floated"
-                    onClick={e => {
-                        props.removeCard(index, item);
-                    }}
-                />
-
                 <Form className="recoGrid">
                     <Form.Input
                         required
@@ -176,25 +166,6 @@ export default function CcmvaCard(props) {
                                 </Form>
                             </Segment>
                         </Modal.Content>
-
-                        <Modal.Actions>
-                            <div align="center">
-                                <Button color="teal">
-                                    <Icon name="checkmark" />
-                                    {messages['Table.Add']}
-                                </Button>
-
-                                <Button
-                                    negative
-                                    onClick={() => {
-                                        setShow(false);
-                                    }}
-                                >
-                                    <Icon name="remove" />
-                                    {messages['BTN__CANCEL']}
-                                </Button>
-                            </div>
-                        </Modal.Actions>
                     </Modal>
                     <Form.Input
                         required

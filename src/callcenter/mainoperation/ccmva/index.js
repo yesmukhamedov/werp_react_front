@@ -23,8 +23,16 @@ import {
 import '../../../service/service.css';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
 import CcmvaCard from './ccmvaCard';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import {
+    stringYYYYMMDDToMoment,
+    momentToStringYYYYMMDD,
+    moneyFormat,
+} from '../../../utils/helpers';
 const Ccmva = props => {
     const {
+        language,
         intl: { messages },
     } = props;
 
@@ -43,7 +51,10 @@ const Ccmva = props => {
     const [serviceDataAccordion, setServiceDataAccordion] = useState(false);
     const [productsDataAccordion, setProductsDataAccordion] = useState(false);
     const taskCount = ['', '', ''];
-
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [startDate1, setStartDate1] = useState(new Date());
+    const [endDate1, setEndDate1] = useState(new Date());
     const renderCcmracnCard = () => {
         return taskCount.map((item, index) => {
             return (
@@ -103,7 +114,9 @@ const Ccmva = props => {
                             <label>Адрес</label>
                             <Input placeholder="Адрес" fluid />
                         </Form.Field>
+                    </Form.Group>
 
+                    <Form.Group widths="7">
                         <Form.Select
                             fluid
                             label="Вид обращения"
@@ -111,9 +124,6 @@ const Ccmva = props => {
                             placeholder="Вид обращения"
                             multiple
                         />
-                    </Form.Group>
-
-                    <Form.Group widths="7">
                         <Form.Select
                             fluid
                             label="Источник связи"
@@ -121,7 +131,6 @@ const Ccmva = props => {
                             className="alignBottom"
                             multiple
                         />
-
                         <Form.Select
                             fluid
                             label="Тема обращения"
@@ -129,7 +138,6 @@ const Ccmva = props => {
                             placeholder="Тема обращения"
                             multiple
                         />
-
                         <Form.Select
                             fluid
                             label="Статус обращения"
@@ -137,15 +145,57 @@ const Ccmva = props => {
                             placeholder="Статус обращения"
                             multiple
                         />
-
                         <Form.Field>
                             <label>Дата/Время обращения</label>
-                            <Input placeholder="Дата/Время обращения" fluid />
+                            <div className="flexDirectionRow">
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Начало"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(startDate)}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setStartDate(date)}
+                                    withPortal
+                                />
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Конец"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(endDate)}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setEndDate(date)}
+                                    withPortal
+                                />
+                            </div>
                         </Form.Field>
-
                         <Form.Field>
                             <label>Дата/Время закрытия обращения</label>
-                            <Input placeholder="Дата/Время обращения" fluid />
+                            <div className="flexDirectionRow">
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Начало"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(
+                                        startDate1,
+                                    )}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setStartDate1(date)}
+                                    withPortal
+                                />
+                                <DatePicker
+                                    showMonthYearPicker
+                                    placeholderText="Конец"
+                                    autoComplete="off"
+                                    selected={stringYYYYMMDDToMoment(endDate1)}
+                                    dropdownMode="select" //timezone="UTC"
+                                    locale={language}
+                                    onChange={date => setEndDate1(date)}
+                                    withPortal
+                                />
+                            </div>
                         </Form.Field>
                     </Form.Group>
                     <Form.Group className="spaceBetween">
