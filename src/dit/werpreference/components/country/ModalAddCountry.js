@@ -17,10 +17,10 @@ const ModalAddCategory = ({
     clearCountryList,
     clearTempData,
     countryList,
-    currencyOptions,
+    currencyOptionsForDropdown,
 }) => {
     const initialCountry = {
-        countryId: 1,
+        // countryId: 1,
         code: '',
         country: '',
         currency: '',
@@ -38,7 +38,7 @@ const ModalAddCategory = ({
             case 'code':
                 setCountry({
                     ...country,
-                    countryId: countryList.length + 1,
+                    // countryId: countryList.length + 1,
                     code: value,
                 });
                 break;
@@ -46,7 +46,7 @@ const ModalAddCategory = ({
             case 'country':
                 setCountry({
                     ...country,
-                    countryId: countryList.length + 1,
+                    // countryId: countryList.length + 1,
                     country: value,
                 });
                 break;
@@ -54,7 +54,7 @@ const ModalAddCategory = ({
             case 'currency':
                 setCountry({
                     ...country,
-                    countryId: countryList.length + 1,
+                    // countryId: countryList.length + 1,
                     currency: getCurrency(value),
                     currencyId: value,
                 });
@@ -63,7 +63,7 @@ const ModalAddCategory = ({
             case 'phoneCode':
                 setCountry({
                     ...country,
-                    countryId: countryList.length + 1,
+                    // countryId: countryList.length + 1,
                     phoneCode: value,
                 });
                 break;
@@ -71,7 +71,7 @@ const ModalAddCategory = ({
             case 'telPattern':
                 setCountry({
                     ...country,
-                    countryId: countryList.length + 1,
+                    // countryId: countryList.length + 1,
                     telPattern: value,
                 });
                 break;
@@ -126,13 +126,7 @@ const ModalAddCategory = ({
         return currencyName;
     };
 
-    const currencyOptionsForDropdown = currencyOptions.map(item => {
-        return {
-            key: item.key,
-            text: item.text,
-            value: item.key,
-        };
-    });
+    console.log('currencyOptionsForDropdown', currencyOptionsForDropdown);
 
     return (
         <Modal closeIcon open={open} onClose={close}>
@@ -170,7 +164,6 @@ const ModalAddCategory = ({
                         <Dropdown
                             options={currencyOptionsForDropdown}
                             selection
-                            value={currencyOptionsForDropdown.value}
                             onChange={(e, { value }) =>
                                 onChangeAdd('currency', value)
                             }

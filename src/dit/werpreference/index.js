@@ -24,6 +24,11 @@ import {
     fetchCategoryList,
     updateCategory,
     clearCategoryList,
+    //DEPARTMENT
+    fetchDepartmentList,
+    clearDepartmentList,
+    createDepartment,
+    updateDepartment,
 } from './werpreferenceActions';
 
 import {
@@ -36,9 +41,10 @@ import {
     f4FetchSubCompanies,
 } from '../../reference/f4/f4_action';
 import TabCompany from './components/company/TabCompany';
-import TabCountry from './components/country/TabCountry';
 import TabBranch from './components/branch/TabBranch';
+import TabCountry from './components/country/TabCountry';
 import ProductCategory from './components/productCategory/ProductCategory';
+import TabDepartment from './components/department/TabDepartment';
 
 const WerpReference = props => {
     const {
@@ -61,7 +67,7 @@ const WerpReference = props => {
     const [activeTab, setActiveTab] = useState(0);
 
     useEffect(() => {
-        props.f4FetchCurrencyList('werpreference');
+        // props.f4FetchCurrencyList('werpreference');
         props.f4FetchCompanyOptions('werpreference');
         props.f4FetchCountryList('werpreference');
         props.f4FetchBusinessAreaList('werpreference');
@@ -70,6 +76,38 @@ const WerpReference = props => {
     }, []);
 
     const panes = [
+        {
+            menuItem: messages['L__COMPANY'],
+            render: () => (
+                <Tab.Pane>
+                    <TabCompany
+                        companyList={companyList}
+                        getList={fetchCompanyList}
+                        update={props.updateCompany}
+                        clear={clearCompanyList}
+                        create={props.createCompany}
+                        messages={messages}
+                    />
+                </Tab.Pane>
+            ),
+        },
+
+        {
+            menuItem: 'Отдел',
+            render: () => (
+                <Tab.Pane>
+                    <TabDepartment
+                        getDepartmentList={props.fetchDepartmentList}
+                        clearDepartmentList={props.clearDepartmentList}
+                        departmentList={props.departmentList}
+                        createDepartment={props.createDepartment}
+                        updateDepartment={props.updateDepartment}
+                        messages={messages}
+                    />
+                </Tab.Pane>
+            ),
+        },
+
         {
             menuItem: messages['brnch'],
             render: () => (
@@ -103,6 +141,7 @@ const WerpReference = props => {
                         clearCountryList={clearCountryList}
                         currencyOptions={currencyOptions}
                         updateCountry={updateCountry}
+                        currencyList={props.currencyList}
                         messages={messages}
                     />
                 </Tab.Pane>
@@ -119,22 +158,6 @@ const WerpReference = props => {
                         getCategoryList={fetchCategoryList}
                         update={updateCategory}
                         clear={clearCategoryList}
-                        messages={messages}
-                    />
-                </Tab.Pane>
-            ),
-        },
-
-        {
-            menuItem: messages['L__COMPANY'],
-            render: () => (
-                <Tab.Pane>
-                    <TabCompany
-                        companyList={companyList}
-                        getList={fetchCompanyList}
-                        update={props.updateCompany}
-                        clear={clearCompanyList}
-                        create={props.createCompany}
                         messages={messages}
                     />
                 </Tab.Pane>
@@ -163,7 +186,9 @@ function mapStateToProps(state) {
         branchList: state.werpreferenceReducer.branchList,
         countryList: state.werpreferenceReducer.countryList,
         categoryList: state.werpreferenceReducer.categoryList,
+        departmentList: state.werpreferenceReducer.departmentList,
 
+        currencyList: state.f4.currencyList,
         currencyOptions: state.f4.currencyOptions,
         companyOptions: state.f4.companyOptions,
         countryOptions: state.f4.countryList,
@@ -205,4 +230,10 @@ export default connect(mapStateToProps, {
     fetchCategoryList,
     updateCategory,
     clearCategoryList,
+
+    //DEPARTMENT
+    createDepartment,
+    fetchDepartmentList,
+    clearDepartmentList,
+    updateDepartment,
 })(injectIntl(WerpReference));

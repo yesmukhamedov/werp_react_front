@@ -1,140 +1,127 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Segment, Checkbox, Dropdown, Button, Icon } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-import ModalAviabilities from './componets/ModalAviabilities';
 import { LinkToSmcsEmpty } from '../../../utils/outlink';
+import { connect } from 'react-redux';
+import {
+    fetchCasadaProducts,
+    fetchStoreList,
+    fetchBrandList,
+} from '../../marketingAction';
+import ModalAvailabilities from './components/casada/ModalAvailabilities';
+import './style.css';
 
 const Mrkaspi = props => {
-    const {} = props;
+    const {
+        fetchCasadaProducts,
+        casadaProducts,
+        fetchStoreList,
+        storeList,
+        fetchBrandList,
+        brandList,
+    } = props;
 
-    const [modalAvialibities, setModalAvialibities] = useState(false);
+    const [tempData, setTempData] = useState([]);
+    const [rowID, setRowID] = useState('');
+    const [modalAvailabilities, setModalAvailabilities] = useState(false);
+    const [avails, setAvails] = useState([]);
 
-    const aviabilitiOptions = [
-        {
-            key: 1,
-            text: 'PP1',
-            value: 1,
-        },
-        {
-            key: 2,
-            text: 'PP2',
-            value: 2,
-        },
-        {
-            key: 3,
-            text: 'PP3',
-            value: 3,
-        },
-    ];
-    const [data, setData] = useState([
-        {
-            sku: 'CMK-321',
-            brand: 'Casada',
-            model: 'Quattromed 5',
-            price: 230000,
-            available: [
-                {
-                    available: 'yes',
-                    storeId: 'PP1,',
-                },
-                {
-                    available: 'no',
-                    storeId: 'PP2,',
-                },
-            ],
-        },
-        {
-            sku: 'CMK-323',
-            brand: 'Casada',
-            model: 'Quattromed 5',
-            price: 260000,
-            available: {
-                available: 'yes',
-                storeId: 'PP1',
-            },
-        },
-        {
-            sku: 'CR-102',
-            brand: 'Casada',
-            model: 'Reflexomed 2',
-            price: 260000,
-            availabilities: {
-                available: 'no',
-                storeId: 'PP1',
-            },
-        },
-    ]);
+    useEffect(() => {
+        fetchCasadaProducts();
+        fetchStoreList();
+        fetchBrandList();
+    }, []);
 
-    const aviabilities = [
-        {
-            id: 1,
-            name: 'PP1',
-        },
-        {
-            id: 2,
-            name: 'PP2',
-        },
-        {
-            id: 3,
-            name: 'PP3',
-        },
-        {
-            id: 4,
-            name: 'PP4',
-        },
-        {
-            id: 5,
-            name: 'PP5',
-        },
-        {
-            id: 6,
-            name: 'PP6',
-        },
-    ];
+    useEffect(() => {
+        if (casadaProducts.length > 0) {
+            casadaProducts.map(item =>
+                setTempData(prev => {
+                    return [
+                        ...prev,
+                        {
+                            brand: item.brand,
+                            company: item.company,
+                            model: item.model,
+                            price: item.price,
+                            sku: item.sku,
+                            edit: false,
+                            availabilities: item.availabilities.map(
+                                itemAvailable => {
+                                    return {
+                                        available: itemAvailable.available,
+                                        sku: itemAvailable.sku,
+                                        storeId: itemAvailable.storeId,
+                                    };
+                                },
+                            ),
+                        },
+                    ];
+                }),
+            );
+        } else {
+            setTempData([]);
+        }
+    }, [casadaProducts]);
+
+    const brandListOptions = Object.entries(brandList).map(item => {
+        return {
+            text: item[0],
+            value: item[1],
+        };
+    });
+
+    const getRowAvail = rowData => {
+        tempData.map((item, idx) => {
+            if (rowData.sku === item.sku) {
+                setAvails(item.availabilities);
+            }
+        });
+    };
+    console.log('tempData', tempData);
+    console.log('brandList', brandList);
+    console.log('brandListOptions', brandListOptions);
+    console.log('casadaProducts', casadaProducts);
+
     const columns = [
         {
-            Header: `SKU`,
+            Header: 'ID',
             accessor: 'sku',
-
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
+            filterable: true,
+            Cell: original => <div>{original.value}</div>,
         },
         {
-            Header: `Brand`,
+            Header: 'Бренд',
             accessor: 'brand',
-
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
+            filterable: true,
+            Cell: original => <div>{original.value}</div>,
         },
         {
-            Header: `Model`,
+            Header: 'Компания',
+            accessor: 'company',
+            filterable: true,
+            Cell: original => <div>{original.value}</div>,
+        },
+        {
+            Header: 'Модель',
             accessor: 'model',
-
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
+            filterable: true,
+            Cell: original => <div>{original.value}</div>,
         },
         {
-            Header: `Price`,
+            Header: 'Цена',
             accessor: 'price',
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
+            filterable: true,
+            Cell: original => <div>{original.value}</div>,
         },
         {
-            Header: `Aviabilities`,
-            Cell: () => (
-                <Button onClick={() => setModalAvialibities(true)}>
+            Header: 'Доступность',
+            Cell: original => (
+                <Button
+                    onClick={() => {
+                        setModalAvailabilities(true);
+                        getRowAvail(original.row);
+                    }}
+                >
                     Пункты выдачи
                 </Button>
             ),
@@ -143,10 +130,13 @@ const Mrkaspi = props => {
 
     return (
         <div>
-            <ModalAviabilities
-                aviabilities={aviabilities}
-                open={modalAvialibities}
-                closeModal={() => setModalAvialibities(false)}
+            <ModalAvailabilities
+                casadaProducts={casadaProducts}
+                open={modalAvailabilities}
+                rowAvails={avails}
+                tempData={tempData}
+                storeList={storeList}
+                closeModal={() => setModalAvailabilities(false)}
             />
             <Segment>
                 <div
@@ -159,6 +149,13 @@ const Mrkaspi = props => {
                 >
                     <h3>Список товаров kaspi.kz</h3>
                     <div>
+                        <Dropdown
+                            selection
+                            options={brandListOptions}
+                            selectOnBlur={false}
+                            // defaultValue={brandListOptions[0]}
+                            style={{ marginRight: 4 }}
+                        />
                         <Button color="teal">Export to XML</Button>
                         <Button color="green">
                             <Icon name="add" /> Добавить
@@ -166,9 +163,21 @@ const Mrkaspi = props => {
                     </div>
                 </div>
             </Segment>
-            <ReactTableWrapper data={data} columns={columns} />
+            <ReactTableWrapper data={tempData} columns={columns} />
         </div>
     );
 };
 
-export default Mrkaspi;
+function mapStateToProps(state) {
+    return {
+        casadaProducts: state.marketing.casadaProducts,
+        storeList: state.marketing.storeList,
+        brandList: state.marketing.brandList,
+    };
+}
+
+export default connect(mapStateToProps, {
+    fetchCasadaProducts,
+    fetchStoreList,
+    fetchBrandList,
+})(Mrkaspi);

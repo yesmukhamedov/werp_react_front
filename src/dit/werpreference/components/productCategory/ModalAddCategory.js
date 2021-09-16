@@ -11,7 +11,7 @@ const ModalAddCategory = ({
     categoryList,
 }) => {
     const initialCategory = {
-        id: 1,
+        // id: 1,
         code: '',
         info: '',
         nameEn: '',
@@ -29,7 +29,7 @@ const ModalAddCategory = ({
             case 'code':
                 setCategory({
                     ...category,
-                    id: categoryList.length + 1,
+                    // id: categoryList.length + 1,
                     code: value,
                 });
                 break;
@@ -37,7 +37,7 @@ const ModalAddCategory = ({
             case 'info':
                 setCategory({
                     ...category,
-                    id: categoryList.length + 1,
+                    // id: categoryList.length + 1,
                     info: value,
                 });
                 break;
@@ -45,7 +45,7 @@ const ModalAddCategory = ({
             case 'nameEn':
                 setCategory({
                     ...category,
-                    id: categoryList.length + 1,
+                    // id: categoryList.length + 1,
                     nameEn: value,
                 });
                 break;
@@ -53,7 +53,7 @@ const ModalAddCategory = ({
             case 'nameKk':
                 setCategory({
                     ...category,
-                    id: categoryList.length + 1,
+                    // id: categoryList.length + 1,
                     nameKk: value,
                 });
                 break;
@@ -61,7 +61,7 @@ const ModalAddCategory = ({
             case 'nameRu':
                 setCategory({
                     ...category,
-                    id: categoryList.length + 1,
+                    // id: categoryList.length + 1,
                     nameRu: value,
                 });
                 break;
@@ -69,7 +69,7 @@ const ModalAddCategory = ({
             case 'nameTr':
                 setCategory({
                     ...category,
-                    id: categoryList.length + 1,
+                    // id: categoryList.length + 1,
                     nameTr: value,
                 });
                 break;
@@ -78,6 +78,8 @@ const ModalAddCategory = ({
                 break;
         }
     };
+
+    console.log(category);
 
     const isFieldEmpty = val => val === '' || val === null || val === undefined;
 

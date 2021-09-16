@@ -11,6 +11,8 @@ import {
     FETCH_CATEGORY_LIST,
     CLEAR_CATEGORY_LIST,
     //
+    FETCH_DEPARTMENT_LIST,
+    CLEAR_DEPARTMENT_LIST,
 } from './werpreferenceActions';
 
 const INITIAL_STATE = {
@@ -18,6 +20,7 @@ const INITIAL_STATE = {
     branchList: [],
     countryList: [],
     categoryList: [],
+    departmentList: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -35,8 +38,6 @@ export default function(state = INITIAL_STATE, action) {
             };
 
         case GET_BRANCH_LIST:
-            console.log('REDUCER FETCH_BRANCH_LIST', action.data);
-
             return {
                 ...state,
                 branchList: [...action.data],
@@ -69,6 +70,16 @@ export default function(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 categoryList: [],
+            };
+        case FETCH_DEPARTMENT_LIST:
+            return {
+                ...state,
+                departmentList: [...action.data],
+            };
+        case CLEAR_DEPARTMENT_LIST:
+            return {
+                ...state,
+                departmentList: [],
             };
 
         default:

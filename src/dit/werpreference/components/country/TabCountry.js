@@ -17,16 +17,6 @@ export default function TabCountry({
     const [errors, setErrors] = useState([]);
     const [openModal, setOpenModal] = useState(false);
 
-    console.log('TEMPDATA', tempData);
-    console.log('currencyOptions', currencyOptions);
-    const currencyOptionsForDropdown = currencyOptions.map(item => {
-        return {
-            key: item.key,
-            text: item.text,
-            value: item.key,
-        };
-    });
-
     useEffect(() => {
         clearCountryList();
         getCountryList();
@@ -123,6 +113,13 @@ export default function TabCountry({
             }
         });
     };
+    const currencyOptionsForDropdown = countryList.map(item => {
+        return {
+            key: item.currencyId,
+            text: item.currency,
+            value: item.currencyId,
+        };
+    });
 
     const getCurrency = value => {
         let currencyName = '';
@@ -417,7 +414,7 @@ export default function TabCountry({
                 countryList={countryList}
                 clearCountryList={clearCountryList}
                 clearTempData={clearTempData}
-                currencyOptions={currencyOptions}
+                currencyOptionsForDropdown={currencyOptionsForDropdown}
             />
             <div className="content-top">
                 <h3>Страны</h3>

@@ -24,7 +24,7 @@ function ModalAddBranch({
     stateOptionsForDropdown,
 }) {
     const initialBranch = {
-        branchId: 0,
+        // branchId: "",
         bukrs: '',
         text45: '',
         countryId: '',
@@ -39,10 +39,17 @@ function ModalAddBranch({
 
     const onChangeAdd = (fieldName, value) => {
         switch (fieldName) {
+            // case 'branchId':
+            //     setTempBranches({
+            //         ...tempBranches,
+            //         // branchId: branchList.length + 1,
+            //         branchId: value,
+            //     });
+            //     break;
             case 'bukrs':
                 setTempBranches({
                     ...tempBranches,
-                    branchId: branchList.length + 1,
+                    // branchId: branchList.length + 1,
                     bukrs: value,
                 });
                 break;
@@ -50,7 +57,7 @@ function ModalAddBranch({
             case 'text45':
                 setTempBranches({
                     ...tempBranches,
-                    branchId: branchList.length + 1,
+                    // branchId: branchList.length + 1,
                     text45: value,
                 });
                 break;
@@ -58,7 +65,7 @@ function ModalAddBranch({
             case 'countryId':
                 setTempBranches({
                     ...tempBranches,
-                    branchId: branchList.length + 1,
+                    // branchId: branchList.length + 1,
                     countryId: value,
                 });
                 break;
@@ -66,7 +73,7 @@ function ModalAddBranch({
             case 'type':
                 setTempBranches({
                     ...tempBranches,
-                    branchId: branchList.length + 1,
+                    // branchId: branchList.length + 1,
                     type: value,
                 });
                 break;
@@ -74,7 +81,7 @@ function ModalAddBranch({
             case 'tovarCategory':
                 setTempBranches({
                     ...tempBranches,
-                    branchId: branchList.length + 1,
+                    // branchId: branchList.length + 1,
                     tovarCategory: value,
                 });
                 break;
@@ -82,7 +89,7 @@ function ModalAddBranch({
             case 'businessAreaId':
                 setTempBranches({
                     ...tempBranches,
-                    branchId: branchList.length + 1,
+                    // branchId: branchList.length + 1,
                     businessAreaId: value,
                 });
                 break;
@@ -90,7 +97,7 @@ function ModalAddBranch({
             case 'stateId':
                 setTempBranches({
                     ...tempBranches,
-                    branchId: branchList.length + 1,
+                    // branchId: branchList.length + 1,
                     stateId: value,
                 });
                 break;
@@ -112,7 +119,6 @@ function ModalAddBranch({
                     [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
                 };
             });
-            console.log('temporaryObj', temporaryObj);
             return temporaryObj;
         });
         const arr = Object.values(item);
@@ -124,15 +130,6 @@ function ModalAddBranch({
 
         return success;
     };
-
-    // branchId: 0,
-    // bukrs: '',
-    // text45: '',
-    // countryId: '',
-    // type: '',
-    // tovarCategory: '',
-    // businessAreaId: '',
-    // stateId: '',
 
     const saveBranch = () => {
         if (validate(tempBranches)) {
@@ -150,6 +147,16 @@ function ModalAddBranch({
             <Header content="Добавить филиал" />
             <Modal.Content>
                 <Form>
+                    <Form.Field>
+                        <label>ID</label>
+                        <Input
+                            label="ID не должен повториться"
+                            type="number"
+                            onChange={(e, { value }) =>
+                                onChangeAdd('branchId', value)
+                            }
+                        />
+                    </Form.Field>
                     <Form.Field error={errors.bukrs}>
                         <label>Компания</label>
                         <Dropdown

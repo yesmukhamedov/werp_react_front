@@ -24,6 +24,10 @@ export const ALL_DMSPLST = 'ALL_DMSPLST';
 export const GET_DMSPLST_MATNRS = 'GET_DMSPLST_MATNRS';
 export const UPD_DMSPLST = 'UPD_DMSPLST';
 export const SAVE_DMSPLST = 'SAVE_DMSPLST';
+/******************************************************************** mrKaspi */
+export const FETCH_CASADA_PRODUCTS = 'FETCH_CASADA_PRODUCTS';
+export const FETCH_STORE_LIST = 'FETCH_STORE_LIST';
+export const FETCH_BRAND_LIST = 'FETCH_BRAND_LIST';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -365,3 +369,60 @@ export function notSuccessed() {
         errorTable[`101${language}`],
     );
 }
+
+/******************************************************************** mrKaspi */
+
+export const fetchCasadaProducts = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/marketing/kaspi/list?brand=CASADA`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_CASADA_PRODUCTS,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+export const fetchStoreList = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/marketing/kaspi/store/list`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_STORE_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+export const fetchBrandList = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/marketing/kaspi/brands`)
+            .then(({ data }) => {
+                console.log('DATA', data);
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_BRAND_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};

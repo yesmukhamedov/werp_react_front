@@ -1,133 +1,159 @@
 import {
-  GET_LPLST,
-  GET_LPLST_MATNRS,
-  NEW_LPLST,
-  UPD_LPLST,
-  GET_DMSCLST,
-  DMSCLST_DEF_OPTS,
-  FETCH_DYNOBJ_MARKETING,
-  CHANGE_DYNOBJ_MARKETING,
-  CLEAR_DYNOBJ_MARKETING,
-  ALL_DMSPLST,
-  GET_DMSPLST_MATNRS,
-  UPD_DMSPLST,
-  SAVE_DMSPLST,
+    GET_LPLST,
+    GET_LPLST_MATNRS,
+    NEW_LPLST,
+    UPD_LPLST,
+    GET_DMSCLST,
+    DMSCLST_DEF_OPTS,
+    FETCH_DYNOBJ_MARKETING,
+    CHANGE_DYNOBJ_MARKETING,
+    CLEAR_DYNOBJ_MARKETING,
+    ALL_DMSPLST,
+    GET_DMSPLST_MATNRS,
+    UPD_DMSPLST,
+    SAVE_DMSPLST,
+    FETCH_CASADA_PRODUCTS,
+    FETCH_STORE_LIST,
+    FETCH_BRAND_LIST,
 } from './marketingAction';
 
 const INITIAL_STATE = {
-  dynObjLpList: [],
-  dynamicObject: {},
-  dynDmsplst: [],
+    dynObjLpList: [],
+    dynamicObject: {},
+    dynDmsplst: [],
+    /********************************mrKaspi*/
+    casadaProducts: [],
+    storeList: [],
+    brandList: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    /******************************************************************        LPLIST        */
-    case GET_LPLST:
-      return {
-        ...state,
-        dynObjLpList: { ...state.dynObjLpList, ...action.payload },
-      };
-    case GET_LPLST_MATNRS:
-      return {
-        ...state,
-        dynObjLpList: { ...state.dynObjLpList, ...action.payload },
-      };
-    case NEW_LPLST:
-      if (Object.keys(state.dynObjLpList).length > 0) {
-        const price = { ...action.payload };
-        const trow = state.dynObjLpList.prtotRws + 1;
-        price['price_list_id'] = Math.random();
-        price['from_date'] = '';
-        price['active'] = 'true';
-        return {
-          ...state,
-          dynObjLpList: {
-            pritms: [...state.dynObjLpList.pritms, price],
-            prtotRws: trow,
-          },
-        };
-      }
-      return { ...state, dynObjLpList: { ...state.dynObjLpList } };
-    case UPD_LPLST:
-      const updPrlst = { ...action.payload };
-      const idx = [...state.dynObjLpList.pritms].findIndex(
-        el => el.price_list_id === updPrlst.price_list_id,
-      );
-      const { prtotRws } = { ...state.dynObjLpList };
-      return {
-        ...state.dynObjLpList,
-        dynObjLpList: {
-          pritms: [
-            ...state.dynObjLpList.pritms.slice(0, idx),
-            updPrlst,
-            ...state.dynObjLpList.pritms.slice(idx + 1),
-          ],
-          prtotRws: prtotRws,
-        },
-      };
+    switch (action.type) {
+        /******************************************************************        LPLIST        */
+        case GET_LPLST:
+            return {
+                ...state,
+                dynObjLpList: { ...state.dynObjLpList, ...action.payload },
+            };
+        case GET_LPLST_MATNRS:
+            return {
+                ...state,
+                dynObjLpList: { ...state.dynObjLpList, ...action.payload },
+            };
+        case NEW_LPLST:
+            if (Object.keys(state.dynObjLpList).length > 0) {
+                const price = { ...action.payload };
+                const trow = state.dynObjLpList.prtotRws + 1;
+                price['price_list_id'] = Math.random();
+                price['from_date'] = '';
+                price['active'] = 'true';
+                return {
+                    ...state,
+                    dynObjLpList: {
+                        pritms: [...state.dynObjLpList.pritms, price],
+                        prtotRws: trow,
+                    },
+                };
+            }
+            return { ...state, dynObjLpList: { ...state.dynObjLpList } };
+        case UPD_LPLST:
+            const updPrlst = { ...action.payload };
+            const idx = [...state.dynObjLpList.pritms].findIndex(
+                el => el.price_list_id === updPrlst.price_list_id,
+            );
+            const { prtotRws } = { ...state.dynObjLpList };
+            return {
+                ...state.dynObjLpList,
+                dynObjLpList: {
+                    pritms: [
+                        ...state.dynObjLpList.pritms.slice(0, idx),
+                        updPrlst,
+                        ...state.dynObjLpList.pritms.slice(idx + 1),
+                    ],
+                    prtotRws: prtotRws,
+                },
+            };
 
-    /************************************************     CONTRACT LIST        */
-    case DMSCLST_DEF_OPTS:
-    case GET_DMSCLST:
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
-      };
+        /************************************************     CONTRACT LIST        */
+        case DMSCLST_DEF_OPTS:
+        case GET_DMSCLST:
+            return {
+                ...state,
+                dynamicObject: { ...state.dynamicObject, ...action.payload },
+            };
 
-    /************************************************  END CONTRACT LIST        */
+        /************************************************  END CONTRACT LIST        */
 
-    /********************************************************   DMSPLST        */
-    case ALL_DMSPLST:
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
-      };
-    case GET_DMSPLST_MATNRS:
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
-      };
-    case UPD_DMSPLST:
-      const updRow = { ...action.payload };
-      const id = [...state.dynamicObject.promolst].findIndex(
-        el => el.id === updRow.id,
-      );
-      return {
-        ...state,
-        dynamicObject: {
-          ...state.dynamicObject,
-          promolst: [
-            ...state.dynamicObject.promolst.slice(0, id),
-            updRow,
-            ...state.dynamicObject.promolst.slice(id + 1),
-          ],
-        },
-      };
+        /********************************************************   DMSPLST        */
+        case ALL_DMSPLST:
+            return {
+                ...state,
+                dynamicObject: { ...state.dynamicObject, ...action.payload },
+            };
+        case GET_DMSPLST_MATNRS:
+            return {
+                ...state,
+                dynamicObject: { ...state.dynamicObject, ...action.payload },
+            };
+        case UPD_DMSPLST:
+            const updRow = { ...action.payload };
+            const id = [...state.dynamicObject.promolst].findIndex(
+                el => el.id === updRow.id,
+            );
+            return {
+                ...state,
+                dynamicObject: {
+                    ...state.dynamicObject,
+                    promolst: [
+                        ...state.dynamicObject.promolst.slice(0, id),
+                        updRow,
+                        ...state.dynamicObject.promolst.slice(id + 1),
+                    ],
+                },
+            };
 
-    case SAVE_DMSPLST:
-      return {
-        ...state,
-        dynamicObject: {
-          ...state.dynamicObject,
-          promolst: [...state.dynamicObject.promolst, action.payload],
-        },
-      };
-    /********************************************************  END DMSPLST    */
-    case FETCH_DYNOBJ_MARKETING:
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.data },
-      };
-    case CHANGE_DYNOBJ_MARKETING:
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.data },
-      };
-    case CLEAR_DYNOBJ_MARKETING:
-      return { ...state, dynamicObject: {} };
+        case SAVE_DMSPLST:
+            return {
+                ...state,
+                dynamicObject: {
+                    ...state.dynamicObject,
+                    promolst: [...state.dynamicObject.promolst, action.payload],
+                },
+            };
+        /********************************************************  END DMSPLST    */
+        case FETCH_DYNOBJ_MARKETING:
+            return {
+                ...state,
+                dynamicObject: { ...state.dynamicObject, ...action.data },
+            };
+        case CHANGE_DYNOBJ_MARKETING:
+            return {
+                ...state,
+                dynamicObject: { ...state.dynamicObject, ...action.data },
+            };
+        case CLEAR_DYNOBJ_MARKETING:
+            return { ...state, dynamicObject: {} };
 
-    default:
-      return state;
-  }
+        /********************************************************  MR KASPI    */
+
+        case FETCH_CASADA_PRODUCTS:
+            return {
+                ...state,
+                casadaProducts: [...state.casadaProducts, ...action.data],
+            };
+        case FETCH_STORE_LIST:
+            return {
+                ...state,
+                storeList: [...state.storeList, ...action.data],
+            };
+
+        case FETCH_BRAND_LIST:
+            return {
+                ...state,
+                brandList: { ...state.brandList, ...action.data },
+            };
+
+        default:
+            return state;
+    }
 }

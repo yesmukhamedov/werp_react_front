@@ -13,6 +13,9 @@ export const CLEAR_COUNTRY_LIST = 'CLEAR_COUNTRY_LIST';
 //Category
 export const FETCH_CATEGORY_LIST = 'FETCH_CATEGORY_LIST';
 export const CLEAR_CATEGORY_LIST = 'CLEAR_CATEGORY_LIST';
+//Department
+export const FETCH_DEPARTMENT_LIST = 'FET_DEPARTMENT_LIST';
+export const CLEAR_DEPARTMENT_LIST = 'CLEAR_DEPARTMENT_LIST';
 
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
@@ -257,6 +260,67 @@ export const clearCategoryList = () => {
     return function(dispatch) {
         dispatch({
             type: CLEAR_CATEGORY_LIST,
+        });
+    };
+};
+
+//ОТДЕЛ
+// Список отделов
+export const fetchDepartmentList = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/reference/department/list`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_DEPARTMENT_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Добавить отдел
+export const createDepartment = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(`core/reference/department`, body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+//Редактировать отдел
+export const updateDepartment = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPut('core/reference/department', body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Очистить список отделов
+export const clearDepartmentList = () => {
+    return function(dispatch) {
+        dispatch({
+            type: CLEAR_DEPARTMENT_LIST,
         });
     };
 };

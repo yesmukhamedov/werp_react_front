@@ -21,9 +21,6 @@ export default function TabBranch({
     const [errors, setErrors] = useState([]);
     const [openModal, setOpenModal] = useState(false);
 
-    console.log('TEMP_DATA', tempData);
-    console.log('errors', errors);
-
     useEffect(() => {
         clearBranchList();
         getBranchList();
@@ -64,6 +61,8 @@ export default function TabBranch({
             value: item.countryId,
         };
     });
+    // console.log(countryOptionsForDropdown)
+
     const categoryOptionsForDropdown = categoryList.map(item => {
         return {
             text: item.code,
@@ -96,15 +95,6 @@ export default function TabBranch({
             }),
         );
     };
-
-    // branchId: 0,
-    // bukrs: '',
-    // text45: '',
-    // countryId: '',
-    // type: '',
-    // tovarCategory: '',
-    // businessAreaId: '',
-    // stateId: '',
 
     const onClickSave = branchId => {
         tempData.map(item => {

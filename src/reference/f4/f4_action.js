@@ -381,6 +381,7 @@ export function f4FetchCurrencyList(trans) {
     return function(dispatch) {
         doGet('core/reference/currencyList', { trans })
             .then(({ data }) => {
+                console.log('Curren', data);
                 dispatch({
                     type: F4_FETCH_CURRENCY_LIST,
                     currencyList: data,
