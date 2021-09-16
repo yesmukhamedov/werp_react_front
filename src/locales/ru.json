@@ -332,6 +332,7 @@
     "Crm.DemoEdition": "Редактирование демонстрации",
     "Crm.Location": "Местоположение",
     "Crm.HistoryOfNumber": "История номера",
+    "Crm.HistoryOfCall": "История звонка",
     "Crm.AddingCall": "Добавление звонка",
     "Crm.CallDateTime": "Дата-время звонка",
     "Crm.Called": "Звонил",

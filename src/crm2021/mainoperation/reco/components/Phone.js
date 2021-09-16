@@ -85,6 +85,7 @@ class Phone extends Component {
                 callReasonId: false,
                 callDate: false,
                 callRecallDate: false,
+                callNote: false,
             },
             demoErrors: {
                 clientName: false,
@@ -466,10 +467,12 @@ class Phone extends Component {
                 </Form.Group>
                 <Form.Group widths="equal">
                     <Form.Field
+                        required
+                        error={this.state.errors.callNote}
                         control={TextArea}
                         onChange={(e, o) => this.handleChange('callNote', o)}
-                        label={messages['Crm.NoteForCall']}
-                        placeholder={messages['Crm.NoteForCall']}
+                        label={messages['Crm.HistoryOfCall']}
+                        placeholder={messages['Crm.HistoryOfCall']}
                     />
                     <Form.Field />
                 </Form.Group>
@@ -566,11 +569,13 @@ class Phone extends Component {
                 </Form.Group>
                 <Form.Group widths="equal">
                     <Form.Field
+                        required
+                        error={this.state.errors.callNote}
                         value={this.state.call.callNote}
                         control={TextArea}
                         onChange={(e, o) => this.handleChange('callNote', o)}
-                        label={messages['Crm.NoteForCall']}
-                        placeholder={messages['Crm.NoteForCall']}
+                        label={messages['Crm.HistoryOfCall']}
+                        placeholder={messages['Crm.HistoryOfCall']}
                     />
                     <Form.Field />
                 </Form.Group>
@@ -601,6 +606,10 @@ class Phone extends Component {
 
         if (!call.callDate || call.callDate.length === 0) {
             errors.callDate = true;
+        }
+
+        if (!call.callNote || call.callNote.length === 0) {
+            errors.callNote = true;
         }
 
         if (!call.callResult || call.callResult === CALL_RESULT_UNKNOWN) {

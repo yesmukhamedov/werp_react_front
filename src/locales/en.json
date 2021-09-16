@@ -345,6 +345,7 @@
     "Crm.DemoEdition": "Editing demo",
     "Crm.Location": "Location",
     "Crm.HistoryOfNumber": "Call history of number",
+    "Crm.HistoryOfCall": "Call content",
     "Crm.AddingCall": "Add call",
     "Crm.CallDateTime": "Date time of call",
     "Crm.Called": "Called",
