@@ -15,10 +15,10 @@ import {
 /**
  * Используется в создании рекомендации
  */
-export default function CcmracnCard(props) {
+
+export default function CcmvaCard(props) {
     // Single Card
     const { messages, index, key, item } = props;
-
     const [show, setShow] = useState(false);
 
     return (
@@ -40,13 +40,6 @@ export default function CcmracnCard(props) {
                 <Form className="recoGrid">
                     <Form.Input
                         required
-                        label={'Оператор'}
-                        placeholder={'Оператор'}
-                        onChange={(e, d) => console.log('on Change')}
-                    />
-
-                    <Form.Input
-                        required
                         label={'Страна'}
                         placeholder={'Страна'}
                     />
@@ -63,12 +56,53 @@ export default function CcmracnCard(props) {
                         placeholder={'Филиал'}
                     />
 
-                    <Form.Input
-                        required
-                        label={'Тема обращения'}
-                        placeholder={'Тема обращения'}
+                    <Form.Dropdown
+                        defaultValue={0}
+                        fluid
+                        selection
+                        label={'Приоритет задачи'}
+                        placeholder={'Приоритет задачи'}
+                    />
+                    <Form.Dropdown
+                        defaultValue={0}
+                        fluid
+                        selection
+                        label={'Отдел исполнителя'}
+                        placeholder={'Отдел исполнителя'}
                     />
 
+                    <Form.Dropdown
+                        defaultValue={0}
+                        fluid
+                        selection
+                        label={'Исполнитель'}
+                        placeholder={'Исполнитель'}
+                    />
+
+                    <Form.Input
+                        label={'Дата/Время назначения исполнителя'}
+                        placeholder={'Дата/Время назначения исполнителя'}
+                    />
+
+                    <Form.Input
+                        label={'Дата/Время начала исполнения'}
+                        placeholder={'Дата/Время начала исполнения'}
+                    />
+
+                    <Form.Input
+                        label={'Дата/Время завершение исполнения'}
+                        placeholder={'Дата/Время завершение исполнения'}
+                    />
+
+                    <Form.Input
+                        label={'Дата/Время закрытия задачи'}
+                        placeholder={'Дата/Время закрытия задачи'}
+                    />
+                    <Form.TextArea
+                        rows={1}
+                        label={'Комментарий'}
+                        placeholder={'Комментарий'}
+                    />
                     <Form.Input
                         required
                         label={'ФИО Клиента'}
@@ -79,6 +113,12 @@ export default function CcmracnCard(props) {
                         required
                         label={'Номер телефона клиента'}
                         placeholder={'Номер телефона клиента'}
+                    />
+
+                    <Form.Input
+                        required
+                        label={'Адрес клиента'}
+                        placeholder={'Адрес клиента'}
                     />
                     <Form.Button
                         fluid
@@ -118,19 +158,20 @@ export default function CcmracnCard(props) {
                                     />
 
                                     <Form.Input
-                                        label={'Категория обращения'}
-                                        placeholder={'Страна'}
+                                        label={'ФИО Дилера:'}
+                                        placeholder={'Со слов клиента'}
                                     />
                                     <Form.Dropdown
                                         defaultValue={0}
                                         fluid
                                         selection
-                                        label={'Выбор продукта'}
-                                        placeholder={'Выбор продукта'}
+                                        label={'Категория проблем'}
+                                        placeholder={'Категория проблем'}
                                     />
-                                    <Form.Input
-                                        label={'Описание запроса'}
-                                        placeholder={'Описание запроса'}
+                                    <Form.TextArea
+                                        rows={1}
+                                        label={'Описание проблем'}
+                                        placeholder={'Описание проблем'}
                                     />
                                 </Form>
                             </Segment>
@@ -156,32 +197,19 @@ export default function CcmracnCard(props) {
                         </Modal.Actions>
                     </Modal>
                     <Form.Input
-                        label={'Описание проблем'}
-                        placeholder={'Описание проблем'}
-                    />
-                    <Form.TextArea
-                        rows={1}
-                        label={'Комментарий'}
-                        placeholder={'Комментарий'}
-                    />
-                    <Form.Dropdown
-                        defaultValue={0}
-                        fluid
-                        selection
-                        label={'Отдел исполнителя'}
-                        placeholder={'Отдел исполнителя'}
-                    />
-
-                    <Form.Dropdown
-                        defaultValue={0}
-                        fluid
-                        selection
-                        label={'Приоритет задачи'}
-                        placeholder={'Приоритет задачи'}
+                        required
+                        label={'Тема обращения'}
+                        placeholder={'Тема обращения'}
                     />
                     <Form.Input
-                        label={'Описание проблем'}
-                        placeholder={'Описание проблем'}
+                        label={'Дата/Время создания задачи'}
+                        placeholder={'Дата/Время создания задачи'}
+                    />
+                    <Form.Input
+                        required
+                        label={'Оператор'}
+                        placeholder={'Оператор'}
+                        onChange={(e, d) => console.log('on Change')}
                     />
                 </Form>
             </Segment>

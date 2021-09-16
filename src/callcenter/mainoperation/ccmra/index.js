@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
@@ -7,15 +7,7 @@ import {
     Divider,
     Icon,
     Segment,
-    Dropdown,
     Input,
-    Checkbox,
-    Label,
-    Table,
-    Button,
-    Popup,
-    Modal,
-    Header,
     Grid,
 } from 'semantic-ui-react';
 import {
@@ -27,12 +19,8 @@ import {
     f4FetchPhysStatus,
     f4FetchCurrentStaff,
 } from '../../../reference/f4/f4_action';
-import TotalCountsTable from '../../../utils/TotalCountsTable';
-import DropdownClearable from '../../../utils/DropdownClearable';
-import ColumnsModal from '../../../utils/ColumnsModal';
 import '../../../service/service.css';
 import CcmraCard from './ccmraCard';
-import '../../../crm2021/mainoperation/reco/css/recoStyles.css';
 const Ccmra = props => {
     const {
         intl: { messages },
@@ -218,7 +206,7 @@ const Ccmra = props => {
                     </Form.Group>
                 </Form>
                 <Divider />
-                <Grid className="recoGrid"> {renderCcmreCard()}</Grid>
+                <Grid> {renderCcmreCard()}</Grid>
             </Segment>
         </Container>
     );

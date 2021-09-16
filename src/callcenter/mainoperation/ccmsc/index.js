@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
@@ -7,16 +7,9 @@ import {
     Divider,
     Icon,
     Segment,
-    Dropdown,
     Input,
-    Checkbox,
-    Label,
-    Table,
     Button,
-    Popup,
-    Modal,
     Header,
-    Grid,
 } from 'semantic-ui-react';
 import {
     f4fetchCategory,

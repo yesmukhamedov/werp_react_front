@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
     Form,
     Container,
-    Divider,
     Icon,
     Segment,
-    Dropdown,
     Input,
-    Checkbox,
-    Label,
-    Table,
-    Button,
-    Popup,
-    Modal,
     Header,
     Accordion,
     Grid,
@@ -28,12 +20,8 @@ import {
     f4FetchPhysStatus,
     f4FetchCurrentStaff,
 } from '../../../reference/f4/f4_action';
-import TotalCountsTable from '../../../utils/TotalCountsTable';
-import DropdownClearable from '../../../utils/DropdownClearable';
-import ColumnsModal from '../../../utils/ColumnsModal';
 import '../../../service/service.css';
 import CcmracnCard from './ccmracnCard';
-import '../../../crm2021/mainoperation/reco/css/recoStyles.css';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
 const Ccmracn = props => {
     const {
@@ -170,7 +158,7 @@ const Ccmracn = props => {
 
                         <Form.Field>
                             <label>Оператор</label>
-                            <Input placeholder="Телефон" fluid />
+                            <Input placeholder="Оператор" fluid />
                         </Form.Field>
 
                         <Form.Select
@@ -926,7 +914,7 @@ const Ccmracn = props => {
                     />
                 </Accordion.Content>
             </Accordion>
-            <Grid className="recoGrid"> {renderCcmracnCard()}</Grid>
+            <Grid> {renderCcmracnCard()}</Grid>
         </Container>
     );
 };
