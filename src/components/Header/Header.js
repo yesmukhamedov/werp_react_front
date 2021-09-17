@@ -14,160 +14,166 @@ import { signoutUser, clearUserAuth } from '../../actions/auth';
 //import { TOKEN_PASSWORD } from '../../utils/constants';
 
 class Header extends Component {
-  componentWillMount() {
-    if (this.props.authenticated) {
-      try {
-        //const payload = jwt.decode(token, TOKEN_PASSWORD);
-        //const { userId } = payload;
-        const userId = localStorage.getItem('userId');
-        this.props.fetchUnreadMessages({ userId });
-        this.props.fetchTreeMenu(userId);
-        this.props.fetchUserInfo();
-      } catch (e) {
-        console.log('error15', e);
-        this.props.clearUserAuth();
-      }
-    }
-  }
-
-  handleTransactionSelected(transactionCode) {
-    const leafNode = this.props.transactions[transactionCode];
-    const breadcrumb = calcBreadcrumb(leafNode);
-    this.props.breadcrumbChanged(breadcrumb);
-  }
-
-  renderBreadcrumb(translations) {
-    const len = translations ? translations.length : 0;
-    const { lang } = this.props;
-    const items = [];
-    if (len > 0) {
-      const breadcrumb = translations.map(t => t[lang]);
-      if (len === 1) {
-        items.push([
-          <Breadcrumb.Section active key="0">
-            {breadcrumb[0]}
-          </Breadcrumb.Section>,
-        ]);
-      } else {
-        items.push([
-          <Breadcrumb.Section link key="0">
-            {breadcrumb[0]}
-          </Breadcrumb.Section>,
-        ]);
-      }
-      for (let i = 1; i < len; i++) {
-        const last = i === len - 1;
-        items.push(<Breadcrumb.Divider icon="right chevron" key={`d${i}`} />);
-        if (last) {
-          items.push(
-            <Breadcrumb.Section active key={i}>
-              {breadcrumb[i]}
-            </Breadcrumb.Section>,
-          );
-        } else {
-          items.push(
-            <Breadcrumb.Section link key={i}>
-              {breadcrumb[i]}
-            </Breadcrumb.Section>,
-          );
+    componentWillMount() {
+        if (this.props.authenticated) {
+            try {
+                //const payload = jwt.decode(token, TOKEN_PASSWORD);
+                //const { userId } = payload;
+                const userId = localStorage.getItem('userId');
+                //this.props.fetchUnreadMessages({ userId });
+                this.props.fetchTreeMenu(userId);
+                this.props.fetchUserInfo();
+            } catch (e) {
+                console.log('error15', e);
+                this.props.clearUserAuth();
+            }
         }
-      }
-    }
-    // console.log('ITEMS:', items);
-    return <Breadcrumb size="small">{items}</Breadcrumb>;
-  }
-
-  render() {
-    const { formatMessage } = this.props.intl;
-
-    if (!this.props.authenticated) {
-      return '';
     }
 
-    return (
-      <header className="nav-bar">
-        <Menu secondary attached="top" stackable>
-          <Menu.Item onClick={this.props.toggleMenu}>
-            <Icon name="sidebar" />
-            {formatMessage(messages.menu)}
-          </Menu.Item>
+    handleTransactionSelected(transactionCode) {
+        const leafNode = this.props.transactions[transactionCode];
+        const breadcrumb = calcBreadcrumb(leafNode);
+        this.props.breadcrumbChanged(breadcrumb);
+    }
 
-          <Menu.Item>
-            {/* <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' /> */}
-            <TransactionSearchbar
-              transactions={this.props.transactions}
-              transactionSelected={this.handleTransactionSelected.bind(this)}
-            />
-          </Menu.Item>
+    renderBreadcrumb(translations) {
+        const len = translations ? translations.length : 0;
+        const { lang } = this.props;
+        const items = [];
+        if (len > 0) {
+            const breadcrumb = translations.map(t => t[lang]);
+            if (len === 1) {
+                items.push([
+                    <Breadcrumb.Section active key="0">
+                        {breadcrumb[0]}
+                    </Breadcrumb.Section>,
+                ]);
+            } else {
+                items.push([
+                    <Breadcrumb.Section link key="0">
+                        {breadcrumb[0]}
+                    </Breadcrumb.Section>,
+                ]);
+            }
+            for (let i = 1; i < len; i++) {
+                const last = i === len - 1;
+                items.push(
+                    <Breadcrumb.Divider icon="right chevron" key={`d${i}`} />,
+                );
+                if (last) {
+                    items.push(
+                        <Breadcrumb.Section active key={i}>
+                            {breadcrumb[i]}
+                        </Breadcrumb.Section>,
+                    );
+                } else {
+                    items.push(
+                        <Breadcrumb.Section link key={i}>
+                            {breadcrumb[i]}
+                        </Breadcrumb.Section>,
+                    );
+                }
+            }
+        }
+        // console.log('ITEMS:', items);
+        return <Breadcrumb size="small">{items}</Breadcrumb>;
+    }
 
-          <Menu.Item>{this.renderBreadcrumb(this.props.breadcrumb)}</Menu.Item>
+    render() {
+        const { formatMessage } = this.props.intl;
 
-          <Menu.Menu position="right">
-            <Menu.Item>
-              {formatMessage(messages.inbox)}
-              <Label color="teal" circular>
-                {this.props.unread}
-              </Label>
-            </Menu.Item>
+        if (!this.props.authenticated) {
+            return '';
+        }
 
-            <LanguageSwitcher />
+        return (
+            <header className="nav-bar">
+                <Menu secondary attached="top" stackable>
+                    <Menu.Item onClick={this.props.toggleMenu}>
+                        <Icon name="sidebar" />
+                        {formatMessage(messages.menu)}
+                    </Menu.Item>
 
-            <Dropdown item text={localStorage.getItem('username')}>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={this.props.signOut}>
-                  <Icon name="log out" />
-                  {formatMessage(messages.logout)}
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Menu.Menu>
-        </Menu>
-      </header>
-    );
-  }
+                    <Menu.Item>
+                        {/* <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' /> */}
+                        <TransactionSearchbar
+                            transactions={this.props.transactions}
+                            transactionSelected={this.handleTransactionSelected.bind(
+                                this,
+                            )}
+                        />
+                    </Menu.Item>
+
+                    <Menu.Item>
+                        {this.renderBreadcrumb(this.props.breadcrumb)}
+                    </Menu.Item>
+
+                    <Menu.Menu position="right">
+                        <Menu.Item>
+                            {formatMessage(messages.inbox)}
+                            <Label color="teal" circular>
+                                {this.props.unread}
+                            </Label>
+                        </Menu.Item>
+
+                        <LanguageSwitcher />
+
+                        <Dropdown item text={localStorage.getItem('username')}>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={this.props.signOut}>
+                                    <Icon name="log out" />
+                                    {formatMessage(messages.logout)}
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Menu>
+                </Menu>
+            </header>
+        );
+    }
 }
 
 const messages = defineMessages({
-  menu: {
-    id: 'Header.Menu.MenuLabel',
-    defaultMessage: 'Menu',
-  },
-  inbox: {
-    id: 'Header.Menu.Inbox',
-    defaultMessage: 'Inbox',
-  },
-  settings: {
-    id: 'Header.Menu.Settings',
-    defaultMessage: 'Settings',
-  },
-  logout: {
-    id: 'Header.Menu.Logout',
-    defaultMessage: 'Logout',
-  },
+    menu: {
+        id: 'Header.Menu.MenuLabel',
+        defaultMessage: 'Menu',
+    },
+    inbox: {
+        id: 'Header.Menu.Inbox',
+        defaultMessage: 'Inbox',
+    },
+    settings: {
+        id: 'Header.Menu.Settings',
+        defaultMessage: 'Settings',
+    },
+    logout: {
+        id: 'Header.Menu.Logout',
+        defaultMessage: 'Logout',
+    },
 });
 
 function mapStateToProps(state) {
-  return {
-    authenticated: state.auth.authenticated,
-    username: state.auth.username,
-    unread: state.inbox.unread,
-    breadcrumb: state.menu.breadcrumb,
-    lang: state.locales.lang,
-    // routes: state.menu.routes,
-    treeMenu: state.menu.tree,
-    transactions: state.menu.transactions,
-  };
+    return {
+        authenticated: state.auth.authenticated,
+        username: state.auth.username,
+        unread: state.inbox.unread,
+        breadcrumb: state.menu.breadcrumb,
+        lang: state.locales.lang,
+        // routes: state.menu.routes,
+        treeMenu: state.menu.tree,
+        transactions: state.menu.transactions,
+    };
 }
 
 Header.propTypes = {
-  intl: intlShape.isRequired,
+    intl: intlShape.isRequired,
 };
 
 export default connect(mapStateToProps, {
-  fetchUnreadMessages,
-  breadcrumbChanged,
-  fetchTreeMenu,
-  fetchUserInfo,
-  signOut: signoutUser,
-  clearUserAuth,
+    fetchUnreadMessages,
+    breadcrumbChanged,
+    fetchTreeMenu,
+    fetchUserInfo,
+    signOut: signoutUser,
+    clearUserAuth,
 })(injectIntl(Header));
