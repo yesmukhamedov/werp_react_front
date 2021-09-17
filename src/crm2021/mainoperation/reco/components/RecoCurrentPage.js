@@ -40,7 +40,10 @@ class RecoCurrentPage extends Component {
             // doneItems: [],
             // movedItems: [],
             demoPriceOptions: [],
-            loaderOn: true,
+            loadingDoneTab: true,
+            loadingNewTab: true,
+            loadingUsedTab: true,
+            loadingMovedTab: true,
         };
 
         this.renderTabUsed = this.renderTabUsed.bind(this);
@@ -75,10 +78,28 @@ class RecoCurrentPage extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (this.props.newItems !== prevProps.newItems) {
+            this.setState({
+                ...this.state,
+                loadingNewTab: false,
+            });
+        }
+        if (this.props.doneItems !== prevProps.doneItems) {
+            this.setState({
+                ...this.state,
+                loadingDoneTab: false,
+            });
+        }
         if (this.props.usedItems !== prevProps.usedItems) {
             this.setState({
                 ...this.state,
-                loaderOn: false,
+                loadingUsedTab: false,
+            });
+        }
+        if (this.props.movedItems !== prevProps.movedItems) {
+            this.setState({
+                ...this.state,
+                loadingMovedTab: false,
             });
         }
     }
@@ -113,7 +134,7 @@ class RecoCurrentPage extends Component {
         );
     }
 
-    renderTable(items) {
+    renderTable(items, loading) {
         const { messages, locale } = this.props.intl;
         let statusOptions = [];
         if (this.props.statuses) {
@@ -131,9 +152,19 @@ class RecoCurrentPage extends Component {
                 </option>
             ),
         );
+
+        items = items.map(item => ({
+            ...item,
+            callDate: item.callDate
+                ? moment(item.callDate, 'DD.MM.YYYY hh:mm').format(
+                      'YYYY-MM-DD hh:mm',
+                  )
+                : null,
+        }));
+
         return (
             <div>
-                <Loader active={this.state.loaderOn} />
+                <Loader active={loading} />
                 <ReactTable
                     defaultFilterMethod={(filter, row) => {
                         const colName =
@@ -152,21 +183,7 @@ class RecoCurrentPage extends Component {
                                 .includes(filter.value.toLowerCase());
                         }
                     }}
-                    data={
-                        items
-                            ? items.map(item => {
-                                  return {
-                                      ...item,
-                                      callDate: item.callDate
-                                          ? item.callDate
-                                                .split('.')
-                                                .reverse()
-                                                .join('-')
-                                          : '',
-                                  };
-                              })
-                            : []
-                    }
+                    data={items}
                     columns={[
                         {
                             Header: 'ФИО',
@@ -184,25 +201,7 @@ class RecoCurrentPage extends Component {
                         {
                             Header: messages['Crm.CallDateTime'],
                             id: 'callDateDiv',
-                            accessor: row => this.renderDocDate(row),
-                            filterMethod: (filter, row) => {
-                                if (
-                                    row[filter.id] &&
-                                    typeof row[filter.id] === 'string'
-                                ) {
-                                    return row[filter.id].includes(
-                                        filter.value,
-                                    );
-                                }
-
-                                return false;
-                            },
-                            Cell: row => {
-                                return row.value
-                                    .split('-')
-                                    .reverse()
-                                    .join('.');
-                            },
+                            accessor: 'callDate',
                         },
                         {
                             Header: messages['Form.PhoneNumber'],
@@ -331,19 +330,28 @@ class RecoCurrentPage extends Component {
     }
 
     renderTabDemoDone() {
-        return this.renderTable(this.props.doneItems);
+        return this.renderTable(
+            this.props.doneItems,
+            this.state.loadingDoneTab,
+        );
     }
 
     renderTabNew() {
-        return this.renderTable(this.props.newItems);
+        return this.renderTable(this.props.newItems, this.state.loadingNewTab);
     }
 
     renderTabUsed() {
-        return this.renderTable(this.props.usedItems);
+        return this.renderTable(
+            this.props.usedItems,
+            this.state.loadingUsedTab,
+        );
     }
 
     renderTableMoved() {
-        return this.renderTable(this.props.movedItems);
+        return this.renderTable(
+            this.props.movedItems,
+            this.state.loadingMovedTab,
+        );
     }
 
     render() {

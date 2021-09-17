@@ -74,6 +74,9 @@ class WspacePhoneModal extends Component {
             callForm[name] = momentToStringYYYYMMDDHHMM(data);
         } else if (name === 'callReasonId') {
             callForm[name] = data.value;
+        } else if (name === 'callResult') {
+            callForm[name] = data.value;
+            callForm['callRecallDate'] = null;
         } else {
             callForm[name] = data.value;
         }
@@ -353,10 +356,12 @@ class WspacePhoneModal extends Component {
 
                 <Form.Group widths="equal">
                     <Form.Field
+                        required
                         control={TextArea}
+                        error={errors['callNote'] ? true : false}
                         onChange={(e, o) => this.handleChange('callNote', o)}
-                        label={messages['Crm.NoteForCall']}
-                        placeholder={messages['Crm.NoteForCall']}
+                        label={messages['call_history']}
+                        placeholder={messages['call_history']}
                     />
                     <Form.Field />
                 </Form.Group>

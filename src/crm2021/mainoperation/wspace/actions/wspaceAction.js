@@ -123,7 +123,7 @@ export function fetchDemoRecos(demoId) {
 export function fetchVisitRecos(visitId) {
     return function(dispatch) {
         dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
-        doGet(`core/crm2/wspace/visit-recommends/${visitId}`)
+        doGet(`crm2/wspace/visit-recommends/${visitId}`)
             .then(({ data }) => {
                 dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
                 dispatch({

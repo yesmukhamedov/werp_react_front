@@ -19,7 +19,8 @@ const HighestSalesAchievers = props => {
         bukrs: null,
         branchId: null,
         countryId: null,
-        periodOfSales: null,
+        periodOfSalesFrom: null,
+        periodOfSalesTo: null,
     });
     const [loading, setLoading] = useState(false);
 
@@ -101,13 +102,38 @@ const HighestSalesAchievers = props => {
                         width={4}
                     />
                     <Form.Field>
-                        <label>Период продаж</label>
+                        <label>Период продаж с</label>
                         <DatePicker
                             locale={language}
-                            selected={filterParams.periodOfSales}
+                            selected={filterParams.periodOfSalesFrom}
                             readOnly
-                            name="periodOfSales"
-                            onChange={handleChange.bind()}
+                            onChange={date =>
+                                setFilterParams(prev => ({
+                                    ...prev,
+                                    periodOfSalesFrom: date,
+                                }))
+                            }
+                            selectsStart
+                            startDate={filterParams.periodOfSalesFrom}
+                            endDate={filterParams.periodOfSalesTo}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Период продаж до</label>
+                        <DatePicker
+                            locale={language}
+                            selected={filterParams.periodOfSalesTo}
+                            readOnly
+                            onChange={date =>
+                                setFilterParams(prev => ({
+                                    ...prev,
+                                    periodOfSalesTo: date,
+                                }))
+                            }
+                            selectsEnd
+                            startDate={filterParams.periodOfSalesFrom}
+                            endDate={filterParams.periodOfSalesTo}
+                            minDate={filterParams.periodOfSalesFrom}
                         />
                     </Form.Field>
                     <Form.Button

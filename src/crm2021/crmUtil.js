@@ -230,7 +230,6 @@ export function demoResultOptions(results) {
     if (!results) {
         return [];
     }
-
     const out = Object.keys(results).map(k => ({
         // key: k,
         text: results[k],
