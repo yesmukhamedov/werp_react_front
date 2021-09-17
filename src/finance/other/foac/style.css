@@ -1,8 +1,23 @@
 .text-wrap {
-  white-space: normal;
+    white-space: normal;
 }
 .space-between {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.spaceBetween {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 7px;
+}
+
+.flexDirectionRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.marginRight {
+    margin-right: 15px !important;
 }
