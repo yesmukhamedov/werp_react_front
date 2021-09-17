@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Form, Segment } from 'semantic-ui-react';
+import { Form, Input, Segment } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import DropdownClearable from '../../../../utils/DropdownClearable';
@@ -7,6 +7,7 @@ import {
     momentToStringYYYYMMDD,
     stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
+import OutputErrors from '../../../../general/error/outputErrors';
 
 const FilterFoac = props => {
     const {
@@ -19,9 +20,8 @@ const FilterFoac = props => {
         companyOptions = [],
         branchOptions = {},
         finAgentOptions = [],
-        bankOptions = [],
         statusOptions = [],
-        paymentMethodOptions = [],
+        error,
     } = props;
     return (
         <Segment>
@@ -38,10 +38,7 @@ const FilterFoac = props => {
                             onChange={(e, { value }) =>
                                 onChangeFilter('countryId', value)
                             }
-
-                            // handleClear={() =>
-                            //     setParam({ ...param, countryId: '' })
-                            // }
+                            handleClear={() => onChangeFilter('clearCountryId')}
                         />
                     </Form.Field>
                     <Form.Field required>
@@ -55,16 +52,15 @@ const FilterFoac = props => {
                                 onChangeFilter('bukrs', value)
                             }
                             className="alignBottom"
-                            // handleClear={() => setParam({ ...param, bukrs: '' })}
+                            handleClear={() => onChangeFilter('clearBukrs')}
                         />
                     </Form.Field>
-                    <Form.Field required>
+                    <Form.Field>
                         <label>Филиал</label>
                         <DropdownClearable
                             fluid
                             placeholder="Филиал"
                             value={filterData.branchId}
-                            //options={branchOptions}
                             options={
                                 filterData.bukrs
                                     ? branchOptions[filterData.bukrs]
@@ -74,7 +70,7 @@ const FilterFoac = props => {
                                 onChangeFilter('branchId', value)
                             }
                             className="alignBottom"
-                            // handleClear={() => setParam({ ...param, bukrs: '' })}
+                            handleClear={() => onChangeFilter('clearBranchId')}
                         />
                     </Form.Field>
                     <Form.Field>
@@ -88,26 +84,11 @@ const FilterFoac = props => {
                                 onChangeFilter('collectorId', value)
                             }
                             className="alignBottom"
-                            // handleClear={() => setParam({ ...param, bukrs: '' })}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Банк</label>
-                        <DropdownClearable
-                            fluid
-                            placeholder="Банк"
-                            value={filterData.bankId}
-                            options={bankOptions}
-                            onChange={(e, { value }) =>
-                                onChangeFilter('bankId', value)
+                            handleClear={() =>
+                                onChangeFilter('clearCollectorId')
                             }
-                            className="alignBottom"
-                            // handleClear={() => setParam({ ...param, bukrs: '' })}
                         />
                     </Form.Field>
-                </Form.Group>
-
-                <Form.Group widths="equal">
                     <Form.Field>
                         <label>Статус</label>
                         <DropdownClearable
@@ -119,23 +100,12 @@ const FilterFoac = props => {
                                 onChangeFilter('statusId', value)
                             }
                             className="alignBottom"
-                            // handleClear={() => setParam({ ...param, bukrs: '' })}
-                        />
-                    </Form.Field>{' '}
-                    <Form.Field>
-                        <label>Способ оплаты</label>
-                        <DropdownClearable
-                            fluid
-                            placeholder="Способ оплаты"
-                            value={filterData.paymentMethodId}
-                            options={paymentMethodOptions}
-                            onChange={(e, o) =>
-                                onChangeFilter('paymentMethodId', o)
-                            }
-                            className="alignBottom"
-                            // handleClear={() => setParam({ ...param, bukrs: '' })}
+                            handleClear={() => onChangeFilter('clearStatusId')}
                         />
                     </Form.Field>
+                </Form.Group>
+
+                <Form.Group widths="equal">
                     <Form.Field className="marginRight">
                         <label>{messages['Form.DateFrom']}</label>
                         <DatePicker
@@ -182,6 +152,15 @@ const FilterFoac = props => {
                             dateFormat="DD.MM.YYYY"
                         />
                     </Form.Field>
+                    <Form.Field>
+                        <label>Поиск по CN</label>
+                        <Input
+                            type="number"
+                            onChange={(e, o) =>
+                                onChangeFilter('CN', e.target.value)
+                            }
+                        />
+                    </Form.Field>
                     <Form.Button
                         onClick={handleSearchFilter}
                         color="blue"
@@ -191,6 +170,7 @@ const FilterFoac = props => {
                     </Form.Button>
                 </Form.Group>
             </Form>
+            <OutputErrors errors={error} />
         </Segment>
     );
 };

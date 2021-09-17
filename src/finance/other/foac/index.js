@@ -18,6 +18,7 @@ import {
     f4FetchCountryList,
     f4FetchBankPartnerOptions,
 } from '../../../reference/f4/f4_action';
+import { errorTableText } from '../../../utils/helpers';
 
 const Foac = props => {
     const {
@@ -35,6 +36,8 @@ const Foac = props => {
         props.f4FetchCountryList();
         props.f4FetchBankPartnerOptions();
     }, []);
+
+    const [error, setError] = useState([]);
 
     const countryOptions = countryList.map(item => {
         return {
@@ -76,13 +79,13 @@ const Foac = props => {
         bukrs: '',
         branchId: '',
         collectorId: '',
-        bankId: '',
         statusId: '',
-        paymentMethodId: '',
         dateAt: '',
         dateTo: '',
+        contractNumber: '',
     };
     const [filterData, setFilterData] = useState(initialFilterData);
+    console.log('filterData', filterData);
     // Получить список фин. агентов
     useEffect(() => {
         if (filterData.bukrs && filterData.branchId) {
@@ -100,10 +103,21 @@ const Foac = props => {
             case 'countryId':
                 setFilterData({ ...filterData, countryId: value });
                 break;
+            case 'clearCountryId':
+                setFilterData({ ...filterData, countryId: '' });
+                break;
             case 'bukrs':
                 setFilterData({
                     ...filterData,
                     bukrs: value,
+                    branchId: '',
+                    collectorId: '',
+                });
+                break;
+            case 'clearBukrs':
+                setFilterData({
+                    ...filterData,
+                    bukrs: '',
                     branchId: '',
                     collectorId: '',
                 });
@@ -115,23 +129,33 @@ const Foac = props => {
                     collectorId: '',
                 });
                 break;
+            case 'clearBranchId':
+                setFilterData({
+                    ...filterData,
+                    branchId: '',
+                    collectorId: '',
+                });
+                break;
             case 'collectorId':
                 setFilterData({ ...filterData, collectorId: value });
                 break;
-            case 'bankId':
-                setFilterData({ ...filterData, bankId: value });
-                break;
-            case 'paymentMethodId':
-                setFilterData({ ...filterData, paymentMethodId: value });
+            case 'clearCollectorId':
+                setFilterData({ ...filterData, collectorId: '' });
                 break;
             case 'statusId':
                 setFilterData({ ...filterData, statusId: value });
+                break;
+            case 'clearStatusId':
+                setFilterData({ ...filterData, statusId: '' });
                 break;
             case 'dateAt':
                 setFilterData({ ...filterData, dateAt: value });
                 break;
             case 'dateTo':
                 setFilterData({ ...filterData, dateTo: value });
+                break;
+            case 'CN':
+                setFilterData({ ...filterData, contractNumber: value });
                 break;
         }
     };
@@ -161,7 +185,14 @@ const Foac = props => {
     };
 
     const handleSearchFilter = () => {
-        if (filterData.bukrs) props.fetchCollectMonies({ ...filterData });
+        if (filterData.bukrs) {
+            props.fetchCollectMonies({ ...filterData });
+            setError([]);
+        } else {
+            const errors = [];
+            errors.push(errorTableText(5));
+            setError(() => errors);
+        }
     };
 
     return (
@@ -197,6 +228,7 @@ const Foac = props => {
                 finAgentOptions={finAgentOptions}
                 bankOptions={bankPartnerOptions}
                 statusOptions={statusOptions}
+                error={error}
             />
             <Table
                 messages={messages}
