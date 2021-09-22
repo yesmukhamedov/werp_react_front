@@ -12,9 +12,10 @@ import {
     GET_DMSPLST_MATNRS,
     UPD_DMSPLST,
     SAVE_DMSPLST,
-    FETCH_CASADA_PRODUCTS,
+    FETCH_KASPI_PRODUCTS,
+    CLEAR_KASPI_PRODUCTS,
     FETCH_STORE_LIST,
-    FETCH_BRAND_LIST,
+    CLEAR_STORE_LIST,
 } from './marketingAction';
 
 const INITIAL_STATE = {
@@ -22,7 +23,7 @@ const INITIAL_STATE = {
     dynamicObject: {},
     dynDmsplst: [],
     /********************************mrKaspi*/
-    casadaProducts: [],
+    kaspiProducts: [],
     storeList: [],
     brandList: {},
 };
@@ -136,21 +137,28 @@ export default function(state = INITIAL_STATE, action) {
 
         /********************************************************  MR KASPI    */
 
-        case FETCH_CASADA_PRODUCTS:
+        case FETCH_KASPI_PRODUCTS:
             return {
                 ...state,
-                casadaProducts: [...state.casadaProducts, ...action.data],
+                kaspiProducts: [...state.kaspiProducts, ...action.data],
             };
+
+        case CLEAR_KASPI_PRODUCTS:
+            return {
+                ...state,
+                kaspiProducts: [],
+            };
+
         case FETCH_STORE_LIST:
             return {
                 ...state,
                 storeList: [...state.storeList, ...action.data],
             };
 
-        case FETCH_BRAND_LIST:
+        case CLEAR_STORE_LIST:
             return {
                 ...state,
-                brandList: { ...state.brandList, ...action.data },
+                storeList: [],
             };
 
         default:

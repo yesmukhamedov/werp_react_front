@@ -13,32 +13,21 @@ import {
 const ModalAvailabilities = props => {
     const {
         open,
-        closeModal,
+        close,
         casadaProducts,
         tempData,
         rowAvails,
         storeList,
+        availabilitiesOptions,
     } = props;
 
-    const availabilitiesOptions = [
-        {
-            // key: true,
-            text: 'yes',
-            value: true,
-        },
-        {
-            // key: false,
-            text: 'no',
-            value: false,
-        },
-    ];
     // console.log('TEMP_DATA', tempData);
     // console.log('availabilitiesOptions', availabilitiesOptions);
     // console.log("rowAvails", rowAvails)
     let available = false;
 
     return (
-        <Modal closeIcon open={open} onClose={closeModal}>
+        <Modal closeIcon open={open} onClose={close}>
             <Header content="Пункты выдачи" />
             <Modal.Content>
                 <Table>
@@ -65,7 +54,7 @@ const ModalAvailabilities = props => {
                                         <Dropdown
                                             options={availabilitiesOptions}
                                             selectOnBlur={false}
-                                            defaultValue={available}
+                                            value={available}
                                             selection
                                         />
                                     </Table.Cell>
@@ -76,10 +65,10 @@ const ModalAvailabilities = props => {
                 </Table>
             </Modal.Content>
             <Modal.Actions>
-                <Button color="red" onClick={closeModal}>
+                <Button color="red" onClick={close}>
                     <Icon name="remove" /> Отмена
                 </Button>
-                <Button color="green" onClick={closeModal}>
+                <Button color="green" onClick={close}>
                     <Icon name="checkmark" /> Сохранить
                 </Button>
             </Modal.Actions>

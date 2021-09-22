@@ -182,7 +182,6 @@ function ModalAddBranch({
                         <Dropdown
                             options={countryOptionsForDropdown}
                             selection
-                            // value={countryOptionsForDropdown.value}
                             onChange={(e, { value }) =>
                                 onChangeAdd('countryId', value)
                             }
@@ -203,7 +202,6 @@ function ModalAddBranch({
                         <Dropdown
                             options={categoryOptionsForDropdown}
                             selection
-                            // value={categoryOptionsForDropdown.value}
                             onChange={(e, { value }) =>
                                 onChangeAdd('tovarCategory', value)
                             }

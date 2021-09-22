@@ -4,7 +4,7 @@ import {
     notify,
 } from '../general/notification/notification_action';
 
-import { doGet, doPost, doPut } from '../utils/apiActions';
+import { doGet, doPost, doPut, doDelete } from '../utils/apiActions';
 
 /******************************************************************** LPLIST */
 export const GET_LPLST = 'GET_LPLST';
@@ -25,9 +25,11 @@ export const GET_DMSPLST_MATNRS = 'GET_DMSPLST_MATNRS';
 export const UPD_DMSPLST = 'UPD_DMSPLST';
 export const SAVE_DMSPLST = 'SAVE_DMSPLST';
 /******************************************************************** mrKaspi */
-export const FETCH_CASADA_PRODUCTS = 'FETCH_CASADA_PRODUCTS';
+export const FETCH_KASPI_PRODUCTS = 'FETCH_KASPI_PRODUCTS';
+export const CLEAR_KASPI_PRODUCTS = 'CLEAR_KASPI_PRODUCTS';
+
 export const FETCH_STORE_LIST = 'FETCH_STORE_LIST';
-export const FETCH_BRAND_LIST = 'FETCH_BRAND_LIST';
+export const CLEAR_STORE_LIST = 'CLEAR_STORE_LIST';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -372,14 +374,15 @@ export function notSuccessed() {
 
 /******************************************************************** mrKaspi */
 
-export const fetchCasadaProducts = () => {
+// Получит список товаров в Каспи
+export const fetchKaspiProducts = () => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
         doGet(`core/marketing/kaspi/list?brand=CASADA`)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
-                    type: FETCH_CASADA_PRODUCTS,
+                    type: FETCH_KASPI_PRODUCTS,
                     data,
                 });
             })
@@ -390,6 +393,16 @@ export const fetchCasadaProducts = () => {
     };
 };
 
+// Очистить список товаров из рекдакс
+export const clearKaspiProducts = () => {
+    return function(dispatch) {
+        dispatch({
+            type: CLEAR_KASPI_PRODUCTS,
+        });
+    };
+};
+
+// Получит список пунктов выдачи
 export const fetchStoreList = () => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
@@ -408,21 +421,43 @@ export const fetchStoreList = () => {
     };
 };
 
-export const fetchBrandList = () => {
+// Добавить пункт выдачи
+export const creatStore = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doGet(`core/marketing/kaspi/brands`)
+        doPost(`core/marketing/kaspi/store`, body)
             .then(({ data }) => {
-                console.log('DATA', data);
                 dispatch(modifyLoader(false));
-                dispatch({
-                    type: FETCH_BRAND_LIST,
-                    data,
-                });
+                getList();
             })
             .catch(error => {
                 dispatch(modifyLoader(false));
                 handleError(error, dispatch);
             });
+    };
+};
+
+// Удалить пункт выдачи
+export const deleteStore = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doDelete(`core/marketing/kaspi/store`, body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Очистить пунктов выдачи
+export const clearStoreList = () => {
+    return function(dispatch) {
+        dispatch({
+            type: CLEAR_STORE_LIST,
+        });
     };
 };
