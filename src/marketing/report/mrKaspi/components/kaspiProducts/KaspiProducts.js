@@ -1,34 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Segment, Checkbox, Dropdown, Button, Icon } from 'semantic-ui-react';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import {
-    fetchKaspiProducts,
-    fetchStoreList,
-    fetchBrandList,
-} from '../../../../marketingAction';
+    Segment,
+    Checkbox,
+    Popup,
+    Dropdown,
+    Button,
+    Icon,
+} from 'semantic-ui-react';
+import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import ModalAvailabilities from './ModalAvailabilities';
-import ModalAdd from './ModalAdd';
+import ModalAddProduct from './ModalAddProduct';
 import '../../style.css';
 
 const KaspiProducts = props => {
     const {
         fetchKaspiProducts,
         clearKaspiProducts,
+        createKaspiProduct,
         kaspiProducts,
         fetchStoreList,
         storeList,
+        clearStoreList,
+        fetchKaspiBrands,
+        brandList,
+        fetchKaspiCompanies,
+        companyList,
+        deleteProduct,
     } = props;
 
     const [tempData, setTempData] = useState([]);
     const [modalAvailabilities, setModalAvailabilities] = useState(false);
-    const [modalAdd, setModalAdd] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     const [avails, setAvails] = useState([]);
-
     useEffect(() => {
-        clearKaspiProducts();
         fetchKaspiProducts();
-        // fetchStoreList();
+        clearKaspiProducts();
+        fetchStoreList();
+        clearStoreList();
+        fetchKaspiBrands();
+        fetchKaspiCompanies();
     }, []);
 
     useEffect(() => {
@@ -62,14 +72,21 @@ const KaspiProducts = props => {
         }
     }, [kaspiProducts]);
 
-    console.log('TEMP_DATA', tempData);
+    // console.log('TEMP_DATA', tempData);
 
-    /*  const brandListOptions = Object.entries(brandList).map(item => {
+    const brandListOptions = Object.entries(brandList).map(item => {
         return {
-            text: item[0],
-            value: item[1],
+            text: item[1],
+            value: item[0],
         };
-    }); */
+    });
+
+    const companyListOptions = Object.entries(companyList).map(item => {
+        return {
+            text: item[1],
+            value: item[0],
+        };
+    });
 
     const getRowAvail = rowData => {
         tempData.map((item, idx) => {
@@ -79,9 +96,16 @@ const KaspiProducts = props => {
         });
     };
 
+    const onClickDelete = id => {
+        deleteProduct(id, () => {
+            fetchKaspiProducts();
+            clearKaspiProducts();
+        });
+    };
+
     const columns = [
         {
-            Header: 'ID',
+            Header: 'SKU',
             accessor: 'sku',
             filterable: true,
             Cell: original => <div>{original.value}</div>,
@@ -123,6 +147,41 @@ const KaspiProducts = props => {
                 </Button>
             ),
         },
+        {
+            filterable: false,
+            Cell: ({ original }) => (
+                <div style={{ textAlign: 'center' }}>
+                    <Popup
+                        content="Редактировать"
+                        trigger={
+                            original.edit ? (
+                                <Button icon="save" circular color="blue" />
+                            ) : (
+                                <Button icon="pencil" circular color="yellow" />
+                            )
+                        }
+                    />
+                    <Popup
+                        content="Удалить"
+                        trigger={
+                            <Button
+                                icon="remove"
+                                circular
+                                color="red"
+                                onClick={() => {
+                                    const confirmBox = window.confirm(
+                                        `Вы точно хотите удалить товар "${original.sku}" ?`,
+                                    );
+                                    if (confirmBox == true) {
+                                        onClickDelete(original.sku);
+                                    }
+                                }}
+                            />
+                        }
+                    />
+                </div>
+            ),
+        },
     ];
 
     const availabilitiesOptions = [
@@ -145,11 +204,16 @@ const KaspiProducts = props => {
 
     return (
         <div>
-            <ModalAdd
-                open={modalAdd}
-                close={() => setModalAdd(false)}
+            <ModalAddProduct
+                open={openModal}
+                close={() => setOpenModal(false)}
                 storeList={storeList}
+                createKaspiProduct={createKaspiProduct}
+                clearKaspiProducts={clearKaspiProducts}
+                fetchKaspiProducts={fetchKaspiProducts}
                 availabilitiesOptions={availabilitiesOptions}
+                brandListOptions={brandListOptions}
+                companyListOptions={companyListOptions}
             />
             <ModalAvailabilities
                 open={modalAvailabilities}
@@ -171,14 +235,11 @@ const KaspiProducts = props => {
                 >
                     <h3>Список товаров kaspi.kz</h3>
                     <div>
-                        {/* <Dropdown
-                            selection
-                            options={brandListOptions}
-                            selectOnBlur={false}
-                            style={{ marginRight: 4 }}
-                        /> */}
                         <Button color="teal">Export to XML</Button>
-                        <Button color="green" onClick={() => setModalAdd(true)}>
+                        <Button
+                            color="green"
+                            onClick={() => setOpenModal(true)}
+                        >
                             <Icon name="add" /> Добавить
                         </Button>
                     </div>

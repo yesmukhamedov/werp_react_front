@@ -9,7 +9,7 @@ import {
     Popup,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
-import ModalAdd from './ModalAdd';
+import ModalAddStore from './ModalAddStore';
 import '../../style.css';
 
 const KaspiStore = props => {
@@ -23,7 +23,7 @@ const KaspiStore = props => {
     } = props;
 
     const [tempStoreList, setTempStoreList] = useState([]);
-    const [modalAdd, setModalAdd] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
@@ -209,7 +209,14 @@ const KaspiStore = props => {
                                 icon="remove"
                                 circular
                                 color="red"
-                                onClick={() => onClickDelete(original.id)}
+                                onClick={() => {
+                                    const confirmBox = window.confirm(
+                                        'Вы точно хотите удалить?',
+                                    );
+                                    if (confirmBox == true) {
+                                        onClickDelete(original.id);
+                                    }
+                                }}
                             />
                         }
                     />
@@ -220,9 +227,9 @@ const KaspiStore = props => {
 
     return (
         <div>
-            <ModalAdd
-                open={modalAdd}
-                close={() => setModalAdd(false)}
+            <ModalAddStore
+                open={openModal}
+                close={() => setOpenModal(false)}
                 fetchStoreList={fetchStoreList}
                 creatStore={creatStore}
                 clearStoreList={clearStoreList}
@@ -230,7 +237,7 @@ const KaspiStore = props => {
 
             <Segment>
                 <div style={{ textAlign: 'right', marginBottom: 10 }}>
-                    <Button color="green" onClick={() => setModalAdd(true)}>
+                    <Button color="green" onClick={() => setOpenModal(true)}>
                         <Icon name="add" /> Добавить
                     </Button>
                 </div>

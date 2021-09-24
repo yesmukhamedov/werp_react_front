@@ -11,14 +11,25 @@ import {
     Input,
 } from 'semantic-ui-react';
 
-export default function ModalAdd(props) {
-    const { open, close, storeList, availabilitiesOptions } = props;
+export default function ModalAddProduct(props) {
+    const {
+        open,
+        close,
+        storeList,
+        availabilitiesOptions,
+        createKaspiProduct,
+        clearKaspiProducts,
+        fetchKaspiProducts,
+        brandListOptions,
+        companyListOptions,
+    } = props;
+
     const initialProducts = {
         sku: '',
         brand: '',
         company: '',
         model: '',
-        price: '',
+        price: 0,
         availabilities: [],
     };
 
@@ -39,8 +50,8 @@ export default function ModalAdd(props) {
     const [storeListTemp, setStoreListTemp] = useState([]);
     const [tempKaspiProduct, setTempKaspiProduct] = useState(initialProducts);
 
-    console.log('storeListTemp', storeListTemp);
-    console.log('tempKaspiProduct', tempKaspiProduct.availabilities);
+    console.log('tempKaspiProduct', tempKaspiProduct);
+    // console.log('storeListTemp', storeListTemp);
 
     const onChangeAdd = (fieldName, value, id) => {
         switch (fieldName) {
@@ -71,13 +82,12 @@ export default function ModalAdd(props) {
             case 'price':
                 setTempKaspiProduct({
                     ...tempKaspiProduct,
-                    price: value,
+                    price: parseInt(value),
                 });
                 break;
-
             case 'available':
-                console.log('value', value);
-                console.log('id', id);
+                // console.log('value', value);
+                // console.log('id', id);
 
                 setTempKaspiProduct({
                     ...tempKaspiProduct,
@@ -93,13 +103,17 @@ export default function ModalAdd(props) {
 
                 break;
             case 'checked':
-                console.log('checked 99', value);
+                // console.log('VAL', value);
+                // console.log('ID', id);
                 if (id) {
                     setTempKaspiProduct({
                         ...tempKaspiProduct,
                         availabilities: [
                             ...tempKaspiProduct.availabilities,
-                            { storeId: value.id },
+                            {
+                                storeId: value.id,
+                                sku: tempKaspiProduct.sku,
+                            },
                         ],
                     });
                     setStoreListTemp(
@@ -144,6 +158,14 @@ export default function ModalAdd(props) {
         };
     });
 
+    const onClickSave = () => {
+        createKaspiProduct(tempKaspiProduct, () => {
+            clearKaspiProducts();
+            fetchKaspiProducts();
+            close();
+        });
+    };
+
     return (
         <Modal closeIcon open={open} onClose={close}>
             <Header content="Добавление" />
@@ -161,7 +183,10 @@ export default function ModalAdd(props) {
 
                     <Form.Field>
                         <label>Бренд</label>
-                        <Input
+                        <Dropdown
+                            options={brandListOptions}
+                            selection
+                            selectOnBlur={false}
                             type="text"
                             onChange={(e, { value }) =>
                                 onChangeAdd('brand', value)
@@ -171,7 +196,10 @@ export default function ModalAdd(props) {
 
                     <Form.Field>
                         <label>Компания</label>
-                        <Input
+                        <Dropdown
+                            options={companyListOptions}
+                            selection
+                            selectOnBlur={false}
                             type="text"
                             onChange={(e, { value }) =>
                                 onChangeAdd('company', value)
@@ -249,7 +277,7 @@ export default function ModalAdd(props) {
                 <Button color="red" onClick={close}>
                     <Icon name="remove" /> Отмена
                 </Button>
-                <Button color="green">
+                <Button color="green" onClick={() => onClickSave()}>
                     <Icon name="checkmark" />
                     Сохранить
                 </Button>

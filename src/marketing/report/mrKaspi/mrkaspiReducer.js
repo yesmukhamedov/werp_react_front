@@ -3,11 +3,15 @@ import {
     CLEAR_KASPI_PRODUCTS,
     FETCH_STORE_LIST,
     CLEAR_STORE_LIST,
+    FETCH_KASPI_BRANDS,
+    FETCH_KASPI_COMPANIES,
 } from './mrkaspiAction';
 
 const INITIAL_STATE = {
     kaspiProducts: [],
     storeList: [],
+    brandList: {},
+    companyList: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -36,6 +40,16 @@ export default function(state = INITIAL_STATE, action) {
                 storeList: [],
             };
 
+        case FETCH_KASPI_BRANDS:
+            return {
+                ...state,
+                brandList: { ...state.brandList, ...action.data },
+            };
+        case FETCH_KASPI_COMPANIES:
+            return {
+                ...state,
+                companyList: { ...state.companyList, ...action.data },
+            };
         default:
             return state;
     }

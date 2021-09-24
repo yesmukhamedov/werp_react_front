@@ -6,24 +6,80 @@ import {
 
 import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
 
-/******************************************************************** mrKaspi */
 export const FETCH_KASPI_PRODUCTS = 'FETCH_KASPI_PRODUCTS';
 export const CLEAR_KASPI_PRODUCTS = 'CLEAR_KASPI_PRODUCTS';
-
 export const FETCH_STORE_LIST = 'FETCH_STORE_LIST';
 export const CLEAR_STORE_LIST = 'CLEAR_STORE_LIST';
+export const FETCH_KASPI_BRANDS = 'FETCH_KASPI_BRANDS';
+export const FETCH_KASPI_COMPANIES = 'FETCH_KASPI_COMPANIES';
+
+/****************** Товары в каспи *********************/
 
 // Получит список товаров в Каспи
 export const fetchKaspiProducts = () => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doGet(`core/marketing/kaspi/list?brand=CASADA`)
+        doGet(`core/marketing/kaspi/listall`)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_KASPI_PRODUCTS,
                     data,
                 });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Получит список брендов в каспи
+export const fetchKaspiBrands = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/marketing/kaspi/brands`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_KASPI_BRANDS,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Получит список компании в каспи
+export const fetchKaspiCompanies = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/marketing/kaspi/companies`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_KASPI_COMPANIES,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Добавить товар в Каспи
+export const createKaspiProduct = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPut(`core/marketing/kaspi`, body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
             })
             .catch(error => {
                 dispatch(modifyLoader(false));
@@ -40,6 +96,24 @@ export const clearKaspiProducts = () => {
         });
     };
 };
+
+// Удалить товар в Каспи
+export const deleteProduct = (id, cbFun) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doDelete(`core/marketing/kaspi/?sku=${id}`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                cbFun();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+/*************** Пункт выдачи *************/
 
 // Получит список пунктов выдачи
 export const fetchStoreList = () => {
@@ -63,6 +137,7 @@ export const fetchStoreList = () => {
 // Добавить пункт выдачи
 export const creatStore = (body, getList) => {
     return function(dispatch) {
+        console.log('creatStore ACTION2');
         dispatch(modifyLoader(true));
         doPost(`core/marketing/kaspi/store`, body)
             .then(({ data }) => {

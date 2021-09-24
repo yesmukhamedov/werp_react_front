@@ -4,12 +4,16 @@ import { Tab } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import {
     fetchKaspiProducts,
+    createKaspiProduct,
     clearKaspiProducts,
     creatStore,
     updateStore,
     deleteStore,
     fetchStoreList,
     clearStoreList,
+    fetchKaspiBrands,
+    fetchKaspiCompanies,
+    deleteProduct,
 } from './mrkaspiAction';
 import KaspiProducts from './components/kaspiProducts/KaspiProducts';
 import KaspiStore from './components/kaspiStore/KaspiStore';
@@ -23,10 +27,17 @@ const Mrkaspi = props => {
                 <Tab.Pane>
                     <KaspiProducts
                         fetchKaspiProducts={props.fetchKaspiProducts}
+                        createKaspiProduct={props.createKaspiProduct}
                         kaspiProducts={props.kaspiProducts}
                         clearKaspiProducts={props.clearKaspiProducts}
                         fetchStoreList={props.fetchStoreList}
                         storeList={props.storeList}
+                        clearStoreList={props.clearStoreList}
+                        fetchKaspiBrands={props.fetchKaspiBrands}
+                        brandList={props.brandList}
+                        fetchKaspiCompanies={props.fetchKaspiCompanies}
+                        companyList={props.companyList}
+                        deleteProduct={props.deleteProduct}
                     />
                 </Tab.Pane>
             ),
@@ -62,17 +73,23 @@ const Mrkaspi = props => {
 
 function mapStateToProps(state) {
     return {
-        kaspiProducts: state.marketing.kaspiProducts,
-        storeList: state.marketing.storeList,
+        kaspiProducts: state.mrkaspiReducer.kaspiProducts,
+        storeList: state.mrkaspiReducer.storeList,
+        brandList: state.mrkaspiReducer.brandList,
+        companyList: state.mrkaspiReducer.companyList,
     };
 }
 
 export default connect(mapStateToProps, {
     fetchKaspiProducts,
+    createKaspiProduct,
     clearKaspiProducts,
     fetchStoreList,
     creatStore,
     updateStore,
     deleteStore,
     clearStoreList,
+    fetchKaspiBrands,
+    fetchKaspiCompanies,
+    deleteProduct,
 })(Mrkaspi);

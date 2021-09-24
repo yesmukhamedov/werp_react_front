@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { change } from 'redux-form';
 import { Label } from 'semantic-ui-react';
 import {
     Button,
@@ -21,9 +22,58 @@ const ModalAvailabilities = props => {
         availabilitiesOptions,
     } = props;
 
-    // console.log('TEMP_DATA', tempData);
-    // console.log('availabilitiesOptions', availabilitiesOptions);
-    // console.log("rowAvails", rowAvails)
+    const [changedAvail, setChangedAvail] = useState([]);
+
+    useEffect(() => {
+        if (rowAvails.length > 0) {
+            setChangedAvail(
+                rowAvails.map(item => {
+                    return {
+                        available: item.available,
+                        sku: item.sku,
+                        storeId: item.storeId,
+                    };
+                }),
+            );
+        }
+    }, [rowAvails]);
+
+    let sku = '';
+
+    console.log('ROW_AVAILS', rowAvails);
+    console.log('changedAvail', changedAvail);
+
+    rowAvails.map(item => (sku = item.sku));
+
+    // const onChangedAvail = (value, storeId) => {
+
+    //     rowAvails.map((item, index) => {
+    //         if (item.storeId == storeId) {
+    //             rowAvails[index].available = value;
+    //         } else {
+    //             let tempObj = {
+    //                 available: value,
+    //                 sku: item.sku,
+    //                 storeId: storeId
+    //             };
+    //             rowAvails.push(tempObj);
+    //         }
+    //     });
+    // };
+
+    // const onChangedAvail = (value, storeId) => {
+    //     console.log(value, storeId)
+    //     setChangedAvail([
+    //         ...changedAvail,
+    //         {
+    //             available: value,
+    //             sku: sku,
+    //             storeId: storeId
+    //         }
+
+    //     ]);
+    // };
+
     let available = false;
 
     return (
@@ -54,7 +104,10 @@ const ModalAvailabilities = props => {
                                         <Dropdown
                                             options={availabilitiesOptions}
                                             selectOnBlur={false}
-                                            value={available}
+                                            onChange={(e, { value }) =>
+                                                onChangedAvail(value, item.id)
+                                            }
+                                            defaultValue={available}
                                             selection
                                         />
                                     </Table.Cell>
@@ -77,9 +130,3 @@ const ModalAvailabilities = props => {
 };
 
 export default ModalAvailabilities;
-/*{storeList.map(storeItem => {
-    return storeItem.id ===
-        availabilityItem.storeId
-        ? storeItem.name
-        : '';
-    })}*/
