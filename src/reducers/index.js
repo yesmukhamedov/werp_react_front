@@ -161,6 +161,7 @@ const appReducer = combineReducers({
     crmKpiSetting2021: kpiSettingReducer2021,
     ccrefReducer,
     werpreferenceReducer,
+    crmMpr2021Reducer,
 });
 
 const rootReducer = (state, action) => {

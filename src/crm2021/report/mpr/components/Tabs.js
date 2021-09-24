@@ -13,6 +13,12 @@ const Tabs = props => {
         countriesOptions = [],
         companies = [],
         branches = [],
+        highestDemoAchievers = [],
+        highestDemoProducers = [],
+        highestSalesAchievers = [],
+        salesOffices = [],
+        salesManager = [],
+        businessAreasOptions = [],
     } = props;
 
     const panes = [
@@ -26,6 +32,8 @@ const Tabs = props => {
                         countriesOptions={countriesOptions}
                         companies={companies}
                         branches={branches}
+                        highestSalesAchievers={highestSalesAchievers}
+                        businessAreasOptions={businessAreasOptions}
                     />
                 </Tab.Pane>
             ),
@@ -40,6 +48,8 @@ const Tabs = props => {
                         countriesOptions={countriesOptions}
                         companies={companies}
                         branches={branches}
+                        highestDemoAchievers={highestDemoAchievers}
+                        businessAreasOptions={businessAreasOptions}
                     />
                 </Tab.Pane>
             ),
@@ -54,6 +64,8 @@ const Tabs = props => {
                         countriesOptions={countriesOptions}
                         companies={companies}
                         branches={branches}
+                        highestDemoProducers={highestDemoProducers}
+                        businessAreasOptions={businessAreasOptions}
                     />
                 </Tab.Pane>
             ),
@@ -68,6 +80,8 @@ const Tabs = props => {
                         countriesOptions={countriesOptions}
                         companies={companies}
                         branches={branches}
+                        salesManager={salesManager}
+                        businessAreasOptions={businessAreasOptions}
                     />
                 </Tab.Pane>
             ),
@@ -82,6 +96,8 @@ const Tabs = props => {
                         countriesOptions={countriesOptions}
                         companies={companies}
                         branches={branches}
+                        salesOffices={salesOffices}
+                        businessAreasOptions={businessAreasOptions}
                     />
                 </Tab.Pane>
             ),
