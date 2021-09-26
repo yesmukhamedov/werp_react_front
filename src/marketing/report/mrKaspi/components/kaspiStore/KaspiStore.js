@@ -137,17 +137,17 @@ const KaspiStore = props => {
 
     const cellInput = (fieldName, original) => {
         switch (fieldName) {
-            case 'id':
-                return original.edit ? (
-                    <Input
-                        value={original.id}
-                        onChange={(e, { value }) =>
-                            onChangeInput('id', original, value)
-                        }
-                    />
-                ) : (
-                    <div>{original.id}</div>
-                );
+            // case 'id':
+            //     return original.edit ? (
+            //         <Input
+            //             value={original.id}
+            //             onChange={(e, { value }) =>
+            //                 onChangeInput('id', original, value)
+            //             }
+            //         />
+            //     ) : (
+            //         <div>{original.id}</div>
+            //     );
 
             case 'name':
                 return original.edit ? (
@@ -171,7 +171,7 @@ const KaspiStore = props => {
             accessor: 'id',
             filterable: true,
             width: 200,
-            Cell: ({ original }) => cellInput('id', original),
+            Cell: ({ original }) => <div>{original.id}</div>,
         },
         {
             Header: 'Название',

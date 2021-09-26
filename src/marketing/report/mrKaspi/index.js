@@ -5,6 +5,7 @@ import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import {
     fetchKaspiProducts,
     createKaspiProduct,
+    updateKaspiProduct,
     clearKaspiProducts,
     creatStore,
     updateStore,
@@ -28,6 +29,7 @@ const Mrkaspi = props => {
                     <KaspiProducts
                         fetchKaspiProducts={props.fetchKaspiProducts}
                         createKaspiProduct={props.createKaspiProduct}
+                        updateKaspiProduct={props.updateKaspiProduct}
                         kaspiProducts={props.kaspiProducts}
                         clearKaspiProducts={props.clearKaspiProducts}
                         fetchStoreList={props.fetchStoreList}
@@ -83,6 +85,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     fetchKaspiProducts,
     createKaspiProduct,
+    updateKaspiProduct,
     clearKaspiProducts,
     fetchStoreList,
     creatStore,

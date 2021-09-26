@@ -15,66 +15,61 @@ const ModalAvailabilities = props => {
     const {
         open,
         close,
-        casadaProducts,
         tempData,
         rowAvails,
         storeList,
+        updateKaspiProduct,
+        clearKaspiProducts,
+        fetchKaspiProducts,
         availabilitiesOptions,
+        rowData,
     } = props;
 
     const [changedAvail, setChangedAvail] = useState([]);
+    const [tempProducts, setTempProducts] = useState([]);
+    const [tempOneProduct, setTempOneProduct] = useState([]);
 
     useEffect(() => {
-        if (rowAvails.length > 0) {
-            setChangedAvail(
-                rowAvails.map(item => {
-                    return {
-                        available: item.available,
-                        sku: item.sku,
-                        storeId: item.storeId,
-                    };
-                }),
-            );
-        }
+        setChangedAvail(rowAvails);
     }, [rowAvails]);
 
-    let sku = '';
+    useEffect(() => {
+        setTempProducts(tempData);
+    }, [tempData]);
 
-    console.log('ROW_AVAILS', rowAvails);
+    useEffect(() => {
+        setTempOneProduct(rowData);
+    }, [rowData]);
+
+    let sku = rowAvails.map(item => item.sku);
+    sku = sku.toString();
+
+    const onClickSave = () => {
+        // tempProducts.map((item, index) => {
+        //     if (item.sku === sku) {
+        //         setTempProducts({
+        //             ...tempProducts,
+        //             [index]: {
+        //                 ...item,
+        //                 availabilities: changedAvail
+        //             }
+        //         });
+        //     }
+        // });
+
+        setTempOneProduct({
+            ...tempOneProduct,
+            availabilities: [...tempOneProduct.availabilities, changedAvail],
+        });
+
+        // updateKaspiProduct(tempProducts[3],()=>{
+        //     clearKaspiProducts();
+        //     fetchKaspiProducts();
+        //     close();
+        // })
+    };
     console.log('changedAvail', changedAvail);
-
-    rowAvails.map(item => (sku = item.sku));
-
-    // const onChangedAvail = (value, storeId) => {
-
-    //     rowAvails.map((item, index) => {
-    //         if (item.storeId == storeId) {
-    //             rowAvails[index].available = value;
-    //         } else {
-    //             let tempObj = {
-    //                 available: value,
-    //                 sku: item.sku,
-    //                 storeId: storeId
-    //             };
-    //             rowAvails.push(tempObj);
-    //         }
-    //     });
-    // };
-
-    // const onChangedAvail = (value, storeId) => {
-    //     console.log(value, storeId)
-    //     setChangedAvail([
-    //         ...changedAvail,
-    //         {
-    //             available: value,
-    //             sku: sku,
-    //             storeId: storeId
-    //         }
-
-    //     ]);
-    // };
-
-    let available = false;
+    console.log('tempOneProduct', tempOneProduct);
 
     return (
         <Modal closeIcon open={open} onClose={close}>
@@ -88,14 +83,12 @@ const ModalAvailabilities = props => {
                             <Table.HeaderCell>В наличии</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
+
                     <Table.Body>
                         {storeList.map((item, index) => {
-                            rowAvails.map(itemAv => {
-                                available =
-                                    itemAv.storeId === item.id
-                                        ? itemAv.available
-                                        : '';
-                            });
+                            const value = changedAvail.find(
+                                ({ storeId }) => storeId === item.id,
+                            );
                             return (
                                 <Table.Row key={index}>
                                     <Table.Cell>{item.id}</Table.Cell>
@@ -104,10 +97,36 @@ const ModalAvailabilities = props => {
                                         <Dropdown
                                             options={availabilitiesOptions}
                                             selectOnBlur={false}
-                                            onChange={(e, { value }) =>
-                                                onChangedAvail(value, item.id)
-                                            }
-                                            defaultValue={available}
+                                            onChange={(e, { value }) => {
+                                                const found = changedAvail.findIndex(
+                                                    ({ storeId }) =>
+                                                        storeId === item.id,
+                                                );
+                                                if (found >= 0) {
+                                                    setChangedAvail(prev => {
+                                                        const newAvail = JSON.parse(
+                                                            JSON.stringify(
+                                                                prev,
+                                                            ),
+                                                        );
+
+                                                        newAvail[
+                                                            found
+                                                        ].available = value;
+                                                        return newAvail;
+                                                    });
+                                                } else {
+                                                    setChangedAvail(prev => [
+                                                        ...prev,
+                                                        {
+                                                            available: value,
+                                                            sku: sku.toString(),
+                                                            storeId: item.id,
+                                                        },
+                                                    ]);
+                                                }
+                                            }}
+                                            value={value ? value.available : ''}
                                             selection
                                         />
                                     </Table.Cell>
@@ -121,7 +140,7 @@ const ModalAvailabilities = props => {
                 <Button color="red" onClick={close}>
                     <Icon name="remove" /> Отмена
                 </Button>
-                <Button color="green" onClick={close}>
+                <Button color="green" onClick={() => onClickSave()}>
                     <Icon name="checkmark" /> Сохранить
                 </Button>
             </Modal.Actions>

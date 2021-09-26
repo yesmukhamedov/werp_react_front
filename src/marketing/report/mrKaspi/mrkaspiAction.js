@@ -34,36 +34,15 @@ export const fetchKaspiProducts = () => {
     };
 };
 
-// Получит список брендов в каспи
-export const fetchKaspiBrands = () => {
+// Изме`нить товар в Каспи
+export const updateKaspiProduct = (body, getList) => {
     return function(dispatch) {
+        console.log('OOOK');
         dispatch(modifyLoader(true));
-        doGet(`core/marketing/kaspi/brands`)
+        doPut(`core/marketing/kaspi`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
-                dispatch({
-                    type: FETCH_KASPI_BRANDS,
-                    data,
-                });
-            })
-            .catch(error => {
-                dispatch(modifyLoader(false));
-                handleError(error, dispatch);
-            });
-    };
-};
-
-// Получит список компании в каспи
-export const fetchKaspiCompanies = () => {
-    return function(dispatch) {
-        dispatch(modifyLoader(true));
-        doGet(`core/marketing/kaspi/companies`)
-            .then(({ data }) => {
-                dispatch(modifyLoader(false));
-                dispatch({
-                    type: FETCH_KASPI_COMPANIES,
-                    data,
-                });
+                getList();
             })
             .catch(error => {
                 dispatch(modifyLoader(false));
@@ -189,5 +168,43 @@ export const clearStoreList = () => {
         dispatch({
             type: CLEAR_STORE_LIST,
         });
+    };
+};
+
+// Получит список брендов в каспи
+export const fetchKaspiBrands = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/marketing/kaspi/brands`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_KASPI_BRANDS,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Получит список компании в каспи
+export const fetchKaspiCompanies = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/marketing/kaspi/companies`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_KASPI_COMPANIES,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
     };
 };

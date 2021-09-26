@@ -17,6 +17,7 @@ const KaspiProducts = props => {
         fetchKaspiProducts,
         clearKaspiProducts,
         createKaspiProduct,
+        updateKaspiProduct,
         kaspiProducts,
         fetchStoreList,
         storeList,
@@ -32,6 +33,8 @@ const KaspiProducts = props => {
     const [modalAvailabilities, setModalAvailabilities] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [avails, setAvails] = useState([]);
+    const [rowData, setRowData] = useState([]);
+
     useEffect(() => {
         fetchKaspiProducts();
         clearKaspiProducts();
@@ -72,8 +75,6 @@ const KaspiProducts = props => {
         }
     }, [kaspiProducts]);
 
-    // console.log('TEMP_DATA', tempData);
-
     const brandListOptions = Object.entries(brandList).map(item => {
         return {
             text: item[1],
@@ -92,6 +93,7 @@ const KaspiProducts = props => {
         tempData.map((item, idx) => {
             if (rowData.sku === item.sku) {
                 setAvails(item.availabilities);
+                setRowData(item);
             }
         });
     };
@@ -219,10 +221,17 @@ const KaspiProducts = props => {
                 open={modalAvailabilities}
                 close={() => setModalAvailabilities(false)}
                 kaspiProducts={kaspiProducts}
+                updateKaspiProduct={updateKaspiProduct}
+                clearKaspiProducts={clearKaspiProducts}
+                fetchKaspiProducts={fetchKaspiProducts}
                 rowAvails={avails}
                 tempData={tempData}
                 storeList={storeList}
                 availabilitiesOptions={availabilitiesOptions}
+                rowData={rowData}
+                save={data => {
+                    console.log('DATA', data);
+                }}
             />
             <Segment>
                 <div
