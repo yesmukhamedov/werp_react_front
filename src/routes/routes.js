@@ -572,9 +572,23 @@ const AsyncFrep1 = Loadable({
     loading: () => <LoadingPage />,
 });
 
+const AsyncFrep3 = Loadable({
+    loader: () => {
+        console.log('Test');
+        return import(
+            '../finance/report/frep3' /* webpackChunkName: "frep3" */
+        );
+    },
+    loading: () => <LoadingPage />,
+});
+
 const AsyncFrep4 = Loadable({
-    loader: () =>
-        import('../finance/report/frep4/frep4' /* webpackChunkName: "frep4" */),
+    loader: () => {
+        console.log('Test');
+        return import(
+            '../finance/report/frep4/frep4' /* webpackChunkName: "frep4" */
+        );
+    },
     loading: () => <LoadingPage />,
 });
 
@@ -1265,6 +1279,7 @@ const getComponent = {
     Faicfp2: AsyncFaicfp2,
     Fahrb: AsyncFahrb,
     Frep1: AsyncFrep1,
+    Frep3: AsyncFrep3,
     Frep4: AsyncFrep4,
     Frep5: AsyncFrep5,
     Frep6: AsyncFrep6,
