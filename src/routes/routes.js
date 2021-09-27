@@ -1233,6 +1233,12 @@ const AsyncCcmva = Loadable({
     loading: () => <LoadingPage />,
 });
 
+const AsyncMrKaspi = Loadable({
+    loader: () =>
+        import('../marketing/report/mrKaspi') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
+
 const getComponent = {
     Dtrlist: AsyncTransaction,
     Ditaub: AsyncAssignUserBranch,
@@ -1394,7 +1400,7 @@ const getComponent = {
     CrmRepMsr2021: AsyncCrmMsr2021,
     Srgfr: AsyncSrgfr,
     Foac: AsyncFoac,
-    //MrKaspi: AsyncMrKaspi,
+    MrKaspi: AsyncMrKaspi,
     //Call-center
     Ccref: AsyncCcref,
     Ccmra: AsyncCcmra,
