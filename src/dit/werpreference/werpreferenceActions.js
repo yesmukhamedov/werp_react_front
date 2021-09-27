@@ -3,15 +3,19 @@ import { handleError } from '../../general/notification/notification_action';
 import { modifyLoader } from '../../general/loader/loader_action';
 //Company
 export const FETCH_COMPANY_LIST = 'FETCH_COMPANY_LIST';
-export const UPDATE_COMPANY = 'UPDATE_COMPANY';
 export const CLEAR_COMPANY_LIST = 'CLEAR_COMPANY_LIST';
+//Branch
+export const GET_BRANCH_LIST = 'GET_BRANCH_LIST';
+export const CLEAR_BRANCH_LIST = 'CLEAR_BRANCH_LIST';
 //Country
 export const FETCH_COUNTRY_LIST = 'FETCH_COUNTRY_LIST';
 export const CLEAR_COUNTRY_LIST = 'CLEAR_COUNTRY_LIST';
 //Category
 export const FETCH_CATEGORY_LIST = 'FETCH_CATEGORY_LIST';
-export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const CLEAR_CATEGORY_LIST = 'CLEAR_CATEGORY_LIST';
+//Department
+export const FETCH_DEPARTMENT_LIST = 'FET_DEPARTMENT_LIST';
+export const CLEAR_DEPARTMENT_LIST = 'CLEAR_DEPARTMENT_LIST';
 
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
@@ -33,7 +37,7 @@ export const createCompany = (body, getList) => {
     };
 };
 
-// список компании
+// Список компании
 export const fetchCompanyList = () => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
@@ -52,7 +56,7 @@ export const fetchCompanyList = () => {
     };
 };
 
-// редактировать компанию
+// Редактировать компанию
 export const updateCompany = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
@@ -68,11 +72,72 @@ export const updateCompany = (body, getList) => {
     };
 };
 
-// очистить список компании
+// Очистить список компании
 export const clearCompanyList = () => {
     return function(dispatch) {
         dispatch({
             type: CLEAR_COMPANY_LIST,
+        });
+    };
+};
+
+//ФИЛИАЛ
+// Список филиалов
+export const fetchBranchList = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/reference/branch/list`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: GET_BRANCH_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Добавить филиал
+export const createBranch = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(`core/reference/branch`, body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Редактировать филиал
+export const updateBranch = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPut(`core/reference/branch`, body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Очистить список филилов
+export const clearBranchList = () => {
+    return function(dispatch) {
+        dispatch({
+            type: CLEAR_BRANCH_LIST,
         });
     };
 };
@@ -84,7 +149,6 @@ export const createCountry = (body, getList) => {
         dispatch(modifyLoader(true));
         doPost(`core/reference/country`, body)
             .then(({ data }) => {
-                console.log(data);
                 dispatch(modifyLoader(false));
                 getList();
             })
@@ -101,7 +165,6 @@ export const fetchCountryList = () => {
         dispatch(modifyLoader(true));
         doGet(`core/reference/country/list`)
             .then(({ data }) => {
-                console.log('FETCH_DATA', data);
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_COUNTRY_LIST,
@@ -121,7 +184,6 @@ export const updateCountry = (body, callBackFun) => {
         dispatch(modifyLoader(true));
         doPut(`core/reference/country`, body)
             .then(({ data }) => {
-                console.log(data);
                 dispatch(modifyLoader(false));
                 callBackFun();
             })
@@ -134,7 +196,6 @@ export const updateCountry = (body, callBackFun) => {
 
 // очистить список страны
 export const clearCountryList = () => {
-    console.log('CLEAR___COUNTRY');
     return function(dispatch) {
         dispatch({
             type: CLEAR_COUNTRY_LIST,
@@ -165,7 +226,6 @@ export const fetchCategoryList = () => {
         dispatch(modifyLoader(true));
         doGet(`core/reference/service-category/list`)
             .then(({ data }) => {
-                console.log(data);
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_CATEGORY_LIST,
@@ -200,6 +260,67 @@ export const clearCategoryList = () => {
     return function(dispatch) {
         dispatch({
             type: CLEAR_CATEGORY_LIST,
+        });
+    };
+};
+
+//ОТДЕЛ
+// Список отделов
+export const fetchDepartmentList = () => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/reference/department/list`)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_DEPARTMENT_LIST,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Добавить отдел
+export const createDepartment = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPost(`core/reference/department`, body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+//Редактировать отдел
+export const updateDepartment = (body, getList) => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doPut('core/reference/department', body)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                getList();
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                handleError(error, dispatch);
+            });
+    };
+};
+
+// Очистить список отделов
+export const clearDepartmentList = () => {
+    return function(dispatch) {
+        dispatch({
+            type: CLEAR_DEPARTMENT_LIST,
         });
     };
 };

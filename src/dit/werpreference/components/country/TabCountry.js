@@ -17,15 +17,6 @@ export default function TabCountry({
     const [errors, setErrors] = useState([]);
     const [openModal, setOpenModal] = useState(false);
 
-    console.log('TEMPDATA', tempData);
-    const currencyOptionsForDropdown = currencyOptions.map(item => {
-        return {
-            key: item.key,
-            text: item.text,
-            value: item.key,
-        };
-    });
-
     useEffect(() => {
         clearCountryList();
         getCountryList();
@@ -122,6 +113,13 @@ export default function TabCountry({
             }
         });
     };
+    const currencyOptionsForDropdown = countryList.map(item => {
+        return {
+            key: item.currencyId,
+            text: item.currency,
+            value: item.currencyId,
+        };
+    });
 
     const getCurrency = value => {
         let currencyName = '';
@@ -157,35 +155,6 @@ export default function TabCountry({
             }),
         );
     };
-
-    // const onChangeDropdown = (fieldName, data, value) => {
-    //     setTempData(
-    //         tempData.map(el => {
-    //             if (el.countryId === data.countryId) {
-    //                 switch (fieldName) {
-    //                     case 'code':
-    //                         return { ...el, code: value };
-    //                     case 'country':
-    //                         return { ...el, country: value };
-    //                     case 'currency':
-    //                         return {
-    //                             ...el,
-    //                             currency: getCurrency(value),
-    //                             currencyId: value,
-    //                         };
-    //                     case 'phoneCode':
-    //                         return { ...el, phoneCode: value };
-    //                     case 'telPattern':
-    //                         return { ...el, telPattern: value };
-    //                     default:
-    //                         break;
-    //                 }
-    //             } else {
-    //                 return { ...el };
-    //             }
-    //         }),
-    //     );
-    // };
 
     const onChangeDropdown = (data, value) => {
         setTempData(
@@ -442,10 +411,10 @@ export default function TabCountry({
                 close={() => setOpenModal(false)}
                 create={create}
                 getCountryList={getCountryList}
+                countryList={countryList}
                 clearCountryList={clearCountryList}
                 clearTempData={clearTempData}
-                countryList={countryList}
-                currencyOptions={currencyOptions}
+                currencyOptionsForDropdown={currencyOptionsForDropdown}
             />
             <div className="content-top">
                 <h3>Страны</h3>

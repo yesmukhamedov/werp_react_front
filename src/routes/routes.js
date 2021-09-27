@@ -1205,7 +1205,7 @@ const AsyncSrgfr = Loadable({
 
 const AsyncWerpReference = Loadable({
     loader: () =>
-        import('../dit/werpreference/index') /* webpackChunkName: "srgfr" */,
+        import('../dit/werpreference') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
 
@@ -1230,6 +1230,12 @@ const AsyncCcmva = Loadable({
         import(
             '../callcenter/mainoperation/ccmva'
         ) /* webpackChunkName: "msr" */,
+    loading: () => <LoadingPage />,
+});
+
+const AsyncMrKaspi = Loadable({
+    loader: () =>
+        import('../marketing/report/mrKaspi') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
 
@@ -1394,7 +1400,8 @@ const getComponent = {
     CrmRepMsr2021: AsyncCrmMsr2021,
     Srgfr: AsyncSrgfr,
     Foac: AsyncFoac,
-    //MrKaspi: AsyncMrKaspi,
+    MrKaspi: AsyncMrKaspi,
+    WerpReference: AsyncWerpReference,
     //Call-center
     Ccref: AsyncCcref,
     Ccmra: AsyncCcmra,
@@ -1517,11 +1524,6 @@ const generateRoutes = transactionRoutes => {
                 path="/dit/dituserlistnew"
                 exact={true}
                 component={AsyncDitUserListNew}
-            />
-            <Route
-                path="/dit/werpreference"
-                exact={true}
-                component={AsyncWerpReference}
             />
 
             {/* dynamically generated URLs  */}
