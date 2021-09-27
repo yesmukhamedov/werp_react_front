@@ -217,7 +217,7 @@ const Mmceg = props => {
 
     const onWriteOffMatnr = () => {
         props.onSaveMmcTrans(
-            'marketing/contract/mmceg/writeOff',
+            'core/marketing/contract/mmceg/writeOff',
             { contract, newContract, typeOfWriteOff: 2 },
             { tcode },
             setIsSavingContract,
@@ -226,7 +226,7 @@ const Mmceg = props => {
 
     const onWriteOffContractPromo = () => {
         props.onSaveMmcTrans(
-            'marketing/contract/mmceg/writeOff',
+            'core/marketing/contract/mmceg/writeOff',
             {
                 contract,
                 newContract,
