@@ -273,7 +273,7 @@ export default function TabBranch({
                             item.branchId === original.branchId
                                 ? item.country === '' ||
                                   item.country === undefined
-                                    ? 'Заполните поле'
+                                    ? 'Заполните поля'
                                     : null
                                 : null,
                         )}

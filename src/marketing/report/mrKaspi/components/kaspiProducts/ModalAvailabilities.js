@@ -59,17 +59,17 @@ const ModalAvailabilities = props => {
 
         setTempOneProduct({
             ...tempOneProduct,
-            availabilities: [...tempOneProduct.availabilities, changedAvail],
+            availabilities: changedAvail,
         });
 
-        // updateKaspiProduct(tempProducts[3],()=>{
-        //     clearKaspiProducts();
-        //     fetchKaspiProducts();
-        //     close();
-        // })
+        updateKaspiProduct(tempOneProduct, () => {
+            clearKaspiProducts();
+            fetchKaspiProducts();
+            close();
+        });
     };
-    console.log('changedAvail', changedAvail);
-    console.log('tempOneProduct', tempOneProduct);
+    // console.log('changedAvail', changedAvail);
+    // console.log('tempOneProduct', tempOneProduct);
 
     return (
         <Modal closeIcon open={open} onClose={close}>

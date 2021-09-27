@@ -50,7 +50,7 @@ export default function ModalAddProduct(props) {
     const [storeListTemp, setStoreListTemp] = useState([]);
     const [tempKaspiProduct, setTempKaspiProduct] = useState(initialProducts);
 
-    console.log('tempKaspiProduct', tempKaspiProduct);
+    // console.log('tempKaspiProduct', tempKaspiProduct);
     // console.log('storeListTemp', storeListTemp);
 
     const onChangeAdd = (fieldName, value, id) => {
@@ -165,6 +165,8 @@ export default function ModalAddProduct(props) {
             close();
         });
     };
+
+    // console.log('tempKaspiProduct', tempKaspiProduct)
 
     return (
         <Modal closeIcon open={open} onClose={close}>

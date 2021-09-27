@@ -58,12 +58,24 @@ const KaspiStore = props => {
             let tempObj = {};
             Object.entries(item).map(keyAndVal => {
                 tempObj = {
-                    ...tempObj,
-                    [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                    ...errors,
+                    [item.id]: {
+                        ...item,
+                        [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                    },
                 };
             });
+
             return tempObj;
         });
+
+        // temporaryObj = {
+        //     ...errors,
+        //     [item.branchId]: {
+        //         ...item,
+        //         [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+        //     },
+        // };
 
         const arr = Object.values(item);
         arr.map(val => {
@@ -133,25 +145,38 @@ const KaspiStore = props => {
         );
     };
 
-    console.log('tempStoreList', tempStoreList);
+    const setRedLine = (original, fieldName) => {
+        var redLine = false;
+        Object.values(errors).map(item => {
+            if (item.name === original.name) {
+                switch (fieldName) {
+                    case 'name':
+                        if (item['name'] === '' || item['name'] === undefined) {
+                            redLine = true;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+        return redLine;
+    };
 
     const cellInput = (fieldName, original) => {
         switch (fieldName) {
-            // case 'id':
-            //     return original.edit ? (
-            //         <Input
-            //             value={original.id}
-            //             onChange={(e, { value }) =>
-            //                 onChangeInput('id', original, value)
-            //             }
-            //         />
-            //     ) : (
-            //         <div>{original.id}</div>
-            //     );
-
             case 'name':
                 return original.edit ? (
                     <Input
+                        label={Object.values(errors).map(item =>
+                            item.name === original.name
+                                ? item.name === '' || item.name === undefined
+                                    ? 'Заполните поля'
+                                    : null
+                                : null,
+                        )}
+                        error={setRedLine(original, 'name')}
                         value={original.name}
                         onChange={(e, { value }) =>
                             onChangeInput('name', original, value)
@@ -184,7 +209,7 @@ const KaspiStore = props => {
             Cell: ({ original }) => (
                 <div style={{ textAlign: 'center' }}>
                     <Popup
-                        content=""
+                        content="Редактировать"
                         trigger={
                             original.edit ? (
                                 <Button
@@ -204,6 +229,7 @@ const KaspiStore = props => {
                         }
                     />
                     <Popup
+                        content="Удалить"
                         trigger={
                             <Button
                                 icon="remove"

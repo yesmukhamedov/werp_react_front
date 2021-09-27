@@ -6,6 +6,7 @@ import {
     Dropdown,
     Button,
     Icon,
+    Input,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import ModalAvailabilities from './ModalAvailabilities';
@@ -105,36 +106,106 @@ const KaspiProducts = props => {
         });
     };
 
+    const onClickEdit = rowData => {
+        console.log(rowData);
+        setTempData(
+            tempData.map(item => {
+                return item.sku === rowData.sku
+                    ? { ...item, edit: true }
+                    : item;
+            }),
+        );
+    };
+
+    const cellInput = (fieldName, data) => {
+        // console.log(fieldName);
+        // console.log(data);
+
+        switch (fieldName) {
+            case 'brand':
+                return data.edit ? (
+                    <Dropdown
+                        options={brandListOptions}
+                        selection
+                        value={data.brand}
+                        // onChange={(e, { value }) =>
+                        //     onChangeInput('nameEn', original, value)
+                        // }
+                    />
+                ) : (
+                    <div>{data.brand}</div>
+                );
+            case 'company':
+                return data.edit ? (
+                    <Dropdown
+                        options={companyListOptions}
+                        selection
+                        value={data.company}
+                        // onChange={(e, { value }) =>
+                        //     onChangeInput('nameEn', original, value)
+                        // }
+                    />
+                ) : (
+                    <div>{data.company}</div>
+                );
+            case 'model':
+                return data.edit ? (
+                    <Input
+                        value={data.model}
+                        // onChange={(e, { value }) =>
+                        //     onChangeInput('nameEn', original, value)
+                        // }
+                    />
+                ) : (
+                    <div>{data.model}</div>
+                );
+            case 'price':
+                return data.edit ? (
+                    <Input
+                        value={data.price}
+                        // onChange={(e, { value }) =>
+                        //     onChangeInput('nameEn', original, value)
+                        // }
+                    />
+                ) : (
+                    <div>{data.price}</div>
+                );
+
+            default:
+                break;
+        }
+    };
+
     const columns = [
         {
             Header: 'SKU',
             accessor: 'sku',
             filterable: true,
-            Cell: original => <div>{original.value}</div>,
+            Cell: ({ original }) => <div>{original.sku}</div>,
         },
         {
             Header: 'Бренд',
             accessor: 'brand',
             filterable: true,
-            Cell: original => <div>{original.value}</div>,
+            Cell: ({ original }) => cellInput('brand', original),
         },
         {
             Header: 'Компания',
             accessor: 'company',
             filterable: true,
-            Cell: original => <div>{original.value}</div>,
+            Cell: ({ original }) => cellInput('company', original),
         },
         {
             Header: 'Модель',
             accessor: 'model',
             filterable: true,
-            Cell: original => <div>{original.value}</div>,
+            Cell: ({ original }) => cellInput('model', original),
         },
         {
             Header: 'Цена',
             accessor: 'price',
             filterable: true,
-            Cell: original => <div>{original.value}</div>,
+            Cell: ({ original }) => cellInput('price', original),
         },
         {
             Header: 'Доступность',
@@ -159,7 +230,12 @@ const KaspiProducts = props => {
                             original.edit ? (
                                 <Button icon="save" circular color="blue" />
                             ) : (
-                                <Button icon="pencil" circular color="yellow" />
+                                <Button
+                                    icon="pencil"
+                                    circular
+                                    color="yellow"
+                                    onClick={() => onClickEdit(original)}
+                                />
                             )
                         }
                     />

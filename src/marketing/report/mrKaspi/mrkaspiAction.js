@@ -55,7 +55,7 @@ export const updateKaspiProduct = (body, getList) => {
 export const createKaspiProduct = (body, getList) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
-        doPut(`core/marketing/kaspi`, body)
+        doPost(`core/marketing/kaspi`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();

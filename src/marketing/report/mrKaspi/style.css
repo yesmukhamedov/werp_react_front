@@ -2,3 +2,34 @@
 .ui.checkbox label:before {
     /* border:1px solid #565656 !important; */
 }
+.ui.error.labeled {
+    display: flex;
+    flex-direction: column;
+}
+.ui.label.label {
+    color: #e74c3c;
+}
+
+.ui.labeled.input .ui.label.label {
+    display: none;
+}
+
+.ui.error.labeled.input .ui.label.label {
+    display: block;
+}
+
+.ui.error.labeled.input input {
+    border-top-left-radius: 4.5px !important;
+    border-bottom-left-radius: 4.5px !important;
+    border-left: 1px solid #e0b4b4 !important;
+}
+
+.ui.labeled.input input {
+    border-top-left-radius: 4.5px !important;
+    border-bottom-left-radius: 4.5px !important;
+    border-left: 1px solid #dfdfdf !important;
+}
+
+.ui.label.label input:focus {
+    border-left: 1px solid #85b7d9 !important;
+}
