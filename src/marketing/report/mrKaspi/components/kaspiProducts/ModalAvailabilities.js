@@ -25,7 +25,7 @@ const ModalAvailabilities = props => {
         rowData,
     } = props;
 
-    console.log('availabilitiesOptions', availabilitiesOptions);
+    // console.log('availabilitiesOptions', availabilitiesOptions);
 
     const [changedAvail, setChangedAvail] = useState([]);
     const [tempProducts, setTempProducts] = useState([]);
@@ -44,34 +44,32 @@ const ModalAvailabilities = props => {
     }, [rowData]);
 
     let sku = rowAvails.map(item => item.sku);
-    sku = sku.toString();
+    // sku = sku.toString();
 
     const onClickSave = () => {
-        // tempProducts.map((item, index) => {
-        //     if (item.sku === sku) {
-        //         setTempProducts({
-        //             ...tempProducts,
-        //             [index]: {
-        //                 ...item,
-        //                 availabilities: changedAvail
-        //             }
-        //         });
-        //     }
-        // });
-
         setTempOneProduct({
             ...tempOneProduct,
             availabilities: changedAvail,
         });
 
-        updateKaspiProduct(tempOneProduct, () => {
+        let changedProduct = {
+            sku: tempOneProduct.sku,
+            model: tempOneProduct.model,
+            price: tempOneProduct.price,
+            company: tempOneProduct.company,
+            brand: tempOneProduct.brand,
+            availabilities: changedAvail,
+        };
+        console.log('changedProduct', changedProduct);
+
+        updateKaspiProduct(changedProduct, () => {
+            close();
             clearKaspiProducts();
             fetchKaspiProducts();
-            close();
         });
     };
-    // console.log('changedAvail', changedAvail);
-    // console.log('tempOneProduct', tempOneProduct);
+    console.log('changedAvail', changedAvail);
+    console.log('tempOneProduct', tempOneProduct);
 
     return (
         <Modal closeIcon open={open} onClose={close}>
@@ -122,7 +120,7 @@ const ModalAvailabilities = props => {
                                                         ...prev,
                                                         {
                                                             available: value,
-                                                            sku: sku.toString(),
+                                                            sku: sku[0],
                                                             storeId: item.id,
                                                         },
                                                     ]);

@@ -68,6 +68,7 @@ const Mrkaspi = props => {
                 panes={panes}
                 menuposition="right"
                 panes={panes}
+                grid={{ paneWidth: 14, tabWidth: 2 }}
             />
         </div>
     );

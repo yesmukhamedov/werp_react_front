@@ -49,8 +49,9 @@ export default function ModalAddProduct(props) {
 
     const [storeListTemp, setStoreListTemp] = useState([]);
     const [tempKaspiProduct, setTempKaspiProduct] = useState(initialProducts);
+    const [errors, setErrors] = useState([]);
 
-    // console.log('tempKaspiProduct', tempKaspiProduct);
+    console.log('tempKaspiProduct', tempKaspiProduct);
     // console.log('storeListTemp', storeListTemp);
 
     const onChangeAdd = (fieldName, value, id) => {
@@ -86,9 +87,6 @@ export default function ModalAddProduct(props) {
                 });
                 break;
             case 'available':
-                // console.log('value', value);
-                // console.log('id', id);
-
                 setTempKaspiProduct({
                     ...tempKaspiProduct,
                     availabilities: tempKaspiProduct.availabilities.map(el =>
@@ -103,8 +101,6 @@ export default function ModalAddProduct(props) {
 
                 break;
             case 'checked':
-                // console.log('VAL', value);
-                // console.log('ID', id);
                 if (id) {
                     setTempKaspiProduct({
                         ...tempKaspiProduct,
@@ -113,6 +109,7 @@ export default function ModalAddProduct(props) {
                             {
                                 storeId: value.id,
                                 sku: tempKaspiProduct.sku,
+                                available: '',
                             },
                         ],
                     });
@@ -163,10 +160,9 @@ export default function ModalAddProduct(props) {
             clearKaspiProducts();
             fetchKaspiProducts();
             close();
+            window.location.reload();
         });
     };
-
-    // console.log('tempKaspiProduct', tempKaspiProduct)
 
     return (
         <Modal closeIcon open={open} onClose={close}>
@@ -244,6 +240,9 @@ export default function ModalAddProduct(props) {
                                 <Table.Row key={index}>
                                     <Table.Cell>
                                         <Checkbox
+                                            disabled={
+                                                tempKaspiProduct.sku === ''
+                                            }
                                             onChange={(e, { checked }) => {
                                                 onChangeAdd(
                                                     'checked',
