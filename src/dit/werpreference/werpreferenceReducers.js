@@ -1,16 +1,26 @@
 import {
     FETCH_COMPANY_LIST,
     CLEAR_COMPANY_LIST,
+    //
+    GET_BRANCH_LIST,
+    CLEAR_BRANCH_LIST,
+    //
     FETCH_COUNTRY_LIST,
     CLEAR_COUNTRY_LIST,
+    //
     FETCH_CATEGORY_LIST,
     CLEAR_CATEGORY_LIST,
+    //
+    FETCH_DEPARTMENT_LIST,
+    CLEAR_DEPARTMENT_LIST,
 } from './werpreferenceActions';
 
 const INITIAL_STATE = {
     companyList: [],
+    branchList: [],
     countryList: [],
     categoryList: [],
+    departmentList: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -25,6 +35,17 @@ export default function(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 companyList: [],
+            };
+
+        case GET_BRANCH_LIST:
+            return {
+                ...state,
+                branchList: [...action.data],
+            };
+        case CLEAR_BRANCH_LIST:
+            return {
+                ...state,
+                branchList: [],
             };
 
         case FETCH_COUNTRY_LIST:
@@ -49,6 +70,16 @@ export default function(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 categoryList: [],
+            };
+        case FETCH_DEPARTMENT_LIST:
+            return {
+                ...state,
+                departmentList: [...action.data],
+            };
+        case CLEAR_DEPARTMENT_LIST:
+            return {
+                ...state,
+                departmentList: [],
             };
 
         default:

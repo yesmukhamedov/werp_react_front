@@ -1205,7 +1205,7 @@ const AsyncSrgfr = Loadable({
 
 const AsyncWerpReference = Loadable({
     loader: () =>
-        import('../dit/werpreference/index') /* webpackChunkName: "srgfr" */,
+        import('../dit/werpreference') /* webpackChunkName: "srgfr" */,
     loading: () => <LoadingPage />,
 });
 
@@ -1401,6 +1401,7 @@ const getComponent = {
     Srgfr: AsyncSrgfr,
     Foac: AsyncFoac,
     MrKaspi: AsyncMrKaspi,
+    WerpReference: AsyncWerpReference,
     //Call-center
     Ccref: AsyncCcref,
     Ccmra: AsyncCcmra,
@@ -1523,11 +1524,6 @@ const generateRoutes = transactionRoutes => {
                 path="/dit/dituserlistnew"
                 exact={true}
                 component={AsyncDitUserListNew}
-            />
-            <Route
-                path="/dit/werpreference"
-                exact={true}
-                component={AsyncWerpReference}
             />
 
             {/* dynamically generated URLs  */}
