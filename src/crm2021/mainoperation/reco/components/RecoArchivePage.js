@@ -123,6 +123,9 @@ class RecoArchivePage extends Component {
                         {messages['Table.ClientFullName']}
                     </Table.HeaderCell>
                     <Table.HeaderCell>
+                        {messages['Table.PhoneNumber']}
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
                         {messages['Table.ResponsibleStaff']}
                     </Table.HeaderCell>
                     <Table.HeaderCell>
@@ -141,12 +144,17 @@ class RecoArchivePage extends Component {
             </Table.Header>
         );
     }
-
+    renderPhone(phones) {
+        return phones.map(phone => phone + ',\n');
+    }
     renderTableRow(item, messages) {
         return (
             <Table.Row key={item.id}>
                 <Table.Cell>{item.id}</Table.Cell>
                 <Table.Cell>{item.clientName}</Table.Cell>
+                <Table.Cell>
+                    {item.phones ? this.renderPhone(item.phones) : null}
+                </Table.Cell>
                 <Table.Cell>{item.responsibleName}</Table.Cell>
                 <Table.Cell>{item.categoryName}</Table.Cell>
                 <Table.Cell>

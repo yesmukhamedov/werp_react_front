@@ -5,44 +5,38 @@ import TextAlignCenter from '../../../../../utils/TextAlignCenter';
 const Table = ({ data, messages }) => {
     const columns = [
         {
-            Header: '№',
-            accessor: 'id',
-            Cell: row => <TextAlignCenter text={row.value} />,
-            filterAll: true,
-        },
-        {
             Header: <TextAlignCenter text={messages['fio']} />,
-            accessor: 'fio',
+            accessor: 'staffFullName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['L__COMPANY']} />,
-            accessor: 'company',
+            accessor: 'companyName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['business_area']} />,
-            accessor: 'business_area',
+            accessor: 'businessAreaName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['L__BRANCH']} />,
-            accessor: 'branch',
+            accessor: 'branchName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['country']} />,
-            accessor: 'country',
+            accessor: 'countryName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['number_of_sales']} />,
-            accessor: 'number_of_sales',
+            accessor: 'qty',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },

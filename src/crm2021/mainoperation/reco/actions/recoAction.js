@@ -146,6 +146,7 @@ export const fetchDemoDetails = id => {
 };
 
 export const fetchRecoCurrentData = type => {
+    console.log('type: ', type);
     return dispatch => {
         doGet(`crm2/reco/current/${type}`)
             .then(({ data }) => {

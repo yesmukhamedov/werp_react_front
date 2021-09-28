@@ -116,7 +116,6 @@ export const fetchStoreList = () => {
 // Добавить пункт выдачи
 export const creatStore = (body, getList) => {
     return function(dispatch) {
-        console.log('creatStore ACTION2');
         dispatch(modifyLoader(true));
         doPost(`core/marketing/kaspi/store`, body)
             .then(({ data }) => {
