@@ -38,7 +38,7 @@ export default function ModalAddDepartment({
         });
 
         const arr = Object.values(item);
-        console.log(arr);
+
         arr.map(val => {
             if (isFieldEmpty(val)) {
                 success = false;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+
 import {
     fetchKaspiProducts,
     createKaspiProduct,
@@ -68,6 +68,7 @@ const Mrkaspi = props => {
                 panes={panes}
                 menuposition="right"
                 panes={panes}
+                grid={{ paneWidth: 14, tabWidth: 2 }}
             />
         </div>
     );

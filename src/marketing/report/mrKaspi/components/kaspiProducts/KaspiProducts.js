@@ -35,6 +35,7 @@ const KaspiProducts = props => {
     const [openModal, setOpenModal] = useState(false);
     const [avails, setAvails] = useState([]);
     const [rowData, setRowData] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         fetchKaspiProducts();
@@ -107,7 +108,6 @@ const KaspiProducts = props => {
     };
 
     const onClickEdit = rowData => {
-        console.log(rowData);
         setTempData(
             tempData.map(item => {
                 return item.sku === rowData.sku
@@ -117,10 +117,72 @@ const KaspiProducts = props => {
         );
     };
 
-    const cellInput = (fieldName, data) => {
-        // console.log(fieldName);
-        // console.log(data);
+    const isFieldEmpty = val => val === '' || val === null || val === undefined;
 
+    const validation = item => {
+        let success = true;
+        setErrors(() => {
+            let tempObj = {};
+            Object.entries(item).map(keyAndVal => {
+                tempObj = {
+                    ...errors,
+                    [item.id]: {
+                        ...item,
+                        [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                    },
+                };
+            });
+
+            return tempObj;
+        });
+
+        const arr = Object.values(item);
+        arr.map(val => {
+            if (isFieldEmpty(val)) {
+                success = false;
+            }
+        });
+        return success;
+    };
+
+    const onClickSave = sku => {
+        tempData.map(item => {
+            if (item.sku === sku) {
+                if (validation(item)) {
+                    updateKaspiProduct(
+                        item,
+                        () => fetchKaspiProducts(),
+                        clearKaspiProducts(),
+                    );
+                }
+            }
+        });
+    };
+
+    const onChangeData = (fieldName, data, value) => {
+        setTempData(
+            tempData.map(el => {
+                if (el.sku === data.sku) {
+                    switch (fieldName) {
+                        case 'brand':
+                            return { ...el, brand: value };
+                        case 'company':
+                            return { ...el, company: value };
+                        case 'model':
+                            return { ...el, model: value };
+                        case 'price':
+                            return { ...el, price: value };
+                        default:
+                            break;
+                    }
+                } else {
+                    return { ...el };
+                }
+            }),
+        );
+    };
+
+    const cellInput = (fieldName, data) => {
         switch (fieldName) {
             case 'brand':
                 return data.edit ? (
@@ -128,9 +190,9 @@ const KaspiProducts = props => {
                         options={brandListOptions}
                         selection
                         value={data.brand}
-                        // onChange={(e, { value }) =>
-                        //     onChangeInput('nameEn', original, value)
-                        // }
+                        onChange={(e, { value }) =>
+                            onChangeData('brand', data, value)
+                        }
                     />
                 ) : (
                     <div>{data.brand}</div>
@@ -141,9 +203,9 @@ const KaspiProducts = props => {
                         options={companyListOptions}
                         selection
                         value={data.company}
-                        // onChange={(e, { value }) =>
-                        //     onChangeInput('nameEn', original, value)
-                        // }
+                        onChange={(e, { value }) =>
+                            onChangeData('company', data, value)
+                        }
                     />
                 ) : (
                     <div>{data.company}</div>
@@ -152,9 +214,9 @@ const KaspiProducts = props => {
                 return data.edit ? (
                     <Input
                         value={data.model}
-                        // onChange={(e, { value }) =>
-                        //     onChangeInput('nameEn', original, value)
-                        // }
+                        onChange={(e, { value }) =>
+                            onChangeData('model', data, value)
+                        }
                     />
                 ) : (
                     <div>{data.model}</div>
@@ -163,9 +225,9 @@ const KaspiProducts = props => {
                 return data.edit ? (
                     <Input
                         value={data.price}
-                        // onChange={(e, { value }) =>
-                        //     onChangeInput('nameEn', original, value)
-                        // }
+                        onChange={(e, { value }) =>
+                            onChangeData('price', data, value)
+                        }
                     />
                 ) : (
                     <div>{data.price}</div>
@@ -181,7 +243,10 @@ const KaspiProducts = props => {
             Header: 'SKU',
             accessor: 'sku',
             filterable: true,
-            Cell: ({ original }) => <div>{original.sku}</div>,
+
+            Cell: ({ original }) => (
+                <div style={{ width: 50 }}>{original.sku}</div>
+            ),
         },
         {
             Header: 'Бренд',
@@ -228,7 +293,12 @@ const KaspiProducts = props => {
                         content="Редактировать"
                         trigger={
                             original.edit ? (
-                                <Button icon="save" circular color="blue" />
+                                <Button
+                                    icon="save"
+                                    circular
+                                    color="blue"
+                                    onClick={() => onClickSave(original.sku)}
+                                />
                             ) : (
                                 <Button
                                     icon="pencil"
@@ -305,9 +375,6 @@ const KaspiProducts = props => {
                 storeList={storeList}
                 availabilitiesOptions={availabilitiesOptions}
                 rowData={rowData}
-                save={data => {
-                    console.log('DATA', data);
-                }}
             />
             <Segment>
                 <div

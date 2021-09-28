@@ -69,14 +69,6 @@ const KaspiStore = props => {
             return tempObj;
         });
 
-        // temporaryObj = {
-        //     ...errors,
-        //     [item.branchId]: {
-        //         ...item,
-        //         [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
-        //     },
-        // };
-
         const arr = Object.values(item);
         arr.map(val => {
             if (isFieldEmpty(val)) {

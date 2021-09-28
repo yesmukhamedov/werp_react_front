@@ -20,39 +20,33 @@ export function handleError(error, dispatch) {
 
     if (error.response) {
         // Status 403: Запрещено
+        let message =
+            error.response.data.message || error.response.data.messages;
         if (error.response.status && error.response.status === 403) {
-            dispatch(
-                notify(
-                    'error',
-                    error.response.data.message,
-                    errorTable[`132${language}`],
-                ),
-            );
+            dispatch(notify('error', message, errorTable[`132${language}`]));
         }
         // Status 500: Внутренняя ошибка сервера
         else if (error.response.status && error.response.status === 500) {
-            dispatch(
-                notify(
-                    'error',
-                    error.response.data.message,
-                    'Внутренняя ошибка сервера!',
-                ),
-            );
+            let message =
+                error.response.data.message || error.response.data.messages;
+            dispatch(notify('error', message, 'Внутренняя ошибка сервера!'));
         }
         // Status 400: Плохой запрос
         else if (error.response.status && error.response.status === 400) {
-            if (error.response.data.messages) {
-                let message = error.response.data.messages;
-                dispatch(notify('error', message.address, 'Плохой запрос!'));
+            let message =
+                error.response.data.message || error.response.data.messages;
+            if (message) {
+                dispatch(notify('error', message, 'Плохой запрос!'));
             } else {
                 dispatch(notify('error', 'Плохой запрос.', 'Плохой запрос!'));
             }
         }
         // Status 404: Не найден
         else if (error.response.status && error.response.status === 404) {
-            if (error.response.data.messages) {
-                let message = error.response.data.messages;
-                dispatch(notify('error', message.address, 'Не найден!'));
+            let message =
+                error.response.data.message || error.response.data.messages;
+            if (message) {
+                dispatch(notify('error', message, 'Не найден!'));
             } else {
                 dispatch(
                     notify(
@@ -63,17 +57,34 @@ export function handleError(error, dispatch) {
                 );
             }
         }
+        // Status 406: Не найден
+        else if (error.response.status && error.response.status === 406) {
+            let message =
+                error.response.data.message || error.response.data.messages;
+            if (message) {
+                dispatch(notify('error', message, 'Недопустимо!'));
+            } else {
+                dispatch(
+                    notify('error', '406 Not Acceptable!', 'Недопустимо!'),
+                );
+            }
+        }
         // Status 401: Неавторизованно
         else if (error.response.status && error.response.status === 401) {
-            dispatch(clearUserAuth());
-        } else
-            dispatch(
-                notify(
-                    'error',
-                    'Для получения запрашиваемого ответа нужна аутентификация.',
-                    'Неавторизованно!',
-                ),
-            );
+            let message =
+                error.response.data.message || error.response.data.messages;
+            if (message) {
+                dispatch(notify('error', message, 'Неавторизованно!'));
+            } else {
+                dispatch(
+                    notify(
+                        'error',
+                        'Для получения запрашиваемого ответа нужна аутентификация.',
+                        'Неавторизованно!',
+                    ),
+                );
+            }
+        }
     } else {
         // const name = getNestedObject(error, ['error', 'response']);
 

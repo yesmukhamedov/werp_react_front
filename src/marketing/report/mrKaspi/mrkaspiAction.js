@@ -34,12 +34,11 @@ export const fetchKaspiProducts = () => {
     };
 };
 
-// Изме`нить товар в Каспи
-export const updateKaspiProduct = (body, getList) => {
+// Добавить товар в Каспи
+export const createKaspiProduct = (body, getList) => {
     return function(dispatch) {
-        console.log('OOOK');
         dispatch(modifyLoader(true));
-        doPut(`core/marketing/kaspi`, body)
+        doPost(`core/marketing/kaspi`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();
@@ -51,11 +50,12 @@ export const updateKaspiProduct = (body, getList) => {
     };
 };
 
-// Добавить товар в Каспи
-export const createKaspiProduct = (body, getList) => {
+// Изменить товар в Каспи
+export const updateKaspiProduct = (body, getList) => {
     return function(dispatch) {
+        console.log('OOOK');
         dispatch(modifyLoader(true));
-        doPost(`core/marketing/kaspi`, body)
+        doPut(`core/marketing/kaspi`, body)
             .then(({ data }) => {
                 dispatch(modifyLoader(false));
                 getList();
@@ -116,7 +116,6 @@ export const fetchStoreList = () => {
 // Добавить пункт выдачи
 export const creatStore = (body, getList) => {
     return function(dispatch) {
-        console.log('creatStore ACTION2');
         dispatch(modifyLoader(true));
         doPost(`core/marketing/kaspi/store`, body)
             .then(({ data }) => {
