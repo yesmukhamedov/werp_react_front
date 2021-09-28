@@ -33,6 +33,7 @@ const Mpr = props => {
         key: item.business_area_id,
         text: item.name,
         value: item.business_area_id,
+        bukrs: item.bukrs,
     }));
 
     useEffect(() => {

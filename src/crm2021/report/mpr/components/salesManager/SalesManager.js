@@ -92,7 +92,10 @@ const SalesManager = props => {
     };
 
     const getBranches = () => {
-        if (filterParams.companyIds.length === 0) {
+        if (
+            filterParams.companyIds.length === 0 ||
+            filterParams.businessAreaIds.length === 0
+        ) {
             return [];
         }
 
@@ -109,6 +112,19 @@ const SalesManager = props => {
         setErrors(errors);
 
         return !Object.values(errors).includes(true);
+    };
+
+    const getBusinessAreas = () => {
+        if (filterParams.companyIds.length === 0) {
+            return [];
+        }
+
+        const newBusinessArea = filterParams.companyIds
+            .map(id => {
+                return businessAreasOptions.find(area => area.bukrs === id);
+            })
+            .filter(item => item);
+        return newBusinessArea.flat();
     };
 
     return (
@@ -139,7 +155,7 @@ const SalesManager = props => {
                     />
                     <Form.Select
                         fluid
-                        options={businessAreasOptions}
+                        options={getBusinessAreas()}
                         label="Бизнес Сфера"
                         placeholder="Бизнес Сфера"
                         name="businessAreaIds"

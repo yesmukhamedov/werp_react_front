@@ -125,6 +125,7 @@ export function fetchVisitRecos(visitId) {
         dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
         doGet(`crm2/wspace/visit-recommends/${visitId}`)
             .then(({ data }) => {
+                console.log('RECEIVED DATA: ', data);
                 dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
                 dispatch({
                     type: WSP_FETCH_VISIT_RECOS,
