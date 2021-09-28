@@ -25,8 +25,6 @@ const ModalAvailabilities = props => {
         rowData,
     } = props;
 
-    // console.log('availabilitiesOptions', availabilitiesOptions);
-
     const [changedAvail, setChangedAvail] = useState([]);
     const [tempProducts, setTempProducts] = useState([]);
     const [tempOneProduct, setTempOneProduct] = useState([]);
@@ -60,7 +58,6 @@ const ModalAvailabilities = props => {
             brand: tempOneProduct.brand,
             availabilities: changedAvail,
         };
-        console.log('changedProduct', changedProduct);
 
         updateKaspiProduct(changedProduct, () => {
             close();
@@ -68,8 +65,6 @@ const ModalAvailabilities = props => {
             fetchKaspiProducts();
         });
     };
-    console.log('changedAvail', changedAvail);
-    console.log('tempOneProduct', tempOneProduct);
 
     return (
         <Modal closeIcon open={open} onClose={close}>

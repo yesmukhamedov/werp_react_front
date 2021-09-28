@@ -51,9 +51,6 @@ export default function ModalAddProduct(props) {
     const [tempKaspiProduct, setTempKaspiProduct] = useState(initialProducts);
     const [errors, setErrors] = useState([]);
 
-    console.log('tempKaspiProduct', tempKaspiProduct);
-    // console.log('storeListTemp', storeListTemp);
-
     const onChangeAdd = (fieldName, value, id) => {
         switch (fieldName) {
             case 'sku':
@@ -155,13 +152,46 @@ export default function ModalAddProduct(props) {
         };
     });
 
-    const onClickSave = () => {
-        createKaspiProduct(tempKaspiProduct, () => {
-            clearKaspiProducts();
-            fetchKaspiProducts();
-            close();
-            window.location.reload();
+    const isFieldEmpty = val => val === '' || val === null || val === undefined;
+
+    const validation = item => {
+        let newObj = {
+            sku: item.sku,
+            brand: item.brand,
+            company: item.company,
+            model: item.model,
+        };
+
+        let success = true;
+        setErrors(() => {
+            let tempObj = {};
+            Object.entries(newObj).map(keyAndVal => {
+                tempObj = {
+                    ...tempObj,
+                    [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
+                };
+            });
+            return tempObj;
         });
+
+        const arr = Object.values(item);
+        arr.map(val => {
+            if (isFieldEmpty(val)) {
+                success = false;
+            }
+        });
+        return success;
+    };
+
+    const onClickSave = () => {
+        if (validation(tempKaspiProduct)) {
+            createKaspiProduct(tempKaspiProduct, () => {
+                clearKaspiProducts();
+                fetchKaspiProducts();
+                close();
+                window.location.reload();
+            });
+        }
     };
 
     return (
@@ -169,17 +199,18 @@ export default function ModalAddProduct(props) {
             <Header content="Добавление" />
             <Modal.Content>
                 <Form>
-                    <Form.Field>
+                    <Form.Field error={errors.sku}>
                         <label>ID</label>
                         <Input
                             type="text"
+                            error={errors.sku}
                             onChange={(e, { value }) =>
                                 onChangeAdd('sku', value)
                             }
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.brand}>
                         <label>Бренд</label>
                         <Dropdown
                             options={brandListOptions}
@@ -192,7 +223,7 @@ export default function ModalAddProduct(props) {
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.company}>
                         <label>Компания</label>
                         <Dropdown
                             options={companyListOptions}
@@ -205,7 +236,7 @@ export default function ModalAddProduct(props) {
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.model}>
                         <label>Модель</label>
                         <Input
                             type="text"
@@ -215,7 +246,7 @@ export default function ModalAddProduct(props) {
                         />
                     </Form.Field>
 
-                    <Form.Field>
+                    <Form.Field error={errors.price}>
                         <label>Цена</label>
                         <Input
                             type="number"
