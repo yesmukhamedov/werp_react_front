@@ -78,7 +78,7 @@ const mapStateToProps = state => {
         language: state.locales.lang,
         countries: state.f4.countryList,
         companies: state.userInfo.companyOptions,
-        branches: state.userInfo.branchOptionsService,
+        branches: state.userInfo.branchOptionsAll,
         highestDemoAchievers: state.crmMpr2021Reducer.highestDemoAchievers,
         highestDemoProducers: state.crmMpr2021Reducer.highestDemoProducers,
         highestSalesAchievers: state.crmMpr2021Reducer.highestSalesAchievers,

@@ -963,5 +963,10 @@
     "bonuses_of_the_operators": "Bonuses of the operators",
     "bonuses_of_the_operators_by_harvesting_systems": "Bonuses of the operators by harvesting systems",
     "bonuses_of_the_senior_operator": "Bonuses of the senior operator",
-    "call_history": "Call history"
+    "call_history": "Call history",
+    "release_log": "Release log",
+    "search_by_release_description": "Search by release description",
+    "version": "Version",
+    "creating_release": "Creating a release",
+    "editing_release": "Editing a release"
 }

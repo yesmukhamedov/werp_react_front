@@ -962,5 +962,10 @@
     "bonuses_of_the_operators_by_harvesting_systems": "Бонусы операторов по уборочной системе",
     "bonuses_of_the_senior_operator": "Бонусы старшего оператора",
     "subject_of_appeal": "Тема обращения",
-    "call_history": "История звонка"
+    "call_history": "История звонка",
+    "release_log": "Журнал релизов",
+    "search_by_release_description": "Поиск по описанию релиза",
+    "version": "Версия",
+    "creating_release": "Добавление релиза",
+    "editing_release": "Редактирование релиза"
 }

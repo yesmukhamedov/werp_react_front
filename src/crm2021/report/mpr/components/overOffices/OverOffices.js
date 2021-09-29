@@ -91,15 +91,16 @@ const OverOffices = props => {
     };
 
     const getBranches = () => {
-        if (
-            filterParams.companyIds.length === 0 ||
-            filterParams.businessAreaIds.length === 0
-        ) {
+        if (filterParams.businessAreaIds.length === 0) {
             return [];
         }
 
-        const newBranches = filterParams.companyIds
-            .map(id => branches[id])
+        const newBranches = filterParams.businessAreaIds
+            .map(id =>
+                Object.values(branches)
+                    .flat()
+                    .find(({ businessareaid }) => businessareaid === id),
+            )
             .filter(item => item);
         return newBranches.flat();
     };
