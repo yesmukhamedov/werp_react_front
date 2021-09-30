@@ -12,6 +12,8 @@ import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import ModalAvailabilities from './ModalAvailabilities';
 import ModalAddProduct from './ModalAddProduct';
 import '../../style.css';
+import { doGet } from '../../../../../utils/apiActions';
+// import { saveAs } from '../../FileSaver/dist/FileSaver';
 
 const KaspiProducts = props => {
     const {
@@ -240,13 +242,10 @@ const KaspiProducts = props => {
 
     const columns = [
         {
-            Header: 'SKU',
-            accessor: 'sku',
+            Header: 'Компания',
+            accessor: 'company',
             filterable: true,
-
-            Cell: ({ original }) => (
-                <div style={{ width: 50 }}>{original.sku}</div>
-            ),
+            Cell: ({ original }) => cellInput('company', original),
         },
         {
             Header: 'Бренд',
@@ -255,11 +254,15 @@ const KaspiProducts = props => {
             Cell: ({ original }) => cellInput('brand', original),
         },
         {
-            Header: 'Компания',
-            accessor: 'company',
+            Header: 'SKU',
+            accessor: 'sku',
             filterable: true,
-            Cell: ({ original }) => cellInput('company', original),
+
+            Cell: ({ original }) => (
+                <div style={{ width: 50 }}>{original.sku}</div>
+            ),
         },
+
         {
             Header: 'Модель',
             accessor: 'model',
@@ -335,7 +338,7 @@ const KaspiProducts = props => {
     const availabilitiesOptions = [
         {
             key: 1,
-            text: '',
+            text: 'Выберите',
             value: '',
         },
         {
@@ -349,6 +352,13 @@ const KaspiProducts = props => {
             value: false,
         },
     ];
+
+    const getProductsXml = () => {
+        let url = 'core/marketing/kaspi/xml?company=LUXTECH';
+        doGet(url).then(({ data }) => {
+            console.log(data);
+        });
+    };
 
     return (
         <div>
@@ -371,7 +381,7 @@ const KaspiProducts = props => {
                 clearKaspiProducts={clearKaspiProducts}
                 fetchKaspiProducts={fetchKaspiProducts}
                 rowAvails={avails}
-                tempData={tempData}
+                // tempData={tempData}
                 storeList={storeList}
                 availabilitiesOptions={availabilitiesOptions}
                 rowData={rowData}
@@ -387,7 +397,9 @@ const KaspiProducts = props => {
                 >
                     <h3>Список товаров kaspi.kz</h3>
                     <div>
-                        <Button color="teal">Export to XML</Button>
+                        <Button color="teal" onClick={() => getProductsXml()}>
+                            Export to XML
+                        </Button>
                         <Button
                             color="green"
                             onClick={() => setOpenModal(true)}

@@ -50,6 +50,8 @@ export default function ModalAddProduct(props) {
     const [storeListTemp, setStoreListTemp] = useState([]);
     const [tempKaspiProduct, setTempKaspiProduct] = useState(initialProducts);
     const [errors, setErrors] = useState([]);
+    const [emptyStore, setEmptyStore] = useState(false);
+    const [emptyAvail, setEmptyAvail] = useState(false);
 
     const onChangeAdd = (fieldName, value, id) => {
         switch (fieldName) {
@@ -165,7 +167,7 @@ export default function ModalAddProduct(props) {
         let success = true;
         setErrors(() => {
             let tempObj = {};
-            Object.entries(newObj).map(keyAndVal => {
+            Object.entries(item).map(keyAndVal => {
                 tempObj = {
                     ...tempObj,
                     [keyAndVal[0]]: isFieldEmpty(keyAndVal[1]),
@@ -180,6 +182,26 @@ export default function ModalAddProduct(props) {
                 success = false;
             }
         });
+
+        //check array availabilities is empty or not
+        if (item.availabilities.length < 1) {
+            success = false;
+            setEmptyStore(true);
+        } else {
+            setEmptyStore(false);
+        }
+
+        //check available is empty or not
+        const avails = item.availabilities;
+        avails.map(avail => {
+            if (avail.available === '') {
+                success = false;
+                setEmptyAvail(true);
+            } else {
+                setEmptyAvail(false);
+            }
+        });
+
         return success;
     };
 
@@ -193,6 +215,8 @@ export default function ModalAddProduct(props) {
             });
         }
     };
+
+    // console.log("tempKaspiProduct",tempKaspiProduct);
 
     return (
         <Modal closeIcon open={open} onClose={close}>
@@ -262,8 +286,30 @@ export default function ModalAddProduct(props) {
                                 <Table.HeaderCell></Table.HeaderCell>
                                 <Table.HeaderCell>
                                     Пункт выдачи
+                                    <h4
+                                        style={{
+                                            color: 'red',
+                                            display: emptyStore
+                                                ? 'block'
+                                                : 'none',
+                                        }}
+                                    >
+                                        Выберите пункт выдачи
+                                    </h4>
                                 </Table.HeaderCell>
-                                <Table.HeaderCell>В наличии</Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    В наличии
+                                    <h4
+                                        style={{
+                                            color: 'red',
+                                            display: emptyAvail
+                                                ? 'block'
+                                                : 'none',
+                                        }}
+                                    >
+                                        Выберите "есть" или "нет"
+                                    </h4>
+                                </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -290,6 +336,7 @@ export default function ModalAddProduct(props) {
                                             selection
                                             selectOnBlur={false}
                                             options={availabilitiesOptions}
+                                            // defaultValue={true}
                                             onChange={(e, { value }) =>
                                                 onChangeAdd(
                                                     'available',

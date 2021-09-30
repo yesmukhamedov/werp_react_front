@@ -28,21 +28,40 @@ const ModalAvailabilities = props => {
     const [changedAvail, setChangedAvail] = useState([]);
     const [tempProducts, setTempProducts] = useState([]);
     const [tempOneProduct, setTempOneProduct] = useState([]);
+    const [emptyAvail, setEmptyAvail] = useState(false);
+    const [boolArr, setBoolArr] = useState([]);
 
-    useEffect(() => {
-        setChangedAvail(rowAvails);
-    }, [rowAvails]);
-
-    useEffect(() => {
-        setTempProducts(tempData);
-    }, [tempData]);
-
-    useEffect(() => {
-        setTempOneProduct(rowData);
-    }, [rowData]);
+    useEffect(
+        () => {
+            setChangedAvail(rowAvails);
+            setTempProducts(tempData);
+            setTempOneProduct(rowData);
+        },
+        [rowAvails],
+        [tempData],
+        [rowData],
+    );
 
     let sku = rowAvails.map(item => item.sku);
-    // sku = sku.toString();
+
+    console.log('tempOneProduct', tempOneProduct);
+    console.log('changedAvail', changedAvail);
+
+    const validation = item => {
+        let success = true;
+
+        //check available is empty or not
+        item.availabilities.map(avail => {
+            if (avail.available === '' || avail.available === null) {
+                success = false;
+                setEmptyAvail(true);
+            } else {
+                setEmptyAvail(false);
+            }
+        });
+
+        return success;
+    };
 
     const onClickSave = () => {
         setTempOneProduct({
@@ -58,24 +77,36 @@ const ModalAvailabilities = props => {
             brand: tempOneProduct.brand,
             availabilities: changedAvail,
         };
-
-        updateKaspiProduct(changedProduct, () => {
-            close();
-            clearKaspiProducts();
-            fetchKaspiProducts();
-        });
+        if (validation(changedProduct)) {
+            updateKaspiProduct(changedProduct, () => {
+                close();
+                clearKaspiProducts();
+                fetchKaspiProducts();
+            });
+        }
     };
 
     return (
         <Modal closeIcon open={open} onClose={close}>
             <Header content="Пункты выдачи" />
             <Modal.Content>
+                Товар {sku[0]}
                 <Table>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>ID</Table.HeaderCell>
                             <Table.HeaderCell>Пункт выдачи</Table.HeaderCell>
-                            <Table.HeaderCell>В наличии</Table.HeaderCell>
+                            <Table.HeaderCell>
+                                В наличии
+                                <h4
+                                    style={{
+                                        color: 'red',
+                                        display: emptyAvail ? 'block' : 'none',
+                                    }}
+                                >
+                                    Выберите "есть" или "нет"
+                                </h4>
+                            </Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
 

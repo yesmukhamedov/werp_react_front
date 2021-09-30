@@ -53,7 +53,6 @@ export const createKaspiProduct = (body, getList) => {
 // Изменить товар в Каспи
 export const updateKaspiProduct = (body, getList) => {
     return function(dispatch) {
-        console.log('OOOK');
         dispatch(modifyLoader(true));
         doPut(`core/marketing/kaspi`, body)
             .then(({ data }) => {
