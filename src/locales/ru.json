@@ -354,7 +354,7 @@
     "Crm.CurrentRecommendations": "Текущие рекомендации",
     "Crm.Used": "Использованные",
     "Crm.New": "Новые",
-    "Crm.DemoDone": "Пройденные (для перезвона)",
+    "Crm.DemoDone": "Пройденные Демо",
     "Crm.Moved": "Перенесенные",
     "awkey": "Ссылка на документ",
     "awtyp": "Тип операции(Клиент, Поставщик)",
@@ -365,7 +365,7 @@
     "brnch": "Филиал",
     "budat": "Дата проводки",
     "bukrs": "Компания",
-    "business_area": "Бинзесс сфера",
+    "business_area": "Бизнес сфера",
     "contract_number": "SN номер",
     "customer_id": "Контрагент ID",
     "gjahr": "Год",
@@ -860,6 +860,7 @@
     "cartrige_change_plan": "План по замене картриджей",
     "rescheduled_applications": "Перенесенные заявки",
     "assigned_calls": "Назначенные звонки",
+    "assigned": "Назначенные",
     "my_outgoing_app": "Мои заявки исход",
     "service_period": "Срок сервиса",
     "appointment_date": "Дата назначения",
@@ -961,5 +962,10 @@
     "bonuses_of_the_operators_by_harvesting_systems": "Бонусы операторов по уборочной системе",
     "bonuses_of_the_senior_operator": "Бонусы старшего оператора",
     "subject_of_appeal": "Тема обращения",
-    "call_history": "История звонка"
+    "call_history": "История звонка",
+    "release_log": "Журнал релизов",
+    "search_by_release_description": "Поиск по описанию релиза",
+    "version": "Версия",
+    "creating_release": "Добавление релиза",
+    "editing_release": "Редактирование релиза"
 }

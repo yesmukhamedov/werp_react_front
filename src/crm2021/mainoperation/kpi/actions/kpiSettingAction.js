@@ -19,6 +19,7 @@ export const fetchItems = params => {
         dispatch(modifyLoader(true));
         doGet(`crm2/kpi-setting`, params)
             .then(({ data }) => {
+                console.log('DATA: ', data);
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: CRM_KPI_FETCH_ITEMS,
@@ -26,6 +27,7 @@ export const fetchItems = params => {
                 });
             })
             .catch(e => {
+                console.log('DATA Error: ', e);
                 dispatch(modifyLoader(false));
                 handleError(e, dispatch);
             });

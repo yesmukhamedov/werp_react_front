@@ -81,6 +81,7 @@ import ccrefReducer from '../callcenter/reference/ccrefReducer';
 import werpreferenceReducer from '../dit/werpreference/werpreferenceReducers';
 import crmMpr2021Reducer from '../crm2021/report/mpr/reducer';
 import mrkaspiReducer from '../marketing/report/mrKaspi/mrkaspiReducer';
+import crmReleaseLog2021Reducer from '../crm2021/mainoperation/release/reducer';
 
 const appReducer = combineReducers({
     form,
@@ -162,7 +163,8 @@ const appReducer = combineReducers({
     crmKpiSetting2021: kpiSettingReducer2021,
     ccrefReducer,
     werpreferenceReducer,
-    mrkaspiReducer,
+    crmMpr2021Reducer,
+    crmReleaseLog2021Reducer,
 });
 
 const rootReducer = (state, action) => {

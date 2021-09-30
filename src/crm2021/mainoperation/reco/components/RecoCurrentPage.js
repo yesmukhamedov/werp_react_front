@@ -57,7 +57,7 @@ class RecoCurrentPage extends Component {
     loadItems() {}
 
     componentWillMount() {
-        this.props.fetchRecoCurrentData('used');
+        this.props.fetchRecoCurrentData('all');
         this.props.fetchRecoCurrentData('new');
         this.props.fetchRecoCurrentData('demo-done');
         this.props.fetchRecoCurrentData('moved');
@@ -214,6 +214,10 @@ class RecoCurrentPage extends Component {
                                 ),
                         },
                         {
+                            Header: messages.L__CREATE_DATE,
+                            accessor: 'createdAt',
+                        },
+                        {
                             Header: messages['Table.ResponsibleStaff'],
                             accessor: 'responsibleName',
                         },
@@ -357,13 +361,13 @@ class RecoCurrentPage extends Component {
     render() {
         const { messages } = this.props.intl;
         const panes = [
-            { menuItem: messages['Crm.Used'], render: this.renderTabUsed },
             { menuItem: messages['Crm.New'], render: this.renderTabNew },
+            { menuItem: messages['all'], render: this.renderTabUsed },
             {
                 menuItem: messages['Crm.DemoDone'],
                 render: this.renderTabDemoDone,
             },
-            { menuItem: messages['Crm.Moved'], render: this.renderTableMoved },
+            { menuItem: messages['assigned'], render: this.renderTableMoved },
         ];
         return (
             <Container

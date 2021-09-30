@@ -1,10 +1,14 @@
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Divider, Button, Form, Dropdown, Input } from 'semantic-ui-react';
-import { f4FetchCountryList } from '../../../../../reference/f4/f4_action';
+import { Form } from 'semantic-ui-react';
 import Table from './Table';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import {
+    momentToStringYYYYMMDD,
+    stringYYYYMMDDToMoment,
+} from '../../../../../utils/helpers';
+import { fetchHighestSalesAchievers } from '../../action';
 
 const HighestSalesAchievers = props => {
     const {
@@ -13,20 +17,26 @@ const HighestSalesAchievers = props => {
         countriesOptions = [],
         companies = [],
         branches = [],
+        highestSalesAchievers = [],
+        businessAreasOptions = [],
     } = props;
 
     const [filterParams, setFilterParams] = useState({
-        bukrs: null,
-        branchId: null,
-        countryId: null,
-        periodOfSalesFrom: null,
-        periodOfSalesTo: null,
+        companyIds: [],
+        branchIds: [],
+        countryIds: [],
+        businessAreaIds: [],
+        dateFrom: null,
+        dateTo: null,
+        qtyFrom: 0,
+        qtyTo: 0,
     });
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        props.f4FetchCountryList();
-    }, []);
+    const [exportToExcelLoading, setExportToExcelLoading] = useState(false);
+    const [errors, setErrors] = useState({
+        dateFrom: false,
+        dateTo: false,
+    });
 
     const handleChange = (e, data) => {
         const { name, value } = data;
@@ -37,16 +47,88 @@ const HighestSalesAchievers = props => {
     };
 
     const search = () => {
-        setLoading(true);
+        if (validation()) {
+            setLoading(true);
+            const joinIds = {
+                ...filterParams,
+                companyIds: filterParams.companyIds.join(),
+                branchIds: filterParams.branchIds.join(),
+                countryIds: filterParams.countryIds.join(),
+                businessAreaIds: filterParams.businessAreaIds.join(),
+            };
+            props.fetchHighestSalesAchievers(joinIds, () => {
+                setLoading(false);
+            });
+        }
+    };
+
+    const exportToExcel = () => {
+        if (validation()) {
+            setExportToExcelLoading(true);
+            const joinIds = {
+                ...filterParams,
+                companyIds: filterParams.companyIds.join(),
+                branchIds: filterParams.branchIds.join(),
+                countryIds: filterParams.countryIds.join(),
+                businessAreaIds: filterParams.businessAreaIds.join(),
+                toExcel: true,
+            };
+            props.fetchHighestSalesAchievers(joinIds, () => {
+                setExportToExcelLoading(false);
+            });
+        }
     };
 
     const clearFilterParams = () =>
         setFilterParams({
-            bukrs: null,
-            branchId: null,
-            countryId: null,
-            periodOfSales: null,
+            companyIds: [],
+            branchIds: [],
+            countryIds: [],
+            businessAreaIds: [],
+            dateFrom: null,
+            dateTo: null,
+            qtyFrom: 0,
+            qtyTo: 0,
         });
+
+    const getBranches = () => {
+        if (filterParams.businessAreaIds.length === 0) {
+            return [];
+        }
+
+        const newBranches = filterParams.businessAreaIds
+            .map(id =>
+                Object.values(branches)
+                    .flat()
+                    .find(({ businessareaid }) => businessareaid === id),
+            )
+            .filter(item => item);
+        return newBranches.flat();
+    };
+
+    const validation = () => {
+        const { dateFrom, dateTo } = filterParams;
+        const errors = {
+            dateFrom: dateFrom === '' || dateFrom === null,
+            dateTo: dateTo === '' || dateTo === null,
+        };
+        setErrors(errors);
+
+        return !Object.values(errors).includes(true);
+    };
+
+    const getBusinessAreas = () => {
+        if (filterParams.companyIds.length === 0) {
+            return [];
+        }
+
+        const newBusinessArea = filterParams.companyIds
+            .map(id => {
+                return businessAreasOptions.find(area => area.bukrs === id);
+            })
+            .filter(item => item);
+        return newBusinessArea.flat();
+    };
 
     return (
         <>
@@ -57,37 +139,44 @@ const HighestSalesAchievers = props => {
                         options={countriesOptions}
                         label={messages['country']}
                         placeholder={messages['country']}
-                        name="countryId"
-                        onChange={handleChange.bind()}
-                        value={filterParams.countryId}
+                        name="countryIds"
+                        onChange={handleChange}
+                        value={filterParams.countryIds}
+                        multiple
+                        selection
                     />
                     <Form.Select
                         fluid
                         options={companies}
                         label={messages['L__COMPANY']}
                         placeholder={messages['L__COMPANY']}
-                        name="bukrs"
-                        onChange={handleChange.bind()}
-                        value={filterParams.bukrs}
+                        name="companyIds"
+                        onChange={handleChange}
+                        value={filterParams.companyIds}
+                        multiple
+                        selection
                     />
                     <Form.Select
                         fluid
-                        options={companies}
+                        options={getBusinessAreas()}
                         label="Бизнес Сфера"
                         placeholder="Бизнес Сфера"
+                        name="businessAreaIds"
+                        onChange={handleChange}
+                        value={filterParams.businessAreaIds}
+                        multiple
+                        selection
                     />
                     <Form.Select
                         fluid
-                        options={
-                            filterParams.bukrs
-                                ? branches[filterParams.bukrs]
-                                : []
-                        }
+                        options={getBranches()}
                         label={messages['branches']}
                         placeholder={messages['branches']}
-                        name="branchId"
-                        onChange={handleChange.bind()}
-                        value={filterParams.branchId}
+                        name="branchIds"
+                        onChange={handleChange}
+                        value={filterParams.branchIds}
+                        multiple
+                        selection
                     />
                 </Form.Group>
                 <Form.Group>
@@ -95,45 +184,69 @@ const HighestSalesAchievers = props => {
                         label="Количество продаж от"
                         placeholder="Количество демо от"
                         width={4}
+                        name="qtyFrom"
+                        onChange={handleChange}
+                        value={filterParams.qtyFrom}
+                        type="number"
                     />
                     <Form.Input
                         label="Количество продаж до"
                         placeholder="Количество демо до"
                         width={4}
+                        name="qtyTo"
+                        onChange={handleChange}
+                        value={filterParams.qtyTo}
+                        type="number"
                     />
-                    <Form.Field>
+                    <Form.Field required error={errors.dateFrom}>
                         <label>Период продаж с</label>
                         <DatePicker
                             locale={language}
-                            selected={filterParams.periodOfSalesFrom}
+                            selected={stringYYYYMMDDToMoment(
+                                filterParams.dateFrom,
+                            )}
                             readOnly
                             onChange={date =>
                                 setFilterParams(prev => ({
                                     ...prev,
-                                    periodOfSalesFrom: date,
+                                    dateFrom: momentToStringYYYYMMDD(date),
                                 }))
                             }
                             selectsStart
-                            startDate={filterParams.periodOfSalesFrom}
-                            endDate={filterParams.periodOfSalesTo}
+                            startDate={stringYYYYMMDDToMoment(
+                                filterParams.dateFrom,
+                            )}
+                            endDate={stringYYYYMMDDToMoment(
+                                filterParams.dateTo,
+                            )}
+                            dateFormat="YYYY-MM-DD"
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field required error={errors.dateTo}>
                         <label>Период продаж до</label>
                         <DatePicker
                             locale={language}
-                            selected={filterParams.periodOfSalesTo}
+                            selected={stringYYYYMMDDToMoment(
+                                filterParams.dateTo,
+                            )}
                             readOnly
                             onChange={date =>
                                 setFilterParams(prev => ({
                                     ...prev,
-                                    periodOfSalesTo: date,
+                                    dateTo: momentToStringYYYYMMDD(date),
                                 }))
                             }
                             selectsEnd
-                            startDate={filterParams.periodOfSalesFrom}
-                            endDate={filterParams.periodOfSalesTo}
-                            minDate={filterParams.periodOfSalesFrom}
+                            startDate={stringYYYYMMDDToMoment(
+                                filterParams.dateFrom,
+                            )}
+                            endDate={stringYYYYMMDDToMoment(
+                                filterParams.dateTo,
+                            )}
+                            minDate={stringYYYYMMDDToMoment(
+                                filterParams.dateFrom,
+                            )}
+                            dateFormat="YYYY-MM-DD"
                         />
                     </Form.Field>
                     <Form.Button
@@ -142,28 +255,30 @@ const HighestSalesAchievers = props => {
                         label="&nbsp;"
                         icon="search"
                         loading={loading}
-                        onClick={search.bind()}
+                        onClick={search}
                     />
                     <Form.Button
                         content={messages['clear']}
                         color="black"
                         label="&nbsp;"
                         icon="eraser"
-                        onClick={clearFilterParams.bind()}
+                        onClick={clearFilterParams}
                     />
                     <Form.Button
                         content={messages['export_to_excel']}
                         color="black"
                         label="&nbsp;"
                         icon="file excel outline"
+                        onClick={exportToExcel}
+                        loading={exportToExcelLoading}
                     />
                 </Form.Group>
             </Form>
-            <Table messages={messages} />
+            <Table messages={messages} data={highestSalesAchievers} />
         </>
     );
 };
 
 export default connect(null, {
-    f4FetchCountryList,
+    fetchHighestSalesAchievers,
 })(HighestSalesAchievers);
