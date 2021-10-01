@@ -21,6 +21,12 @@ import KaspiStore from './components/kaspiStore/KaspiStore';
 import './style.css';
 
 const Mrkaspi = props => {
+    const {
+        brandList = [],
+        storeList = [],
+        companyList = [],
+        kaspiProducts = [],
+    } = props;
     const panes = [
         {
             menuItem: 'Список товаров в Каспи',
@@ -30,15 +36,15 @@ const Mrkaspi = props => {
                         fetchKaspiProducts={props.fetchKaspiProducts}
                         createKaspiProduct={props.createKaspiProduct}
                         updateKaspiProduct={props.updateKaspiProduct}
-                        kaspiProducts={props.kaspiProducts}
+                        kaspiProducts={kaspiProducts}
                         clearKaspiProducts={props.clearKaspiProducts}
                         fetchStoreList={props.fetchStoreList}
-                        storeList={props.storeList}
+                        storeList={storeList}
                         clearStoreList={props.clearStoreList}
                         fetchKaspiBrands={props.fetchKaspiBrands}
-                        brandList={props.brandList}
+                        brandList={brandList}
                         fetchKaspiCompanies={props.fetchKaspiCompanies}
-                        companyList={props.companyList}
+                        companyList={companyList}
                         deleteProduct={props.deleteProduct}
                     />
                 </Tab.Pane>

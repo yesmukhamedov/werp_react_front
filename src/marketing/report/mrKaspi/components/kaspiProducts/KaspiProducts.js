@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Link } from 'react';
 import {
     Segment,
     Checkbox,
@@ -11,9 +11,8 @@ import {
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import ModalAvailabilities from './ModalAvailabilities';
 import ModalAddProduct from './ModalAddProduct';
+import ModalExport from './ModalExport';
 import '../../style.css';
-import { doGet } from '../../../../../utils/apiActions';
-// import { saveAs } from '../../FileSaver/dist/FileSaver';
 
 const KaspiProducts = props => {
     const {
@@ -34,6 +33,7 @@ const KaspiProducts = props => {
 
     const [tempData, setTempData] = useState([]);
     const [modalAvailabilities, setModalAvailabilities] = useState(false);
+    const [modalExport, setModalExport] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [avails, setAvails] = useState([]);
     const [rowData, setRowData] = useState([]);
@@ -353,15 +353,15 @@ const KaspiProducts = props => {
         },
     ];
 
-    const getProductsXml = () => {
-        let url = 'core/marketing/kaspi/xml?company=LUXTECH';
-        doGet(url).then(({ data }) => {
-            console.log(data);
-        });
-    };
+    const getProductsXml = () => {};
 
     return (
         <div>
+            <ModalExport
+                open={modalExport}
+                close={() => setModalExport(false)}
+                companyListOptions={companyListOptions}
+            />
             <ModalAddProduct
                 open={openModal}
                 close={() => setOpenModal(false)}
@@ -397,7 +397,10 @@ const KaspiProducts = props => {
                 >
                     <h3>Список товаров kaspi.kz</h3>
                     <div>
-                        <Button color="teal" onClick={() => getProductsXml()}>
+                        <Button
+                            color="teal"
+                            onClick={() => setModalExport(true)}
+                        >
                             Export to XML
                         </Button>
                         <Button

@@ -165,6 +165,7 @@ const appReducer = combineReducers({
     werpreferenceReducer,
     crmMpr2021Reducer,
     crmReleaseLog2021Reducer,
+    mrkaspiReducer,
 });
 
 const rootReducer = (state, action) => {

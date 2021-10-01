@@ -30,6 +30,7 @@ const ModalAvailabilities = props => {
     const [tempOneProduct, setTempOneProduct] = useState([]);
     const [emptyAvail, setEmptyAvail] = useState(false);
     const [boolArr, setBoolArr] = useState([]);
+    const [emptyStore, setEmptyStore] = useState(false);
 
     useEffect(
         () => {
@@ -44,21 +45,31 @@ const ModalAvailabilities = props => {
 
     let sku = rowAvails.map(item => item.sku);
 
-    console.log('tempOneProduct', tempOneProduct);
-    console.log('changedAvail', changedAvail);
-
     const validation = item => {
         let success = true;
 
-        //check available is empty or not
-        item.availabilities.map(avail => {
+        let filteredAvails = [];
+
+        item.availabilities.map((avail, index) => {
             if (avail.available === '' || avail.available === null) {
-                success = false;
-                setEmptyAvail(true);
             } else {
-                setEmptyAvail(false);
+                filteredAvails[index] = avail;
             }
+
+            // if (avail.available !== '' || avail.available !== null){
+            //     filteredAvails[index] = avail;
+            // }
         });
+
+        item.availabilities = filteredAvails;
+
+        if (item.availabilities.length < 1) {
+            success = false;
+            setEmptyStore(true);
+        } else {
+            setEmptyStore(false);
+            return item;
+        }
 
         return success;
     };
@@ -95,16 +106,16 @@ const ModalAvailabilities = props => {
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>ID</Table.HeaderCell>
-                            <Table.HeaderCell>Пункт выдачи</Table.HeaderCell>
+                            <Table.HeaderCell>Пункт выдачи </Table.HeaderCell>
                             <Table.HeaderCell>
                                 В наличии
                                 <h4
                                     style={{
                                         color: 'red',
-                                        display: emptyAvail ? 'block' : 'none',
+                                        display: emptyStore ? 'block' : 'none',
                                     }}
                                 >
-                                    Выберите "есть" или "нет"
+                                    Выберите хотя бы один пункт
                                 </h4>
                             </Table.HeaderCell>
                         </Table.Row>
@@ -115,6 +126,7 @@ const ModalAvailabilities = props => {
                             const value = changedAvail.find(
                                 ({ storeId }) => storeId === item.id,
                             );
+
                             return (
                                 <Table.Row key={index}>
                                     <Table.Cell>{item.id}</Table.Cell>
@@ -139,17 +151,23 @@ const ModalAvailabilities = props => {
                                                         newAvail[
                                                             found
                                                         ].available = value;
+
                                                         return newAvail;
                                                     });
                                                 } else {
-                                                    setChangedAvail(prev => [
-                                                        ...prev,
-                                                        {
-                                                            available: value,
-                                                            sku: sku[0],
-                                                            storeId: item.id,
-                                                        },
-                                                    ]);
+                                                    if (value !== '') {
+                                                        setChangedAvail(
+                                                            prev => [
+                                                                ...prev,
+                                                                {
+                                                                    available: value,
+                                                                    sku: sku[0],
+                                                                    storeId:
+                                                                        item.id,
+                                                                },
+                                                            ],
+                                                        );
+                                                    }
                                                 }
                                             }}
                                             value={value ? value.available : ''}

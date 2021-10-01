@@ -21,6 +21,7 @@ export const fetchKaspiProducts = () => {
         dispatch(modifyLoader(true));
         doGet(`core/marketing/kaspi/listall`)
             .then(({ data }) => {
+                // console.log(data)
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_KASPI_PRODUCTS,
