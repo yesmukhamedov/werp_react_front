@@ -65,6 +65,7 @@ export const blankItem = () => {
 };
 
 export const createItem = (item, refresh) => {
+    console.log('create item: ', item);
     return dispatch => {
         doPost(`crm2/kpi-setting`, { ...item })
             .then(({ data }) => {
