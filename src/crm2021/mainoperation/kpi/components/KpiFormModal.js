@@ -12,6 +12,8 @@ import {
 import YearF4 from '../../../../reference/f4/date/YearF4';
 import MonthF4 from '../../../../reference/f4/date/MonthF4';
 import PositionF4 from '../../../../reference/f4/position/PositionF4';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 class KpiFormModal extends Component {
     constructor(props) {
@@ -111,6 +113,7 @@ class KpiFormModal extends Component {
 
         return (
             <Form>
+                <h3>Настройки KPI</h3>
                 <Form.Group widths="equal">
                     <Form.Select
                         required
@@ -136,11 +139,11 @@ class KpiFormModal extends Component {
                         onChange={this.handleDropdownChange}
                     />
 
-                    <YearF4
+                    {/* <YearF4
                         required
                         value={localItem.year}
                         handleChange={this.handleDropdownChange}
-                    />
+                    /> */}
                     <MonthF4
                         required
                         value={localItem.month}
@@ -151,10 +154,50 @@ class KpiFormModal extends Component {
                         value={localItem.positionId}
                         handleChange={this.handleDropdownChange}
                     />
+                    <Form.Select
+                        // error={errors.branchId}
+                        name="experience"
+                        // value={localItem.branchId}
+                        search={true}
+                        selection
+                        label="Стаж"
+                        // options={this.branchOptions(localItem.bukrs)}
+                        placeholder="Стаж"
+                        onChange={this.handleDropdownChange}
+                    />
+                </Form.Group>
+                <h3>Срок действия</h3>
+                <Form.Group>
+                    <Form.Field>
+                        <label>Активен c</label>
+                        <DatePicker
+                            name="date"
+                            autoComplete="off"
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            selected={moment()}
+                            onChange={this.handleDropdownChange}
+                            dateFormat="MM.YYYY"
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Активен по</label>
+                        <DatePicker
+                            name="date"
+                            autoComplete="off"
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            selected={moment()}
+                            onChange={this.handleDropdownChange}
+                            dateFormat="MM.YYYY"
+                        />
+                    </Form.Field>
                 </Form.Group>
 
                 <Form.Group>
-                    <Button floated={'right'} onClick={this.addItem}>
+                    <Button primary onClick={this.addItem}>
                         Добавить индикатор
                     </Button>
                     <br />
