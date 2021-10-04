@@ -28,8 +28,8 @@ const HighestDemoProducers = props => {
         businessAreaIds: [],
         dateFrom: null,
         dateTo: null,
-        qtyFrom: 0,
-        qtyTo: 0,
+        qtyFrom: null,
+        qtyTo: null,
     });
     const [loading, setLoading] = useState(false);
     const [exportToExcelLoading, setExportToExcelLoading] = useState(false);
@@ -87,8 +87,8 @@ const HighestDemoProducers = props => {
             businessAreaIds: [],
             dateFrom: null,
             dateTo: null,
-            qtyFrom: 0,
-            qtyTo: 0,
+            qtyFrom: null,
+            qtyTo: null,
         });
 
     const getBranches = () => {
@@ -100,7 +100,7 @@ const HighestDemoProducers = props => {
             .map(id =>
                 Object.values(branches)
                     .flat()
-                    .find(({ businessareaid }) => businessareaid === id),
+                    .filter(({ businessareaid }) => businessareaid === id),
             )
             .filter(item => item);
         return newBranches.flat();
@@ -124,7 +124,7 @@ const HighestDemoProducers = props => {
 
         const newBusinessArea = filterParams.companyIds
             .map(id => {
-                return businessAreasOptions.find(area => area.bukrs === id);
+                return businessAreasOptions.filter(area => area.bukrs === id);
             })
             .filter(item => item);
         return newBusinessArea.flat();

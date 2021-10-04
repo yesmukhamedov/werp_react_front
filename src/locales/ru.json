@@ -967,5 +967,9 @@
     "search_by_release_description": "Поиск по описанию релиза",
     "version": "Версия",
     "creating_release": "Добавление релиза",
-    "editing_release": "Редактирование релиза"
+    "editing_release": "Редактирование релиза",
+    "remove_release": "Удалить релиз",
+    "sales": "Продажи",
+    "date_of_demo": "Дата демонстрации",
+    "salary_of_manager": "Оклад менеджера"
 }

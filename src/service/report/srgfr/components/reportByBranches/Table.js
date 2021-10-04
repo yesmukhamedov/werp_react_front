@@ -83,9 +83,7 @@ const Table = ({ data, intl: { messages } }) => {
             filterAll: true,
         },
         {
-            Header: textWithMultipleLines(
-                messages['salary_of_manager_and_coordinator'],
-            ),
+            Header: textWithMultipleLines(messages['salary_of_manager']),
             accessor: 'managerAndCoordinatorSalary',
             Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
             filterAll: true,

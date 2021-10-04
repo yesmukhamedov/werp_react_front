@@ -32,6 +32,8 @@ import {
     momentToStringYYYYMMDDHHMM,
     stringYYYYMMDDHHMMToMoment,
 } from '../../../../utils/helpers';
+import TextAlignCenter from '../../../../utils/TextAlignCenter';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 require('moment/locale/ru');
 
 class WspacePhoneModal extends Component {
@@ -409,6 +411,53 @@ class WspacePhoneModal extends Component {
         });
     };
 
+    renderSales = () => {
+        const { messages } = this.props.intl;
+        const columns = [
+            {
+                Header: <TextAlignCenter text="№" />,
+                accessor: 'id',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+            {
+                Header: <TextAlignCenter text={messages['L__DEALER']} />,
+                accessor: 'dealerName',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+            {
+                Header: <TextAlignCenter text={messages['date_of_demo']} />,
+                accessor: 'dateTime',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+            {
+                Header: (
+                    <TextAlignCenter
+                        text={
+                            messages['result'] +
+                            ' ' +
+                            messages['Crm.Demonstrations'].toLowerCase()
+                        }
+                    />
+                ),
+                accessor: 'resultName',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+        ];
+        return (
+            <ReactTableWrapper
+                data={this.props.sales}
+                columns={columns}
+                defaultPageSize={5}
+                className="-striped -highlight"
+                showPagination={true}
+            />
+        );
+    };
+
     render() {
         const { messages } = this.props.intl;
         const { reco, currentPhone, recommender } = this.props;
@@ -420,6 +469,10 @@ class WspacePhoneModal extends Component {
             {
                 menuItem: messages['Crm.AddingCall'],
                 render: this.renderCallForm,
+            },
+            {
+                menuItem: messages['sales'],
+                render: this.renderSales,
             },
         ];
         return (
@@ -520,6 +573,7 @@ function mapStateToProps(state) {
         dealers: state.crmDemo2021.dealers,
         callForm: state.crmWspaceReducer2021.callForm,
         formErrors: state.crmWspaceReducer2021.callFormErrors,
+        sales: state.crmWspaceReducer2021.sales,
     };
 }
 

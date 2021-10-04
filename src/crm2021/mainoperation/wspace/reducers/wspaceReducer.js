@@ -20,6 +20,7 @@ import {
     WSP_CLEAR_STATE,
     WSP_RECO_ARCHIVED,
     WSP_SAVED_CALL_ERROR_RESP,
+    WSP_FETCH_SALES,
 } from '../actions/wspaceAction';
 
 import { CRM_VISIT_CREATE } from '../../visit/actions/visitAction';
@@ -48,6 +49,7 @@ const INITIAL_STATE = {
     filters: {},
     kpiData: {},
     callFormErrors: {},
+    sales: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -266,6 +268,11 @@ export default function(state = INITIAL_STATE, action) {
                 callForm: {},
                 filters: {},
                 kpiData: {},
+            };
+        case WSP_FETCH_SALES:
+            return {
+                ...state,
+                sales: action.payload,
             };
 
         default:

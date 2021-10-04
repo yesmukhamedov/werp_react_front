@@ -968,5 +968,9 @@
     "search_by_release_description": "Search by release description",
     "version": "Version",
     "creating_release": "Creating a release",
-    "editing_release": "Editing a release"
+    "editing_release": "Editing a release",
+    "remove_release": "Remove release",
+    "sales": "Sales",
+    "date_of_demo": "Date of demo",
+    "salary_of_manager": "Salary of manager"
 }

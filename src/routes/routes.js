@@ -1260,6 +1260,13 @@ const AsyncCrmReleaseLog2021 = Loadable({
         ) /* webpackChunkName: "CrmReleaseLog2021" */,
     loading: () => <LoadingPage />,
 });
+const AsyncCcvrl = Loadable({
+    loader: () =>
+        import(
+            '../callcenter/mainoperation/ccvrl'
+        ) /* webpackChunkName: "ccvrl" */,
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1432,6 +1439,7 @@ const getComponent = {
     Ccmsc: AsyncCcmsc,
     Ccmva: AsyncCcmva,
     CrmReleaseLog2021: AsyncCrmReleaseLog2021,
+    Ccvrl: AsyncCcvrl,
 };
 
 const generateRoutes = transactionRoutes => {

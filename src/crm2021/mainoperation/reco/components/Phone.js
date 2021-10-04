@@ -55,6 +55,8 @@ import {
     stringYYYYMMDDHHMMToMoment,
     momentToStringYYYYMMDDHHMM,
 } from '../../../../utils/helpers';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import TextAlignCenter from '../../../../utils/TextAlignCenter';
 
 require('moment/locale/ru');
 
@@ -93,6 +95,7 @@ class Phone extends Component {
                 address: false,
                 location: false,
             },
+            sales: [],
         };
         this.handlePhoneClick = this.handlePhoneClick.bind(this);
         this.handleModalClose = this.handleModalClose.bind(this);
@@ -102,6 +105,7 @@ class Phone extends Component {
         this.saveCall = this.saveCall.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.renderRecommenderInfo = this.renderRecommenderInfo.bind(this);
+        this.renderSales = this.renderSales.bind(this);
         this.renderCallFormNew = this.renderCallFormNew.bind(this);
         this.renderCallFormOld = this.renderCallFormOld.bind(this);
         this.checkCallInfo = this.checkCallInfo.bind(this);
@@ -149,6 +153,16 @@ class Phone extends Component {
             .catch(e => {
                 console.log(e);
             });
+        doGet(`crm2/demo/by-phone-number/${this.props.phoneNumber}`)
+            .then(({ data }) => {
+                this.setState({
+                    ...this.state,
+                    sales: data,
+                });
+            })
+            .catch(e => {
+                console.log(e);
+            });
     }
 
     handleModalClose() {
@@ -173,6 +187,10 @@ class Phone extends Component {
             {
                 menuItem: messages['Form.RecommenderAddData'],
                 render: this.renderRecommenderInfo,
+            },
+            {
+                menuItem: messages['sales'],
+                render: this.renderSales,
             },
         ];
         return (
@@ -290,6 +308,53 @@ class Phone extends Component {
                     />
                 </Form.Group>
             </div>
+        );
+    }
+
+    renderSales() {
+        const { messages } = this.props.intl;
+        const columns = [
+            {
+                Header: <TextAlignCenter text="№" />,
+                accessor: 'id',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+            {
+                Header: <TextAlignCenter text={messages['L__DEALER']} />,
+                accessor: 'dealerName',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+            {
+                Header: <TextAlignCenter text={messages['date_of_demo']} />,
+                accessor: 'dateTime',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+            {
+                Header: (
+                    <TextAlignCenter
+                        text={
+                            messages['result'] +
+                            ' ' +
+                            messages['Crm.Demonstrations'].toLowerCase()
+                        }
+                    />
+                ),
+                accessor: 'resultName',
+                Cell: row => <TextAlignCenter text={row.value} />,
+                filterAll: true,
+            },
+        ];
+        return (
+            <ReactTableWrapper
+                data={this.state.sales}
+                columns={columns}
+                defaultPageSize={5}
+                className="-striped -highlight"
+                showPagination={true}
+            />
         );
     }
 

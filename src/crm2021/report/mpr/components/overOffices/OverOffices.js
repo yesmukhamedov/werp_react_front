@@ -23,8 +23,8 @@ const OverOffices = props => {
         branchIds: [],
         countryIds: [],
         businessAreaIds: [],
-        qtyFrom: 0,
-        qtyTo: 0,
+        qtyFrom: null,
+        qtyTo: null,
     });
     const [period, setPeriod] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -84,8 +84,8 @@ const OverOffices = props => {
             branchIds: [],
             countryIds: [],
             businessAreaIds: [],
-            qtyFrom: 0,
-            qtyTo: 0,
+            qtyFrom: null,
+            qtyTo: null,
         });
         setPeriod(null);
     };
@@ -99,7 +99,7 @@ const OverOffices = props => {
             .map(id =>
                 Object.values(branches)
                     .flat()
-                    .find(({ businessareaid }) => businessareaid === id),
+                    .filter(({ businessareaid }) => businessareaid === id),
             )
             .filter(item => item);
         return newBranches.flat();
@@ -121,7 +121,7 @@ const OverOffices = props => {
 
         const newBusinessArea = filterParams.companyIds
             .map(id => {
-                return businessAreasOptions.find(area => area.bukrs === id);
+                return businessAreasOptions.filter(area => area.bukrs === id);
             })
             .filter(item => item);
         return newBusinessArea.flat();

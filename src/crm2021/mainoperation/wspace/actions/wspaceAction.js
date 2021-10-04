@@ -30,6 +30,7 @@ export const WSP_HANDLE_FILTER = 'WSP_HANDLE_FILTER';
 export const WSP_FETCH_KPI = 'WSP_FETCH_KPI';
 export const WSP_CLEAR_STATE = 'WSP_CLEAR_STATE';
 export const WSP_RECO_ARCHIVED = 'WSP_RECO_ARCHIVED';
+export const WSP_FETCH_SALES = 'WSP_FETCH_SALES';
 
 export function toggleRecoListModal(flag) {
     return {
@@ -338,3 +339,18 @@ export function wspClearState() {
         type: WSP_CLEAR_STATE,
     };
 }
+
+export const getSales = phoneNumber => {
+    return dispatch => {
+        doGet(`crm2/demo/by-phone-number/${phoneNumber}`)
+            .then(({ data }) => {
+                dispatch({
+                    type: WSP_FETCH_SALES,
+                    payload: data,
+                });
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    };
+};

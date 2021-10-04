@@ -14,9 +14,9 @@ import {
 } from './action';
 import _ from 'lodash';
 import moment from 'moment';
-import ConfirmationModal from './components/ConfirmationModal';
+import ConfirmationModal from '../../../crm2021/mainoperation/release/components/ConfirmationModal';
 
-const CrmReleaseLog2021 = props => {
+const Ccvrl = props => {
     const {
         intl: { messages },
         language,
@@ -237,7 +237,7 @@ const CrmReleaseLog2021 = props => {
 
 const mapStateToProps = state => ({
     language: state.locales.lang,
-    allReleases: state.crmReleaseLog2021Reducer.allReleases,
+    allReleases: state.ccvrlReducer.allReleases,
 });
 
 export default connect(mapStateToProps, {
@@ -245,4 +245,4 @@ export default connect(mapStateToProps, {
     editRelease,
     getAllReleases,
     removeRelease,
-})(injectIntl(CrmReleaseLog2021));
+})(injectIntl(Ccvrl));
