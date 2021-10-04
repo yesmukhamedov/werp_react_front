@@ -1,5 +1,6 @@
-// import browserHistory from '../../utils/history';
-import { clearUserAuth } from '../../actions/auth';
+import { clearUserAuth, signoutUser } from '../../actions/auth';
+import { resetLocalStorage } from '../../utils/helpers';
+import browserHistory from '../../utils/history';
 // import { address } from 'faker';
 
 export const NOTIFY = 'NOTIFY';
@@ -74,8 +75,13 @@ export function handleError(error, dispatch) {
             let message =
                 error.response.data.message || error.response.data.messages;
             if (message) {
+                signoutUser();
+                browserHistory.push('/');
                 dispatch(notify('error', message, 'Неавторизованно!'));
             } else {
+                resetLocalStorage();
+                signoutUser();
+                browserHistory.push('/');
                 dispatch(
                     notify(
                         'error',
