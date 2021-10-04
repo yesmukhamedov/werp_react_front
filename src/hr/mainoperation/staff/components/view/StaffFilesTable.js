@@ -31,7 +31,7 @@ export default function StaffFilesTable(props) {
 
     const showPreviewWindow = id => {
         window.open(
-            `${ROOT_URL}/hr/file/download/${id}`,
+            `${ROOT_URL}/api/core/hr/file/download/${id}`,
             'height=570,width=520,scrollbars=yes,status=yes',
         );
     };
@@ -52,7 +52,7 @@ export default function StaffFilesTable(props) {
                     </Button>
                 ) : (
                     <a
-                        href={`${ROOT_URL}/hr/file/download/${file.id}`}
+                        href={`${ROOT_URL}/api/core/hr/file/download/${file.id}`}
                         className="ui icon button mini left floated"
                     >
                         Скачать
