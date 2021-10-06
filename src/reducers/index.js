@@ -22,6 +22,7 @@ import visitReducer from '../crm/mainoperation/visit/reducres/visitReducer';
 import visitReducer2021 from '../crm2021/mainoperation/visit/reducers/visitReducer';
 //import { UNAUTH_USER } from '../actions/types';
 import f4_reducer from '../reference/f4/f4_reducer';
+
 import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer';
 import hrPyramidReducer from '../hr/mainoperation/pyramid/reducers/hrPyramidReducer';
 import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer';
@@ -83,6 +84,7 @@ import crmMpr2021Reducer from '../crm2021/report/mpr/reducer';
 import mrkaspiReducer from '../marketing/report/mrKaspi/mrkaspiReducer';
 import crmReleaseLog2021Reducer from '../crm2021/mainoperation/release/reducer';
 import ccvrlReducer from '../callcenter/mainoperation/ccvrl/reducer';
+import frep3Reducer from '../finance/report/frep3/frep3Reducer';
 
 const appReducer = combineReducers({
     form,
@@ -167,6 +169,7 @@ const appReducer = combineReducers({
     crmMpr2021Reducer,
     crmReleaseLog2021Reducer,
     ccvrlReducer,
+    frep3Reducer,
 });
 
 const rootReducer = (state, action) => {
