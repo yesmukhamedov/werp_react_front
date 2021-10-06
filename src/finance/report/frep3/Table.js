@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
-import { Popup, Button } from 'semantic-ui-react';
+import { Popup, Button, Modal } from 'semantic-ui-react';
+import Frep3 from './index';
 
 const Table = props => {
     const { data = [], messages = {} } = props;
-    const width = 230.5625;
+    const width = 263.5;
 
     const mainHeaderStyle = {
         whiteSpace: 'pre-wrap',
         background: '#fff',
         border: '1px solid #fff',
         color: '#2185d0',
+    };
+    const textAlign = {
+        textAlign: 'center',
     };
 
     const initialColumns = [
@@ -19,144 +23,260 @@ const Table = props => {
             headerStyle: mainHeaderStyle,
             columns: [
                 {
-                    Header: messages['bukrs'],
-                    accessor: 'bukrsName',
-                    headerStyle: mainHeaderStyle,
-                    width: width,
-                    // getProps: (state, rowInfo, column) => {
-                    // return {
-                    //     style: mainCellStyle,
-                    // };
-                    // },
-                    Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
-                            {row.value}
-                        </div>
-                    ),
-                },
-                {
                     Header: messages['branches'],
                     accessor: 'branchName',
                     headerStyle: mainHeaderStyle,
                     width: width,
                     Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
+                        <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                    color:
+                                        rowInfo.row.hkontName === null
+                                            ? 'blue'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: 'Название расхода',
-                    accessor: 'consumptionName',
+                    accessor: 'hkontName',
                     headerStyle: mainHeaderStyle,
                     width: width,
                     Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
+                        <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['hkont'],
-                    accessor: 'generalLedgerAccount',
+                    accessor: 'hkont',
                     headerStyle: mainHeaderStyle,
                     width: width,
                     Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
+                        <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['waers'],
-                    accessor: 'currencyName',
+                    accessor: 'waers',
                     headerStyle: mainHeaderStyle,
                     width: width,
                     Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
+                        <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                    color:
+                                        rowInfo.row.hkontName === null
+                                            ? 'blue'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['amount'] + ' USD',
-                    accessor: 'summUSD',
+                    accessor: 'dmbtr',
                     headerStyle: mainHeaderStyle,
                     width: width,
                     Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
-                            {row.value}
+                        <div className="text-wrap" style={textAlign}>
+                            {row.value.toLocaleString()}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['amount'] + ' в валюте',
-                    accessor: 'summCurrency',
+                    accessor: 'wrbtr',
                     headerStyle: mainHeaderStyle,
                     width: width,
                     Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
-                            {row.value}
+                        <div className="text-wrap" style={textAlign}>
+                            {row.value.toLocaleString()}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['Table.Actions'],
-                    //accessor: '',
                     headerStyle: mainHeaderStyle,
                     width: width,
                     Cell: row => (
-                        <div
-                            className="text-wrap"
-                            style={{ textAlign: 'center' }}
-                        >
-                            <Button class="ui button">
-                                messages['in_detail']
-                            </Button>
+                        <div className="text-wrap" style={textAlign}>
+                            <Popup
+                                content={messages['Detailing']}
+                                trigger={
+                                    <Button
+                                        class="ui button"
+                                        color="grey"
+                                        onClick={() => {
+                                            //Frep3.setDetailParam('0');
+                                            //console.log('row: ', row.original);
+                                            //Frep3.toDetalization('0');
+                                            Frep3.setModalDetalOpen(true);
+                                        }}
+                                    >
+                                        {messages['in_detail']}
+                                    </Button>
+                                }
+                            />
                         </div>
                     ),
+                    // if (rowInfo && rowInfo.row) {
+                    //     return row.hkontName == null ? (
+                    //     null
+                    // ) : (
+
+                    // );
+                    //   } else {
+                    //     return {};
+                    // }
+
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
             ],
         },
     ];
 
+    //console.log('rower: ', rower)
     return (
-        <ReactTableWrapperFixedColumns
-            data={data ? data : []}
-            columns={initialColumns}
-            previousText={messages['Table.Previous']}
-            nextText={messages['Table.Next']}
-            showPagination={true}
-            className="-striped -highlight"
-            defaultPageSize={10}
-            pageSizeOptions={[10, 20, 30, 40]}
-            loadingText={messages['Table.Next']}
-            noDataText={messages['Table.NoData']}
-            rowsText={messages['Table.Rows']}
-            pageText={messages['Table.Page']}
-            ofText={messages['Table.Of']}
-        />
+        <div>
+            <ReactTableWrapperFixedColumns
+                data={data ? data : []}
+                columns={initialColumns}
+                previousText={messages['Table.Previous']}
+                nextText={messages['Table.Next']}
+                showPagination={true}
+                className="-striped -highlight"
+                defaultPageSize={25}
+                pageSizeOptions={[10, 20, 30, 40]}
+                loadingText={messages['Table.Next']}
+                noDataText={messages['Table.NoData']}
+                rowsText={messages['Table.Rows']}
+                pageText={messages['Table.Page']}
+                ofText={messages['Table.Of']}
+            />
+        </div>
     );
 };
 

@@ -1,30 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Segment, Icon, Form, Dropdown } from 'semantic-ui-react';
 import {
-    stringYYYYMMDDToMoment,
-    momentToStringYYYYMMDD,
+    Container,
+    Segment,
+    Icon,
+    Form,
+    Dropdown,
+    Modal,
+} from 'semantic-ui-react';
+import {
+    momentToStringDDMMYYYY,
+    stringToMomentDDMMYYYY,
 } from '../../../utils/helpers';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import DropdownClearable from '../../../utils/DropdownClearable';
+import { excelDownload } from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
-import { fetchDynamicFAGM, clearDynObj } from '../../fa_action';
+import { fetchDynamicFAGM } from '../../fa_action';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Divider } from 'semantic-ui-react';
-import { fetchFrep3List } from './frep3Actions';
+import { fetchResultList, fetchDetailList } from './frep3Actions';
 import Table from './Table';
-import TableColumns from './TableColumns';
 
 const Frep3 = props => {
     const {
         intl: { messages },
         language,
-        countryList = [],
         companyOptions = [],
-        branchOptionsService,
-        frep3TotalList = [],
-        frep3DetailList = [],
+        branchOptionsAll,
+        resultList,
+        detailList,
     } = props;
     const [defaultPane, setDefaultPane] = useState(0);
 
@@ -33,12 +38,12 @@ const Frep3 = props => {
     const onInputChange = (value, fieldName) => {
         switch (fieldName) {
             case 'bukrs':
-                setParam({ ...param, bukrs: value, branchId: '' });
+                setParam({ ...param, bukrs: value, branchIdList: '' });
                 break;
             case 'branchId':
                 setParam({
                     ...param,
-                    branchId: value.length > 0 ? value.join() : '',
+                    branchIdList: value.length > 0 ? value.join() : '',
                 });
                 break;
 
@@ -46,16 +51,47 @@ const Frep3 = props => {
                 alert('НЕТ ТАКОЕ ЗНАЧЕНИЕ');
         }
     };
-    console.log('findParam: ', param);
+
+    //Excel export need chage columns
+    const exportExcel = () => {
+        let excelHeaders = [];
+        excelHeaders.push(messages['branches']);
+        excelHeaders.push(messages['hkont']);
+        excelHeaders.push(messages['waers']);
+        excelHeaders.push(messages['amount'] + 'USD');
+        excelHeaders.push(messages['operator_award']);
+
+        excelDownload(
+            'finance/report/frep3/downloadExcel',
+            'frep3_Result.xls',
+            'outputTable',
+            resultList,
+            excelHeaders,
+        );
+    };
 
     const totalTable = () => {
+        setParam({ ...param, language: language }); //ru en kk
         if (param.bukrs) {
-            props.fetchFrep3List({ ...param }, () => {});
+            props.fetchResultList(param);
         } else {
             alert(messages['Form.CompanyError']);
         }
     };
 
+    const [modalDetalOpen, setModalDetalOpen] = useState(false);
+
+    const [detailParam, setDetailParam] = useState({});
+
+    // const toDetalization = (detalParam) =>{
+    //     setModalDetalOpen(true);
+    // }
+
+    const toDetalization = () => {
+        setModalDetalOpen(true);
+    };
+
+    //console.log("resultList: ",resultList, "detailList: ",detailList);
     return (
         <Container
             fluid
@@ -99,7 +135,7 @@ const Frep3 = props => {
                             options={
                                 param.bukrs == '' || param.bukrs == null
                                     ? []
-                                    : branchOptionsService[param.bukrs]
+                                    : branchOptionsAll[param.bukrs]
                             }
                             onChange={(e, { value }) =>
                                 onInputChange(value, 'branchId')
@@ -107,8 +143,8 @@ const Frep3 = props => {
                             className="alignBottom"
                             multiple
                             value={
-                                param.branchId
-                                    ? param.branchId.split(',').map(Number)
+                                param.branchIdList
+                                    ? param.branchIdList.split(',').map(Number)
                                     : []
                             }
                         />
@@ -121,16 +157,18 @@ const Frep3 = props => {
                                 placeholderText={messages['Form.DateFrom']}
                                 autoComplete="off"
                                 selected={
-                                    param.dateAt === null
+                                    param.bldatFrom == null
                                         ? ''
-                                        : stringYYYYMMDDToMoment(param.dateAt)
+                                        : stringToMomentDDMMYYYY(
+                                              param.bldatFrom,
+                                          )
                                 }
                                 dropdownMode="select"
                                 locale={props.language}
                                 onChange={date =>
                                     setParam({
                                         ...param,
-                                        dateAt: momentToStringYYYYMMDD(date),
+                                        bldatFrom: momentToStringDDMMYYYY(date),
                                     })
                                 }
                                 dateFormat="DD.MM.YYYY"
@@ -143,16 +181,16 @@ const Frep3 = props => {
                                 placeholderText={messages['Form.DateTo']}
                                 autoComplete="off"
                                 selected={
-                                    param.dateWith === null
+                                    param.bldatTo == null
                                         ? ''
-                                        : stringYYYYMMDDToMoment(param.dateWith)
+                                        : stringToMomentDDMMYYYY(param.bldatTo)
                                 }
                                 dropdownMode="select"
                                 locale={props.language}
                                 onChange={date =>
                                     setParam({
                                         ...param,
-                                        dateTo: momentToStringYYYYMMDD(date),
+                                        bldatTo: momentToStringDDMMYYYY(date),
                                     })
                                 }
                                 dateFormat="DD.MM.YYYY"
@@ -168,28 +206,45 @@ const Frep3 = props => {
                             <Icon name="search" size="large" />
                             {messages['search']}
                         </Form.Button>
+                        <Form.Button
+                            // onClick={handleClickApply}
+                            floated="right"
+                            color="green"
+                            className="alignTopBottom"
+                            icon
+                            disabled={resultList.length == 0 ? true : false}
+                            onClick={() => exportExcel()}
+                        >
+                            <Icon name="download" size="large" />
+                            {messages['export_to_excel']}
+                        </Form.Button>
                     </Form.Group>
                 </Form.Group>
             </Form>
-            {/* <OutputErrors />
-            <Divider /> */}
+            <OutputErrors />
+            {/* <Divider /> */}
+            <Modal
+                data={detailList ? detailList : []}
+                messages={props.intl.messages}
+            />
             <Table
-                data={false} //{stateSmsetplpList ? stateSmsetplpList : []}
+                data={resultList ? resultList : []}
                 messages={props.intl.messages}
             />
         </Container>
     );
 };
+
 function mapStateToProps(state) {
     return {
         companyOptions: state.userInfo.companyOptions,
         language: state.userInfo.language,
-        branchOptionsService: state.userInfo.branchOptionsService,
-        //frep3List: state.frep3Reducer.frep3List,
+        branchOptionsAll: state.userInfo.branchOptionsAll,
+        resultList: state.frep3Reducer.frep3ResultList,
+        detailList: state.frep3Reducer.frep3DetailList,
     };
 }
-
 export default connect(mapStateToProps, {
-    fetchDynamicFAGM,
-    fetchFrep3List,
+    fetchResultList,
+    fetchDetailList,
 })(injectIntl(Frep3));
