@@ -1,11 +1,38 @@
 import { doGet, doPost, doPut } from '../../../utils/apiActions';
-import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_RESULT = 'FETCH_RESULT';
+export const FETCH_DETAIL = 'FETCH_DETAIL';
 
-export const fetchFrep3List = param => {
-    alert('pong in Action');
-    console.log('param in action: ', param);
-    return function(dispatch) {};
+export const fetchResultList = param => {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        doGet(`core/finance/reports/frep3`, param)
+            .then(({ data }) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type: FETCH_RESULT,
+                    data,
+                });
+            })
+            .catch(error => {
+                dispatch(modifyLoader(false));
+                alert('Oops oblazhalsya');
+            });
+    };
+};
+
+export const fetchDetailList = detailParam => {
+    return function(dispatch) {
+        doGet(`core/finance/reports/frep3/detail`, detailParam)
+            .then(({ data }) => {
+                dispatch({
+                    type: FETCH_DETAIL,
+                    data,
+                });
+            })
+            .catch(error => {
+                alert('Oops oblazhalsya');
+            });
+    };
 };
