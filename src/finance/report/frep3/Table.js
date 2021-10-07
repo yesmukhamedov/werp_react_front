@@ -1,12 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
 import { Popup, Button, Modal } from 'semantic-ui-react';
-import Frep3 from './index';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+import { fetchDetailList } from './frep3Actions';
+import Detail from './Modal';
 
 const Table = props => {
-    const { data = [], messages = {} } = props;
+    const {
+        data = [],
+        messages = {},
+        detailList,
+        language,
+        findParam = {},
+    } = props;
     const width = 263.5;
+    const [detailParam, setDetailParam] = useState({});
+    const [modalDetalOpen, setModalDetalOpen] = useState(false);
 
+    const detailTable = () => {
+        //setDetailParam({ ...detailParam, language: language }); //ru en kk
+        //setDetailParam(detailParam["language"]= 'ru' ); //ru en kk
+        try {
+            props.fetchDetailList(detailParam);
+        } catch {
+            alert('shto to ne to, Obratitsya k fermeru');
+        }
+    };
+
+    const detailParams = rowdata => {
+        setDetailParam({ data: 'HHHH' });
+        console.log(detailParam);
+    };
     const mainHeaderStyle = {
         whiteSpace: 'pre-wrap',
         background: '#fff',
@@ -16,7 +41,6 @@ const Table = props => {
     const textAlign = {
         textAlign: 'center',
     };
-
     const initialColumns = [
         {
             fixed: 'left',
@@ -206,38 +230,53 @@ const Table = props => {
                 },
                 {
                     Header: messages['Table.Actions'],
+                    accessor: 'branchName',
                     headerStyle: mainHeaderStyle,
                     width: width,
-                    Cell: row => (
-                        <div className="text-wrap" style={textAlign}>
-                            <Popup
-                                content={messages['Detailing']}
-                                trigger={
-                                    <Button
-                                        class="ui button"
-                                        color="grey"
-                                        onClick={() => {
-                                            //Frep3.setDetailParam('0');
-                                            //console.log('row: ', row.original);
-                                            //Frep3.toDetalization('0');
-                                            Frep3.setModalDetalOpen(true);
-                                        }}
-                                    >
-                                        {messages['in_detail']}
-                                    </Button>
-                                }
-                            />
-                        </div>
-                    ),
-                    // if (rowInfo && rowInfo.row) {
-                    //     return row.hkontName == null ? (
-                    //     null
-                    // ) : (
 
-                    // );
-                    //   } else {
-                    //     return {};
-                    // }
+                    Cell: row => {
+                        return row.original.hkontName ? (
+                            <div className="text-wrap" style={textAlign}>
+                                <Popup
+                                    content={messages['Detailing']}
+                                    trigger={
+                                        <Button
+                                            class="ui button"
+                                            onClick={() => {
+                                                console.log(row.original);
+                                                detailTable();
+                                                // setDetailParam(detailParam["bukrs"]= findParam["bukrs"]);
+                                                // setDetailParam(detailParam["branchId"]= row.original.branchId);
+                                                // setDetailParam(detailParam["bldatFrom"]= findParam["bldatFrom"]);
+                                                // setDetailParam(detailParam["bldatTo"]= findParam["bldatTo"]);
+                                                // setDetailParam(detailParam["hkont"]= row.original.hkont);
+                                                // setDetailParam(detailParam["waers"]= row.original.waers);
+
+                                                //detailParams(row.original)
+                                                setModalDetalOpen(true);
+                                                //console.log(detailParam)
+
+                                                setDetailParam({
+                                                    ...detailParam,
+                                                    branchId:
+                                                        row.original.branchId,
+                                                    bukrs: findParam['bukrs'],
+                                                    bldatFrom:
+                                                        findParam['bldatFrom'],
+                                                    bldatTo:
+                                                        findParam['bldatTo'],
+                                                    hkont: row.original.hkont,
+                                                    waers: row.original.waers,
+                                                });
+                                            }}
+                                        >
+                                            {messages['in_detail']}
+                                        </Button>
+                                    }
+                                />
+                            </div>
+                        ) : null;
+                    },
 
                     getProps: (state, rowInfo) => {
                         if (rowInfo && rowInfo.row) {
@@ -257,10 +296,14 @@ const Table = props => {
             ],
         },
     ];
-
-    //console.log('rower: ', rower)
     return (
         <div>
+            <Detail
+                detail={detailList ? detailList : []}
+                messages={messages}
+                modalDetalOpen={modalDetalOpen}
+                setModalDetalOpen={setModalDetalOpen}
+            />
             <ReactTableWrapperFixedColumns
                 data={data ? data : []}
                 columns={initialColumns}
@@ -280,4 +323,14 @@ const Table = props => {
     );
 };
 
-export default Table;
+//export default Table;
+
+function mapStateToProps(state) {
+    return {
+        language: state.userInfo.language,
+        detailList: state.frep3Reducer.frep3DetailList,
+    };
+}
+export default connect(mapStateToProps, {
+    fetchDetailList,
+})(injectIntl(Table));

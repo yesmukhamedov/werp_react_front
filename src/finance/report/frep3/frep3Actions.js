@@ -17,22 +17,25 @@ export const fetchResultList = param => {
             })
             .catch(error => {
                 dispatch(modifyLoader(false));
-                alert('Oops oblazhalsya');
+                alert('Oops oblazhalsya "result"');
             });
     };
 };
 
 export const fetchDetailList = detailParam => {
     return function(dispatch) {
+        dispatch(modifyLoader(true));
         doGet(`core/finance/reports/frep3/detail`, detailParam)
             .then(({ data }) => {
+                dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_DETAIL,
-                    data,
+                    payload: data.result,
                 });
             })
             .catch(error => {
-                alert('Oops oblazhalsya');
+                dispatch(modifyLoader(false));
+                alert('Oops oblazhalsya "detail"');
             });
     };
 };

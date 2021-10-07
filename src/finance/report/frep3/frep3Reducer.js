@@ -1,7 +1,6 @@
 import { FETCH_RESULT, FETCH_DETAIL } from './frep3Actions';
 
 const INITIAL_STATE = {
-    //dynamicObject: [],
     frep3ResultList: [],
     frep3DetailList: [],
 };
@@ -16,7 +15,7 @@ export default function(state = INITIAL_STATE, action) {
         case FETCH_DETAIL:
             return {
                 ...state,
-                frep3DetailList: [...action.data],
+                frep3DetailList: [...action.payload],
             };
         default:
             return state;

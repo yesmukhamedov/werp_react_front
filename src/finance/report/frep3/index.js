@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Container,
-    Segment,
-    Icon,
-    Form,
-    Dropdown,
-    Modal,
-} from 'semantic-ui-react';
+import { Container, Segment, Icon, Form, Dropdown } from 'semantic-ui-react';
 import {
     momentToStringDDMMYYYY,
     stringToMomentDDMMYYYY,
@@ -16,10 +9,9 @@ import DatePicker from 'react-datepicker';
 import DropdownClearable from '../../../utils/DropdownClearable';
 import { excelDownload } from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
-import { fetchDynamicFAGM } from '../../fa_action';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { fetchResultList, fetchDetailList } from './frep3Actions';
+import { fetchResultList } from './frep3Actions';
 import Table from './Table';
 
 const Frep3 = props => {
@@ -32,7 +24,7 @@ const Frep3 = props => {
         detailList,
     } = props;
     const [defaultPane, setDefaultPane] = useState(0);
-
+    const [detailParam, setDetailParam] = useState({});
     const [param, setParam] = useState({});
 
     const onInputChange = (value, fieldName) => {
@@ -71,27 +63,13 @@ const Frep3 = props => {
     };
 
     const totalTable = () => {
-        setParam({ ...param, language: language }); //ru en kk
+        //setDetailParam({data: "jhjhj"})
         if (param.bukrs) {
             props.fetchResultList(param);
         } else {
             alert(messages['Form.CompanyError']);
         }
     };
-
-    const [modalDetalOpen, setModalDetalOpen] = useState(false);
-
-    const [detailParam, setDetailParam] = useState({});
-
-    // const toDetalization = (detalParam) =>{
-    //     setModalDetalOpen(true);
-    // }
-
-    const toDetalization = () => {
-        setModalDetalOpen(true);
-    };
-
-    //console.log("resultList: ",resultList, "detailList: ",detailList);
     return (
         <Container
             fluid
@@ -201,13 +179,15 @@ const Frep3 = props => {
                             color="blue"
                             className="alignTopBottom"
                             icon
-                            onClick={() => totalTable()}
+                            onClick={() => {
+                                totalTable();
+                                console.log('jhjhjhjhjhjhjhj', detailParam);
+                            }}
                         >
                             <Icon name="search" size="large" />
                             {messages['search']}
                         </Form.Button>
                         <Form.Button
-                            // onClick={handleClickApply}
                             floated="right"
                             color="green"
                             className="alignTopBottom"
@@ -223,13 +203,10 @@ const Frep3 = props => {
             </Form>
             <OutputErrors />
             {/* <Divider /> */}
-            <Modal
-                data={detailList ? detailList : []}
-                messages={props.intl.messages}
-            />
             <Table
                 data={resultList ? resultList : []}
                 messages={props.intl.messages}
+                findParam={param}
             />
         </Container>
     );
@@ -241,10 +218,8 @@ function mapStateToProps(state) {
         language: state.userInfo.language,
         branchOptionsAll: state.userInfo.branchOptionsAll,
         resultList: state.frep3Reducer.frep3ResultList,
-        detailList: state.frep3Reducer.frep3DetailList,
     };
 }
 export default connect(mapStateToProps, {
     fetchResultList,
-    fetchDetailList,
 })(injectIntl(Frep3));

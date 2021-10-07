@@ -1,43 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-import { Popup, Button, Modal } from 'semantic-ui-react';
-import Frep3 from './index';
+import { Popup, Button, Modal, Icon } from 'semantic-ui-react';
+import { excelDownload } from '../../../utils/helpers';
 
-const Modal = props => {
-    const { messages = {}, detail = [] } = props;
+const Detail = props => {
+    const {
+        messages = {},
+        detail = [],
+        setModalDetalOpen,
+        modalDetalOpen,
+    } = props;
     const widthd = 250;
 
-    const emptyParam = {
-        countryId: null,
-        bukrs: null,
-        branchId: null,
-        categoryId: null,
-        product: null,
-        dateAt: null,
-        dateTo: null,
+    // const [loaderTableDetal, setLoaderTableDetal] = useState(false);
+
+    // const [detalParam, setDetalParam] = useState({});
+
+    // useEffect(() => {
+    //   if (Object.keys(detalParam).length > 0) {
+    //     setLoaderTableDetal(true);
+    //     props.fetchSrkpisoDetal(
+    //       { ...detalParam, dateAt: param.dateAt, dateTo: param.dateTo },
+    //       () => setLoaderTableDetal(false),
+    //     );
+    //   }
+    // }, [detalParam]);
+
+    const exportExcel = () => {
+        let excelHeaders = [];
+        excelHeaders.push(messages['branches']);
+        excelHeaders.push(messages['hkont']);
+        excelHeaders.push(messages['waers']);
+        excelHeaders.push(messages['amount'] + 'USD');
+        excelHeaders.push(messages['operator_award']);
+
+        excelDownload(
+            'finance/report/frep3/downloadExcel/detail',
+            'frep3_Detail_Result.xls',
+            'outputTable',
+            detail,
+            excelHeaders,
+        );
     };
-
-    const mainHeaderStyle = {
-        whiteSpace: 'pre-wrap',
-        background: '#fff',
-        border: '1px solid #fff',
-        color: '#2185d0',
-    };
-    const [param, setParam] = useState({ ...emptyParam });
-    //const [modalDetalOpen, setModalDetalOpen] = useState(false);
-    const [loaderTableDetal, setLoaderTableDetal] = useState(false);
-
-    const [detailParam, setDetailParam] = useState({});
-
-    useEffect(() => {
-        if (Object.keys(detailParam).length > 0) {
-            setLoaderTableDetal(true);
-            props.fetchSrkpisoDetal(
-                { ...detailParam, dateAt: param.dateAt, dateTo: param.dateTo },
-                () => setLoaderTableDetal(false),
-            );
-        }
-    }, [detailParam]);
 
     const detalColumns = [
         {
@@ -165,26 +169,37 @@ const Modal = props => {
     return (
         <Modal
             closeIcon
-            onClose={() => Frep3.setModalDetalOpen(false)}
-            open={Frep3.modalDetalOpen}
+            onClose={() => setModalDetalOpen(false)}
+            open={modalDetalOpen}
             size="fullscreen"
         >
-            <Modal.Header>{`${messages['KPI_Operator_Service']}(${messages['Detailing']})`}</Modal.Header>
+            <Modal.Header>
+                {`${messages['transNameFrep3']}(${messages['Detailing']})`}
+                <Button
+                    //floated="right"
+                    //marginRight='50'
+                    color="green"
+                    className="alignTopBottom"
+                    icon
+                    disabled={detail.length == 0 ? true : false}
+                    onClick={() => exportExcel()}
+                >
+                    <Icon name="download" size="large" />
+                    {messages['export_to_excel']}
+                </Button>
+            </Modal.Header>
             <Modal.Content>
                 <ReactTableWrapper
                     data={detail ? detail : []}
                     filterable={true}
-                    loading={loaderTableDetal}
-                    defaultPageSize={10}
+                    //loading={loaderTableDetal}
+                    defaultPageSize={20}
                     showPagination={true}
                     columns={detalColumns}
                 />
             </Modal.Content>
             <Modal.Actions>
-                <Button
-                    color="blue"
-                    onClick={() => Frep3.setModalDetalOpen(false)}
-                >
+                <Button color="blue" onClick={() => setModalDetalOpen(false)}>
                     Ok
                 </Button>
             </Modal.Actions>
@@ -192,4 +207,4 @@ const Modal = props => {
     );
 };
 
-export default Modal;
+export default Detail;
