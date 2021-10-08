@@ -1267,6 +1267,10 @@ const AsyncCcvrl = Loadable({
         ) /* webpackChunkName: "ccvrl" */,
     loading: () => <LoadingPage />,
 });
+const AsyncMessage = Loadable({
+    loader: () => import('../dit/message/') /* webpackChunkName: "srgfr" */,
+    loading: () => <LoadingPage />,
+});
 
 const getComponent = {
     Dtrlist: AsyncTransaction,
@@ -1440,6 +1444,7 @@ const getComponent = {
     Ccmva: AsyncCcmva,
     CrmReleaseLog2021: AsyncCrmReleaseLog2021,
     Ccvrl: AsyncCcvrl,
+    Message: AsyncMessage,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1572,6 +1577,7 @@ const generateRoutes = transactionRoutes => {
                 exact={true}
                 component={AsyncHrSlc}
             />
+            <Route path="/dit/message" exact={true} component={AsyncMessage} />
             {/*<Route*/}
             {/*    path="/marketing/report/mrkaspi"*/}
             {/*    exact={true}*/}

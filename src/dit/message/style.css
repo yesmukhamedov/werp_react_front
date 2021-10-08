@@ -1,0 +1,11 @@
+.ReactTable .rt-tbody .rt-td .ui.fitted.checkbox {
+    margin: 0 auto !important;
+}
+
+.ReactTable {
+    margin-top: 13px;
+}
+
+.ReactTable .rt-tr:hover {
+    cursor: pointer;
+}

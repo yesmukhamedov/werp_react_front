@@ -101,6 +101,7 @@ export default function ModalAddProduct(props) {
                 break;
             case 'checked':
                 if (id) {
+                    console.log('ID', id);
                     setTempKaspiProduct({
                         ...tempKaspiProduct,
                         availabilities: [

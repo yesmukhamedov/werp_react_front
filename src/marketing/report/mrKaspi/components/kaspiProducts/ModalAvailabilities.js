@@ -55,23 +55,11 @@ const ModalAvailabilities = props => {
             } else {
                 filteredAvails[index] = avail;
             }
-
-            // if (avail.available !== '' || avail.available !== null){
-            //     filteredAvails[index] = avail;
-            // }
         });
 
         item.availabilities = filteredAvails;
 
-        if (item.availabilities.length < 1) {
-            success = false;
-            setEmptyStore(true);
-        } else {
-            setEmptyStore(false);
-            return item;
-        }
-
-        return success;
+        return item;
     };
 
     const onClickSave = () => {
