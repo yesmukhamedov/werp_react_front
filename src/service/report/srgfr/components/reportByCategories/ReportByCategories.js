@@ -32,9 +32,9 @@ const ReportByCategories = props => {
 
     const [filterParams, setFilterParams] = useState({
         bukrs: null,
-        branchId: null,
+        branchId: [],
         countryId: null,
-        categoryId: null,
+        categoryId: [],
         dateAt: null,
     });
     const [errors, setErrors] = useState([]);
@@ -46,7 +46,12 @@ const ReportByCategories = props => {
 
     const apply = () => {
         if (validation()) {
-            props.fetchReportByCategories(filterParams);
+            const joinIds = {
+                ...filterParams,
+                branchId: filterParams.branchId.join(),
+                categoryId: filterParams.categoryId.join(),
+            };
+            props.fetchReportByCategories(joinIds);
         }
     };
 
@@ -119,60 +124,45 @@ const ReportByCategories = props => {
                             }
                         />
                     </Form.Field>
+                    <Form.Select
+                        multiple
+                        selection
+                        options={
+                            filterParams.bukrs
+                                ? branches[filterParams.bukrs]
+                                : []
+                        }
+                        value={filterParams.branchId}
+                        placeholder={messages['Task.Branch']}
+                        label={messages['Task.Branch']}
+                        onChange={(e, { value }) => {
+                            setFilterParams({
+                                ...filterParams,
+                                branchId: value,
+                            });
+                        }}
+                    />
 
-                    <Form.Field>
-                        <label>{messages['Task.Branch']}</label>
-                        <DropdownClearable
-                            selection
-                            options={
-                                filterParams.bukrs
-                                    ? branches[filterParams.bukrs]
-                                    : []
-                            }
-                            value={filterParams.branchId}
-                            placeholder={messages['Task.Branch']}
-                            onChange={(e, { value }) =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    branchId: value,
-                                })
-                            }
-                            handleClear={() =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    branchId: null,
-                                })
-                            }
-                        />
-                    </Form.Field>
-
-                    <Form.Field>
-                        <label>{messages['product_category']}</label>
-                        <DropdownClearable
-                            selection
-                            options={categories.map(item => {
-                                return {
-                                    key: item.id,
-                                    text: item.name,
-                                    value: item.id,
-                                };
-                            })}
-                            value={filterParams.categoryId}
-                            placeholder={messages['product_category']}
-                            onChange={(e, { value }) =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    categoryId: value,
-                                })
-                            }
-                            handleClear={() =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    categoryId: null,
-                                })
-                            }
-                        />
-                    </Form.Field>
+                    <Form.Select
+                        multiple
+                        selection
+                        options={categories.map(item => {
+                            return {
+                                key: item.id,
+                                text: item.name,
+                                value: item.id,
+                            };
+                        })}
+                        value={filterParams.categoryId}
+                        placeholder={messages['product_category']}
+                        label={messages['product_category']}
+                        onChange={(e, { value }) =>
+                            setFilterParams({
+                                ...filterParams,
+                                categoryId: value,
+                            })
+                        }
+                    />
                 </Form.Group>
                 <Form.Group className="spaceBetween">
                     <div className="flexDirectionRow">

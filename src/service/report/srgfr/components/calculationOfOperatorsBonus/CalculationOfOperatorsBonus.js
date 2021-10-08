@@ -27,7 +27,7 @@ const CalculationOfOperatorsBonus = props => {
 
     const [filterParams, setFilterParams] = useState({
         bukrs: null,
-        branchId: null,
+        branchId: [],
         countryId: null,
         dateAt: null,
     });
@@ -39,7 +39,11 @@ const CalculationOfOperatorsBonus = props => {
 
     const apply = () => {
         if (validation()) {
-            props.fetchCalculationOfOperatorsBonus(filterParams);
+            const joinIds = {
+                ...filterParams,
+                branchId: filterParams.branchId.join(),
+            };
+            props.fetchCalculationOfOperatorsBonus(joinIds);
         }
     };
 
@@ -111,31 +115,24 @@ const CalculationOfOperatorsBonus = props => {
                         />
                     </Form.Field>
 
-                    <Form.Field>
-                        <label>{messages['Task.Branch']}</label>
-                        <DropdownClearable
-                            selection
-                            options={
-                                filterParams.bukrs
-                                    ? branches[filterParams.bukrs]
-                                    : []
-                            }
-                            value={filterParams.branchId}
-                            placeholder={messages['Task.Branch']}
-                            onChange={(e, { value }) =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    branchId: value,
-                                })
-                            }
-                            handleClear={() =>
-                                setFilterParams({
-                                    ...filterParams,
-                                    branchId: null,
-                                })
-                            }
-                        />
-                    </Form.Field>
+                    <Form.Select
+                        multiple
+                        selection
+                        options={
+                            filterParams.bukrs
+                                ? branches[filterParams.bukrs]
+                                : []
+                        }
+                        value={filterParams.branchId}
+                        placeholder={messages['Task.Branch']}
+                        label={messages['Task.Branch']}
+                        onChange={(e, { value }) => {
+                            setFilterParams({
+                                ...filterParams,
+                                branchId: value,
+                            });
+                        }}
+                    />
                 </Form.Group>
 
                 <Form.Group className="spaceBetween">

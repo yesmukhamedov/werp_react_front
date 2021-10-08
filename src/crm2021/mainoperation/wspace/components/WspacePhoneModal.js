@@ -164,15 +164,43 @@ class WspacePhoneModal extends Component {
 
             // Otkaz
             return (
-                <Form.Select
-                    error={formErrors['callReasonId'] ? true : false}
-                    required
-                    name="callReasonId"
-                    fluid
-                    label={messages['Crm.RejectionReason']}
-                    options={reasonOptions}
-                    onChange={(e, v) => this.handleChange('callReasonId', v)}
-                />
+                <>
+                    <Form.Select
+                        error={!!formErrors['callReasonId']}
+                        required
+                        name="callReasonId"
+                        fluid
+                        label={messages['Crm.RejectionReason']}
+                        options={reasonOptions}
+                        onChange={(e, v) =>
+                            this.handleChange('callReasonId', v)
+                        }
+                    />
+                    <Form.Field required error={!!formErrors['callRecallDate']}>
+                        <label>{messages['Crm.RecallDateTime']}</label>
+                        <DatePicker
+                            locale={locale}
+                            autoComplete="off"
+                            label=""
+                            placeholderText={messages['Crm.RecallDateTime']}
+                            showMonthDropdown
+                            showYearDropdown
+                            showTimeSelect
+                            dropdownMode="select"
+                            dateFormat="DD.MM.YYYY HH:mm"
+                            selected={
+                                callForm.callRecallDate
+                                    ? stringYYYYMMDDHHMMToMoment(
+                                          callForm.callRecallDate,
+                                      )
+                                    : null
+                            }
+                            onChange={v =>
+                                this.handleChange('callRecallDate', v)
+                            }
+                        />
+                    </Form.Field>
+                </>
             );
         } else if (
             callForm.callResult === CALL_RESULT_RECALL ||

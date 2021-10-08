@@ -9,6 +9,8 @@ const Tabs = props => {
         countriesOptions = [],
         companies = [],
         branches = [],
+        businessAreasOptions = [],
+        salesDetails = [],
     } = props;
 
     const panes = [
@@ -22,6 +24,8 @@ const Tabs = props => {
                         countriesOptions={countriesOptions}
                         companies={companies}
                         branches={branches}
+                        businessAreasOptions={businessAreasOptions}
+                        salesDetails={salesDetails}
                     />
                 </Tab.Pane>
             ),

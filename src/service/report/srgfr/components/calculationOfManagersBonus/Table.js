@@ -6,7 +6,22 @@ import TextAlignCenter from '../../../../../utils/TextAlignCenter';
 
 const textWithMultipleLines = text => <TextAlignCenter text={text} />;
 
-const Table = ({ data, intl: { messages } }) => {
+const Table = ({ data = [], intl: { messages } }) => {
+    const getTotalOf = accessor => {
+        if (data.length === 0) {
+            return 0;
+        }
+        return (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {messages['totalAmount'] +
+                    ': ' +
+                    moneyFormat(
+                        data.reduce((total, item) => total + item[accessor], 0),
+                    )}
+            </div>
+        );
+    };
+
     const columns = [
         {
             Header: textWithMultipleLines(messages['country']),
@@ -25,6 +40,7 @@ const Table = ({ data, intl: { messages } }) => {
             accessor: 'bonusAmount',
             Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
             filterAll: true,
+            Footer: getTotalOf('bonusAmount'),
         },
         {
             Header: textWithMultipleLines(messages['bonus_as_percentage']),
@@ -47,6 +63,7 @@ const Table = ({ data, intl: { messages } }) => {
             accessor: 'sumTotalWithDiscount',
             Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
             filterAll: true,
+            Footer: getTotalOf('sumTotalWithDiscount'),
         },
     ];
     return (

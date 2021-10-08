@@ -914,15 +914,43 @@ class Phone extends Component {
             }
             // Otkaz
             return (
-                <Form.Select
-                    value={this.state.call.callReasonId}
-                    error={this.state.errors.callReasonId}
-                    required
-                    fluid
-                    label={messages['Crm.RejectionReason']}
-                    options={reasonOptions}
-                    onChange={(e, v) => this.handleChange('callReasonId', v)}
-                />
+                <>
+                    <Form.Select
+                        value={this.state.call.callReasonId}
+                        error={this.state.errors.callReasonId}
+                        required
+                        fluid
+                        label={messages['Crm.RejectionReason']}
+                        options={reasonOptions}
+                        onChange={(e, v) =>
+                            this.handleChange('callReasonId', v)
+                        }
+                    />
+                    <Form.Field
+                        required
+                        error={this.state.errors.callRecallDate}
+                    >
+                        <label>{messages['Crm.RecallDateTime']}</label>
+                        <DatePicker
+                            locale={locale}
+                            autoComplete="off"
+                            label=""
+                            placeholderText={messages['Crm.RecallDateTime']}
+                            showMonthDropdown
+                            showYearDropdown
+                            showTimeSelect
+                            dropdownMode="select"
+                            dateFormat="DD.MM.YYYY HH:mm"
+                            value={this.state.call.callRecallDate}
+                            onChange={v =>
+                                this.handleChange(
+                                    'callRecallDate',
+                                    momentToStringYYYYMMDDHHMM(v),
+                                )
+                            }
+                        />
+                    </Form.Field>
+                </>
             );
         } else if (
             this.state.call.callResult === CALL_RESULT_RECALL ||

@@ -138,16 +138,10 @@ export const fetchBusinessAreas = () => {
 };
 
 const downloadExcelFile = (fileName, data) => {
-    console.log(data instanceof Blob);
-    const blob = new Blob([data], { type: 'application/xlsx' });
+    const url = window.URL.createObjectURL(new Blob([data]));
     const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = `${fileName}-${+new Date()}.xlsx`;
+    link.href = url;
+    link.setAttribute('download', fileName + '.xlsx');
+    document.body.appendChild(link);
     link.click();
-    // const url = window.URL.createObjectURL(new Blob([data]));
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.setAttribute('download', fileName + '.xlsx');
-    // document.body.appendChild(link);
-    // link.click();
 };

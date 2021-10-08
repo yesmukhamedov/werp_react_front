@@ -12,19 +12,19 @@ const Table = ({ data, messages }) => {
         },
         {
             Header: <TextAlignCenter text={messages['Crm.DateOfSale']} />,
-            accessor: 'Crm.DateOfSale',
+            accessor: 'contractDate',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['productSerialNumber']} />,
-            accessor: 'productSerialNumber',
+            accessor: 'tovarSerial',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['Form.ClientFullName']} />,
-            accessor: 'Form.ClientFullName',
+            accessor: 'customerFullName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
@@ -32,13 +32,13 @@ const Table = ({ data, messages }) => {
             Header: (
                 <TextAlignCenter text={messages['phone_number_of_client']} />
             ),
-            accessor: 'phone_number_of_client',
+            accessor: 'fullPhone',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['Dealer.Fullname']} />,
-            accessor: 'Dealer.Fullname',
+            accessor: 'dealerFullName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
@@ -56,13 +56,13 @@ const Table = ({ data, messages }) => {
         },
         {
             Header: <TextAlignCenter text={messages['L__BRANCH']} />,
-            accessor: 'L__BRANCH',
+            accessor: 'branchName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },
         {
             Header: <TextAlignCenter text={messages['country']} />,
-            accessor: 'country',
+            accessor: 'countryName',
             Cell: row => <TextAlignCenter text={row.value} />,
             filterAll: true,
         },

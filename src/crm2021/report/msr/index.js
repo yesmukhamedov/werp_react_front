@@ -3,7 +3,8 @@ import { Container, Divider } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Tabs from './components/Tabs';
-import { clearAll } from './action';
+import { clearAll, fetchBusinessAreas } from './action';
+import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 
 const Msr = props => {
     const {
@@ -12,6 +13,8 @@ const Msr = props => {
         countries = [],
         companies = [],
         branches = [],
+        businessAreas = [],
+        salesDetails = [],
     } = props;
 
     const countriesOptions = countries.map(item => {
@@ -22,7 +25,16 @@ const Msr = props => {
         };
     });
 
+    const businessAreasOptions = businessAreas.map(item => ({
+        key: item.business_area_id,
+        text: item.name,
+        value: item.business_area_id,
+        bukrs: item.bukrs,
+    }));
+
     useEffect(() => {
+        props.f4FetchCountryList();
+        props.fetchBusinessAreas();
         return () => {
             props.clearAll();
         };
@@ -48,6 +60,8 @@ const Msr = props => {
                 countriesOptions={countriesOptions}
                 companies={companies}
                 branches={branches}
+                businessAreasOptions={businessAreasOptions}
+                salesDetails={salesDetails}
             />
         </Container>
     );
@@ -58,10 +72,14 @@ const mapStateToProps = state => {
         language: state.locales.lang,
         countries: state.f4.countryList,
         companies: state.userInfo.companyOptions,
-        branches: state.userInfo.branchOptionsService,
+        branches: state.userInfo.branchOptionsAll,
+        businessAreas: state.msrReducer.businessAreas,
+        salesDetails: state.msrReducer.salesDetails,
     };
 };
 
 export default connect(mapStateToProps, {
     clearAll,
+    fetchBusinessAreas,
+    f4FetchCountryList,
 })(injectIntl(Msr));
