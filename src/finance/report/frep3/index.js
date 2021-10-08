@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Segment, Icon, Form, Dropdown } from 'semantic-ui-react';
 import {
     momentToStringDDMMYYYY,
@@ -7,26 +7,25 @@ import {
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import DropdownClearable from '../../../utils/DropdownClearable';
-import { excelDownload } from '../../../utils/helpers';
+import { excelDownload, errorTableText } from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { fetchResultList } from './frep3Actions';
+import { fetchResultList, fetchDetailList } from './frep3Actions';
 import Table from './Table';
+import Detail from './Modal';
 
 const Frep3 = props => {
     const {
         intl: { messages },
-        language,
         companyOptions = [],
         branchOptionsAll,
         resultList,
         detailList,
     } = props;
-    const [defaultPane, setDefaultPane] = useState(0);
-    const [detailParam, setDetailParam] = useState({});
-    const [param, setParam] = useState({});
 
+    const [modalDetalOpen, setModalDetalOpen] = useState(false);
+    const [param, setParam] = useState({});
     const onInputChange = (value, fieldName) => {
         switch (fieldName) {
             case 'bukrs':
@@ -42,17 +41,32 @@ const Frep3 = props => {
             default:
                 alert('НЕТ ТАКОЕ ЗНАЧЕНИЕ');
         }
+        //<React.Fragment />
     };
 
-    //Excel export need chage columns
-    const exportExcel = () => {
+    const exportExcelDetail = () => {
+        let excelHeaders = [];
+        excelHeaders.push(messages['belnr']);
+        excelHeaders.push(messages['customer']);
+        excelHeaders.push(messages['amount'] + ' в валюте');
+        excelHeaders.push(messages['amount'] + ' USD');
+
+        excelDownload(
+            'finance/report/frep3/downloadExcel/detail',
+            'frep3_Detail_Result.xls',
+            'outputTable',
+            detailList,
+            excelHeaders,
+        );
+    };
+    const exportExcelResult = () => {
         let excelHeaders = [];
         excelHeaders.push(messages['branches']);
+        excelHeaders.push(messages['Название расхода']);
         excelHeaders.push(messages['hkont']);
         excelHeaders.push(messages['waers']);
-        excelHeaders.push(messages['amount'] + 'USD');
-        excelHeaders.push(messages['operator_award']);
-
+        excelHeaders.push(messages['amount'] + ' USD');
+        excelHeaders.push(messages['amount'] + ' в валюте');
         excelDownload(
             'finance/report/frep3/downloadExcel',
             'frep3_Result.xls',
@@ -61,14 +75,30 @@ const Frep3 = props => {
             excelHeaders,
         );
     };
+    const [error, setError] = useState([]);
 
     const totalTable = () => {
-        //setDetailParam({data: "jhjhj"})
-        if (param.bukrs) {
-            props.fetchResultList(param);
-        } else {
-            alert(messages['Form.CompanyError']);
+        const errors = [];
+        if (param.bukrs == undefined) {
+            errors.push(errorTableText(5));
         }
+        if (param.branchIdList == [] || param.branchIdList == undefined) {
+            errors.push(errorTableText(7));
+        }
+        if (param.bldatFrom == undefined) {
+            errors.push(errorTableText(13));
+        }
+        if (param.bldatTo == undefined) {
+            errors.push(errorTableText(14));
+        }
+        if (errors.length === 0) {
+            props.fetchResultList(param);
+        }
+        setError(errors);
+    };
+
+    const detailTable = detailParam => {
+        props.fetchDetailList(detailParam, () => setModalDetalOpen(true));
     };
     return (
         <Container
@@ -83,7 +113,6 @@ const Frep3 = props => {
             <Segment>
                 <h3>{messages['transNameFrep3']}</h3>
             </Segment>
-
             <Form>
                 <Form.Group>
                     <Form.Field className="marginRight  width25Rem">
@@ -175,14 +204,10 @@ const Frep3 = props => {
                             />
                         </Form.Field>
                         <Form.Button
-                            // onClick={handleClickApply}
                             color="blue"
                             className="alignTopBottom"
                             icon
-                            onClick={() => {
-                                totalTable();
-                                console.log('jhjhjhjhjhjhjhj', detailParam);
-                            }}
+                            onClick={() => totalTable()}
                         >
                             <Icon name="search" size="large" />
                             {messages['search']}
@@ -193,7 +218,7 @@ const Frep3 = props => {
                             className="alignTopBottom"
                             icon
                             disabled={resultList.length == 0 ? true : false}
-                            onClick={() => exportExcel()}
+                            onClick={() => exportExcelResult()}
                         >
                             <Icon name="download" size="large" />
                             {messages['export_to_excel']}
@@ -201,11 +226,18 @@ const Frep3 = props => {
                     </Form.Group>
                 </Form.Group>
             </Form>
-            <OutputErrors />
-            {/* <Divider /> */}
+            <OutputErrors errors={error} />
+            <Detail
+                detail={detailList ? detailList : []}
+                messages={messages}
+                modalDetalOpen={modalDetalOpen}
+                setModalDetalOpen={setModalDetalOpen}
+                exportExcelDetail={exportExcelDetail}
+            />
             <Table
                 data={resultList ? resultList : []}
                 messages={props.intl.messages}
+                detailTable={detailTable}
                 findParam={param}
             />
         </Container>
@@ -215,11 +247,12 @@ const Frep3 = props => {
 function mapStateToProps(state) {
     return {
         companyOptions: state.userInfo.companyOptions,
-        language: state.userInfo.language,
         branchOptionsAll: state.userInfo.branchOptionsAll,
         resultList: state.frep3Reducer.frep3ResultList,
+        detailList: state.frep3Reducer.frep3DetailList,
     };
 }
 export default connect(mapStateToProps, {
     fetchResultList,
+    fetchDetailList,
 })(injectIntl(Frep3));

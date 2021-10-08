@@ -22,7 +22,7 @@ export const fetchResultList = param => {
     };
 };
 
-export const fetchDetailList = detailParam => {
+export const fetchDetailList = (detailParam, openModal) => {
     return function(dispatch) {
         dispatch(modifyLoader(true));
         doGet(`core/finance/reports/frep3/detail`, detailParam)
@@ -32,10 +32,11 @@ export const fetchDetailList = detailParam => {
                     type: FETCH_DETAIL,
                     payload: data.result,
                 });
+                openModal();
             })
             .catch(error => {
                 dispatch(modifyLoader(false));
-                alert('Oops oblazhalsya "detail"');
+                alert('ups oblazhalsya "detail"');
             });
     };
 };

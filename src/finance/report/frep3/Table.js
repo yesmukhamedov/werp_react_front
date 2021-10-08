@@ -1,37 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
-import { Popup, Button, Modal } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import { fetchDetailList } from './frep3Actions';
-import Detail from './Modal';
+import { Popup, Button } from 'semantic-ui-react';
 
 const Table = props => {
-    const {
-        data = [],
-        messages = {},
-        detailList,
-        language,
-        findParam = {},
-    } = props;
+    const { data = [], messages = {}, findParam = {}, detailTable } = props;
     const width = 263.5;
-    const [detailParam, setDetailParam] = useState({});
-    const [modalDetalOpen, setModalDetalOpen] = useState(false);
 
-    const detailTable = () => {
-        //setDetailParam({ ...detailParam, language: language }); //ru en kk
-        //setDetailParam(detailParam["language"]= 'ru' ); //ru en kk
-        try {
-            props.fetchDetailList(detailParam);
-        } catch {
-            alert('shto to ne to, Obratitsya k fermeru');
-        }
-    };
-
-    const detailParams = rowdata => {
-        setDetailParam({ data: 'HHHH' });
-        console.log(detailParam);
-    };
     const mainHeaderStyle = {
         whiteSpace: 'pre-wrap',
         background: '#fff',
@@ -41,6 +15,34 @@ const Table = props => {
     const textAlign = {
         textAlign: 'center',
     };
+
+    const conditionalStyle = rowInfo => {
+        if (rowInfo && rowInfo.row) {
+            return {
+                style: {
+                    background:
+                        rowInfo.row.hkontName === null ? 'yellow' : null,
+                    fontWeight: rowInfo.row.hkontName === null ? 'bold' : null,
+                },
+            };
+        }
+        return {};
+    };
+
+    const conditionalStyleWithTextColor = rowInfo => {
+        if (rowInfo && rowInfo.row) {
+            return {
+                style: {
+                    background:
+                        rowInfo.row.hkontName === null ? 'yellow' : null,
+                    fontWeight: rowInfo.row.hkontName === null ? 'bold' : null,
+                    color: rowInfo.row.hkontName === null ? 'blue' : null,
+                },
+            };
+        }
+        return {};
+    };
+
     const initialColumns = [
         {
             fixed: 'left',
@@ -51,189 +53,93 @@ const Table = props => {
                     accessor: 'branchName',
                     headerStyle: mainHeaderStyle,
                     width: width,
+                    getProps: (state, rowInfo) => {
+                        return conditionalStyleWithTextColor(rowInfo);
+                    },
                     Cell: row => (
                         <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
-                    getProps: (state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                style: {
-                                    background:
-                                        rowInfo.row.hkontName === null
-                                            ? 'yellow'
-                                            : null,
-                                    fontWeight:
-                                        rowInfo.row.hkontName === null
-                                            ? 'bold'
-                                            : null,
-                                    color:
-                                        rowInfo.row.hkontName === null
-                                            ? 'blue'
-                                            : null,
-                                },
-                            };
-                        } else {
-                            return {};
-                        }
-                    },
                 },
                 {
                     Header: 'Название расхода',
                     accessor: 'hkontName',
                     headerStyle: mainHeaderStyle,
                     width: width,
+                    getProps: (state, rowInfo) => {
+                        return conditionalStyle(rowInfo);
+                    },
                     Cell: row => (
                         <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
-                    getProps: (state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                style: {
-                                    background:
-                                        rowInfo.row.hkontName === null
-                                            ? 'yellow'
-                                            : null,
-                                    fontWeight:
-                                        rowInfo.row.hkontName === null
-                                            ? 'bold'
-                                            : null,
-                                },
-                            };
-                        } else {
-                            return {};
-                        }
-                    },
                 },
                 {
                     Header: messages['hkont'],
                     accessor: 'hkont',
                     headerStyle: mainHeaderStyle,
                     width: width,
+                    getProps: (state, rowInfo) => {
+                        return conditionalStyle(rowInfo);
+                    },
                     Cell: row => (
                         <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
-                    getProps: (state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                style: {
-                                    background:
-                                        rowInfo.row.hkontName === null
-                                            ? 'yellow'
-                                            : null,
-                                    fontWeight:
-                                        rowInfo.row.hkontName === null
-                                            ? 'bold'
-                                            : null,
-                                },
-                            };
-                        } else {
-                            return {};
-                        }
-                    },
                 },
                 {
                     Header: messages['waers'],
                     accessor: 'waers',
                     headerStyle: mainHeaderStyle,
                     width: width,
+                    getProps: (state, rowInfo) => {
+                        return conditionalStyleWithTextColor(rowInfo);
+                    },
                     Cell: row => (
                         <div className="text-wrap" style={textAlign}>
                             {row.value}
                         </div>
                     ),
-                    getProps: (state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                style: {
-                                    background:
-                                        rowInfo.row.hkontName === null
-                                            ? 'yellow'
-                                            : null,
-                                    fontWeight:
-                                        rowInfo.row.hkontName === null
-                                            ? 'bold'
-                                            : null,
-                                    color:
-                                        rowInfo.row.hkontName === null
-                                            ? 'blue'
-                                            : null,
-                                },
-                            };
-                        } else {
-                            return {};
-                        }
-                    },
                 },
                 {
                     Header: messages['amount'] + ' USD',
                     accessor: 'dmbtr',
                     headerStyle: mainHeaderStyle,
                     width: width,
+                    getProps: (state, rowInfo) => {
+                        return conditionalStyle(rowInfo);
+                    },
                     Cell: row => (
                         <div className="text-wrap" style={textAlign}>
                             {row.value.toLocaleString()}
                         </div>
                     ),
-                    getProps: (state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                style: {
-                                    background:
-                                        rowInfo.row.hkontName === null
-                                            ? 'yellow'
-                                            : null,
-                                    fontWeight:
-                                        rowInfo.row.hkontName === null
-                                            ? 'bold'
-                                            : null,
-                                },
-                            };
-                        } else {
-                            return {};
-                        }
-                    },
                 },
                 {
                     Header: messages['amount'] + ' в валюте',
                     accessor: 'wrbtr',
                     headerStyle: mainHeaderStyle,
                     width: width,
+                    getProps: (state, rowInfo) => {
+                        return conditionalStyle(rowInfo);
+                    },
                     Cell: row => (
                         <div className="text-wrap" style={textAlign}>
                             {row.value.toLocaleString()}
                         </div>
                     ),
-                    getProps: (state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                style: {
-                                    background:
-                                        rowInfo.row.hkontName === null
-                                            ? 'yellow'
-                                            : null,
-                                    fontWeight:
-                                        rowInfo.row.hkontName === null
-                                            ? 'bold'
-                                            : null,
-                                },
-                            };
-                        } else {
-                            return {};
-                        }
-                    },
                 },
                 {
                     Header: messages['Table.Actions'],
                     accessor: 'branchName',
                     headerStyle: mainHeaderStyle,
                     width: width,
-
+                    getProps: (state, rowInfo) => {
+                        return conditionalStyle(rowInfo);
+                    },
                     Cell: row => {
                         return row.original.hkontName ? (
                             <div className="text-wrap" style={textAlign}>
@@ -243,21 +149,7 @@ const Table = props => {
                                         <Button
                                             class="ui button"
                                             onClick={() => {
-                                                console.log(row.original);
-                                                detailTable();
-                                                // setDetailParam(detailParam["bukrs"]= findParam["bukrs"]);
-                                                // setDetailParam(detailParam["branchId"]= row.original.branchId);
-                                                // setDetailParam(detailParam["bldatFrom"]= findParam["bldatFrom"]);
-                                                // setDetailParam(detailParam["bldatTo"]= findParam["bldatTo"]);
-                                                // setDetailParam(detailParam["hkont"]= row.original.hkont);
-                                                // setDetailParam(detailParam["waers"]= row.original.waers);
-
-                                                //detailParams(row.original)
-                                                setModalDetalOpen(true);
-                                                //console.log(detailParam)
-
-                                                setDetailParam({
-                                                    ...detailParam,
+                                                detailTable({
                                                     branchId:
                                                         row.original.branchId,
                                                     bukrs: findParam['bukrs'],
@@ -277,60 +169,27 @@ const Table = props => {
                             </div>
                         ) : null;
                     },
-
-                    getProps: (state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                style: {
-                                    background:
-                                        rowInfo.row.hkontName === null
-                                            ? 'yellow'
-                                            : null,
-                                },
-                            };
-                        } else {
-                            return {};
-                        }
-                    },
                 },
             ],
         },
     ];
     return (
-        <div>
-            <Detail
-                detail={detailList ? detailList : []}
-                messages={messages}
-                modalDetalOpen={modalDetalOpen}
-                setModalDetalOpen={setModalDetalOpen}
-            />
-            <ReactTableWrapperFixedColumns
-                data={data ? data : []}
-                columns={initialColumns}
-                previousText={messages['Table.Previous']}
-                nextText={messages['Table.Next']}
-                showPagination={true}
-                className="-striped -highlight"
-                defaultPageSize={25}
-                pageSizeOptions={[10, 20, 30, 40]}
-                loadingText={messages['Table.Next']}
-                noDataText={messages['Table.NoData']}
-                rowsText={messages['Table.Rows']}
-                pageText={messages['Table.Page']}
-                ofText={messages['Table.Of']}
-            />
-        </div>
+        <ReactTableWrapperFixedColumns
+            data={data ? data : []}
+            columns={initialColumns}
+            previousText={messages['Table.Previous']}
+            nextText={messages['Table.Next']}
+            showPagination={true}
+            className="-striped -highlight"
+            defaultPageSize={25}
+            pageSizeOptions={[10, 20, 30, 40]}
+            loadingText={messages['Table.Next']}
+            noDataText={messages['Table.NoData']}
+            rowsText={messages['Table.Rows']}
+            pageText={messages['Table.Page']}
+            ofText={messages['Table.Of']}
+        />
     );
 };
 
-//export default Table;
-
-function mapStateToProps(state) {
-    return {
-        language: state.userInfo.language,
-        detailList: state.frep3Reducer.frep3DetailList,
-    };
-}
-export default connect(mapStateToProps, {
-    fetchDetailList,
-})(injectIntl(Table));
+export default Table;

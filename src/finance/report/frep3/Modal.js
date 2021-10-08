@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-import { Popup, Button, Modal, Icon } from 'semantic-ui-react';
-import { excelDownload } from '../../../utils/helpers';
+import { Button, Modal, Icon } from 'semantic-ui-react';
 
 const Detail = props => {
     const {
@@ -9,39 +8,9 @@ const Detail = props => {
         detail = [],
         setModalDetalOpen,
         modalDetalOpen,
+        exportExcelDetail,
     } = props;
-    const widthd = 250;
-
-    // const [loaderTableDetal, setLoaderTableDetal] = useState(false);
-
-    // const [detalParam, setDetalParam] = useState({});
-
-    // useEffect(() => {
-    //   if (Object.keys(detalParam).length > 0) {
-    //     setLoaderTableDetal(true);
-    //     props.fetchSrkpisoDetal(
-    //       { ...detalParam, dateAt: param.dateAt, dateTo: param.dateTo },
-    //       () => setLoaderTableDetal(false),
-    //     );
-    //   }
-    // }, [detalParam]);
-
-    const exportExcel = () => {
-        let excelHeaders = [];
-        excelHeaders.push(messages['branches']);
-        excelHeaders.push(messages['hkont']);
-        excelHeaders.push(messages['waers']);
-        excelHeaders.push(messages['amount'] + 'USD');
-        excelHeaders.push(messages['operator_award']);
-
-        excelDownload(
-            'finance/report/frep3/downloadExcel/detail',
-            'frep3_Detail_Result.xls',
-            'outputTable',
-            detail,
-            excelHeaders,
-        );
-    };
+    const widthd = 450;
 
     const detalColumns = [
         {
@@ -57,68 +26,8 @@ const Detail = props => {
             width: widthd,
         },
         {
-            Header: '2021',
-            accessor: 'gjahr',
-            checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
-            filterable: false,
-            width: widthd,
-        },
-        {
-            Header: messages['bukrs'],
-            accessor: 'bukrs',
-            checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
-            filterable: false,
-            width: widthd,
-        },
-        {
-            Header: messages['branches'],
-            accessor: 'branchName',
-            checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
-            filterable: false,
-            width: widthd,
-        },
-        {
             Header: messages['customer'],
             accessor: 'customerName',
-            checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
-            filterable: false,
-            width: widthd,
-        },
-        {
-            Header: messages['waers'],
-            accessor: 'waers',
-            checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
-            filterable: false,
-            width: widthd,
-        },
-        {
-            Header: messages['hkont'],
-            accessor: 'hkont',
             checked: true,
             Cell: row => (
                 <div className="text-wrap" style={{ textAlign: 'center' }}>
@@ -152,18 +61,6 @@ const Detail = props => {
             filterable: false,
             width: widthd,
         },
-        {
-            Header: 'Название ' + messages['hkont'],
-            accessor: 'hkontName',
-            checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
-            filterable: false,
-            width: widthd,
-        },
     ];
 
     return (
@@ -176,13 +73,11 @@ const Detail = props => {
             <Modal.Header>
                 {`${messages['transNameFrep3']}(${messages['Detailing']})`}
                 <Button
-                    //floated="right"
-                    //marginRight='50'
                     color="green"
                     className="alignTopBottom"
                     icon
                     disabled={detail.length == 0 ? true : false}
-                    onClick={() => exportExcel()}
+                    onClick={() => exportExcelDetail()}
                 >
                     <Icon name="download" size="large" />
                     {messages['export_to_excel']}
@@ -192,7 +87,6 @@ const Detail = props => {
                 <ReactTableWrapper
                     data={detail ? detail : []}
                     filterable={true}
-                    //loading={loaderTableDetal}
                     defaultPageSize={20}
                     showPagination={true}
                     columns={detalColumns}
