@@ -86,6 +86,7 @@ import crmReleaseLog2021Reducer from '../crm2021/mainoperation/release/reducer';
 import ccvrlReducer from '../callcenter/mainoperation/ccvrl/reducer';
 import frep3Reducer from '../finance/report/frep3/frep3Reducer';
 import messageReducer from '../dit/message/messageReducer';
+import msrReducer from '../crm2021/report/msr/reducer';
 
 const appReducer = combineReducers({
     form,
@@ -173,6 +174,7 @@ const appReducer = combineReducers({
     frep3Reducer,
     mrkaspiReducer,
     messageReducer,
+    msrReducer,
 });
 
 const rootReducer = (state, action) => {
