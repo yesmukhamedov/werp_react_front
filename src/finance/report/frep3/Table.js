@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
-import { Popup, Button } from 'semantic-ui-react';
+import { Popup, Button, Modal } from 'semantic-ui-react';
+import Frep3 from './index';
 
 const Table = props => {
     const { data = [], messages = {}, findParam = {}, detailTable } = props;
@@ -61,6 +62,28 @@ const Table = props => {
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                    color:
+                                        rowInfo.row.hkontName === null
+                                            ? 'blue'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: 'Название расхода',
@@ -75,6 +98,24 @@ const Table = props => {
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['hkont'],
@@ -89,6 +130,24 @@ const Table = props => {
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['waers'],
@@ -103,6 +162,28 @@ const Table = props => {
                             {row.value}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                    color:
+                                        rowInfo.row.hkontName === null
+                                            ? 'blue'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['amount'] + ' USD',
@@ -117,6 +198,24 @@ const Table = props => {
                             {row.value.toLocaleString()}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['amount'] + ' в валюте',
@@ -131,6 +230,24 @@ const Table = props => {
                             {row.value.toLocaleString()}
                         </div>
                     ),
+                    getProps: (state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                            return {
+                                style: {
+                                    background:
+                                        rowInfo.row.hkontName === null
+                                            ? 'yellow'
+                                            : null,
+                                    fontWeight:
+                                        rowInfo.row.hkontName === null
+                                            ? 'bold'
+                                            : null,
+                                },
+                            };
+                        } else {
+                            return {};
+                        }
+                    },
                 },
                 {
                     Header: messages['Table.Actions'],
