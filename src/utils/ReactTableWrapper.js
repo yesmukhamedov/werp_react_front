@@ -28,7 +28,7 @@ const ReactTableWrapper = props => {
         onFilterChangeReactTable = null,
         onRowClick = null,
         loading = false,
-        getTrProps = false,
+        //getTrProps = false,
     } = props;
 
     return (
@@ -65,7 +65,7 @@ const ReactTableWrapper = props => {
                         },
                     };
                 }}
-                getTrProps={getTrProps}
+                //getTrProps={getTrProps}
             />
         </div>
     );
