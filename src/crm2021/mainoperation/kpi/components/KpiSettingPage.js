@@ -28,6 +28,7 @@ import KpiFormModal from './KpiFormModal';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { Tab } from 'semantic-ui-react';
+import { EXPERIENCE_OPTIONS } from '../../../../utils/constants';
 
 const currentDate = new Date();
 
@@ -41,11 +42,16 @@ class KpiSettingPage extends Component {
             year: null,
             month: currentDate.getMonth() + 1,
             experience: null,
+            activeMonthFrom: null,
+            activeMonthTo: null,
+            activeYearFrom: null,
+            activeYearTo: null,
         };
 
         this.loadItems = this.loadItems.bind(this);
         this.renderDataTable = this.renderDataTable.bind(this);
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
+        this.handlePeriod = this.handlePeriod(this);
     }
 
     componentWillMount() {
@@ -300,6 +306,43 @@ class KpiSettingPage extends Component {
         });
     }
 
+    handlePeriod(name, date) {
+        let {
+            activeMonthFrom,
+            activeYearFrom,
+            activeMonthTo,
+            activeYearTo,
+        } = this.state;
+
+        switch (name) {
+            case 'dateFrom':
+                activeMonthFrom = date.format('MM');
+                activeYearFrom = date.format('YYYY');
+                break;
+            case 'dateTo':
+                activeMonthTo = date.format('MM');
+                activeYearTo = date.format('YYYY');
+                break;
+            default: {
+            }
+        }
+
+        this.setState({
+            ...this.state,
+            activeMonthFrom: activeMonthFrom,
+            activeYearFrom: activeYearFrom,
+            activeMonthTo: activeMonthTo,
+            activeYearTo: activeYearTo,
+        });
+        console.log(
+            'localItemSettingPage: ',
+            activeMonthFrom,
+            activeYearFrom,
+            activeMonthTo,
+            activeYearTo,
+        );
+    }
+
     renderSearchForm() {
         let { companyOptions } = this.props;
         return (
@@ -331,7 +374,7 @@ class KpiSettingPage extends Component {
                             <Form.Select
                                 name="experience"
                                 label="Стаж"
-                                options={this.state.experience}
+                                options={EXPERIENCE_OPTIONS}
                                 placeholder="Стаж"
                                 onChange={this.handleDropdownChange}
                             />
@@ -343,27 +386,27 @@ class KpiSettingPage extends Component {
                             <Form.Field>
                                 <label>Активен c</label>
                                 <DatePicker
-                                    name="date"
-                                    autoComplete="off"
+                                    selected={moment()}
+                                    dateFormat="MM/yyyy"
+                                    showMonthYearPicker
                                     showMonthDropdown
                                     showYearDropdown
-                                    dropdownMode="select"
-                                    selected={moment()}
-                                    onChange={this.handleDropdownChange}
-                                    dateFormat="MM.YYYY"
+                                    onSelect={date =>
+                                        this.handlePeriod('dateFrom', date)
+                                    }
                                 />
                             </Form.Field>
                             <Form.Field>
                                 <label>Активен по</label>
                                 <DatePicker
-                                    name="date"
-                                    autoComplete="off"
+                                    selected={moment()}
+                                    dateFormat="MM/yyyy"
+                                    showMonthYearPicker
                                     showMonthDropdown
                                     showYearDropdown
-                                    dropdownMode="select"
-                                    selected={moment()}
-                                    onChange={this.handleDropdownChange}
-                                    dateFormat="MM.YYYY"
+                                    onSelect={date =>
+                                        this.handlePeriod('dateTo', date)
+                                    }
                                 />
                             </Form.Field>
                         </Form.Group>
