@@ -1,5 +1,6 @@
-import { doGet, doPost, doPut } from '../../../utils/apiActions';
+import { doGet, doPost } from '../../../utils/apiActions';
 import { modifyLoader } from '../../../general/loader/loader_action';
+import { handleError } from '../../../general/notification/notification_action';
 
 export const FETCH_RESULT = 'FETCH_RESULT';
 export const FETCH_DETAIL = 'FETCH_DETAIL';
@@ -12,12 +13,12 @@ export const fetchResultList = param => {
                 dispatch(modifyLoader(false));
                 dispatch({
                     type: FETCH_RESULT,
-                    data,
+                    payload: { data, param },
                 });
             })
             .catch(error => {
                 dispatch(modifyLoader(false));
-                alert('Oops oblazhalsya "result"');
+                handleError(error, dispatch);
             });
     };
 };
@@ -36,7 +37,7 @@ export const fetchDetailList = (detailParam, openModal) => {
             })
             .catch(error => {
                 dispatch(modifyLoader(false));
-                alert('ups oblazhalsya "detail"');
+                handleError(error, dispatch);
             });
     };
 };

@@ -14,6 +14,7 @@ import { injectIntl } from 'react-intl';
 import { fetchResultList, fetchDetailList } from './frep3Actions';
 import Table from './Table';
 import Detail from './Modal';
+import moment from 'moment';
 
 const Frep3 = props => {
     const {
@@ -22,10 +23,17 @@ const Frep3 = props => {
         branchOptionsAll,
         resultList,
         detailList,
+        searchParam,
     } = props;
 
     const [modalDetalOpen, setModalDetalOpen] = useState(false);
-    const [param, setParam] = useState({});
+    const [param, setParam] = useState({
+        bukrs: '',
+        branchIdList: '',
+        bldatTo: '',
+        bldatFrom: '',
+    });
+
     const onInputChange = (value, fieldName) => {
         switch (fieldName) {
             case 'bukrs':
@@ -41,7 +49,16 @@ const Frep3 = props => {
             default:
                 alert('НЕТ ТАКОЕ ЗНАЧЕНИЕ');
         }
-        //<React.Fragment />
+    };
+
+    const getBranchesList = () => {
+        if (!param.bukrs) return [];
+
+        if (!branchOptionsAll[param.bukrs]) return [];
+
+        return branchOptionsAll[param.bukrs].map(branch => {
+            return { key: branch.key, text: branch.text, value: branch.value };
+        });
     };
 
     const exportExcelDetail = () => {
@@ -100,6 +117,7 @@ const Frep3 = props => {
     const detailTable = detailParam => {
         props.fetchDetailList(detailParam, () => setModalDetalOpen(true));
     };
+
     return (
         <Container
             fluid
@@ -119,7 +137,15 @@ const Frep3 = props => {
                         <DropdownClearable
                             fluid
                             placeholder={messages['bukrs']}
-                            value={param.bukrs}
+                            value={
+                                companyOptions.length === 1 && !param.bukrs
+                                    ? setParam({
+                                          ...param,
+                                          bukrs: companyOptions[0].value,
+                                          branchIdList: '',
+                                      })
+                                    : param.bukrs
+                            }
                             options={companyOptions}
                             onChange={(e, { value }) =>
                                 onInputChange(value, 'bukrs')
@@ -139,11 +165,7 @@ const Frep3 = props => {
                             selection
                             fluid
                             placeholder={messages['branches']}
-                            options={
-                                param.bukrs == '' || param.bukrs == null
-                                    ? []
-                                    : branchOptionsAll[param.bukrs]
-                            }
+                            options={getBranchesList()}
                             onChange={(e, { value }) =>
                                 onInputChange(value, 'branchId')
                             }
@@ -164,14 +186,14 @@ const Frep3 = props => {
                                 placeholderText={messages['Form.DateFrom']}
                                 autoComplete="off"
                                 selected={
-                                    param.bldatFrom == null
+                                    param.bldatFrom == null ||
+                                    param.bldatFrom === ''
                                         ? ''
                                         : stringToMomentDDMMYYYY(
                                               param.bldatFrom,
                                           )
                                 }
                                 dropdownMode="select"
-                                locale={props.language}
                                 onChange={date =>
                                     setParam({
                                         ...param,
@@ -188,12 +210,11 @@ const Frep3 = props => {
                                 placeholderText={messages['Form.DateTo']}
                                 autoComplete="off"
                                 selected={
-                                    param.bldatTo == null
+                                    !param.bldatTo
                                         ? ''
                                         : stringToMomentDDMMYYYY(param.bldatTo)
                                 }
                                 dropdownMode="select"
-                                locale={props.language}
                                 onChange={date =>
                                     setParam({
                                         ...param,
@@ -209,7 +230,7 @@ const Frep3 = props => {
                             icon
                             onClick={() => totalTable()}
                         >
-                            <Icon name="search" size="large" />
+                            <Icon name="search" />
                             {messages['search']}
                         </Form.Button>
                         <Form.Button
@@ -217,10 +238,10 @@ const Frep3 = props => {
                             color="green"
                             className="alignTopBottom"
                             icon
-                            disabled={resultList.length == 0 ? true : false}
+                            disabled={resultList.length === 0 ? true : false}
                             onClick={() => exportExcelResult()}
                         >
-                            <Icon name="download" size="large" />
+                            <Icon name="download" />
                             {messages['export_to_excel']}
                         </Form.Button>
                     </Form.Group>
@@ -238,7 +259,7 @@ const Frep3 = props => {
                 data={resultList ? resultList : []}
                 messages={props.intl.messages}
                 detailTable={detailTable}
-                findParam={param}
+                findParam={searchParam}
             />
         </Container>
     );
@@ -250,8 +271,10 @@ function mapStateToProps(state) {
         branchOptionsAll: state.userInfo.branchOptionsAll,
         resultList: state.frep3Reducer.frep3ResultList,
         detailList: state.frep3Reducer.frep3DetailList,
+        searchParam: state.frep3Reducer.searchParam,
     };
 }
+
 export default connect(mapStateToProps, {
     fetchResultList,
     fetchDetailList,

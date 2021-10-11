@@ -575,7 +575,6 @@ const AsyncFrep1 = Loadable({
 
 const AsyncFrep3 = Loadable({
     loader: () => {
-        console.log('Test');
         return import(
             '../finance/report/frep3' /* webpackChunkName: "frep3" */
         );
@@ -585,7 +584,6 @@ const AsyncFrep3 = Loadable({
 
 const AsyncFrep4 = Loadable({
     loader: () => {
-        console.log('Test');
         return import(
             '../finance/report/frep4/frep4' /* webpackChunkName: "frep4" */
         );

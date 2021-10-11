@@ -10,56 +10,71 @@ const Detail = props => {
         modalDetalOpen,
         exportExcelDetail,
     } = props;
-    const widthd = 450;
+
+    const div = element => {
+        return (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {element}
+            </div>
+        );
+    };
 
     const detalColumns = [
         {
             Header: messages['belnr'],
             accessor: 'belnr',
             checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
             filterable: false,
-            width: widthd,
+            Cell: row => div(row.value),
         },
         {
-            Header: messages['customer'],
-            accessor: 'customerName',
+            Header: messages['brnch'],
+            accessor: 'branchName',
             checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
             filterable: false,
-            width: widthd,
+            Cell: row => div(row.value),
+        },
+        {
+            Header: messages['name'],
+            accessor: 'hkontName',
+            checked: true,
+            filterable: false,
+            Cell: row => div(row.value),
+        },
+        {
+            Header: messages['hkont'],
+            accessor: 'hkont',
+            checked: true,
+            filterable: false,
+            Cell: row => div(row.value),
+        },
+        {
+            Header: messages['waers'],
+            accessor: 'waers',
+            checked: true,
+            filterable: false,
+            Cell: row => div(row.value),
         },
         {
             Header: messages['amount'] + ' USD',
             accessor: 'dmbtr',
             checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
             filterable: false,
-            width: widthd,
+            Cell: row => div(row.value),
         },
         {
             Header: messages['amount'] + ' в валюте',
             accessor: 'wrbtr',
             checked: true,
-            Cell: row => (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                    {row.value}
-                </div>
-            ),
             filterable: false,
-            width: widthd,
+            Cell: row => div(row.value),
+        },
+        {
+            Header: messages['customer'],
+            accessor: 'customerName',
+            checked: true,
+            filterable: false,
+            Cell: row => div(row.value),
         },
     ];
 
@@ -76,7 +91,6 @@ const Detail = props => {
                     color="green"
                     className="alignTopBottom"
                     icon
-                    disabled={detail.length == 0 ? true : false}
                     onClick={() => exportExcelDetail()}
                 >
                     <Icon name="download" size="large" />
