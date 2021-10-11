@@ -6,6 +6,7 @@ import browserHistory from '../../utils/history';
 export const NOTIFY = 'NOTIFY';
 
 export function notify(a_notify_type, a_notify_text, a_notify_header) {
+    console.log('a_notify_text: ', a_notify_text);
     const obj = {
         type: NOTIFY,
         notifyType: a_notify_type,
@@ -37,7 +38,13 @@ export function handleError(error, dispatch) {
             let message =
                 error.response.data.message || error.response.data.messages;
             if (message) {
-                dispatch(notify('error', message, 'Плохой запрос!'));
+                dispatch(
+                    notify(
+                        'error',
+                        Object.values(message)[0],
+                        'Плохой запрос!',
+                    ),
+                );
             } else {
                 dispatch(notify('error', 'Плохой запрос.', 'Плохой запрос!'));
             }

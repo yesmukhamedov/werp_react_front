@@ -14,6 +14,7 @@ import MonthF4 from '../../../../reference/f4/date/MonthF4';
 import PositionF4 from '../../../../reference/f4/position/PositionF4';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import { EXPERIENCE_OPTIONS } from '../../../../utils/constants';
 
 class KpiFormModal extends Component {
     constructor(props) {
@@ -34,6 +35,9 @@ class KpiFormModal extends Component {
                 clientName: false,
                 address: false,
                 locationId: false,
+                itemPoint: false,
+                itemValue: false,
+                experience: false,
             },
         };
 
@@ -42,6 +46,7 @@ class KpiFormModal extends Component {
         this.saveItem = this.saveItem.bind(this);
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.handleIndicatorChange = this.handleIndicatorChange.bind(this);
+        this.handlePeriod = this.handlePeriod.bind(this);
     }
 
     componentWillMount() {}
@@ -72,6 +77,8 @@ class KpiFormModal extends Component {
             indicator.push(item);
         });
 
+        console.log('indicator: ', indicators);
+
         for (const k in errors) {
             if (errors.hasOwnProperty(k)) {
                 errors[k] = false;
@@ -90,16 +97,19 @@ class KpiFormModal extends Component {
             errors.positionId = true;
         }
 
+        if (!localItem.experience || localItem.experience === null) {
+            errors.experience = true;
+        }
         // if (!localItem.items || localItem.items === null) {
         // }
 
-        // if (!indicator || indicator.point === null) {
-        //   errors.itemPoint = true;
-        // }
+        if (indicator.point === null) {
+            errors.itemPoint = true;
+        }
 
-        // if (!indicator || indicator.value === null) {
-        //   errors.itemValue = true;
-        // }
+        if (indicator.value === null) {
+            errors.itemValue = true;
+        }
 
         this.setState({
             ...this.state,
@@ -155,13 +165,13 @@ class KpiFormModal extends Component {
                         handleChange={this.handleDropdownChange}
                     />
                     <Form.Select
-                        // error={errors.branchId}
+                        error={errors.experience}
                         name="experience"
                         // value={localItem.branchId}
-                        search={true}
+                        // search={true}
                         selection
                         label="Стаж"
-                        // options={this.branchOptions(localItem.bukrs)}
+                        options={EXPERIENCE_OPTIONS}
                         placeholder="Стаж"
                         onChange={this.handleDropdownChange}
                     />
@@ -171,27 +181,27 @@ class KpiFormModal extends Component {
                     <Form.Field>
                         <label>Активен c</label>
                         <DatePicker
-                            name="date"
-                            autoComplete="off"
+                            selected={moment()}
+                            name="dateFrom"
+                            dateFormat="MM/yyyy"
+                            showMonthYearPicker
                             showMonthDropdown
                             showYearDropdown
-                            dropdownMode="select"
-                            selected={moment()}
-                            onChange={this.handleDropdownChange}
-                            dateFormat="MM.YYYY"
+                            onSelect={date =>
+                                this.handlePeriod('dateFrom', date)
+                            }
                         />
                     </Form.Field>
                     <Form.Field>
                         <label>Активен по</label>
                         <DatePicker
-                            name="date"
-                            autoComplete="off"
+                            selected={moment()}
+                            name="dateTo"
+                            dateFormat="MM/yyyy"
+                            showMonthYearPicker
                             showMonthDropdown
                             showYearDropdown
-                            dropdownMode="select"
-                            selected={moment()}
-                            onChange={this.handleDropdownChange}
-                            dateFormat="MM.YYYY"
+                            onSelect={date => this.handlePeriod('dateTo', date)}
                         />
                     </Form.Field>
                 </Form.Group>
@@ -274,6 +284,7 @@ class KpiFormModal extends Component {
 
                     <Form.Field>
                         <Form.Input
+                            error={errors.itemPoint}
                             onChange={(e, o) =>
                                 this.handleIndicatorChange('value', idx, o)
                             }
@@ -283,18 +294,18 @@ class KpiFormModal extends Component {
                             type="number"
                             value={item.value || 0}
                         />
-                        {this.props.notification ? (
+                        {/* {this.props.notification ? (
                             <Label basic color="red" pointing>
                                 {Object.values(this.props.notification)}
                             </Label>
                         ) : (
                             ''
-                        )}
+                        )} */}
                     </Form.Field>
 
                     <Form.Field>
                         <Form.Input
-                            error={errors.itemPoint}
+                            error={errors.itemValue}
                             onChange={(e, o) =>
                                 this.handleIndicatorChange('point', idx, o)
                             }
@@ -304,13 +315,13 @@ class KpiFormModal extends Component {
                             type="number"
                             value={item.point || 0}
                         />
-                        {this.props.notification ? (
+                        {/* {this.props.notification ? (
                             <Label basic color="red" pointing>
                                 {Object.values(this.props.notification)}
                             </Label>
                         ) : (
                             ''
-                        )}
+                        )} */}
                     </Form.Field>
                     <Form.Field>
                         <label>&nbsp;</label>
@@ -360,13 +371,16 @@ class KpiFormModal extends Component {
             case 'year':
             case 'month':
             case 'branchId':
+            case 'experience':
                 localItem[name] = value;
                 break;
 
             case 'position':
                 localItem['positionId'] = value;
                 break;
-
+            case 'dateFrom':
+                localItem['dateFrom'] = value;
+                break;
             default: {
             }
         }
@@ -375,6 +389,36 @@ class KpiFormModal extends Component {
             ...this.state,
             localItem: localItem,
         });
+    }
+
+    handlePeriod(name, date) {
+        let yearFrom, monthFrom, yearTo, monthTo;
+
+        let localItem = Object.assign({}, this.state.localItem);
+        switch (name) {
+            case 'dateFrom':
+                localItem['activeMonthFrom'] = date.format('MM');
+                localItem['activeYearFrom'] = date.format('YYYY');
+                break;
+            case 'dateTo':
+                localItem['activeMonthTo'] = date.format('MM');
+                localItem['activeYearTo'] = date.format('YYYY');
+                break;
+            // case 'experience':
+            //     localItem['experience'] = value;
+            //     break;
+            // case 'dateFrom':
+            //     localItem['dateFrom'] = value;
+            //     break;
+            default: {
+            }
+        }
+
+        this.setState({
+            ...this.state,
+            localItem: localItem,
+        });
+        console.log('localItem: ', localItem);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -409,6 +453,8 @@ class KpiFormModal extends Component {
             month,
             positionId,
             year,
+            activeMonthFrom,
+            activeYe,
         } = this.state.localItem;
 
         if (
