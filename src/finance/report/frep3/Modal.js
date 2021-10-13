@@ -60,14 +60,14 @@ const Detail = props => {
             accessor: 'dmbtr',
             checked: true,
             filterable: false,
-            Cell: row => div(row.value),
+            Cell: row => div(row.value ? row.value.toLocaleString() : ''),
         },
         {
             Header: messages['amount'] + ' в валюте',
             accessor: 'wrbtr',
             checked: true,
             filterable: false,
-            Cell: row => div(row.value),
+            Cell: row => div(row.value ? row.value.toLocaleString() : ''),
         },
         {
             Header: messages['customer'],

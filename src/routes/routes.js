@@ -567,6 +567,15 @@ const AsyncFaicfp2 = Loadable({
     loading: () => <LoadingPage />,
 });
 
+const AsyncFaglb03 = Loadable({
+    loader: () => {
+        return import(
+            '../finance/report/faglb03' /* webpackChunkName: "faglb03" */
+        );
+    },
+    loading: () => <LoadingPage />,
+});
+
 const AsyncFrep1 = Loadable({
     loader: () =>
         import('../finance/report/frep1/frep1' /* webpackChunkName: "frep1" */),
@@ -1295,6 +1304,7 @@ const getComponent = {
     Faicfp: AsyncFaicfp,
     Faicfp2: AsyncFaicfp2,
     Fahrb: AsyncFahrb,
+    Faglb03: AsyncFaglb03,
     Frep1: AsyncFrep1,
     Frep3: AsyncFrep3,
     Frep4: AsyncFrep4,

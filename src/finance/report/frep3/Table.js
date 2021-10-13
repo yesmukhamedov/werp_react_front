@@ -44,7 +44,7 @@ const Table = props => {
 
     const div = element => {
         return (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
+            <div className="text-wrap" style={textAlign}>
                 {element}
             </div>
         );
@@ -89,7 +89,8 @@ const Table = props => {
                     getProps: (state, rowInfo) => {
                         return conditionalStyleWithTextColor(rowInfo);
                     },
-                    Cell: row => div(row.value),
+                    Cell: row =>
+                        div(row.value ? row.value.toLocaleString() : ''),
                 },
                 {
                     Header: messages['amount'] + ' USD',
@@ -98,7 +99,8 @@ const Table = props => {
                     getProps: (state, rowInfo) => {
                         return conditionalStyle(rowInfo);
                     },
-                    Cell: row => div(row.value),
+                    Cell: row =>
+                        div(row.value ? row.value.toLocaleString() : ''),
                 },
                 {
                     Header: messages['amount'] + ' в валюте',
@@ -107,7 +109,8 @@ const Table = props => {
                     getProps: (state, rowInfo) => {
                         return conditionalStyle(rowInfo);
                     },
-                    Cell: row => div(row.value),
+                    Cell: row =>
+                        div(row.value ? row.value.toLocaleString() : ''),
                 },
                 {
                     Header: messages['Table.Actions'],

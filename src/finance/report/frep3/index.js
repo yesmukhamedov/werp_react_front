@@ -3,18 +3,18 @@ import { Container, Segment, Icon, Form, Dropdown } from 'semantic-ui-react';
 import {
     momentToStringDDMMYYYY,
     stringToMomentDDMMYYYY,
+    excelDownload,
+    errorTableText,
 } from '../../../utils/helpers';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import DropdownClearable from '../../../utils/DropdownClearable';
-import { excelDownload, errorTableText } from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { fetchResultList, fetchDetailList } from './frep3Actions';
 import Table from './Table';
 import Detail from './Modal';
-import moment from 'moment';
 
 const Frep3 = props => {
     const {
@@ -96,16 +96,16 @@ const Frep3 = props => {
 
     const totalTable = () => {
         const errors = [];
-        if (param.bukrs == undefined) {
+        if (!param.bukrs) {
             errors.push(errorTableText(5));
         }
-        if (param.branchIdList == [] || param.branchIdList == undefined) {
+        if (param.branchIdList == [] || !param.branchIdList) {
             errors.push(errorTableText(7));
         }
-        if (param.bldatFrom == undefined) {
+        if (!param.bldatFrom) {
             errors.push(errorTableText(13));
         }
-        if (param.bldatTo == undefined) {
+        if (!param.bldatTo) {
             errors.push(errorTableText(14));
         }
         if (errors.length === 0) {
