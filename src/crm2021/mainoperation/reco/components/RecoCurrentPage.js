@@ -46,10 +46,10 @@ class RecoCurrentPage extends Component {
             loadingMovedTab: true,
         };
 
-        this.renderTabUsed = this.renderTabUsed.bind(this);
+        this.renderTabAppointed = this.renderTabAppointed.bind(this);
         this.renderTabNew = this.renderTabNew.bind(this);
-        this.renderTabDemoDone = this.renderTabDemoDone.bind(this);
-        this.renderTableMoved = this.renderTableMoved.bind(this);
+        this.renderTabPositivePhoned = this.renderTabPositivePhoned.bind(this);
+        this.renderTabRecalled = this.renderTabRecalled.bind(this);
         this.loadItems = this.loadItems.bind(this);
         this.onCallSaved = this.onCallSaved.bind(this);
     }
@@ -57,10 +57,10 @@ class RecoCurrentPage extends Component {
     loadItems() {}
 
     componentWillMount() {
-        this.props.fetchRecoCurrentData('all');
-        this.props.fetchRecoCurrentData('new');
-        this.props.fetchRecoCurrentData('demo-done');
-        this.props.fetchRecoCurrentData('moved');
+        this.props.fetchRecoCurrentData('DEMO_APPOINTED');
+        this.props.fetchRecoCurrentData('NEW');
+        this.props.fetchRecoCurrentData('POSITIVE_PHONED');
+        this.props.fetchRecoCurrentData('RECALL');
         this.props.fetchReasons();
         this.props.fetchCallResults();
         this.props.fetchRecoStatuses();
@@ -84,19 +84,19 @@ class RecoCurrentPage extends Component {
                 loadingNewTab: false,
             });
         }
-        if (this.props.doneItems !== prevProps.doneItems) {
+        if (this.props.positivePhonedItems !== prevProps.positivePhonedItems) {
             this.setState({
                 ...this.state,
                 loadingDoneTab: false,
             });
         }
-        if (this.props.usedItems !== prevProps.usedItems) {
+        if (this.props.appointedItems !== prevProps.appointedItems) {
             this.setState({
                 ...this.state,
                 loadingUsedTab: false,
             });
         }
-        if (this.props.movedItems !== prevProps.movedItems) {
+        if (this.props.recalledItems !== prevProps.recalledItems) {
             this.setState({
                 ...this.state,
                 loadingMovedTab: false,
@@ -333,9 +333,9 @@ class RecoCurrentPage extends Component {
         return '';
     }
 
-    renderTabDemoDone() {
+    renderTabPositivePhoned() {
         return this.renderTable(
-            this.props.doneItems,
+            this.props.positivePhonedItems,
             this.state.loadingDoneTab,
         );
     }
@@ -344,16 +344,16 @@ class RecoCurrentPage extends Component {
         return this.renderTable(this.props.newItems, this.state.loadingNewTab);
     }
 
-    renderTabUsed() {
+    renderTabAppointed() {
         return this.renderTable(
-            this.props.usedItems,
+            this.props.appointedItems,
             this.state.loadingUsedTab,
         );
     }
 
-    renderTableMoved() {
+    renderTabRecalled() {
         return this.renderTable(
-            this.props.movedItems,
+            this.props.recalledItems,
             this.state.loadingMovedTab,
         );
     }
@@ -362,12 +362,18 @@ class RecoCurrentPage extends Component {
         const { messages } = this.props.intl;
         const panes = [
             { menuItem: messages['Crm.New'], render: this.renderTabNew },
-            { menuItem: messages['all'], render: this.renderTabUsed },
             {
-                menuItem: messages['Crm.DemoDone'],
-                render: this.renderTabDemoDone,
+                menuItem: messages['Crm.PositiveCalls'],
+                render: this.renderTabPositivePhoned,
             },
-            { menuItem: messages['assigned'], render: this.renderTableMoved },
+            {
+                menuItem: messages['Crm.DemoAppointed'],
+                render: this.renderTabPositivePhoned,
+            },
+            {
+                menuItem: messages['Crm.Recall'],
+                render: this.renderTabRecalled,
+            },
         ];
         return (
             <Container
@@ -400,9 +406,9 @@ class RecoCurrentPage extends Component {
 function mapStateToProps(state) {
     return {
         newItems: state.crmReco2021.newItems,
-        doneItems: state.crmReco2021.doneItems,
-        usedItems: state.crmReco2021.usedItems,
-        movedItems: state.crmReco2021.movedItems,
+        positivePhonedItems: state.crmReco2021.positivePhonedItems,
+        appointedItems: state.crmReco2021.appointedItems,
+        recalledItems: state.crmReco2021.recalledItems,
         reasons: state.crmReco2021.reasons,
         callResults: state.crmReco2021.callResults,
         statuses: state.crmReco2021.statuses,

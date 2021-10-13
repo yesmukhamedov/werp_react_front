@@ -9,14 +9,12 @@ import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 /**
  * Страница Текущие рекомендации
  */
-export const CRM_RECO_FETCH_CURRENT_USED_2021 =
-    'CRM_RECO_FETCH_CURRENT_USED_2021';
-export const CRM_RECO_FETCH_CURRENT_NEW_2021 =
-    'CRM_RECO_FETCH_CURRENT_NEW_2021';
-export const CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021 =
-    'CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021';
-export const CRM_RECO_FETCH_CURRENT_MOVED_2021 =
-    'CRM_RECO_FETCH_CURRENT_MOVED_2021';
+export const CRM_RECO_FETCH_CURRENT_POSITIVE_PHONED =
+    'CRM_RECO_FETCH_CURRENT_POSITIVE_PHONED';
+export const CRM_RECO_FETCH_CURRENT_NEW = 'CRM_RECO_FETCH_CURRENT_NEW';
+export const CRM_RECO_FETCH_CURRENT_DEMO_APPOINTED =
+    'CRM_RECO_FETCH_CURRENT_DEMO_APPOINTED';
+export const CRM_RECO_FETCH_CURRENT_RECALL = 'CRM_RECO_FETCH_CURRENT_RECALL';
 
 // After checked
 export const CRM_RECO_CHECKED_PHONE_NUMBER = 'CRM_RECO_CHECKED_PHONE_NUMBER';
@@ -146,26 +144,25 @@ export const fetchDemoDetails = id => {
 };
 
 export const fetchRecoCurrentData = type => {
-    console.log('type: ', type);
     return dispatch => {
-        doGet(`crm2/reco/current/${type}`)
+        doGet(`crm2/reco/current?tab=${type}`)
             .then(({ data }) => {
                 let actionType;
                 switch (type) {
-                    case 'new':
-                        actionType = CRM_RECO_FETCH_CURRENT_NEW_2021;
+                    case 'NEW':
+                        actionType = CRM_RECO_FETCH_CURRENT_NEW;
                         break;
 
-                    case 'demo-done':
-                        actionType = CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021;
+                    case 'POSITIVE_PHONED':
+                        actionType = CRM_RECO_FETCH_CURRENT_POSITIVE_PHONED;
                         break;
 
-                    case 'moved':
-                        actionType = CRM_RECO_FETCH_CURRENT_MOVED_2021;
+                    case 'DEMO_APPOINTED':
+                        actionType = CRM_RECO_FETCH_CURRENT_DEMO_APPOINTED;
                         break;
 
                     default:
-                        actionType = CRM_RECO_FETCH_CURRENT_USED_2021;
+                        actionType = CRM_RECO_FETCH_CURRENT_RECALL;
                         break;
                 }
                 dispatch({
